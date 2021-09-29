@@ -27,16 +27,6 @@
             alias e="kak"
         end
 
-        # sudo => pls
-        source ~/.config/fish/pls.fish
-
-        # set up change_cmd
-        source ~/.config/fish/change_cmd.fish
-
-
-        # Load completion for github
-        gh completion --shell fish | source
-
         # Source iTerm2 integration
         source ~/.iterm2_shell_integration.fish
         '';
@@ -66,7 +56,11 @@
     home.file = {
         "fish/change_cmd.fish" = {
             source = ./. + "/change_cmd.fish";
-            target = ".config/fish/change_cmd.fish";
+            target = ".config/fish/conf.d/change_cmd.fish";
+        };
+        "fish/pls.fish" = {
+            source = ./. + "/pls.fish";
+            target = ".config/fish/conf.d/pls.fish";
         };
     };
 }
