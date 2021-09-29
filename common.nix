@@ -52,7 +52,6 @@
               l = "exa -l --color=always ";
               htop = "btm --color nord-light -b --tree";
               Htop = "btm --color nord-light --tree";
-              brew64 = "arch -x86_64 /usr/local/bin/brew";
 
               # My own commands for easy access
               thisterm = "cd ~/Projects/uw/$CURRENT_TERM";
