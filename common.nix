@@ -7,19 +7,35 @@
 
   # Packages that are not in programs section
   home.packages = with pkgs; [
+      # Build tools
+      ## C++
       autoconf
       automake
-      fantasque-sans-mono
-      fd
+      ## SQL
       flyway
-      fossil
+      ## Go
       go # to be configured later
-      hugo
-      nnn
-      postgresql
+      ## Rust
       rust-analyzer
+      ## JavaScript
       yarn
+
+      # Fonts
+      fantasque-sans-mono
+
+      # CLI tools
+      fd
+      fossil
+      ## Blog generator
+      hugo
+      ## File Manager
+      nnn
+      ## PDF Processors
       poppler_utils
+
+      # Databases
+      postgresql
+
   ];
 
   # Programs
