@@ -19,6 +19,11 @@ in
       x86pkgs.anki-bin
   ];
 
+  # Additional settings for programs
+  programs.fish.shellAliases = {
+      brew64 = "arch -x86_64 /usr/local/bin/brew";
+  };
+
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
