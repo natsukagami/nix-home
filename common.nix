@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ./kakoune/kak.nix ];
 
   # Enable the manual so we don't have to load it
   manual.html.enable = true;

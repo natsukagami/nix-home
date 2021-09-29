@@ -1,0 +1,189 @@
+# Color scheme
+# colorscheme github
+# face global Default rgb:121213,default
+# face global BufferPadding rgb:A0A0A0,default
+face global MenuForeground blue,white+bF
+face global MenuBackground bright-blue,white+F
+face global Information bright-blue,white
+
+# Enable line numbers
+addhl global/ number-lines
+
+set global grepcmd "rg --line-number --no-column --no-heading --color=never ''"
+
+# Floating terminal
+# define-command floating-terminal -params 1 -docstring "Open a floating terminal running the given command" %{
+#     evaluate-commands -save-regs 'a' %{
+#         set-register a %arg{@}
+#         evaluate-commands %sh{
+#             alacritty \
+#             --class=alacritty,floating \
+#             -o window.dimensions.lines=24 \
+#             -o window.dimensions.columns=120 \
+#             -e sh -c "$kak_quoted_reg_a" < /dev/null > /dev/null 2>&1 &
+#         }
+#     }
+# }
+map global user t -docstring "Open a side terminal on the current directory" ' :iterm-terminal-horizontal fish<ret>'
+
+# fzf.kak
+require-module fzf
+set global fzf_terminal_command 'iterm-terminal-horizontal kak -c %val{session} -e "%arg{@}"'
+# set global fzf_grep_command 'rg'
+set global fzf_highlight_command 'bat --style=plain --theme=GitHub --color=always {}'
+map global user f -docstring "FZF mode" ': fzf-mode<ret>'
+
+# Comment line and block
+map global normal <#> ': comment-line<ret>'
+map global normal <a-#> ': comment-block<ret>'
+
+# Go to grep-jump
+map global goto F -docstring "current grep-jump match" '<esc>: grep-jump<ret>'
+
+# System clipboard interactions
+hook global RegisterModified '"' %{ nop %sh{
+  printf "%s" "$kak_main_reg_dquote" | pbcopy
+}}
+map global user P -docstring "Paste before cursor from clipboard" '! pbpaste<ret>'
+map global user p -docstring "Paste after cursor from clipboard" '<a-!> pbpaste<ret>'
+map global user R -docstring "Replace selection with text from clipboard" '<a-d>! pbpaste<ret>'
+define-command -params 0 -docstring "Copy line down" copyline %{
+    execute-keys -draft '<a-x>y'%val{count}'P'
+}
+map global normal <+> -docstring "Copy line down" ': copyline<ret>'
+define-command -params 0 -docstring "Delete current character" delete-one %{
+    execute-keys 'm<a-:>'
+    execute-keys -draft '<a-S>d'
+    execute-keys 'H'
+}
+map global normal D ": delete-one<ret>"
+
+# Disable write-to
+# unalias global w
+# define-command -params 0 -docstring "Writes the current file" w "write"
+
+# Tab sizes
+hook global InsertChar \t %{ exec -draft -itersel h@ }
+set global tabstop 4
+set global indentwidth 4 
+hook global WinSetOption filetype=(c|cpp|haskell) %{
+    set global tabstop 2
+    set global indentwidth 2
+}
+
+# Ctrl + a in insert mode = esc
+map global insert <c-a> '<esc>'
+
+# Tab completion
+hook global InsertCompletionShow .* %{
+    try %{
+        # this command temporarily removes cursors preceded by whitespace;
+        # if there are no cursors left, it raises an error, does not
+        # continue to execute the mapping commands, and the error is eaten
+        # by the `try` command so no warning appears.
+        execute-keys -draft 'h<a-K>\h<ret>'
+        map window insert <tab> <c-n>
+        map window insert <s-tab> <c-p>
+    }
+}
+hook global InsertCompletionHide .* %{
+    unmap window insert <tab> <c-n>
+    unmap window insert <s-tab> <c-p>
+}
+
+# Enable LSP
+try %{
+    eval %sh{test -z "$WE_STARTED_KAK" && kak-lsp --kakoune -s $kak_session}
+}
+hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell) %{
+    lsp-enable-window
+    map global normal <c-l> ": enter-user-mode lsp<ret>"
+    lsp-auto-hover-enable
+    # lsp-auto-hover-insert-mode-enable
+    set buffer lsp_hover_anchor true
+}
+hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell) %{
+    # Format the document if possible
+    hook window BufWritePre .* %{ lsp-formatting }
+}
+
+hook global WinSetOption filetype=(rust|go) %{
+  hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+  hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+  hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+  hook -once -always window WinSetOption filetype=.* %{
+    remove-hooks window semantic-tokens
+  }
+}
+
+hook global WinSetOption filetype=rust %{
+  hook window -group rust-inlay-hints BufReload .* rust-analyzer-inlay-hints
+  hook window -group rust-inlay-hints NormalIdle .* rust-analyzer-inlay-hints
+  hook window -group rust-inlay-hints InsertIdle .* rust-analyzer-inlay-hints
+  hook -once -always window WinSetOption filetype=.* %{
+    remove-hooks window rust-inlay-hints
+  }
+}
+
+# <a-a> in Insert mode moves to end of line.
+map global insert <a-a> '<esc>A'
+
+hook global WinSetOption filetype=(fsharp) %{
+    set-option buffer comment_line "//"
+}
+
+hook global WinSetOption filetype=(ocaml) %{
+    unset-option buffer comment_line
+    set-option buffer comment_block_begin "(*"
+    set-option buffer comment_block_end "*)"
+}
+
+hook global WinSetOption filetype=(haskell) %{
+    set-option buffer makecmd "cabal build"
+}
+
+hook global WinSetOption filetype=(rust) %{
+    set-option buffer makecmd "cargo check"
+}
+
+def -hidden insert-c-n %{
+ try %{
+   lsp-snippets-select-next-placeholders
+   exec '<a-;>d'
+ } catch %{
+   exec -with-hooks '<c-n>'
+ }
+}
+map global insert <c-n> "<a-;>: insert-c-n<ret>"
+
+# Use C++ for .h headers
+hook global BufCreate .*[.](h) %{
+  set-option buffer filetype cpp
+}
+
+hook global BufCreate .*[.]kakrc %{
+  set-option buffer filetype kak
+}
+
+hook global BufCreate .*[.]md %{
+  add-highlighter buffer/ wrap
+}
+
+hook global BufOpenFile .* %{
+  modeline-parse
+}
+
+source "%val{config}/latex.kak"
+require-module latex-kak
+source "%val{config}/racket.kak"
+
+# source "%val{config}/plugins/plug.kak/rc/plug.kak"
+
+map global normal <a-[> ':inc-dec-modify-numbers + %val{count}<ret>'
+map global normal <a-]> ':inc-dec-modify-numbers - %val{count}<ret>'
+
+# Source any settings in the current working directory,
+# recursive upwards
+evaluate-commands %sh{
+    $kak_config/source-pwd
+}
