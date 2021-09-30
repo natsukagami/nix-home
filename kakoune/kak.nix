@@ -35,6 +35,8 @@ let
     };
 in
 {
+    imports = [ ./kak-lsp.nix ];
+    
     # Enable the kakoune package.
     home.packages = [ kakounePkg ];
 
