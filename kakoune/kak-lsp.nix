@@ -17,7 +17,11 @@ let
 
         cargoDeps = drv.cargoDeps.overrideAttrs (lib.const {
             inherit src;
-            outputHash = "1risazihwy6v3rc1lxram0z2my29b3w52d827963b7zfahgmsaq5";
+            outputHash = (
+                if pkgs.stdenv.isDarwin
+                then "1risazihwy6v3rc1lxram0z2my29b3w52d827963b7zfahgmsaq5"
+                else "0ywb9489jrb5lsycxlxzrj2khkcjhvzxbb0ckbpwwvg11r4ds240"
+            );
         });
     });
 in

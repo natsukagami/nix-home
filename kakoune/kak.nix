@@ -89,8 +89,8 @@ in
                 owner = "Screwtapello";
                 repo = "kakoune-inc-dec";
                 rev = "7bfe9c51";
-                sha256 = "0cxmk4yiy30lxd3h02g02b1d9pds2pa46p3pvamj9wwq9sai5xdi";
-                leaveDotGit = true;
+                sha256 = "0f33wqxqbfygxypf348jf1fiscac161wf2xvnh8zwdd3rq5yybl0";
+                # leaveDotGit = true;
             };
         }
     ]);

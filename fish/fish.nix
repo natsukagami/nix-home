@@ -1,8 +1,12 @@
 { config, pkgs, ... }:
 
+let
+    pkgsUnstable = import <nixpkgs-unstable> {};
+in
 {
     programs.fish = {
         enable = true;
+        package = pkgsUnstable.fish;
         functions = {
         };
 
@@ -29,6 +33,12 @@
 
         # Source iTerm2 integration
         source ~/.iterm2_shell_integration.fish
+
+        # Enable vi keybindings
+        fish_vi_key_bindings
+        ## Set some kak-focused keybindings
+        bind -M default gi beginning-of-line
+        bind -M default gl end-of-line
         '';
         plugins = [
             {

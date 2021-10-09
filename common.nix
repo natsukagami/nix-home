@@ -1,16 +1,19 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
+    imports = [
       ./kakoune/kak.nix
       ./fish/fish.nix
-  ];
+    ];
 
-  # Enable the manual so we don't have to load it
-  manual.html.enable = true;
+    # Let Home Manager install and manage itself.
+    programs.home-manager.enable = true;
 
-  # Packages that are not in programs section
-  home.packages = with pkgs; [
+    # Enable the manual so we don't have to load it
+    manual.html.enable = true;
+
+    # Packages that are not in programs section
+    home.packages = with pkgs; [
       # Build Tools
       ## C++
       autoconf
@@ -36,43 +39,76 @@
       nnn
       ## PDF Processors
       poppler_utils
+      ## htop replacement
+      bottom
 
       # Databases
       postgresql
-  ];
+    ];
 
-  # Programs
-  programs = {
-      bat = {
-          enable = true;
-          config = {
-              theme = "GitHub";
-          };
-      };
+    home.sessionVariables = {
+      # Bat theme
+      BAT_THEME = "GitHub";
+    };
 
-      bottom.enable = true;
+    home.sessionPath = [
+      # Sometimes we want to install custom scripts here
+      "~/.local/bin"
+    ];
 
-      command-not-found.enable = true;
+    # Programs
+    programs = {
+        bat = {
+            enable = true;
+            config = {
+                theme = "GitHub";
+            };
+        };
 
-      exa = {
-          enable = true;
-      };
+        broot.enable = true;
 
-      # later
-      firefox = {};
+        command-not-found.enable = true;
 
-      fzf = {
-          enable = true;
-          enableFishIntegration = true;
-      };
+        exa = {
+            enable = true;
+            enableAliases = true;
+        };
 
-      gh = {
-          enable = true;
-          gitProtocol = "ssh";
-      };
+        # later
+        firefox = {};
 
-      jq.enable = true;
+        fzf = {
+            enable = true;
+            enableFishIntegration = true;
+        };
 
-      nushell.enable = true;
-  };
+        gh = {
+            enable = true;
+            gitProtocol = "ssh";
+        };
+
+        git = {
+            enable = true;
+            delta = {
+                enable = true;
+                options = {
+                    line-numbers = true;
+                    side-by-side = true;
+                };
+            };
+            signing.key = null;
+            signing.signByDefault = true;
+            userEmail = "nki@nkagami.me";
+            userName = "Natsu Kagami";
+            extraConfig = {
+                init.defaultBranch = "master";
+            };
+        };
+
+        gpg.enable = true;
+
+        jq.enable = true;
+
+        nushell.enable = true;
+    };
 }
