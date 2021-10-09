@@ -6,6 +6,7 @@
       ./common.nix
       # Set up X11-specific common configuration
       ./X11/default.nix
+      ./X11/hidpi.nix # Enable hiDPI
       # We use our own firefox
       ./firefox.nix
       # osu!
