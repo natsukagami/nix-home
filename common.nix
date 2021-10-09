@@ -11,7 +11,7 @@
 
   # Packages that are not in programs section
   home.packages = with pkgs; [
-      # Build tools
+      # Build Tools
       ## C++
       autoconf
       automake
@@ -39,7 +39,6 @@
 
       # Databases
       postgresql
-
   ];
 
   # Programs
