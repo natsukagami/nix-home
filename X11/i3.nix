@@ -86,6 +86,15 @@ in
                 }
             ]) (builtins.attrNames wsAttrs))
         )));
+
+        # Workspace
+        config.defaultWorkspace = "workspace ${builtins.getAttr "1" wsAttrs}";
+        config.startup = [
+            { command = "firefox"; }
+            { command = "discord"; }
+            { command = "dex -ae i3"; }
+            { command = "ibus-daemon -drxR"; }
+        ];
     };
 
 
