@@ -32,7 +32,7 @@ in
         end
 
         # Source iTerm2 integration
-        source ~/.iterm2_shell_integration.fish
+        test -e ~/.iterm2_shell_integration.fish && source ~/.iterm2_shell_integration.fish
 
         # Enable vi keybindings
         fish_vi_key_bindings
