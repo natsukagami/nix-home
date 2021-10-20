@@ -26,6 +26,8 @@
       rust-analyzer
       ## JavaScript
       yarn
+      ## Nix
+      cachix
 
       # Fonts
       fantasque-sans-mono
