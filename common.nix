@@ -69,6 +69,10 @@
 
         command-not-found.enable = true;
 
+        direnv.enable = true;
+        direnv.nix-direnv.enable = true;
+        direnv.nix-direnv.enableFlakes = true;
+
         exa = {
             enable = true;
             enableAliases = true;
