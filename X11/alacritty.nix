@@ -5,8 +5,6 @@ let
 in
 {
     home.packages = [
-        # Enable the FSM font with NF variant
-        (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
     ];
     
     programs.alacritty = {

@@ -31,6 +31,8 @@
 
       # Fonts
       fantasque-sans-mono
+      ## Enable the FSM font with NF variant
+      (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
 
       # CLI tools
       fd
