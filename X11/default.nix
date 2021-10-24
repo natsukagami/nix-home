@@ -32,5 +32,6 @@
         "x-scheme-handler/https" = [ "firefox.desktop" ];
         "x-scheme-handler/ftp" = [ "firefox.desktop" ];
         "x-scheme-handler/ftps" = [ "firefox.desktop" ];
+        "x-scheme-handler/mailspring" = [ "Mailspring.desktop" ];
     };
 }
