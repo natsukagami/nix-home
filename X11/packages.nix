@@ -18,6 +18,7 @@ in
         deluge # Torrent client
         mailspring
         discordPkg
+        pavucontrol # PulseAudio control panel
         # CLI stuff
         xsel # Clipboard management
         dex # .desktop file management, startup
