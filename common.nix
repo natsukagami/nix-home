@@ -53,6 +53,8 @@
     home.sessionVariables = {
       # Bat theme
       BAT_THEME = "GitHub";
+      # Editor
+      EDITOR = "kak";
     };
 
     home.sessionPath = [
