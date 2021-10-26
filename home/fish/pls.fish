@@ -4,13 +4,13 @@ function pls
     set -l cmd "`"(string join " " -- $argv)"`"
     echo "I-It's not like I'm gonna run "$cmd" for you or a-anything! Baka >:C" >&2
     # Send a notification on password prompt
-    if /usr/bin/sudo -vn 2>/dev/null
+    if command sudo -vn 2>/dev/null
         # nothing to do, user already authenticated
     else
         # throw a notification
         # notify-send -t 3000 -u critical -i ~/Downloads/harukablush.jpg -h "STRING:command:"$cmd "A-a command requires your p-password" (printf "I-I need your p-password to r-run the following c-command: %s" $cmd)
     end        
-    /usr/bin/sudo $argv
+    command sudo $argv
 end
 
 function sudo
