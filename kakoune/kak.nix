@@ -3,7 +3,7 @@
 let
     kakounePkg =
         let
-            rev = "85a1f78ca989cc25a34b6ece812682b287e9c944";
+            rev = "689553c2e9b953a9d3822528d4ad858af95fb6a2";
         in
         pkgs.kakoune.override {
             kakoune = pkgs.kakoune-unwrapped.overrideAttrs (oldAttrs : {
@@ -12,7 +12,7 @@ let
                     repo = "kakoune";
                     owner = "mawww";
                     rev = rev;
-                    sha256 = "13kc68vkrzg89khir6ayyxgbnmz16dhippcnw09hhzxivf5ayzpy";
+                    sha256 = "sha256-L9/nTwL24YPJrlpI0eyLmqhu1xfbKoi1IwrIeiwVUaE=";
                 };
             });
         };
