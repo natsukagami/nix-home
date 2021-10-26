@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, pkgs, nixpkgs-unstable, ... }:
 
 let
-    x86pkgs = import <nixpkgs> { config.allowUnsupportedSystem = true; };
+    x86pkgs = import nixpkgs-unstable { system = pkgs.system; config.allowUnsupportedSystem = true; };
 in
 {
   imports = [ ./common.nix ];
