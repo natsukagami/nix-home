@@ -18,7 +18,9 @@ in
         mailspring
         discordPkg
         pavucontrol # PulseAudio control panel
-        # CLI stuff
+        xfce.xfce4-notifyd # Notification
+
+        ## CLI stuff
         xsel # Clipboard management
         dex # .desktop file management, startup
         sct # Display color temperature
