@@ -66,7 +66,7 @@ map global normal D ": delete-one<ret>"
 hook global InsertChar \t %{ exec -draft -itersel h@ }
 set global tabstop 4
 set global indentwidth 4 
-hook global WinSetOption filetype=(c|cpp|haskell) %{
+hook global WinSetOption filetype=(c|cpp|haskell|nix) %{
     set global tabstop 2
     set global indentwidth 2
 }
