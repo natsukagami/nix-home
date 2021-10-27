@@ -10,9 +10,13 @@
       system = "x86_64-linux";
       modules = [ ./configuration.nix ];
     };
-    deploy.nodes."nki-personal".profiles.system = {
+    deploy.nodes."nki-personal" = {
+      hostname = "nki-personal";
+      sshUser = "root";
+      profiles.system = {
         user = "root";
         path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."nki-personal";
+      };
     };
 
     # This is highly advised, and will prevent many possible mistakes
