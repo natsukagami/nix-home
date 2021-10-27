@@ -19,7 +19,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
 	    home-manager.extraSpecialArgs = { inherit nixpkgs-unstable; };
-            home-manager.users.nki = import ./macbook-home.nix;
+            home-manager.users.nki = import ./home/macbook-home.nix;
           }	
       ];
       inputs = { 
