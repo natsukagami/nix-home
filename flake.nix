@@ -10,6 +10,7 @@
   };
 
   outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager }: {
+    # MacBook configuration: nix-darwin + home-manager
     darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem rec {
       system = "aarch64-darwin";
       modules = [ 
@@ -18,13 +19,13 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-	    home-manager.extraSpecialArgs = { inherit nixpkgs-unstable; };
+            home-manager.extraSpecialArgs = { inherit nixpkgs-unstable; };
             home-manager.users.nki = import ./home/macbook-home.nix;
           }	
       ];
       inputs = { 
-	inherit darwin nixpkgs-unstable;
-	nixpkgs = nixpkgs-unstable;
+        inherit darwin nixpkgs-unstable;
+        nixpkgs = nixpkgs-unstable;
       };
     };
   };
