@@ -46,6 +46,9 @@
       ## htop replacement
       bottom
 
+      ## To do tunneling with cloudflare
+      cloudflared
+
       # Databases
       postgresql
     ];
