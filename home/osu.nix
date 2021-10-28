@@ -1,7 +1,7 @@
 { pkgs, config, lib, ... }:
 
 let
-    pkgsUnstableOsu = import "/home/nki/nixpkgs/osu-lazer" {};
+    # pkgsUnstableOsu = import "/home/nki/nixpkgs/osu-lazer" {};
     # osu = pkgs.osu-lazer.overrideAttrs (oldAttrs : rec {
     #     version = "2021.1006.1";
     #     src = pkgs.fetchFromGitHub {
@@ -13,5 +13,5 @@ let
     # });
 in
 {
-    home.packages = [ pkgsUnstableOsu.osu-lazer ];
+    home.packages = [ pkgs.unstable.osu-lazer ];
 }

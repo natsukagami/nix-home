@@ -1,9 +1,8 @@
 { pkgs, config, lib, ... }:
 
 let
-    pkgsUnstable = import <nixpkgs-unstable> {};
     # Override nss to open links in Firefox (https://github.com/NixOS/nixpkgs/issues/78961)
-    discordPkg = pkgsUnstable.discord.override { nss = pkgs.nss_latest; };
+    discordPkg = pkgs.unstable.discord.override { nss = pkgs.unstable.nss; };
 in
 {
     imports = [ ./alacritty.nix ./i3.nix ];

@@ -34,4 +34,14 @@
         "x-scheme-handler/ftps" = [ "firefox.desktop" ];
         "x-scheme-handler/mailspring" = [ "Mailspring.desktop" ];
     };
+
+    # Mimic the clipboard stuff in MacOS
+    home.packages = [
+      (pkgs.writeShellScriptBin "pbcopy" ''
+        exec ${pkgs.xsel}/bin/xsel -ib
+      '')
+      (pkgs.writeShellScriptBin "pbpaste" ''
+        exec ${pkgs.xsel}/bin/xsel -ob
+      '')
+    ];
 }

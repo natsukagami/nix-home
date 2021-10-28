@@ -29,6 +29,11 @@ in
       type = types.enum hostNames;
       description = "The configured host name";
     };
+    bindPort = mkOption {
+      type = types.port;
+      default = 655;
+      description = "The port to listen on";
+    };
   };
 
   config = mkIf cfg.enable (builtins.seq
@@ -82,6 +87,8 @@ in
         debugLevel    = 3;            # the debug level for journal -u tinc.private
         chroot        = false;        # otherwise addresses can't be a DNS
         interfaceType = "tap";        # tun might also work.
+
+        bindToAddress = "* ${toString cfg.bindPort}";
 
         ed25519PrivateKeyFile = cfg.ed25519PrivateKey;
         rsaPrivateKeyFile = cfg.rsaPrivateKey;
