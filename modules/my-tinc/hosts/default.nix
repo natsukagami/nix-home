@@ -6,6 +6,12 @@
     rsaPublicKey = builtins.readFile ./nki-cloud.pub;
   };
 
+  home = {
+    subnetAddr = "11.0.0.2";
+    rsaPublicKey = builtins.readFile ./nki-home.pub;
+    ed25519PublicKey = "Ts5OdPtBNLIRfosoYRcb6Z2iwWyOz/VKTKB9J0p5LlH";
+  };
+
   macbook = {
     subnetAddr = "11.0.0.3";
     rsaPublicKey = builtins.readFile ./nki-macbook.pub;
