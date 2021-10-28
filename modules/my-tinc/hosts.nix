@@ -14,7 +14,7 @@ in
   config = mkIf cfg.enable {
     # All hosts we know of
     services.tinc.networks.my-tinc.hostSettings = mapAttrs (name: host: {
-      addresses = [ { address = host.address; } ];
+      addresses = if (host ? address) then [ { address = host.address; } ] else [];
       subnets = [ { address = host.subnetAddr; } ];
       rsaPublicKey = mkIf (host ? "rsaPublicKey") host.rsaPublicKey;
       settings.Ed25519PublicKey = mkIf (host ? "ed25519PublicKey") host.ed25519PublicKey;
