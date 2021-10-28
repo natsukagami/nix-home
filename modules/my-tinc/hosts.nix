@@ -14,10 +14,10 @@ in
   config = mkIf cfg.enable {
     # All hosts we know of
     services.tinc.networks.my-tinc.hostSettings = mapAttrs (name: host: {
-      addresses = [ { inherit (host) address; } ];
+      addresses = [ { address = host.address; } ];
       subnets = [ { address = host.subnetAddr; } ];
-      rsaPublicKey = mkIf (host ? "rsaPublicKey") (builtins.readFile host.rsaPublicKey);
-      ed25519PublicKey = mkIf (host ? "ed25519PublicKey") (builtins.readFile host.ed25519PublicKey);
+      rsaPublicKey = if (host ? "rsaPublicKey") then (builtins.readFile host.rsaPublicKey) else null;
+      settings.Ed25519PublicKey = mkIf (host ? "ed25519PublicKey") (builtins.readFile host.ed25519PublicKey);
     }) hosts;
   };
 }
