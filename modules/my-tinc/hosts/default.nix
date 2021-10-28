@@ -1,8 +1,14 @@
 {
   # TODO: Edit the list of hosts here.
   nki-cloud = {
-    subnetAddr = "10.0.0.10";
+    subnetAddr = "11.0.0.1";
     address = "nki.personal";
-    rsaPublicKey = ./nki-cloud.pub;
+    rsaPublicKey = builtins.readFile ./nki-cloud.pub;
   };
+
+  nki-macbook = {
+    subnetAddr = "11.0.0.3";
+    rsaPublicKey = builtins.readFile ./nki-macbook.pub;
+    ed25519PublicKey = "lkNkBTl5GmcQFrtA7F1nN2gq5gFK7KuGqHUN8fiJU7H";
+  }
 }

@@ -16,8 +16,8 @@ in
     services.tinc.networks.my-tinc.hostSettings = mapAttrs (name: host: {
       addresses = [ { address = host.address; } ];
       subnets = [ { address = host.subnetAddr; } ];
-      rsaPublicKey = if (host ? "rsaPublicKey") then (builtins.readFile host.rsaPublicKey) else null;
-      settings.Ed25519PublicKey = mkIf (host ? "ed25519PublicKey") (builtins.readFile host.ed25519PublicKey);
+      rsaPublicKey = mkIf (host ? "rsaPublicKey") host.rsaPublicKey;
+      settings.Ed25519PublicKey = mkIf (host ? "ed25519PublicKey") host.ed25519PublicKey;
     }) hosts;
   };
 }
