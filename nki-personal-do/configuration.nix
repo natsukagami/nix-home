@@ -27,7 +27,7 @@
 
   # tinc
   services.my-tinc.enable = true;
-  services.my-tinc.hostName = "nki-cloud";
+  services.my-tinc.hostName = "cloud";
   sops.secrets.tinc-private-key = {};
   services.my-tinc.rsaPrivateKey = config.sops.secrets.tinc-private-key.path;
 }
