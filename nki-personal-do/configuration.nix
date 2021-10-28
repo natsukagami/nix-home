@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   imports = [
     ./hardware-configuration.nix
     ./networking.nix # generated at runtime by nixos-infect
@@ -20,4 +20,14 @@
 
   system.autoUpgrade.enable = true;
   system.autoUpgrade.allowReboot = true;
+
+  # Secret management
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.age.sshKeyPaths = [ "/root/.ssh/id_ed25519" ];
+
+  # tinc
+  services.my-tinc.enable = true;
+  services.my-tinc.hostName = "nki-cloud";
+  sops.secrets.tinc-private-key = {};
+  services.my-tinc.rsaPrivateKey = config.sops.secrets.tinc-private-key.path;
 }

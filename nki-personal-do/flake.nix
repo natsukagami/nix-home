@@ -3,13 +3,15 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/21.05";
     deploy-rs.url = "github:Serokell/deploy-rs";
+    sops-nix.url = "github:Mic92/sops-nix";
   };
-  outputs = { self, nixpkgs, deploy-rs } : {
+  outputs = { self, nixpkgs, deploy-rs, sops-nix } : {
     # DigitalOcean node
     nixosConfigurations."nki-personal" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         ../modules/my-tinc
+        sops-nix.nixosModules.sops
         ./configuration.nix
       ];
     };
