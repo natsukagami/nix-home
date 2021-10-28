@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 with lib;
 let
@@ -33,7 +33,7 @@ in
 
   config = mkIf cfg.enable (builtins.seq
     (mkIf (isNull cfg.rsaPrivateKey && isNull cfg.ed25519PrivateKey) (builtins.abort "one of the keys must be defined"))
-    let
+    (let
       networkName = "my-tinc";
 
       myHost = builtins.getAttr cfg.hostName hosts;
@@ -50,40 +50,42 @@ in
             #!${pkgs.stdenv.shell}
             /run/wrappers/bin/sudo ${pkgs.nettools}/bin/ifconfig $INTERFACE down
         '';
-
-        # Allow the tinc service to call ifconfig without sudo password.
-        security.sudo.extraRules = [
-          {
-            users    = [ "tinc.${networkName}" ];
-            commands = [
-              {
-                command  = "${pkgs.nettools}/bin/ifconfig";
-                options  = [ "NOPASSWD" ];
-              }
-            ];
-          }
-        ];
-
-        # simple interface setup
-        # ----------------------
-        networking.interfaces."tinc.${networkName}".ipv4.addresses = [ { address = myMeshIp; prefixLength = 24; } ];
-
-        # firewall
-        networking.firewall.allowedUDPPorts = [ 655 ];
-        networking.firewall.allowedTCPPorts = [ 655 ];
-
-        # configure tinc service
-        # ----------------------
-        services.tinc.networks."${networkName}"= {
-
-          name          = ${cfg.hostName};       # who are we in this network.
-
-          debugLevel    = 3;            # the debug level for journal -u tinc.private
-          chroot        = false;        # otherwise addresses can't be a DNS
-          interfaceType = "tap";        # tun might also work.
-
-          ed25519PrivateKeyFile = cfg.ed25519PrivateKey;
-          rsaPrivateKeyFile = cfg.rsaPrivateKey;
       };
+
+      # Allow the tinc service to call ifconfig without sudo password.
+      security.sudo.extraRules = [
+        {
+          users    = [ "tinc.${networkName}" ];
+          commands = [
+            {
+              command  = "${pkgs.nettools}/bin/ifconfig";
+              options  = [ "NOPASSWD" ];
+            }
+          ];
+        }
+      ];
+
+      # simple interface setup
+      # ----------------------
+      networking.interfaces."tinc.${networkName}".ipv4.addresses = [ { address = myMeshIp; prefixLength = 24; } ];
+
+      # firewall
+      networking.firewall.allowedUDPPorts = [ 655 ];
+      networking.firewall.allowedTCPPorts = [ 655 ];
+
+      # configure tinc service
+      # ----------------------
+      services.tinc.networks."${networkName}"= {
+
+        name          = cfg.hostName;       # who are we in this network.
+
+        debugLevel    = 3;            # the debug level for journal -u tinc.private
+        chroot        = false;        # otherwise addresses can't be a DNS
+        interfaceType = "tap";        # tun might also work.
+
+        ed25519PrivateKeyFile = cfg.ed25519PrivateKey;
+        rsaPrivateKeyFile = cfg.rsaPrivateKey;
+      };
+    })
   );
 }
