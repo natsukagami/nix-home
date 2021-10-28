@@ -8,7 +8,10 @@
     # DigitalOcean node
     nixosConfigurations."nki-personal" = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [ ./configuration.nix ];
+      modules = [
+        ../modules/my-tinc
+        ./configuration.nix
+      ];
     };
     deploy.nodes."nki-personal" = {
       hostname = "nki-personal";
