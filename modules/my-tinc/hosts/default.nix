@@ -4,7 +4,7 @@
     nki-cloud = {
       subnetAddr = "10.0.0.10";
       address = "nki.personal";
-      rsaPublicKey = ./nki-cloud;
+      rsaPublicKey = ./nki-cloud.pub;
     };
   };
 }
