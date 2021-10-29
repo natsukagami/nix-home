@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
     imports = [
@@ -96,7 +96,8 @@
 
         gh = {
             enable = true;
-            gitProtocol = "ssh";
+            gitProtocol = lib.mkIf (config.home.stateVersion == "21.05") "ssh";
+            settings.git_protocol = lib.mkIf (config.home.stateVersion == "21.11") "ssh";
         };
 
         git = {
