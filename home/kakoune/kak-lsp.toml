@@ -159,4 +159,7 @@ command = "FSharpLanguageServer"
 # command = "dotnet"
 # args = ["/home/natsukagami/Projects/FsAutoComplete/bin/release_netcore/fsautocomplete.dll", "--background-service-enabled"]
 
-
+[language.nix]
+filetypes = ["nix"]
+roots = ["flake.nix", "shell.nix", ".git"]
+command = "rnix-lsp"

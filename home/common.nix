@@ -28,6 +28,7 @@
       yarn
       ## Nix
       cachix
+      rnix-lsp
 
       # Fonts
       fantasque-sans-mono

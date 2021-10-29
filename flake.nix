@@ -10,9 +10,13 @@
     home-manager-21_05.url = "github:nix-community/home-manager/release-21.05";
     sops-nix.url = "github:Mic92/sops-nix";
     nur.url = "github:nix-community/NUR";
+
+    # ---
+    # Imported apps
+    rnix-lsp.url = "github:nix-community/rnix-lsp";
   };
 
-  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager-unstable, home-manager-21_05, sops-nix, nur }: {
+  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager-unstable, home-manager-21_05, sops-nix, nur, ... }@inputs : {
     # MacBook configuration: nix-darwin + home-manager
     darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem {
       system = "aarch64-darwin";
@@ -49,9 +53,12 @@
             # override some packages that needs unstable that cannot be changed in the setup.
             nix-direnv = prev.unstable.nix-direnv;
           };
+          overlay-imported = final: prev: {
+            rnix-lsp = inputs.rnix-lsp.defaultPackage."x86_64-linux";
+          };
         in
         {
-          nixpkgs.overlays = [ overlay-unstable overlay-needs-unstable nur.overlay ]; # we assign the overlay created before to the overlays of nixpkgs.
+          nixpkgs.overlays = [ overlay-unstable overlay-needs-unstable overlay-imported nur.overlay ]; # we assign the overlay created before to the overlays of nixpkgs.
         }) 
       ];
     };
