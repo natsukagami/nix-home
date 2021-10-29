@@ -95,7 +95,7 @@ hook global InsertCompletionHide .* %{
 try %{
     eval %sh{test -z "$WE_STARTED_KAK" && kak-lsp --kakoune -s $kak_session}
 }
-hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell) %{
+hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix) %{
     lsp-enable-window
     map global normal <c-l> ": enter-user-mode lsp<ret>"
     lsp-auto-hover-enable
