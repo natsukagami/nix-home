@@ -1,12 +1,9 @@
-{ config, pkgs, nixpkgs-unstable, ... }:
+{ config, pkgs, ... }:
 
-let
-   pkgsUnstable = import nixpkgs-unstable { system = pkgs.system; };
-in
 {
     programs.fish = {
         enable = true;
-        package = pkgsUnstable.fish;
+        package = pkgs.unstable.fish;
         functions = {
         };
 

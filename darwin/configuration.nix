@@ -22,6 +22,7 @@
   networking.hostName = "nki-macbook";
 
   ## Programs
+  nixpkgs.config.allowUnfree = true;
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog

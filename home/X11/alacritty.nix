@@ -1,15 +1,12 @@
 { pkgs, config, lib, ... } :
 
-let
-    pkgsUnstable = import <nixpkgs-unstable> {};
-in
 {
     home.packages = [
     ];
     
     programs.alacritty = {
         enable = true;
-        package = pkgsUnstable.alacritty;
+        package = pkgs.unstable.alacritty;
 
         settings = {
             background_opacity = 0.95;

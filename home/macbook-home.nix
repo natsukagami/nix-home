@@ -1,8 +1,5 @@
-{ config, pkgs, nixpkgs-unstable, ... }:
+{ config, pkgs, ... }:
 
-let
-    x86pkgs = import nixpkgs-unstable { system = pkgs.system; config.allowUnsupportedSystem = true; };
-in
 {
   imports = [ ./common.nix ];
     
@@ -16,7 +13,7 @@ in
 
   # Additional packages to be used only on this MacBook.
   home.packages = with pkgs; [
-      x86pkgs.anki-bin
+      pkgs.x86.anki-bin
   ];
 
   # Additional settings for programs

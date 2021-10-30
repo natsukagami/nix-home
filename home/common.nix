@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
     imports = [
@@ -28,6 +28,7 @@
       yarn
       ## Nix
       cachix
+      rnix-lsp
 
       # Fonts
       fantasque-sans-mono
@@ -45,6 +46,9 @@
       poppler_utils
       ## htop replacement
       bottom
+
+      ## To do tunneling with cloudflare
+      cloudflared
 
       # Databases
       postgresql
@@ -92,7 +96,8 @@
 
         gh = {
             enable = true;
-            gitProtocol = "ssh";
+            gitProtocol = lib.mkIf (config.home.stateVersion == "21.05") "ssh";
+            settings.git_protocol = lib.mkIf (config.home.stateVersion == "21.11") "ssh";
         };
 
         git = {
