@@ -3,6 +3,8 @@
     ./hardware-configuration.nix
     ./networking.nix # generated at runtime by nixos-infect
 
+    # Set up postgresql
+    ../modules/postgresql
   ];
 
   boot.cleanTmpDir = true;
