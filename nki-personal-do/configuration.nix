@@ -3,8 +3,9 @@
     ./hardware-configuration.nix
     ./networking.nix # generated at runtime by nixos-infect
 
-    # Set up postgresql
-    ../modules/postgresql
+    # Set up cloud
+    ../modules/cloud/postgresql
+    ../modules/cloud/traefik
   ];
 
   boot.cleanTmpDir = true;
@@ -42,4 +43,8 @@
   services.my-tinc.hostName = "cloud";
   sops.secrets.tinc-private-key = { };
   services.my-tinc.rsaPrivateKey = config.sops.secrets.tinc-private-key.path;
+
+  # Set up traefik
+  sops.secrets.cloudflare-dns-api-token = {};
+  cloud.traefik.cloudflareKeyFile = config.sops.secrets.cloudflare-dns-api-token.path;
 }
