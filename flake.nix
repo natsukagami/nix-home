@@ -9,6 +9,7 @@
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-21_05.url = "github:nix-community/home-manager/release-21.05";
     sops-nix.url = "github:Mic92/sops-nix";
+    deploy-rs.url = "github:Serokell/deploy-rs";
     nur.url = "github:nix-community/NUR";
 
     # ---
@@ -19,7 +20,7 @@
     rnix-lsp.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
-  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager-unstable, home-manager-21_05, sops-nix, nur, ... }@inputs:
+  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager-unstable, home-manager-21_05, deploy-rs, sops-nix, nur, ... }@inputs:
     let
       overlayForSystem = import ./overlay.nix inputs;
     in
@@ -55,5 +56,27 @@
           (overlayForSystem "x86_64-linux")
         ];
       };
+
+      # DigitalOcean node
+      nixosConfigurations."nki-personal-do" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./modules/my-tinc
+          sops-nix.nixosModules.sops
+          ./nki-personal-do/configuration.nix
+        ];
+      };
+      deploy.nodes."nki-personal-do" = {
+        hostname = "nki-personal-do";
+        sshUser = "root";
+        profiles.system = {
+          user = "root";
+          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."nki-personal-do";
+        };
+      };
+
+      # This is highly advised, and will prevent many possible mistakes
+      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
     };
 }
