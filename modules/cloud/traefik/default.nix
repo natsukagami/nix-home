@@ -71,7 +71,7 @@ in
       };
     };
 
-    dynamicConfigOptions = {};
+    dynamicConfigOptions = cfg.config;
   };
   # Set up cloudflare key
   config.systemd.services.traefik.environment.CF_DNS_API_TOKEN_FILE = cfg.cloudflareKeyFile;

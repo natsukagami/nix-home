@@ -6,6 +6,7 @@
     # Set up cloud
     ../modules/cloud/postgresql
     ../modules/cloud/traefik
+    ../modules/cloud/bitwarden
   ];
 
   boot.cleanTmpDir = true;
