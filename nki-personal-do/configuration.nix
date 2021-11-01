@@ -18,6 +18,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    git
   ];
 
   services.do-agent.enable = true;

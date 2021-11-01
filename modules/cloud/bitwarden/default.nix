@@ -10,6 +10,7 @@ let
   user = "bitwarden";
 
   port = 8001;
+  notificationsPort = 8002;
 in
 {
   options.cloud.bitwarden = { };
@@ -24,15 +25,15 @@ in
     # database
     cloud.postgresql.databases = [ databaseUser ];
     # traefik
-    cloud.traefik.config.http.routers.bitwarden = {
-      rule = "Host(`bw.nkagami.me`)";
-      entrypoints = "https";
-      tls.certResolver = "le";
-      service = "bitwarden";
+    cloud.traefik.hosts.bitwarden = {
+      inherit port;
+      host = "bw.nkagami.me";
     };
-    cloud.traefik.config.http.services.bitwarden.loadBalancer.servers = [
-      { url = "http://localhost:${toString port}"; }
-    ];
+    cloud.traefik.hosts.bitwarden-notifications = {
+      port = notificationsPort;
+      host = "bw.nkagami.me";
+      path = "/notifications/hub";
+    };
     # systemd unit
     systemd.services.bitwarden-server = {
       after = [ "network.target" ];
@@ -46,6 +47,7 @@ in
         WEB_VAULT_FOLDER = "${pkgs.unstable.vaultwarden-vault}/share/vaultwarden/vault";
 
         ROCKET_PORT = toString port;
+        WEBSOCKET_PORT = toString notificationsPort;
       };
       serviceConfig = {
         User = user;
