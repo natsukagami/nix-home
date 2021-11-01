@@ -64,6 +64,7 @@
           ./modules/my-tinc
           sops-nix.nixosModules.sops
           ./nki-personal-do/configuration.nix
+          (overlayForSystem "x86_64-linux")
         ];
       };
       deploy.nodes."nki-personal-do" = {
