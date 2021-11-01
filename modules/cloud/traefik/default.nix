@@ -21,7 +21,7 @@ let
   cfg = config.cloud.traefik;
 in
 {
-  imports = [ ./config.nix ];
+  imports = [ ./config.nix ./dashboard.nix ];
   options.cloud.traefik = {
     cloudflareKeyFile = mkOption {
       type = types.path;
@@ -57,10 +57,6 @@ in
       # -------
       accessLog = {};
       log.level = "info";
-
-      # Dashboard
-      # ---------
-      api.dashboard = true;
 
       # ACME Automatic SSL
       # ------------------
