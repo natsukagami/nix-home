@@ -21,7 +21,7 @@ let
   cfg = config.cloud.traefik;
 in
 {
-  imports = [ ./config.nix ./dashboard.nix ];
+  imports = [ ./config.nix ./dashboard.nix ./certs-dumper.nix ];
   options.cloud.traefik = {
     cloudflareKeyFile = mkOption {
       type = types.path;
@@ -32,6 +32,12 @@ in
       type = jsonValue;
       default = {};
       description = "The dynamic configuration to be passed to traefik";
+    };
+
+    certsPath = mkOption {
+      type = types.str;
+      default = "/var/lib/traefik/acme.json";
+      description = "The location to read and write the certificates file onto";
     };
   };
   
@@ -52,6 +58,7 @@ in
       ## IMAP and SMTP
       entrypoints.imap.address = ":993";
       entrypoints.smtp-submission.address = ":587";
+      entrypoints.smtp-submission-ssl.address = ":465";
 
       # Logging
       # -------
@@ -62,7 +69,7 @@ in
       # ------------------
       certificatesResolvers.le.acme = {
         email = "natsukagami@gmail.com";
-        storage = "/var/lib/traefik/acme.json";
+        storage = cfg.certsPath;
         dnsChallenge.provider = "cloudflare";
         dnsChallenge.delayBeforeCheck = 10;
       };
@@ -74,6 +81,6 @@ in
   config.systemd.services.traefik.environment.CF_DNS_API_TOKEN_FILE = cfg.cloudflareKeyFile;
 
   # Set up firewall to allow traefik traffic.
-  config.networking.firewall.allowedTCPPorts = [ 80 443 993 587 ];
+  config.networking.firewall.allowedTCPPorts = [ 80 443 993 587 465 ];
   config.networking.firewall.allowedUDPPorts = [ 443 ]; # QUIC
 }

@@ -35,6 +35,7 @@ in
       entryPoints = [ "https" ];
       middlewares = [ "dashboard-auth" ];
       service = "api@internal";
+      tls.certResolver = "le";
     };
   };
 }
