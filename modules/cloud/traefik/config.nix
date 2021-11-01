@@ -46,7 +46,7 @@ let
         description = "The entrypoints that will serve the host";
       };
       middlewares = mkOption {
-        type = listOf jsonType;
+        type = listOf jsonValue;
         default = [];
         description = "The middlewares to be used with the host.";
       };

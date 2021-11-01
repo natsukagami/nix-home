@@ -47,6 +47,11 @@
   services.my-tinc.rsaPrivateKey = config.sops.secrets.tinc-private-key.path;
 
   # Set up traefik
-  sops.secrets.cloudflare-dns-api-token = {};
+  sops.secrets.cloudflare-dns-api-token = { owner = "traefik"; };
+  sops.secrets.traefik-dashboard-users = { owner = "traefik"; };
   cloud.traefik.cloudflareKeyFile = config.sops.secrets.cloudflare-dns-api-token.path;
+  cloud.traefik.dashboard = {
+    enable = true;
+    usersFile = config.sops.secrets.traefik-dashboard-users.path;
+  };
 }
