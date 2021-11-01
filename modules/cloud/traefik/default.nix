@@ -21,6 +21,7 @@ let
   cfg = config.cloud.traefik;
 in
 {
+  imports = [ ./config.nix ];
   options.cloud.traefik = {
     cloudflareKeyFile = mkOption {
       type = types.path;
