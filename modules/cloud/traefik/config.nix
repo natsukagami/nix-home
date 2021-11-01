@@ -4,6 +4,22 @@ with lib;
 let
   cfg = config.cloud.traefik;
 
+  # Copied from traefik.nix
+  jsonValue = with types;
+    let
+      valueType = nullOr (oneOf [
+        bool
+        int
+        float
+        str
+        (lazyAttrsOf valueType)
+        (listOf valueType)
+      ]) // {
+        description = "JSON value";
+        emptyValue.value = { };
+      };
+    in valueType;
+
   hostType = with types; submodule {
     options = {
       host = mkOption {
@@ -29,6 +45,11 @@ let
         default = [ "https" ];
         description = "The entrypoints that will serve the host";
       };
+      middlewares = mkOption {
+        type = listOf jsonType;
+        default = [];
+        description = "The middlewares to be used with the host.";
+      };
     };
   };
 
@@ -45,10 +66,15 @@ let
       entryPoints = host.entrypoints;
       tls.certResolver = "le";
       service = "${name}-service";
+      middlewares = lists.imap0 (id: m: "${name}-middleware-${toString id}") host.middlewares;
     };
     http.services."${name}-service".loadBalancer.servers = [
       { url = "http://localhost:${toString host.port}"; }
     ];
+    http.middlewares = builtins.listToAttrs (lists.imap0 (id: v: {
+      name = "${name}-middleware-${toString id}";
+      value = v;
+    }) host.middlewares);
   };
 in
 {
