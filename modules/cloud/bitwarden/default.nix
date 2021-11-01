@@ -47,6 +47,8 @@ in
         WEB_VAULT_FOLDER = "${pkgs.unstable.vaultwarden-vault}/share/vaultwarden/vault";
 
         ROCKET_PORT = toString port;
+
+        WEBSOCKET_ENABLED = "true";
         WEBSOCKET_PORT = toString notificationsPort;
       };
       serviceConfig = {
