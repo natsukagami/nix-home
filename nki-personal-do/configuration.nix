@@ -65,4 +65,11 @@
     tls.keyFile = "${config.cloud.traefik.certsDumper.destination}/${config.cloud.mail.hostname}/privatekey.key";
     usersFile = config.sops.secrets.mail-users.path;
   };
+
+  # Youmubot
+  sops.secrets.youmubot-env = {};
+  services.youmubot = {
+    enable = true;
+    envFile = config.sops.secrets.youmubot-env.path;
+  };
 }
