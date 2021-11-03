@@ -1,0 +1,46 @@
+name: "Deploy to nki-personal"
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+    types:
+    - opened
+    - synchronize
+    - reopened
+    - labeled
+jobs:
+  deploy:
+    if: "github.event.name == 'push' || contains(github.event.pull_request.labels.*.name, 'Deploy')"
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+    - uses: actions/checkout@v2.3.4
+    - name: Add SSH key
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      run: |
+        mkdir -p /home/runner/.ssh
+        echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
+        echo "${{ secrets.NIX_DEPLOY_SSH_KEY }}" > /home/runner/.ssh/nix_deploy_key
+        chmod 600 /home/runner/.ssh/*
+        ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
+        ssh-add /home/runner/.ssh/*
+        ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
+    - uses: cachix/install-nix-action@v14.1
+      with:
+        extra_nix_config: |
+          experimental-features = nix-command flakes
+          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/cache@v2
+      with:
+        path: |
+          /nix/store
+        key: ${{ runner.os }}-${{ hashFiles('flake.lock') }}
+    - name: Deploy with deploy-rs
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      run: |
+        nix run -L github:Serokell/deploy-rs . -- --hostname ${{ secrets.INSTANCE_IP }} -- -L

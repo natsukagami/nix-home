@@ -19,7 +19,7 @@ let
             inherit src;
             outputHash = (
                 if pkgs.stdenv.isDarwin
-                then "sha256-BStdH1TunzVMOgI1UfhYSfgqPqgqdxpYHtt4DuNXOuY="
+                then "sha256-U5hiEak47Dd/R7II6d+0/n3ZmT1ryDk4S+/lV2cH6HM="
                 else "0ywb9489jrb5lsycxlxzrj2khkcjhvzxbb0ckbpwwvg11r4ds240"
             );
         });

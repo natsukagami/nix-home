@@ -19,6 +19,10 @@
     rnix-lsp.inputs.naersk.follows = "naersk";
     rnix-lsp.inputs.nixpkgs.follows = "nixpkgs-unstable";
     youmubot.url = "github:natsukagami/youmubot";
+
+    # ---
+    # DEPLOYMENT ONLY! secrets
+    secrets.url = "git+ssh://git@github.com/natsukagami/nix-deploy-secrets";
   };
 
   outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager-unstable, home-manager-21_05, deploy-rs, sops-nix, nur, ... }@inputs:
@@ -66,6 +70,7 @@
           inputs.youmubot.nixosModule.x86_64-linux
           sops-nix.nixosModules.sops
           ./nki-personal-do/configuration.nix
+          inputs.secrets.nixosModules.x86_64-linux.nki-personal-do
           (overlayForSystem "x86_64-linux")
         ];
       };

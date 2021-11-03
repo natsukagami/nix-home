@@ -329,8 +329,24 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "rnix-lsp": "rnix-lsp",
+        "secrets": "secrets",
         "sops-nix": "sops-nix",
         "youmubot": "youmubot"
+      }
+    },
+    "secrets": {
+      "locked": {
+        "lastModified": 1635971132,
+        "narHash": "sha256-w5QAlp+RmVFh3E9Kb79eX+QvcV/jTGPy/y4REGswzy8=",
+        "ref": "master",
+        "rev": "9183da438dffec97148a1a7e6ec3462fa372ffe8",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/natsukagami/nix-deploy-secrets"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/natsukagami/nix-deploy-secrets"
       }
     },
     "sops-nix": {
