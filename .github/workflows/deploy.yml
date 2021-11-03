@@ -38,10 +38,9 @@ jobs:
         ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
         echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
         echo "${{ secrets.NIX_DEPLOY_SSH_KEY }}" > /home/runner/.ssh/nix_deploy_key
-        chmod 600 /home/runner/.ssh/github_actions
+        chmod 600 /home/runner/.ssh/*
         ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
-        ssh-add /home/runner/.ssh/github_actions
-        ssh-add /home/runner/.ssh/nix_deploy_key
+        ssh-add /home/runner/.ssh/*
     - name: Deploy with deploy-rs
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
