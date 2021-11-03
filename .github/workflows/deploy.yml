@@ -36,11 +36,12 @@ jobs:
         # Replace example.com with the hostname of the machine
         # you're SSH-ing into
         ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
-        # DOKKU_SSH_KEY is the name of the repository secret
         echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
+        echo "${{ secrets.NIX_DEPLOY_SSH_KEY }}" > /home/runner/.ssh/nix_deploy_key
         chmod 600 /home/runner/.ssh/github_actions
         ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
         ssh-add /home/runner/.ssh/github_actions
+        ssh-add /home/runner/.ssh/nix_deploy_key
     - name: Deploy with deploy-rs
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
