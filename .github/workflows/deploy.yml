@@ -1,7 +1,11 @@
 name: "Deploy to nki-personal"
 on:
-  push: master
+  push:
+    branches:
+    - master
   pull_request:
+    branches:
+    - master
     types:
     - opened
     - synchronize
