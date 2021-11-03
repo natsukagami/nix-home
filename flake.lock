@@ -388,16 +388,15 @@
         "nixpkgs": "nixpkgs_8"
       },
       "locked": {
-        "lastModified": 1635964639,
+        "lastModified": 1635966018,
         "narHash": "sha256-q6qKQbsFyFntIHaz7ORnCFk0b4c0Ew3wUuHKo/Ra11E=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "b254f5085aaf6ed462268ef47a9234c76cc1a894",
+        "rev": "2449b09cb2ec728546103205ff14341ac89b3009",
         "type": "github"
       },
       "original": {
         "owner": "natsukagami",
-        "ref": "flake-module",
         "repo": "youmubot",
         "type": "github"
       }
