@@ -12,7 +12,7 @@ in
         gnome.cheese # Webcam check
         evince # PDF reader
         gparted
-        vscode
+        pkgs.unstable.vscode
         feh
         deluge # Torrent client
         mailspring
