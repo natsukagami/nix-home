@@ -2,6 +2,11 @@ name: "Deploy to nki-personal"
 on:
   push: master
   pull_request:
+    types:
+    - opened
+    - synchronize
+    - reopened
+    - labeled
 jobs:
   deploy:
     if: "github.event.name == 'push' || contains(github.event.pull_request.labels.*.name, 'Deploy')"
