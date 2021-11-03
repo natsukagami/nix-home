@@ -18,7 +18,7 @@
     rnix-lsp.url = "github:nix-community/rnix-lsp";
     rnix-lsp.inputs.naersk.follows = "naersk";
     rnix-lsp.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    youmubot.url = "github:natsukagami/youmubot/flake-module";
+    youmubot.url = "github:natsukagami/youmubot";
   };
 
   outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager-unstable, home-manager-21_05, deploy-rs, sops-nix, nur, ... }@inputs:
