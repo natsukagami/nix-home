@@ -4,4 +4,7 @@
   boot.loader.grub.device = "/dev/vda";
   boot.initrd.kernelModules = [ "nvme" ];
   fileSystems."/" = { device = "/dev/vda1"; fsType = "ext4"; };
+
+  # swap
+  swapDevices = [ { device = "/var/swapfile"; } ];
 }

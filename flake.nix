@@ -18,6 +18,7 @@
     rnix-lsp.url = "github:nix-community/rnix-lsp";
     rnix-lsp.inputs.naersk.follows = "naersk";
     rnix-lsp.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    youmubot.url = "github:natsukagami/youmubot";
   };
 
   outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager-unstable, home-manager-21_05, deploy-rs, sops-nix, nur, ... }@inputs:
@@ -62,8 +63,10 @@
         system = "x86_64-linux";
         modules = [
           ./modules/my-tinc
+          inputs.youmubot.nixosModule.x86_64-linux
           sops-nix.nixosModules.sops
           ./nki-personal-do/configuration.nix
+          (overlayForSystem "x86_64-linux")
         ];
       };
       deploy.nodes."nki-personal-do" = {
