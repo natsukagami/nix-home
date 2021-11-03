@@ -1,7 +1,6 @@
 { pkgs, config, ... }: {
   imports = [
     ./hardware-configuration.nix
-    ./networking.nix # generated at runtime by nixos-infect
 
     # Set up cloud
     ../modules/cloud/postgresql
