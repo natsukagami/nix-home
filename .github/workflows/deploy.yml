@@ -18,6 +18,17 @@ jobs:
     name: Deploy
     steps:
     - uses: actions/checkout@v2.3.4
+    - name: Add SSH key
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      run: |
+        mkdir -p /home/runner/.ssh
+        echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
+        echo "${{ secrets.NIX_DEPLOY_SSH_KEY }}" > /home/runner/.ssh/nix_deploy_key
+        chmod 600 /home/runner/.ssh/*
+        ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
+        ssh-add /home/runner/.ssh/*
+        ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
     - uses: cachix/install-nix-action@v14.1
       with:
         extra_nix_config: |
@@ -28,19 +39,6 @@ jobs:
         path: |
           /nix/store
         key: ${{ runner.os }}-${{ hashFiles('flake.lock') }}
-    - name: Add SSH key
-      env:
-        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      run: |
-        mkdir -p /home/runner/.ssh
-        # Replace example.com with the hostname of the machine
-        # you're SSH-ing into
-        ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
-        echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
-        echo "${{ secrets.NIX_DEPLOY_SSH_KEY }}" > /home/runner/.ssh/nix_deploy_key
-        chmod 600 /home/runner/.ssh/*
-        ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
-        ssh-add /home/runner/.ssh/*
     - name: Deploy with deploy-rs
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
