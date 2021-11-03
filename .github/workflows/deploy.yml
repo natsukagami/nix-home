@@ -11,24 +11,25 @@ jobs:
     - uses: actions/checkout@v2.3.4
     - uses: cachix/install-nix-action@v14.1
       with:
-        install_url: https://nixos-nix-install-tests.cachix.org/serve/kqchxcar98r8hj447mz0c0fdvdi5xcw1/install
-        install_options: '--tarball-url-prefix https://nixos-nix-install-tests.cachix.org/serve'
         extra_nix_config: |
           experimental-features = nix-command flakes
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-    - name: Open Firewall for Deployment
-      uses: digitalocean/actiond-doctl@v2.1.0
-      with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Add SSH key
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
-        doctl compute firewall add-rules ${{ secrets.INSTANCE_FIREWALL }} --inbound-rules protocol:tcp,ports:22,address:${curl -L https://api.ipify.org}
+        mkdir -p /home/runner/.ssh
+        # Replace example.com with the hostname of the machine
+        # you're SSH-ing into
+        ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
+        # DOKKU_SSH_KEY is the name of the repository secret
+        echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
+        chmod 600 /home/runner/.ssh/github_actions
+        ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
+        ssh-add /home/runner/.ssh/github_actions
     - name: Deploy with deploy-rs
       working-directory: ./nki-personal-do
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
-        nix run github:Serokell/deploy-rs . -- --hostname ${{ env.INSTANCE_IP }}
-    - name: Close Firewall for Deployment
-      uses: digitalocean/actiond-doctl@v2.1.0
-      with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      run: |
-        doctl compute firewall remove-rules ${{ secrets.INSTANCE_FIREWALL }} --inbound-rules protocol:tcp,ports:22,address:${curl -L https://api.ipify.org}
+        nix run github:Serokell/deploy-rs . -- --hostname ${{ secrets.INSTANCE_IP }}
