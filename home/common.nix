@@ -37,6 +37,7 @@
 
     # CLI tools
     fd
+    ripgrep
     fossil
     ## Blog generator
     hugo
