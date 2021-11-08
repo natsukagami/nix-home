@@ -10,6 +10,7 @@ with lib;
       (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
       noto-fonts
       noto-fonts-cjk
+      merriweather
     ];
   } // (if (strings.hasSuffix "linux" pkgs.system) then {
     enableDefaultFonts = false;
