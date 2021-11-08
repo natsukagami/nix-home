@@ -29,6 +29,8 @@
     ## Nix
     cachix
     rnix-lsp
+    ## Latex
+    tectonic
 
     # Fonts
     fantasque-sans-mono
