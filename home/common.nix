@@ -31,6 +31,7 @@
     rnix-lsp
     ## Latex
     tectonic
+    texlab
 
     # Fonts
     fantasque-sans-mono
