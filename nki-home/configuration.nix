@@ -10,6 +10,8 @@
       ./hardware-configuration.nix
       # secret management
       ./secrets
+      # Fonts
+      ../modules/personal/fonts
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -132,26 +134,6 @@
       # Basic editor setup
       EDITOR = "kak";
       VISUAL = "kak";
-  };
-
-  # Fonts
-  fonts = {
-      enableDefaultFonts = false;
-      fonts = with pkgs; [
-          noto-fonts-emoji-blob-bin
-          ibm-plex
-          (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-          noto-fonts
-          noto-fonts-cjk
-      ];
-      fontconfig = {
-          defaultFonts = {
-              emoji = lib.mkBefore [ "Blobmoji" ];
-              serif = lib.mkBefore [ "IBM Plex Serif" ];
-              sansSerif = lib.mkBefore [ "IBM Plex Sans" ];
-              monospace = lib.mkBefore [ "IBM Plex Mono" ];
-          };
-      };
   };
 
   # Enable Desktop Environment.

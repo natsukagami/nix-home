@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 {
+  imports = [ ../modules/personal/fonts ];
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages =
@@ -27,6 +28,8 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
+
+  # Font configuration
 
   users.users.nki = {
     name = "nki";
