@@ -8,20 +8,23 @@
 provide-module latex-kak %{
     # Create a simple begin block, put the cursors in and remove multi-cursor on exit.
     define-command -hidden create-begin-block %{
-        execute-keys -with-hooks "<esc>i\begin{b0}<ret>\end{b0}<esc>"
-        execute-keys -with-hooks "<a-/>b0<ret><a-N>c"
+        execute-keys "<esc>i\begin{b0}<ret>\end{b0}<esc>"
+        execute-keys "<a-/>b0<ret><a-N>"
+        execute-keys -with-hooks "c"
         hook -once buffer ModeChange .*:normal %{
-            execute-keys -with-hooks -with-maps "<space>gl"
+            execute-keys -with-maps "<space>gl"
         }
     }
     # Create a begin block with the given parameter as block name.
     define-command -params 1 create-begin-block-with %{
         execute-keys "<esc>i\begin{b0}<ret>\end{b0}<esc>"
-        execute-keys -with-hooks "<a-/>b0<ret><a-N>c%arg{1}<esc><space>gl"
+        execute-keys "<a-/>b0<ret><a-N>c%arg{1}<esc><space>"
+        execute-keys "o<esc>k"
+        execute-keys -with-maps "gl"
     }
     # Create a \param{} block and put the cursor in the middle.
     define-command -params 2 -hidden create-delims %{
-        execute-keys -with-hooks "<esc>i%arg{1}<esc>hZa%arg{2}<esc>zli"
+        execute-keys "<esc>i%arg{1}<esc>hZa%arg{2}<esc>zli"
     }
     define-command -params 1 create-block-with %{
         create-delims "\%arg{1}{" "}"
