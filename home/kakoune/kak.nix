@@ -40,6 +40,9 @@ in
     # Enable the kakoune package.
     home.packages = [ kakounePkg ];
 
+    # Enable kak-lsp
+    programs.kak-lsp.enable = true;
+
     # Source the kakrc we have here.
     home.file = builtins.listToAttrs (map kakouneFile [
         "kakrc"
