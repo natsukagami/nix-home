@@ -175,7 +175,6 @@ hook global BufOpenFile .* %{
 
 source "%val{config}/latex.kak"
 require-module latex-kak
-source "%val{config}/racket.kak"
 
 # source "%val{config}/plugins/plug.kak/rc/plug.kak"
 
