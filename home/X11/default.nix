@@ -55,6 +55,6 @@ with lib;
     reload-engines = hm.gvariant.mkArray hm.gvariant.type.string [ "xkb:jp::jpn" "mozc-jp" "Bamboo" ];
   };
   dconf.settings."desktop/ibus/general/hotkey" = {
-    triggers = hm.gvariant.mkArray hm.gvariant.type.string [ "<Meta>z" ];
+    triggers = hm.gvariant.mkArray hm.gvariant.type.string [ "<Super>z" ];
   };
 }
