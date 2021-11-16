@@ -18,7 +18,6 @@ in
         mailspring
         discordPkg
         pavucontrol # PulseAudio control panel
-        xfce.xfce4-notifyd # Notification
 
         ## CLI stuff
         xsel # Clipboard management

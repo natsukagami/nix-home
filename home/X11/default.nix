@@ -2,7 +2,7 @@
 
 with lib;
 {
-  imports = [ ./packages.nix ];
+  imports = [ ./packages.nix ../modules/X11/xfce4-notifyd.nix ];
 
   home.sessionVariables = {
     # Set up Java font style
@@ -45,6 +45,9 @@ with lib;
       exec ${pkgs.xsel}/bin/xsel -ob
     '')
   ];
+
+  # Notification system
+  services.X11.xfce4-notifyd.enable = true;
 
   # IBus configuration
   dconf.settings."desktop/ibus/general" = {
