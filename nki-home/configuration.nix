@@ -20,6 +20,7 @@
       loader.timeout = 60;
       loader.systemd-boot.enable = true;
       loader.efi.canTouchEfiVariables = true;
+      supportedFilesystems = [ "ntfs" ];
   };
   ## Encryption
   # Kernel modules needed for mounting USB VFAT devices in initrd stage
@@ -90,6 +91,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nki = {
     isNormalUser = true;
+    uid = 1000;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   };
 
@@ -189,7 +191,21 @@
       };
   };
 
-  
+  # Mounting disks!
+  fileSystems =
+  let
+    ntfsMount = path: {
+      device = path;
+      fsType = "ntfs";
+      options = [ "rw" "uid=${toString config.users.users.nki.uid}" ];
+    };
+  in
+  {
+    "/mnt/Data" = ntfsMount "/dev/disk/by-uuid/A90680F8BBE62FE3";
+    "/mnt/Windows" = ntfsMount "/dev/disk/by-uuid/C2F6FBACF6FB9F3B";
+    "/mnt/Stuff" = ntfsMount "/dev/disk/by-uuid/717BF2EE20BB8A62";
+    "/mnt/Shared" = ntfsMount "/dev/disk/by-uuid/76AC086BAC0827E7";
+  };
 
   # PAM
   security.pam.services.lightdm.enableKwallet = true;
