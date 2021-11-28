@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
       # secret management
       ./secrets
@@ -16,24 +17,24 @@
 
   # Use the systemd-boot EFI boot loader.
   boot = {
-      plymouth.enable = true;
-      loader.timeout = 60;
-      loader.systemd-boot.enable = true;
-      loader.efi.canTouchEfiVariables = true;
-      supportedFilesystems = [ "ntfs" ];
+    plymouth.enable = true;
+    loader.timeout = 60;
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    supportedFilesystems = [ "ntfs" ];
   };
   ## Encryption
   # Kernel modules needed for mounting USB VFAT devices in initrd stage
   boot.initrd.kernelModules = [ "usb_storage" ];
   boot.initrd.luks.devices = {
-      root = {
-          keyFile = "/dev/disk/by-id/usb-090c___B1608112001295-0:0";
-          keyFileSize = 4096;
-          fallbackToPassword = true;
-          device = "/dev/disk/by-uuid/7c6e40a8-900b-4f85-9712-2b872caf1892";
-          preLVM = true;
-          allowDiscards = true;
-      };
+    root = {
+      keyFile = "/dev/disk/by-id/usb-090c___B1608112001295-0:0";
+      keyFileSize = 4096;
+      fallbackToPassword = true;
+      device = "/dev/disk/by-uuid/7c6e40a8-900b-4f85-9712-2b872caf1892";
+      preLVM = true;
+      allowDiscards = true;
+    };
   };
 
   networking.hostName = "kagamiPC"; # Define your hostname.
@@ -62,7 +63,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "ja_JP.UTF-8";
   i18n.inputMethod.enabled = "ibus";
-  i18n.inputMethod.ibus.engines = (with pkgs.ibus-engines; [bamboo mozc libpinyin]);
+  i18n.inputMethod.ibus.engines = (with pkgs.ibus-engines; [ bamboo mozc libpinyin ]);
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -70,7 +71,7 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
- 
+
   # Configure keymap in X11
   services.xserver.layout = "jp";
   # services.xserver.xkbOptions = "";
@@ -88,11 +89,18 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Enable razer daemon
+  hardware.openrazer.enable = true;
+  hardware.openrazer.keyStatistics = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nki = {
     isNormalUser = true;
     uid = 1000;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [
+      "wheel" # Enable ‘sudo’ for the user.
+      "plugdev" # Enable openrazer-daemon privileges
+    ];
   };
 
   # Allow all packages
@@ -122,25 +130,25 @@
   nix.binaryCachePublicKeys = [ "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=" ];
   nix.binaryCaches = [ "https://hydra.iohk.io" ];
 
-  
+
   # Terminal 
   programs.gnome-terminal.enable = true;
 
   # Environment variables
   environment.variables = {
-      # Input method overrides
-      GTK_IM_MODULE = "ibus";
-      QT_IM_MODULE = "ibus";
-      "XMODIFIERS=@im" = "ibus";
+    # Input method overrides
+    GTK_IM_MODULE = "ibus";
+    QT_IM_MODULE = "ibus";
+    "XMODIFIERS=@im" = "ibus";
 
-      # Basic editor setup
-      EDITOR = "kak";
-      VISUAL = "kak";
+    # Basic editor setup
+    EDITOR = "kak";
+    VISUAL = "kak";
   };
 
   # Enable Desktop Environment.
   services.xserver.displayManager = {
-      lightdm.enable = true;
+    lightdm.enable = true;
   };
   services.xserver.desktopManager.cinnamon.enable = true;
 
@@ -176,41 +184,41 @@
   sops.secrets."windscribe/privateKey" = { mode = "0755"; };
   sops.secrets."windscribe/presharedKey" = { mode = "0755"; };
   networking.wg-quick.interfaces = {
-      windscribe = {
-          privateKeyFile = config.sops.secrets."windscribe/privateKey".path;
-          address = [ "100.70.42.56/32" ];
-          dns = [ "10.255.255.2" ];
-          peers = [
-              {
-                  allowedIPs = [ "0.0.0.0/0" ];
-                  endpoint = "yyz-197-wg.whiskergalaxy.com:443";
-                  presharedKeyFile = config.sops.secrets."windscribe/presharedKey".path;
-                  publicKey = "U5s7Yy/2fCqlaFcI96dFKupqEVCn+BYF04LRLD1zOhg=";
-              }
-          ];
-      };
+    windscribe = {
+      privateKeyFile = config.sops.secrets."windscribe/privateKey".path;
+      address = [ "100.70.42.56/32" ];
+      dns = [ "10.255.255.2" ];
+      peers = [
+        {
+          allowedIPs = [ "0.0.0.0/0" ];
+          endpoint = "yyz-197-wg.whiskergalaxy.com:443";
+          presharedKeyFile = config.sops.secrets."windscribe/presharedKey".path;
+          publicKey = "U5s7Yy/2fCqlaFcI96dFKupqEVCn+BYF04LRLD1zOhg=";
+        }
+      ];
+    };
   };
 
   # Mounting disks!
   fileSystems =
-  let
-    ntfsMount = path: {
-      device = path;
-      fsType = "ntfs";
-      options = [ "rw" "uid=${toString config.users.users.nki.uid}" ];
+    let
+      ntfsMount = path: {
+        device = path;
+        fsType = "ntfs";
+        options = [ "rw" "uid=${toString config.users.users.nki.uid}" ];
+      };
+    in
+    {
+      "/mnt/Data" = ntfsMount "/dev/disk/by-uuid/A90680F8BBE62FE3";
+      "/mnt/Windows" = ntfsMount "/dev/disk/by-uuid/C2F6FBACF6FB9F3B";
+      "/mnt/Stuff" = ntfsMount "/dev/disk/by-uuid/717BF2EE20BB8A62";
+      "/mnt/Shared" = ntfsMount "/dev/disk/by-uuid/76AC086BAC0827E7";
     };
-  in
-  {
-    "/mnt/Data" = ntfsMount "/dev/disk/by-uuid/A90680F8BBE62FE3";
-    "/mnt/Windows" = ntfsMount "/dev/disk/by-uuid/C2F6FBACF6FB9F3B";
-    "/mnt/Stuff" = ntfsMount "/dev/disk/by-uuid/717BF2EE20BB8A62";
-    "/mnt/Shared" = ntfsMount "/dev/disk/by-uuid/76AC086BAC0827E7";
-  };
 
   # PAM
   security.pam.services.lightdm.enableKwallet = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
-  
+
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -222,8 +230,8 @@
   system.autoUpgrade.channel = "https://nixos.org/channels/nixos-21.05/";
 
   # tinc network
-  sops.secrets."tinc/ed25519-private-key" = {};
-  sops.secrets."tinc/rsa-private-key" = {};
+  sops.secrets."tinc/ed25519-private-key" = { };
+  sops.secrets."tinc/rsa-private-key" = { };
   services.my-tinc = {
     enable = true;
     hostName = "home";
@@ -234,7 +242,7 @@
 
   # extra host for my personal server
   sops.secrets.hosts = {
-      mode = "0755";
+    mode = "0755";
   };
   services.dnsmasq.enable = true;
   services.dnsmasq.extraConfig = ''
