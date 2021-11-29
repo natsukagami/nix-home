@@ -14,6 +14,14 @@ let
   };
 in
 {
-  nixpkgs.overlays = [ overlay-unstable overlay-needs-unstable overlay-imported nur.overlay ]; # we assign the overlay created before to the overlays of nixpkgs.
+  nixpkgs.overlays = [
+    overlay-unstable
+    overlay-needs-unstable
+    overlay-imported
+    nur.overlay
+
+    # Bug fixes
+    (import ./overlays/bugfixes/delta)
+  ]; # we assign the overlay created before to the overlays of nixpkgs.
 }
 

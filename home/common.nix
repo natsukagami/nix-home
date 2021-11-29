@@ -83,7 +83,6 @@
 
     direnv.enable = true;
     direnv.nix-direnv.enable = true;
-    direnv.nix-direnv.enableFlakes = true;
 
     exa = {
       enable = true;
