@@ -15,6 +15,7 @@ let
 in
 {
   nixpkgs.overlays = [
+    (import ./overlays/openrazer)
     overlay-unstable
     overlay-needs-unstable
     overlay-imported
