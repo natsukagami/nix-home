@@ -92,6 +92,7 @@
   # Enable razer daemon
   hardware.openrazer.enable = true;
   hardware.openrazer.keyStatistics = true;
+  hardware.openrazer.verboseLogging = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nki = {
@@ -115,7 +116,8 @@
     firefox
 
     ## System monitoring tools
-    busybox
+    usbutils
+    pciutils
 
     ## Security stuff
     qtkeychain
