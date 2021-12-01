@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/21.05";
-    nixpkgs-21_11.url = "github:nixos/nixpkgs/21.11-beta"; # TODO: Change this to 21.11 once done
+    nixpkgs-21_11.url = "github:nixos/nixpkgs/21.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
