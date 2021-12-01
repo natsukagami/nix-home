@@ -18,6 +18,8 @@ in
   options.cloud.mail = {
     enable = mkEnableOption "Enable the email server";
 
+    debug = mkEnableOption "Enable debugging";
+
     package = mkOption {
       type = types.package;
       default = pkgs.maddy;
@@ -275,7 +277,7 @@ in
 
         serviceConfig = {
           Type = "notify";
-          NotifyAccess = "main";
+          NotifyAccess = "exec";
 
           User = name;
           Group = name;
@@ -335,9 +337,13 @@ in
           Restart = "on-failure";
           # ... Unless it is a configuration problem.
           RestartPreventExitStatus = 2;
+
+          ExecStart = "${cfg.package}/bin/maddy ${if cfg.debug then "-debug " else ""}-config ${configFile}";
         };
-        script = "${cfg.package}/bin/maddy -config ${configFile}";
-        reload = "/bin/kill -USR1 $MAINPID";
+        reload = ''
+            /bin/kill -USR1 $MAINPID
+            /bin/kill -USR2 $MAINPID
+        '';
       };
     };
 }

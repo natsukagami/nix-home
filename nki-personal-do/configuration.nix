@@ -60,6 +60,7 @@
   sops.secrets.mail-users = { owner = "maddy"; };
   cloud.mail = {
     enable = true;
+    debug = true;
     tls.certFile = "${config.cloud.traefik.certsDumper.destination}/${config.cloud.mail.hostname}/certificate.crt";
     tls.keyFile = "${config.cloud.traefik.certsDumper.destination}/${config.cloud.mail.hostname}/privatekey.key";
     usersFile = config.sops.secrets.mail-users.path;
