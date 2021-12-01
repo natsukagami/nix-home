@@ -2,14 +2,12 @@
   description = "nki's systems";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/21.05";
-    nixpkgs-21_11.url = "github:nixos/nixpkgs/21.11";
+    nixpkgs.url = "github:nixos/nixpkgs/21.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    home-manager-21_11.url = "github:nix-community/home-manager/release-21.11";
-    home-manager-21_11.inputs.nixpkgs.follows = "nixpkgs-21_11";
-    home-manager-21_05.url = "github:nix-community/home-manager/release-21.05";
+    home-manager.url = "github:nix-community/home-manager/release-21.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     deploy-rs.url = "github:Serokell/deploy-rs";
     nur.url = "github:nix-community/NUR";
@@ -27,7 +25,7 @@
     secrets.url = "git+ssh://git@github.com/natsukagami/nix-deploy-secrets";
   };
 
-  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager-21_11, home-manager-21_05, deploy-rs, sops-nix, nur, ... }@inputs:
+  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, nur, ... }@inputs:
     let
       overlayForSystem = import ./overlay.nix inputs;
     in
@@ -37,7 +35,7 @@
         system = "aarch64-darwin";
         modules = [
           ./darwin/configuration.nix
-          home-manager-21_11.darwinModules.home-manager
+          home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -54,7 +52,7 @@
           ./modules/my-tinc
           sops-nix.nixosModules.sops
           ./nki-home/configuration.nix
-          home-manager-21_05.nixosModules.home-manager
+          home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

@@ -120,7 +120,7 @@
     pciutils
 
     ## Security stuff
-    qtkeychain
+    libsForQt5.qtkeychain
 
     ## Enable nix-flakes
     # (pkgs.writeShellScriptBin "nixFlakes" ''

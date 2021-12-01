@@ -99,15 +99,8 @@
 
     gh = {
       enable = true;
-    } // (
-      let
-        protocol = "ssh";
-      in
-      if (config.home.stateVersion == "21.05") then
-        { gitProtocol = "ssh"; }
-      else
-        { settings.git_protocol = protocol; }
-    );
+      settings.git_protocol = "ssh";
+    };
 
     git = {
       enable = true;
