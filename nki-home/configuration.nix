@@ -250,5 +250,8 @@
   services.dnsmasq.extraConfig = ''
     addn-hosts=${config.sops.secrets.hosts.path}
   '';
+
+  # Gaming!
+  programs.steam.enable = true;
 }
 
