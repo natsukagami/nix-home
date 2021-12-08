@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -28,10 +28,36 @@
   ## Programs
   nixpkgs.config.allowUnfree = true;
 
-  ## Erase editor variables
   environment.variables = {
     EDITOR = ""; # don't set it by default
+
+    # Homebrew stuff
+    # LLVM!
+    # To use the bundled libc++ please add the following LDFLAGS:
+    LDFLAGS = lib.concatStringsSep " " [
+      "-L/opt/homebrew/opt/llvm/lib"
+      "-Wl,-rpath,/opt/homebrew/opt/llvm/lib"
+      "-L/opt/homebrew/opt/llvm/lib"
+      "$LDFLAGS"
+    ];
+    CPPFLAGS = "-I/opt/homebrew/opt/llvm/include $CPPFLAGS";
+
   };
+
+  environment.systemPath = lib.mkBefore [
+    # Missing from MacOS
+    "/usr/local/bin"
+    # LaTeX
+    "/usr/local/texlive/2021/bin/universal-darwin"
+    # Go
+    "/usr/local/go/bin"
+    # Ruby
+    "/opt/homebrew/opt/ruby@2.7/bin"
+    # .NET
+    "/usr/local/share/dotnet"
+    # LLVM!
+    "/opt/homebrew/opt/llvm/bin"
+  ];
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
