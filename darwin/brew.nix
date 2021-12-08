@@ -79,11 +79,9 @@ with lib;
     "The Unarchiver" = 425424353;
     "Numbers" = 409203825;
     "Pages" = 409201541;
-    "Spark" = 1176895641; # Email client
     ## Multimedia
     "DaVinci Resolve" = 571213070;
     "GarageBand" = 682658836;
     "iMovie" = 408981434;
-    "Skitch" = 425955336; # Screenshot tool
   };
 }
