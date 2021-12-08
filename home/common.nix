@@ -63,7 +63,7 @@
     BAT_THEME = "GitHub";
     # Editor
     EDITOR = "kak";
-  };
+};
 
   home.sessionPath = [
     # Sometimes we want to install custom scripts here

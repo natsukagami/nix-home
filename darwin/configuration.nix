@@ -41,7 +41,6 @@
       "$LDFLAGS"
     ];
     CPPFLAGS = "-I/opt/homebrew/opt/llvm/include $CPPFLAGS";
-
   };
 
   environment.systemPath = lib.mkBefore [
@@ -68,5 +67,6 @@
   users.users.nki = {
     name = "nki";
     home = "/Users/nki";
+    shell = "${config.home-manager.users.nki.programs.fish.package}/bin/fish";
   };
 }
