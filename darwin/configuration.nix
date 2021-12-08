@@ -28,6 +28,11 @@
   ## Programs
   nixpkgs.config.allowUnfree = true;
 
+  ## Erase editor variables
+  environment.variables = {
+    EDITOR = ""; # don't set it by default
+  };
+
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
