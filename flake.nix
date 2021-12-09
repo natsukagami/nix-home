@@ -19,6 +19,7 @@
     rnix-lsp.inputs.naersk.follows = "naersk";
     rnix-lsp.inputs.nixpkgs.follows = "nixpkgs-unstable";
     youmubot.url = "github:natsukagami/youmubot";
+    nix-gaming.url = github:fufexan/nix-gaming;
 
     # ---
     # DEPLOYMENT ONLY! secrets
@@ -28,6 +29,36 @@
   outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, nur, ... }@inputs:
     let
       overlayForSystem = import ./overlay.nix inputs;
+
+      nixpkgsAsRegistry = { ... }: {
+        nix.registry.nixpkgs.flake = nixpkgs;
+        nix.registry.nixpkgs-unstable.flake = nixpkgs-unstable;
+        nix.nixPath = [
+          "nixpkgs=${nixpkgs}"
+          "nixpkgs-unstable=${nixpkgs-unstable}"
+          "/nix/var/nix/profiles/per-user/root/channels"
+        ];
+      };
+
+      enableOsuStable = { lib, ... }: {
+        imports = [ inputs.nix-gaming.nixosModules.pipewireLowLatency ];
+
+        services.pipewire = {
+          enable = true;
+          # alsa is optional
+          alsa.enable = true;
+          alsa.support32Bit = true;
+          # needed for osu
+          pulse.enable = true;
+          lowLatency.enable = true;
+        };
+        hardware.pulseaudio.enable = lib.mkOverride 0 false;
+
+        nix.binaryCaches = [ "https://nix-gaming.cachix.org" ];
+        nix.binaryCachePublicKeys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
+
+        environment.systemPackages = [ inputs.nix-gaming.packages.x86_64-linux.osu-stable ];
+      };
     in
     {
       # MacBook configuration: nix-darwin + home-manager
@@ -52,6 +83,8 @@
           ./modules/my-tinc
           sops-nix.nixosModules.sops
           ./nki-home/configuration.nix
+          nixpkgsAsRegistry
+          enableOsuStable
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
