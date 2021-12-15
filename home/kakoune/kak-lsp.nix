@@ -81,7 +81,7 @@ let
           args = [ "--lsp" ];
           command = "haskell-language-server-wrapper";
           filetypes = [ "haskell" ];
-          roots = [ "Setup.hs" "stack.yaml" "*.cabal" ];
+          roots = [ "Setup.hs" "stack.yaml" "*.cabal" "package.yaml" ];
         };
         html = {
           args = [ "--stdio" ];
