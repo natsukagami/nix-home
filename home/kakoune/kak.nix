@@ -3,16 +3,17 @@
 let
   kakounePkg =
     let
-      rev = "689553c2e9b953a9d3822528d4ad858af95fb6a2";
+      rev = "3bc2c65f2845be78a4d59f3f758d0c0313da3081";
     in
     pkgs.kakoune.override {
       kakoune = pkgs.kakoune-unwrapped.overrideAttrs (oldAttrs: {
         version = "r${builtins.substring 0 6 rev}";
         src = pkgs.fetchFromGitHub {
           repo = "kakoune";
-          owner = "mawww";
+          owner = "natsukagami";
           rev = rev;
-          sha256 = "sha256-L9/nTwL24YPJrlpI0eyLmqhu1xfbKoi1IwrIeiwVUaE=";
+          sha256 = "sha256-8T3N0E4vyJ8+meqisWrce5Ww7eSoJSXIZ7sU0/wdZIQ=";
+          # sha256 = lib.fakeSha256;
         };
       });
     };
@@ -104,5 +105,11 @@ in
         narHash = "sha256-IcxFmvG0jqpMCG/dT9crVRgPgMGKkic6xwrnW5z4+bc=";
       }) + "/rc";
     }
+    # {
+    #   name = "kakoune-text-objects";
+    #   sec = (builtins.fetchTree {
+    #     type =
+    #   } );
+    # }
   ]);
 }
