@@ -2,7 +2,7 @@
 
 with lib;
 let
-  rev = "3586feab17000f6ef526b2f9f6a11e008512b3e8";
+  rev = "63ea3b33f0f8a7c5a5557555ea59c87f71804502";
   version = "r${builtins.substring 0 6 rev}";
 
   kak-lsp = pkgs.kak-lsp.overrideAttrs (drv: rec {
@@ -13,12 +13,14 @@ let
       owner = "kak-lsp";
       repo = "kak-lsp";
       rev = rev;
-      sha256 = "sha256-eSqqmlyD103AitHHbgdUAc1SzDpba7jRAokt1Kr1xhM=";
+      sha256 = "sha256-0trrqGlAdxBWs+jRhpOPMCSmnsj/2ke2JUJsW42d9E0=";
+      # sha256 = lib.fakeSha256;
     };
 
     cargoDeps = drv.cargoDeps.overrideAttrs (lib.const {
       inherit src;
-      outputHash = "sha256-U5hiEak47Dd/R7II6d+0/n3ZmT1ryDk4S+/lV2cH6HM=";
+      outputHash = "sha256-LqsCM4P6aJFZRGOxZtxXvSEbBSeQcC+4WbIwtlrO3e4=";
+      # outputHash = lib.fakeSha256;
     });
   });
 

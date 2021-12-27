@@ -3,16 +3,16 @@
 let
   kakounePkg =
     let
-      rev = "3bc2c65f2845be78a4d59f3f758d0c0313da3081";
+      rev = "f68e8313b2282b1a94bd5baee2b87581f31fc5e8";
     in
     pkgs.kakoune.override {
       kakoune = pkgs.kakoune-unwrapped.overrideAttrs (oldAttrs: {
         version = "r${builtins.substring 0 6 rev}";
         src = pkgs.fetchFromGitHub {
           repo = "kakoune";
-          owner = "natsukagami";
+          owner = "mawww";
           rev = rev;
-          sha256 = "sha256-8T3N0E4vyJ8+meqisWrce5Ww7eSoJSXIZ7sU0/wdZIQ=";
+          sha256 = "sha256-CvOjNB30FlN41JZEVuLQhYLy7D8M2BeQBnQ1S+oel5w=";
           # sha256 = lib.fakeSha256;
         };
       });
