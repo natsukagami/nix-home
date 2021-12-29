@@ -59,11 +59,11 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1623875721,
-        "narHash": "sha256-A8BU7bjS5GirpAUv4QA+QnJ4CceLHkcXdRp4xITDB0s=",
+        "lastModified": 1634851050,
+        "narHash": "sha256-N83GlSGPJJdcqhUxSCS/WwW5pksYf3VP1M13cDRTSVA=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "f7e004a55b120c02ecb6219596820fcd32ca8772",
+        "rev": "c91f3de5adaf1de973b797ef7485e441a65b8935",
         "type": "github"
       },
       "original": {
@@ -147,16 +147,14 @@
     "nix-gaming": {
       "inputs": {
         "nixpkgs": "nixpkgs_3",
-        "oglfPatches": "oglfPatches",
-        "tkgPatches": "tkgPatches",
         "utils": "utils_2"
       },
       "locked": {
-        "lastModified": 1637691862,
-        "narHash": "sha256-ZkUW8JfjDmFZnRQKeBKQvqlWLRgIq4p6v2QfLrjSm0s=",
+        "lastModified": 1638710960,
+        "narHash": "sha256-C6M/Nt2XMn26RiyMHb37YbKd+RiaiOIyvB1drDv5Ni8=",
         "owner": "fufexan",
         "repo": "nix-gaming",
-        "rev": "caf86b1dd4b4cdd59970590eaaa9c009c9f1e6ea",
+        "rev": "e6c087d81eed40b5f147fc48cc969c590ede3124",
         "type": "github"
       },
       "original": {
@@ -213,11 +211,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1628417749,
-        "narHash": "sha256-LI00lL97qfnVPYLM50nh9BhHY9viHziuLjkMzBrIuTE=",
+        "lastModified": 1637579689,
+        "narHash": "sha256-w9jJ0l9TgSeoMRQZOk+9EqWcNSsOvqcvS3mj067M7II=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "3a8b5de9f0db6be3eccf4987b09af26499ceff6f",
+        "rev": "108f913823dc1977b57e34bf86818c08fad8536d",
         "type": "github"
       },
       "original": {
@@ -228,16 +226,16 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1638239011,
-        "narHash": "sha256-AjhmbT4UBlJWqxY0ea8a6GU2C2HdKUREkG43oRr3TZg=",
+        "lastModified": 1640572776,
+        "narHash": "sha256-pWMTubBy1Ep31iuQ5lEKW2mjSHWEvcbvy9uHVch2764=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "a7ecde854aee5c4c7cd6177f54a99d2c1ff28a31",
+        "rev": "d887ac7aee92e8fc54dde9060d60d927afae9d69",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "21.11",
+        "ref": "nixos-21.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -298,23 +296,6 @@
       "original": {
         "owner": "nix-community",
         "repo": "NUR",
-        "type": "github"
-      }
-    },
-    "oglfPatches": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1629854275,
-        "narHash": "sha256-hnj86MirD0jU4NzkdRoaODuryGRPUavA9qhGWlixk2Y=",
-        "owner": "openglfreak",
-        "repo": "wine-tkg-userpatches",
-        "rev": "c5d849279c8a90123162d92413aa249c2f044dc0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "openglfreak",
-        "repo": "wine-tkg-userpatches",
-        "rev": "c5d849279c8a90123162d92413aa249c2f044dc0",
         "type": "github"
       }
     },
@@ -391,23 +372,6 @@
         "type": "github"
       }
     },
-    "tkgPatches": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1628767531,
-        "narHash": "sha256-tcprbnfojbCQLiebOaiOp0Occ/6f0m38N56bzgGKuJc=",
-        "owner": "Frogging-Family",
-        "repo": "wine-tkg-git",
-        "rev": "de6cd55961861c254bb4d96481a75bfb78553e5d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Frogging-Family",
-        "ref": "6.14.r6.g1bc4da9d",
-        "repo": "wine-tkg-git",
-        "type": "github"
-      }
-    },
     "utils": {
       "locked": {
         "lastModified": 1631561581,
@@ -428,16 +392,15 @@
         "flake-utils": "flake-utils"
       },
       "locked": {
-        "lastModified": 1626816926,
-        "narHash": "sha256-mJKFdfc4UWL49ar2Tc4krKMnDUa0Dkhj8QmbR3SThHo=",
+        "lastModified": 1636270960,
+        "narHash": "sha256-5M3ytlFl9q6up8twhJ63JE2A5igrHR94YsHTOmKzHwA=",
         "owner": "gytis-ivaskevicius",
         "repo": "flake-utils-plus",
-        "rev": "5dba7556e1c7f36152c9f65c16bc813ec73ee6a5",
+        "rev": "e22fcd75da49c122ec7a0e30785e3edf2f69cfe7",
         "type": "github"
       },
       "original": {
         "owner": "gytis-ivaskevicius",
-        "ref": "staging",
         "repo": "flake-utils-plus",
         "type": "github"
       }
