@@ -107,11 +107,19 @@ let
           command = "texlab";
           filetypes = [ "latex" ];
           roots = [ ".git" "main.tex" "all.tex" ];
-          # settings_section = "texlab";
-          # settings.texlab.build = {
-          #   args = [ "%f" "--synctex" "--keep-logs" "--keep-intermediates" "-Zsearch-path=${config.home.homeDirectory}/texmf" "-Zshell-escape" ];
-          #   executable = "tectonic";
-          # };
+          settings_section = "texlab";
+          settings.texlab = {
+            build.executable = "latexmk";
+            build.args = [ "-pdf" "-shell-escape" "-interaction=nonstopmode" "-synctex=1" "%f" ];
+
+            build.forwardSearchAfter = true;
+            build.onSave = true;
+
+            forwardSearch = {
+              executable = "/Applications/Skim.app/Contents/SharedSupport/displayline";
+              args = [ "-r" "-g" "%l" "%p" "%f" ];
+            };
+          };
         };
         nim = {
           command = "nimlsp";
