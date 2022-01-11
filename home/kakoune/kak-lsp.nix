@@ -106,12 +106,12 @@ let
         latex = {
           command = "texlab";
           filetypes = [ "latex" ];
-          roots = [ ".git" ];
-          settings_section = "texlab";
-          settings.texlab.build = {
-            args = [ "%f" "--synctex" "--keep-logs" "--keep-intermediates" "-Zsearch-path=${config.home.homeDirectory}/texmf" "-Zshell-escape" ];
-            executable = "tectonic";
-          };
+          roots = [ ".git" "main.tex" "all.tex" ];
+          # settings_section = "texlab";
+          # settings.texlab.build = {
+          #   args = [ "%f" "--synctex" "--keep-logs" "--keep-intermediates" "-Zsearch-path=${config.home.homeDirectory}/texmf" "-Zshell-escape" ];
+          #   executable = "tectonic";
+          # };
         };
         nim = {
           command = "nimlsp";
