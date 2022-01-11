@@ -4,6 +4,7 @@
   imports = [
     ./kakoune/kak.nix
     ./fish/fish.nix
+    ./modules/programs/my-broot.nix
   ];
 
   # Let Home Manager install and manage itself.
@@ -79,7 +80,7 @@
       };
     };
 
-    broot.enable = true;
+    my-broot.enable = true;
 
     direnv.enable = true;
     direnv.nix-direnv.enable = true;
