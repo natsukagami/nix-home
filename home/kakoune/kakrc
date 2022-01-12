@@ -146,10 +146,6 @@ hook global WinSetOption filetype=(rust) %{
     set-option buffer makecmd "cargo check"
 }
 
-hook global WinSetOption filetype=(tex|latex) %{
-    require-module latex-kak
-}
-
 def -hidden insert-c-n %{
  try %{
    lsp-snippets-select-next-placeholders
