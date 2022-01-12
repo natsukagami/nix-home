@@ -2,7 +2,7 @@
 
 with lib;
 let
-  rev = "63ea3b33f0f8a7c5a5557555ea59c87f71804502";
+  rev = "744a1981b8cf669a96e329bc255d31e0c2bdcb14";
   version = "r${builtins.substring 0 6 rev}";
 
   kak-lsp = pkgs.kak-lsp.overrideAttrs (drv: rec {
@@ -13,7 +13,7 @@ let
       owner = "kak-lsp";
       repo = "kak-lsp";
       rev = rev;
-      sha256 = "sha256-0trrqGlAdxBWs+jRhpOPMCSmnsj/2ke2JUJsW42d9E0=";
+      sha256 = "sha256-eeONynT1oJafgJbfl8u/h4OJuORjropDrEUK0Raj8Jg=";
       # sha256 = lib.fakeSha256;
     };
 
