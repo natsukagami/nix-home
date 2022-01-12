@@ -230,7 +230,7 @@ in
     enable = mkEnableOption "Enable kak-lsp support";
 
     package = mkOption {
-      type = types.derivation;
+      type = types.package;
       default = kak-lsp;
     };
 
@@ -260,7 +260,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ kak-lsp ];
+    home.packages = [ cfg.package ];
 
     # Configurations
     xdg.configFile."kak-lsp/kak-lsp.toml" = {

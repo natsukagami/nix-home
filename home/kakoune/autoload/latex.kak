@@ -10,7 +10,7 @@ provide-module latex-kak %{
     define-command -hidden create-begin-block %{
         execute-keys "<esc>i\begin{b0}<ret>\end{b0}<esc>"
         execute-keys "<a-/>b0<ret><a-N>"
-        execute-keys -with-hooks "c"
+        execute-keys -with-hooks -with-maps "c"
         hook -once buffer ModeChange .*:normal %{
             execute-keys -with-maps "<space>gl"
         }
@@ -24,7 +24,8 @@ provide-module latex-kak %{
     }
     # Create a \param{} block and put the cursor in the middle.
     define-command -params 2 -hidden create-delims %{
-        execute-keys "<esc>i%arg{1}<esc>hZa%arg{2}<esc>zli"
+        execute-keys "<esc>i%arg{1}<esc>hZa%arg{2}<esc>zl"
+        execute-keys -with-hooks -with-maps "i"
     }
     define-command -params 1 create-block-with %{
         create-delims "\%arg{1}{" "}"
@@ -58,6 +59,7 @@ provide-module latex-kak %{
     # map -docstring "Math Bold (mathbf)"          global latex-font <a-B> ": create-block-with mathbf<ret>"
     # map -docstring "Serif font (mathsf)"         global latex-font <a-s> ": create-block-with mathsf<ret>"
     map -docstring "Math Monospace (mathtt)"     global latex-font <a-m> ": create-block-with mathtt<ret>"
+    map -docstring "Math Fraktur (mathfrak)"     global latex-font f ": create-block-with mathfrak<ret>"
 
     # "Insert block" menu
     declare-user-mode latex-insert-block
@@ -70,8 +72,14 @@ provide-module latex-kak %{
     map -docstring "Lemma"          global latex-insert-block l ": create-begin-block-with lemma<ret>"
     map -docstring "Example"        global latex-insert-block e ": create-begin-block-with example<ret>"
     map -docstring "Proof"          global latex-insert-block p ": create-begin-block-with proof<ret>"
+    map -docstring "Remark"         global latex-insert-block r ": create-begin-block-with remark<ret>"
+    map -docstring "Proposition"    global latex-insert-block <a-p> ": create-begin-block-with proposition<ret>"
+    map -docstring "Corollary"      global latex-insert-block c ": create-begin-block-with corollary<ret>"
     ## Common environments
     map -docstring "align*"         global latex-insert-block a ": create-begin-block-with align*<ret>"
+    map -docstring "align"          global latex-insert-block <a-a> ": create-begin-block-with align<ret>"
+    map -docstring "equation"       global latex-insert-block e ": create-begin-block-with equation<ret>"
+    map -docstring "equation*"      global latex-insert-block <a-e> ": create-begin-block-with equation*<ret>"
     map -docstring "Matrix"         global latex-insert-block m ": create-begin-block-with bmatrix<ret>"
     map -docstring "Cases"          global latex-insert-block C ": create-begin-block-with cases<ret>"
     map -docstring "Table"          global latex-insert-block T ": create-begin-block-with tabular<ret>"
@@ -80,42 +88,45 @@ provide-module latex-kak %{
 
     # Pairs of delimiters
     declare-user-mode latex-insert-delims
+    map -docstring "Grouping"          global latex-insert-delims g ": create-delims { }<ret>"
     map -docstring "Parentheses"       global latex-insert-delims p ": create-delims ( )<ret>"
     map -docstring "Large Parentheses" global latex-insert-delims P ": create-delims \left( \right)<ret>"
     map -docstring "Brackets"          global latex-insert-delims b ": create-delims \left[ \right]<ret>"
     map -docstring "Sets"              global latex-insert-delims s ": create-delims \{ \}<ret>"
     map -docstring "Large Sets"        global latex-insert-delims S ": create-delims \left\{ \right\}<ret>"
 
-    hook global WinSetOption filetype=(latex) %{
-        ## Create inline and display math blocks
-        map buffer normal <a-3> "i\(\)<esc>hhi"
-        map buffer insert <a-3> "\(\)<a-;>2h"
-        map buffer normal <a-4> "i\[\]<esc>hhi"
-        map buffer insert <a-4> "\[\]<a-;>2h"
-        map buffer normal <a-5> ": enter-user-mode latex-insert-delims<ret>"
-        map buffer insert <a-5> "<esc>: enter-user-mode latex-insert-delims<ret>"
+    ## Create delims (shortcuts)
+    map buffer normal <a-1> ": enter-user-mode latex-insert-delims<ret>p"
+    map buffer insert <a-1> "<esc>: enter-user-mode latex-insert-delims<ret>p"
+    map buffer normal <a-2> ": enter-user-mode latex-insert-delims<ret>g"
+    map buffer insert <a-2> "<esc>: enter-user-mode latex-insert-delims<ret>g"
+    map buffer normal <a-3> "i\(\)<esc>Zhhi"
+    map buffer insert <a-3> "\(\)<a-;>Z<a-;>2h"
+    map buffer normal <a-4> "i\[\]<esc>Zhhi"
+    map buffer insert <a-4> "\[\]<a-;>Z<a-;>2h"
+    map buffer normal <a-5> ": enter-user-mode latex-insert-delims<ret>"
+    map buffer insert <a-5> "<esc>: enter-user-mode latex-insert-delims<ret>"
 
-        ## Quickly create begin/end blocks
-        map buffer normal <c-n> ": create-begin-block<ret>"
-        map buffer insert <c-n> "<esc>: create-begin-block<ret>"
+    ## Quickly create begin/end blocks
+    map buffer normal <c-n> ": create-begin-block<ret>"
+    map buffer insert <c-n> "<esc>: create-begin-block<ret>"
 
-        ## Font menu
-        map buffer normal <c-b> ": enter-user-mode latex-font<ret>"
-        map buffer insert <c-b> "<esc>: enter-user-mode latex-font<ret>"
+    ## Font menu
+    map buffer normal <c-b> ": enter-user-mode latex-font<ret>"
+    map buffer insert <c-b> "<esc>: enter-user-mode latex-font<ret>"
 
-        ## Insert menu
-        map buffer normal <a-b> ": enter-user-mode latex-insert-block<ret>"
-        map buffer insert <a-b> "<esc>: enter-user-mode latex-insert-block<ret>"
+    ## Insert menu
+    map buffer normal <a-b> ": enter-user-mode latex-insert-block<ret>"
+    map buffer insert <a-b> "<esc>: enter-user-mode latex-insert-block<ret>"
 
-        ## Select math equations and environment blocks
-        map buffer object e -docstring "Inline Math equation \( \)" "c\\\\\\(,\\\\\\)<ret>"
-        map buffer object E -docstring "Display Math equation \[ \]" "c\\\\\\[,\\\\\\]<ret>"
-        map buffer object v -docstring "Simple environment \env{}" "c\\\\\\w+\\{,\\}<ret>"
-        map buffer object V -docstring "Full environment \begin{env}\end{env}" "c\\\\begin\\{\\w+\\}(?:\\{[\\w\\s]*\\})*(?:\\[[\\w\\s]*\\])*,\\\\end\\{\\w+\\}<ret>"
+    ## Select math equations and environment blocks
+    map buffer object e -docstring "Inline Math equation \( \)" "c\\\\\\(,\\\\\\)<ret>"
+    map buffer object E -docstring "Display Math equation \[ \]" "c\\\\\\[,\\\\\\]<ret>"
+    map buffer object v -docstring "Simple environment \env{}" "c\\\\\\w+\\{,\\}<ret>"
+    map buffer object V -docstring "Full environment \begin{env}\end{env}" "c\\\\begin\\{\\w+\\}(?:\\{[\\w\\s]*\\})*(?:\\[[\\w\\s]*\\])*,\\\\end\\{\\w+\\}<ret>"
 
-        ## Quickly get a new item
-        map buffer normal <a-o> "o\item "
-        map buffer insert <a-ret> "<esc>o\item "
-    }
+    ## Quickly get a new item
+    map buffer normal <a-o> "o\item "
+    map buffer insert <a-ret> "<esc>o\item "
 }
 

@@ -17,47 +17,35 @@ let
         };
       });
     };
-
-  # record a file in the kakoune folder
-  kakouneFile = filename: {
-    name = "kakoune/${filename}";
-    value = {
-      source = ./. + "/${filename}";
-      target = ".config/kak/${filename}";
-    };
-  };
-
-  kakouneAutoload = { name, src }: {
-    name = "kakoune/autoload/${name}";
-    value = {
-      source = src;
-      target = ".config/kak/autoload/${name}";
-    };
-  };
 in
 {
-  imports = [ ./kak-lsp.nix ];
-
+  imports = [ ../modules/programs/my-kakoune ];
+  
   # Enable the kakoune package.
-  home.packages = [ kakounePkg ];
-
-  # Enable kak-lsp
+  programs.my-kakoune.enable = true;
   programs.kak-lsp.enable = true;
 
-  # Source the kakrc we have here.
-  home.file = builtins.listToAttrs (map kakouneFile [
-    "kakrc"
-    "latex.kak"
-    "source-pwd"
+  programs.my-kakoune.package = kakounePkg;
+  programs.my-kakoune.rc =
+    builtins.readFile ./kakrc + ''
 
-    # autoload files
-    "autoload/markdown.kak"
-  ] ++ map kakouneAutoload [
-    # include the original autoload files
+      # Source any settings in the current working directory,
+      # recursive upwards
+      evaluate-commands %sh{
+          ${pkgs.writeScript "source-pwd" (builtins.readFile ./source-pwd)}
+      }
+    '';
+  programs.my-kakoune.autoload = [
+    # My own scripts
     {
-      name = "rc";
-      src = "${kakounePkg}/share/kak/autoload";
+      name = "latex.kak";
+      src = ./autoload/latex.kak;
     }
+    {
+      name = "markdown.kak";
+      src = ./autoload/markdown.kak;
+    }
+
     # Plugins
     {
       name = "fzf.kak";
@@ -105,11 +93,5 @@ in
         narHash = "sha256-IcxFmvG0jqpMCG/dT9crVRgPgMGKkic6xwrnW5z4+bc=";
       }) + "/rc";
     }
-    # {
-    #   name = "kakoune-text-objects";
-    #   sec = (builtins.fetchTree {
-    #     type =
-    #   } );
-    # }
-  ]);
+  ];
 }

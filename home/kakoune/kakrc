@@ -102,7 +102,7 @@ hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c
     # lsp-auto-hover-insert-mode-enable
     set buffer lsp_hover_anchor true
 }
-hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell) %{
+hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix) %{
     # Format the document if possible
     hook window BufWritePre .* %{ lsp-formatting }
 }
@@ -146,6 +146,10 @@ hook global WinSetOption filetype=(rust) %{
     set-option buffer makecmd "cargo check"
 }
 
+hook global WinSetOption filetype=(tex|latex) %{
+    require-module latex-kak
+}
+
 def -hidden insert-c-n %{
  try %{
    lsp-snippets-select-next-placeholders
@@ -173,16 +177,5 @@ hook global BufOpenFile .* %{
   modeline-parse
 }
 
-source "%val{config}/latex.kak"
-require-module latex-kak
-
-# source "%val{config}/plugins/plug.kak/rc/plug.kak"
-
 map global normal <a-[> ':inc-dec-modify-numbers + %val{count}<ret>'
 map global normal <a-]> ':inc-dec-modify-numbers - %val{count}<ret>'
-
-# Source any settings in the current working directory,
-# recursive upwards
-evaluate-commands %sh{
-    $kak_config/source-pwd
-}
