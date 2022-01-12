@@ -18,7 +18,7 @@ let
   };
 in
 {
-  imports = [ ./kak-lsp.nix ];
+  imports = [ ./kak-lsp.nix ./fish-session.nix ];
 
   options.programs.my-kakoune = {
     enable = mkEnableOption "My version of the kakoune configuration";

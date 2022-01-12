@@ -19,10 +19,11 @@ let
     };
 in
 {
-  imports = [ ../modules/programs/my-kakoune ];
-  
+  imports = [ ../modules/programs/my-kakoune ./kaktex.nix ];
+
   # Enable the kakoune package.
   programs.my-kakoune.enable = true;
+  programs.my-kakoune.enable-fish-session = true;
   programs.kak-lsp.enable = true;
 
   programs.my-kakoune.package = kakounePkg;
