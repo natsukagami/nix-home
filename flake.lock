@@ -427,11 +427,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1642633056,
-        "narHash": "sha256-DSf1BlyhVLL6gawKQ2iCiGBRMcMOIzAFQ8y3TlGt30k=",
+        "lastModified": 1642634617,
+        "narHash": "sha256-uCVMcchHSjmkcjSZOpiwRLArbfu/INtbyBeY3C7orFA=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "68da7c3f4db623768266f2629773c1477825501f",
+        "rev": "9ac8683c5d83b4ed2d64101805f1ec6b9c363282",
         "type": "github"
       },
       "original": {
