@@ -73,11 +73,11 @@ map -docstring "Example"        global latex-insert-block e ": create-begin-bloc
 map -docstring "Proof"          global latex-insert-block p ": create-begin-block-with proof<ret>"
 map -docstring "Remark"         global latex-insert-block r ": create-begin-block-with remark<ret>"
 map -docstring "Proposition"    global latex-insert-block <a-p> ": create-begin-block-with proposition<ret>"
-map -docstring "Corollary"      global latex-insert-block c ": create-begin-block-with corollary<ret>"
+map -docstring "Corollary"      global latex-insert-block C ": create-begin-block-with corollary<ret>"
 ## Common environments
 map -docstring "align*"         global latex-insert-block a ": create-begin-block-with align*<ret>"
 map -docstring "align"          global latex-insert-block <a-a> ": create-begin-block-with align<ret>"
-map -docstring "equation"       global latex-insert-block e ": create-begin-block-with equation<ret>"
+map -docstring "equation"       global latex-insert-block E ": create-begin-block-with equation<ret>"
 map -docstring "equation*"      global latex-insert-block <a-e> ": create-begin-block-with equation*<ret>"
 map -docstring "Matrix"         global latex-insert-block m ": create-begin-block-with bmatrix<ret>"
 map -docstring "Cases"          global latex-insert-block C ": create-begin-block-with cases<ret>"
