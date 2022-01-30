@@ -3,7 +3,7 @@
 let
   kakounePkg =
     let
-      rev = "9acd4e62dc485aa7e44a601a0300697f8825a98c";
+      rev = "d44d07bd801a939de65e5c237f65b54c187143c1";
     in
     pkgs.kakoune.override {
       kakoune = pkgs.kakoune-unwrapped.overrideAttrs (oldAttrs: {
@@ -12,11 +12,36 @@ let
           repo = "kakoune";
           owner = "mawww";
           rev = rev;
-          sha256 = "sha256-d0s1wA/GRpq3F6JRBWJaZQPY8UqzTzW5/hx0NlkIC6Q=";
+          sha256 = "sha256-32WTy5qQgg9Sly86KZcO0gEaHTfHUSNAT+E5+JnHkr8=";
           # sha256 = lib.fakeSha256;
         };
       });
     };
+
+  kak-lsp =
+    let
+      rev = "v12.0.1";
+      # version = "r${builtins.substring 0 6 rev}";
+      version = rev;
+    in
+    pkgs.kak-lsp.overrideAttrs (drv: rec {
+      inherit rev version;
+      buildInputs = drv.buildInputs ++
+        (with pkgs; lib.optional stdenv.isDarwin darwin.apple_sdk.frameworks.SystemConfiguration);
+      src = pkgs.fetchFromGitHub {
+        owner = "kak-lsp";
+        repo = "kak-lsp";
+        rev = rev;
+        sha256 = "sha256-K2GMoLaH7D6UtPuL+GJMqsPFwriyyi7WMdfzBmOceSA=";
+        # sha256 = lib.fakeSha256;
+      };
+
+      cargoDeps = drv.cargoDeps.overrideAttrs (lib.const {
+        inherit src;
+        outputHash = "sha256-G7X/dZTryNlwY9n02LL/3yVpB2L1vWGx/lqYblFDAOM=";
+        # outputHash = lib.fakeSha256;
+      });
+    });
 in
 {
   imports = [ ../modules/programs/my-kakoune ./kaktex.nix ];
@@ -25,6 +50,7 @@ in
   programs.my-kakoune.enable = true;
   programs.my-kakoune.enable-fish-session = true;
   programs.kak-lsp.enable = true;
+  programs.kak-lsp.package = kak-lsp;
 
   programs.my-kakoune.package = kakounePkg;
   programs.my-kakoune.rc =

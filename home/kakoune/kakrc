@@ -38,7 +38,7 @@ map global normal <#> ': comment-line<ret>'
 map global normal <a-#> ': comment-block<ret>'
 
 # Go to grep-jump
-map global goto F -docstring "current grep-jump match" '<esc>: grep-jump<ret>'
+map global goto f -docstring "current grep-jump match" '<esc>: grep-jump<ret>'
 
 # System clipboard interactions
 hook global RegisterModified '"' %{ nop %sh{

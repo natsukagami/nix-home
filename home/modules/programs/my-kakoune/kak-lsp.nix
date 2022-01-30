@@ -2,28 +2,6 @@
 
 with lib;
 let
-  rev = "744a1981b8cf669a96e329bc255d31e0c2bdcb14";
-  version = "r${builtins.substring 0 6 rev}";
-
-  kak-lsp = pkgs.kak-lsp.overrideAttrs (drv: rec {
-    inherit rev version;
-    buildInputs = drv.buildInputs ++
-      (with pkgs; lib.optional stdenv.isDarwin darwin.apple_sdk.frameworks.SystemConfiguration);
-    src = pkgs.fetchFromGitHub {
-      owner = "kak-lsp";
-      repo = "kak-lsp";
-      rev = rev;
-      sha256 = "sha256-eeONynT1oJafgJbfl8u/h4OJuORjropDrEUK0Raj8Jg=";
-      # sha256 = lib.fakeSha256;
-    };
-
-    cargoDeps = drv.cargoDeps.overrideAttrs (lib.const {
-      inherit src;
-      outputHash = "sha256-LqsCM4P6aJFZRGOxZtxXvSEbBSeQcC+4WbIwtlrO3e4=";
-      # outputHash = lib.fakeSha256;
-    });
-  });
-
   lspConfig =
     {
       language = {
@@ -231,7 +209,7 @@ in
 
     package = mkOption {
       type = types.package;
-      default = kak-lsp;
+      default = pkgs.kak-lsp;
     };
 
     enableSnippets = mkOption {
@@ -283,6 +261,4 @@ in
       '';
     };
   };
-
-
 }
