@@ -104,7 +104,7 @@ hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c
 }
 hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix) %{
     # Format the document if possible
-    hook window BufWritePre .* %{ lsp-formatting }
+    hook window BufWritePre .* %{ lsp-formatting-sync }
 }
 
 hook global WinSetOption filetype=(rust|go) %{
