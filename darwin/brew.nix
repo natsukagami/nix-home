@@ -43,12 +43,11 @@ with lib;
     "yt-music"
 
     # CLI, but doesn't yet work on Nix
-    "sage"
+    # "sage"
   ];
 
   homebrew.masApps = {
     # Safari Extensions
-    "SponsorBlock port for YouTube - Skip Sponsorships" = 1532163541;
     "Keepa - Price Tracker" = 1533805339;
     "Vimari" = 1480933944;
     "Bitwarden" = 1352778147;
@@ -61,7 +60,7 @@ with lib;
     "Amphetamine" = 937984704; # Turns off auto display dimming and sleep for some time
     "Session Pal" = 1515213004;
     "Flow" = 1423210932;
-    "Taskheat" = 1431995750;
+    # "Taskheat" = 1431995750; # Always shown outdated!
     "Hidden Bar" = 1452453066;
 
     # Development
