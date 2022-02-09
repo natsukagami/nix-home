@@ -51,6 +51,12 @@ in
   programs.my-kakoune.enable-fish-session = true;
   programs.kak-lsp.enable = true;
   programs.kak-lsp.package = kak-lsp;
+  programs.kak-lsp.languages.typescript = {
+    args = [ "--stdio" ];
+    command = "typescript-language-server";
+    filetypes = [ "typescript" ];
+    roots = [ "package.json" ];
+  };
 
   programs.my-kakoune.package = kakounePkg;
   programs.my-kakoune.rc =

@@ -232,7 +232,7 @@ in
 
     languages = mkOption {
       type = types.attrsOf languageOption;
-      default = lspConfig.language;
+      default = {};
       description = "The language options";
     };
   };
@@ -254,7 +254,7 @@ in
               server.timeout = cfg.serverTimeout;
               snippet_support = cfg.enableSnippets;
               verbosity = 255;
-              language = cfg.languages;
+              language = lspConfig.language // cfg.languages;
             })
           } \
           > $out
