@@ -18,6 +18,13 @@ let
       });
     };
 
+  evince-synctex = (pkgs.fetchFromGitHub {
+    owner = "latex-lsp";
+    repo = "evince-synctex";
+    rev = "593b00c938d82786b8bbaf584ebe68744f9c8407";
+    sha256 = "sha256-Q9kZ/XmXEsoZpflF5n16I5bsyS2S8gS9OYkOPM47ryg=";
+  }) + "/evince_synctex.py";
+
   kak-lsp =
     let
       rev = "v12.0.1";
@@ -56,6 +63,28 @@ in
     command = "typescript-language-server";
     filetypes = [ "typescript" ];
     roots = [ "package.json" ];
+  };
+  programs.kak-lsp.languages.latex = {
+    command = "texlab";
+    filetypes = [ "latex" ];
+    roots = [ ".git" "main.tex" "all.tex" ];
+    settings_section = "texlab";
+    settings.texlab = {
+      build.executable = "latexmk";
+      build.args = [ "-pdf" "-shell-escape" "-interaction=nonstopmode" "-synctex=1" "%f" ];
+
+      build.forwardSearchAfter = true;
+      build.onSave = true;
+
+      forwardSearch =
+        (if pkgs.stdenv.isDarwin then {
+          executable = "/Applications/Skim.app/Contents/SharedSupport/displayline";
+          args = [ "-r" "-g" "%l" "%p" "%f" ];
+        } else {
+          executable = "${evince-synctex}";
+          args = [ "-f" "%l" "%p" "\"${config.home.file.kaktex.source} jump %f %l\"" ];
+        });
+    };
   };
 
   programs.my-kakoune.package = kakounePkg;

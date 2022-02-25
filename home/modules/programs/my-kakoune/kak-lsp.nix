@@ -232,7 +232,7 @@ in
 
     languages = mkOption {
       type = types.attrsOf languageOption;
-      default = {};
+      default = { };
       description = "The language options";
     };
   };
