@@ -15,6 +15,8 @@
       ../modules/personal/fonts
     ];
 
+  # Set kernel version to latest
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   # Use the systemd-boot EFI boot loader.
   boot = {
     plymouth.enable = true;
