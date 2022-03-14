@@ -113,12 +113,12 @@ in
       icons_format = " <span font_family='FantasqueSansMono Nerd Font'>{icon}</span> ";
     };
     blocks = [
-      {
-        block = "bluetooth";
-        mac = "5C:52:30:D8:E2:9D";
-        format = "Airpods Pro {percentage}";
-        format_unavailable = "Airpods Pro XX";
-      }
+      # {
+      #   block = "bluetooth";
+      #   mac = "5C:52:30:D8:E2:9D";
+      #   format = "Airpods Pro {percentage}";
+      #   format_unavailable = "Airpods Pro XX";
+      # }
       {
         block = "cpu";
         format = "{utilization}";
