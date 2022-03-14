@@ -33,6 +33,8 @@
     ## Latex
     tectonic
     texlab
+    ## Python
+    python310
 
     # Fonts
     fantasque-sans-mono
@@ -64,7 +66,7 @@
     BAT_THEME = "GitHub";
     # Editor
     EDITOR = "kak";
-};
+  };
 
   home.sessionPath = [
     # Sometimes we want to install custom scripts here

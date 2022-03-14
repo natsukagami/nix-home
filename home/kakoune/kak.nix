@@ -80,10 +80,11 @@ in
         (if pkgs.stdenv.isDarwin then {
           executable = "/Applications/Skim.app/Contents/SharedSupport/displayline";
           args = [ "-r" "-g" "%l" "%p" "%f" ];
-        } else {
-          executable = "${evince-synctex}";
-          args = [ "-f" "%l" "%p" "\"${config.home.file.kaktex.source} jump %f %l\"" ];
-        });
+        } else
+          {
+            executable = "${pkgs.qpdfview}/bin/qpdfview";
+            args = [ "--unique" "%p#src:%f:%l:1" ];
+          });
     };
   };
 

@@ -52,6 +52,7 @@ in
         bindingMode = { background = "#2f343a"; border = "#900000"; text = "#ffffff"; };
       };
     }];
+    config.focus.newWindow = "none";
     config.fonts = { names = [ "FantasqueSansMono Nerd Font Mono" "monospace" ]; size = 11.0; };
     config.gaps.outer = 5;
     config.gaps.inner = 5;
