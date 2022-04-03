@@ -27,7 +27,7 @@
     };
 
   swapDevices =
-    [{ device = "/dev/disk/by-uuid/e08ed857-e553-4af1-9239-40f13d8ea854"; }];
+    [{ device = "/dev/disk/by-uuid/561f6441-1915-4059-a5e1-76a449b0c9bf"; }];
 
   # high-resolution display
   hardware.video.hidpi.enable = lib.mkDefault true;
