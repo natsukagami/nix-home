@@ -3,7 +3,7 @@
 let
   kakounePkg =
     let
-      rev = "d44d07bd801a939de65e5c237f65b54c187143c1";
+      rev = "6e81879afd61a3fba0c8cbf3b63dc2bcf51e9b12";
     in
     pkgs.kakoune.override {
       kakoune = pkgs.kakoune-unwrapped.overrideAttrs (oldAttrs: {
@@ -12,7 +12,7 @@ let
           repo = "kakoune";
           owner = "mawww";
           rev = rev;
-          sha256 = "sha256-32WTy5qQgg9Sly86KZcO0gEaHTfHUSNAT+E5+JnHkr8=";
+          sha256 = "sha256-nHFET023GDO0ElWzmsGMbEPefG9j9+nd2L6ZTfSG30c=";
           # sha256 = lib.fakeSha256;
         };
       });
@@ -27,7 +27,7 @@ let
 
   kak-lsp =
     let
-      rev = "v12.0.1";
+      rev = "v12.1.0";
       # version = "r${builtins.substring 0 6 rev}";
       version = rev;
     in
@@ -39,13 +39,13 @@ let
         owner = "kak-lsp";
         repo = "kak-lsp";
         rev = rev;
-        sha256 = "sha256-K2GMoLaH7D6UtPuL+GJMqsPFwriyyi7WMdfzBmOceSA=";
+        sha256 = "sha256-5sPw95lSbswIUbNIZ4mpA3WeZt7u+a5s4KxkTnN14Sw=";
         # sha256 = lib.fakeSha256;
       };
 
       cargoDeps = drv.cargoDeps.overrideAttrs (lib.const {
         inherit src;
-        outputHash = "sha256-G7X/dZTryNlwY9n02LL/3yVpB2L1vWGx/lqYblFDAOM=";
+        outputHash = "sha256-Ezp9Lf2RacJlbMeiaSIDKdTQSg9pXgLyJcbBLJbqS5k=";
         # outputHash = lib.fakeSha256;
       });
     });
