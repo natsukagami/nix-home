@@ -33,8 +33,8 @@ in
   xsession.windowManager.i3 = {
     enable = true;
     config.assigns = {
-      "${wsAttrs."1"}" = [{ class = "^Firefox$"; }];
-      "${wsAttrs."2"}" = [{ class = "^Discord$"; }];
+      "${wsAttrs."1"}" = [{ class = "^firefox$"; }];
+      "${wsAttrs."2"}" = [{ class = "^discord$"; }];
     };
     config.bars = [{
       command = "${pkgs.i3-gaps}/bin/i3bar -t";
@@ -141,3 +141,5 @@ in
     ];
   };
 }
+
+
