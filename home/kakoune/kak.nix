@@ -27,28 +27,37 @@ let
 
   kak-lsp =
     let
-      rev = "v12.1.0";
-      # version = "r${builtins.substring 0 6 rev}";
-      version = rev;
+      rev = "e98868235515664aeb42f0784073128dcda63ce1";
+      version = "r${builtins.substring 0 6 rev}";
+      # version = rev;
     in
-    pkgs.kak-lsp.overrideAttrs (drv: rec {
-      inherit rev version;
-      buildInputs = drv.buildInputs ++
-        (with pkgs; lib.optional stdenv.isDarwin darwin.apple_sdk.frameworks.SystemConfiguration);
-      src = pkgs.fetchFromGitHub {
-        owner = "kak-lsp";
-        repo = "kak-lsp";
-        rev = rev;
-        sha256 = "sha256-5sPw95lSbswIUbNIZ4mpA3WeZt7u+a5s4KxkTnN14Sw=";
-        # sha256 = lib.fakeSha256;
-      };
+    pkgs.unstable.rustPlatform.buildRustPackage
+      rec {
+        inherit rev version;
+        pname = "kak-lsp";
 
-      cargoDeps = drv.cargoDeps.overrideAttrs (lib.const {
-        inherit src;
-        outputHash = "sha256-Ezp9Lf2RacJlbMeiaSIDKdTQSg9pXgLyJcbBLJbqS5k=";
-        # outputHash = lib.fakeSha256;
-      });
-    });
+        src = pkgs.fetchFromGitHub {
+          owner = pname;
+          repo = pname;
+          rev = "v${version}";
+          sha256 = "sha256-xjfYdwDNp2Ak7t0dfp0SWJcFVve2iDcEKzDukcxVmzI=";
+          # sha256 = lib.fakeSha256;
+        };
+
+        cargoSha256 = "sha256-xfo/LPx8KC4e5KbVkLs6+ezqcZrjjqIE3egB8aSWxo4=";
+        # cargoSha256 = lib.fakeSha256;
+
+        buildInputs = (with pkgs;
+          lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration ])
+        );
+
+        meta = with lib; {
+          description = "Kakoune Language Server Protocol Client";
+          homepage = "https://github.com/kak-lsp/kak-lsp";
+          license = with licenses; [ unlicense /* or */ mit ];
+          maintainers = [ maintainers.spacekookie ];
+        };
+      };
 in
 {
   imports = [ ../modules/programs/my-kakoune ./kaktex.nix ];
@@ -158,3 +167,4 @@ in
     }
   ];
 }
+
