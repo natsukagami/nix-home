@@ -94,6 +94,23 @@
           (overlayForSystem "x86_64-linux")
         ];
       };
+      # x1c1 configuration
+      nixosConfigurations."nki-x1c1" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./modules/my-tinc
+          sops-nix.nixosModules.sops
+          ./nki-x1c1/configuration.nix
+          nixpkgsAsRegistry
+          # home-manager.nixosModules.home-manager
+          # {
+            # home-manager.useGlobalPkgs = true;
+            # home-manager.useUserPackages = true;
+            # home-manager.users.nki = import ./home/kagami-pc-home.nix;
+          # }
+          (overlayForSystem "x86_64-linux")
+        ];
+      };
 
       # DigitalOcean node
       nixosConfigurations."nki-personal-do" = nixpkgs.lib.nixosSystem {
