@@ -55,7 +55,7 @@
     bottom
 
     ## To do tunneling with cloudflare
-    cloudflared
+    pkgs.unfree.cloudflared
 
     # Databases
     postgresql

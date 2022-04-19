@@ -39,7 +39,7 @@ let
         src = pkgs.fetchFromGitHub {
           owner = pname;
           repo = pname;
-          rev = "v${version}";
+          rev = rev;
           sha256 = "sha256-xjfYdwDNp2Ak7t0dfp0SWJcFVve2iDcEKzDukcxVmzI=";
           # sha256 = lib.fakeSha256;
         };
