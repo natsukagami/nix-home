@@ -6,8 +6,11 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      # Fonts
+      ../modules/personal/fonts
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -21,7 +24,7 @@
   '';
 
   networking.hostName = "nki-x1c1"; # Define your hostname.
-  networking.wireless.iwd.enable = true;  # Enables wireless support via iwd.
+  networking.wireless.iwd.enable = true; # Enables wireless support via iwd.
 
   # Set your time zone.
   # time.timeZone = "Europe/Amsterdam";
@@ -48,9 +51,15 @@
 
 
   # Enable the Plasma 5 Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-  
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
+
+  environment.loginShellInit = ''
+    if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
+      exec sway
+    fi
+  '';
+
 
   # Configure keymap in X11
   # services.xserver.layout = "us";

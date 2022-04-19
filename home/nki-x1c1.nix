@@ -1,16 +1,20 @@
-{ pkgs, config, lib, ... } :
+{ pkgs, config, lib, ... }:
 
 {
   imports = [
-      # Common configuration
-      ./common.nix
-      # Set up X11-specific common configuration
-      # ./X11/default.nix
-      # ./X11/hidpi.nix # Enable hiDPI
-      # We use our own firefox
-      # ./firefox.nix
-      # osu!
-      # ./osu.nix
+    # Common configuration
+    ./common.nix
+    # Set up X11-specific common configuration
+    # ./X11/default.nix
+    # ./X11/hidpi.nix # Enable hiDPI
+    # We use our own firefox
+    # ./firefox.nix
+    # osu!
+    # ./osu.nix
+    # Sway
+    ./modules/programs/my-sway
+    # Alacritty
+    ./X11/alacritty.nix
   ];
 
   # Home Manager needs a bit of information about you and the
@@ -20,16 +24,20 @@
 
   # More packages
   home.packages = (with pkgs; [
-      # CLI stuff
-      python
-      zip
-      # TeX
-      texlive.combined.scheme-full
+    # CLI stuff
+    python
+    zip
+    # TeX
+    texlive.combined.scheme-full
 
-      # Java & sbt
-      openjdk11
-      sbt
+    # Java & sbt
+    openjdk11
+    sbt
   ]);
+
+  # Enable sway
+  programs.my-sway.enable = true;
+  programs.my-sway.fontSize = 14.0;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
