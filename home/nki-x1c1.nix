@@ -38,6 +38,7 @@
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 14.0;
+  programs.my-sway.wallpaper = ./images/wallpaper_0.png;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
