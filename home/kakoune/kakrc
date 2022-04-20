@@ -42,13 +42,13 @@ map global goto f -docstring "current grep-jump match" '<esc>: grep-jump<ret>'
 
 # System clipboard interactions
 hook global RegisterModified '"' %{ nop %sh{
-  printf "%s" "$kak_main_reg_dquote" | pbcopy
+  printf "%s" "$kak_main_reg_dquote" | pbcopy >/dev/null 2>/dev/null &
 }}
 map global user P -docstring "Paste before cursor from clipboard" '! pbpaste<ret>'
 map global user p -docstring "Paste after cursor from clipboard" '<a-!> pbpaste<ret>'
 map global user R -docstring "Replace selection with text from clipboard" '<a-d>! pbpaste<ret>'
 define-command -params 0 -docstring "Copy line down" copyline %{
-    execute-keys -draft '<a-x>y'%val{count}'P'
+    execute-keys -draft 'xy'%val{count}'P'
 }
 map global normal <+> -docstring "Copy line down" ': copyline<ret>'
 define-command -params 0 -docstring "Delete current character" delete-one %{

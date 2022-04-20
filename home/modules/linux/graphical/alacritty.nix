@@ -1,10 +1,8 @@
 { pkgs, config, lib, ... }:
 
+with lib;
 {
-  home.packages = [
-  ];
-
-  programs.alacritty = {
+  programs.alacritty = mkIf (config.linux.graphical.type != null) {
     enable = true;
     package = pkgs.unstable.alacritty;
 
@@ -16,7 +14,7 @@
       };
       shell = {
         program = "/bin/sh";
-        args = [ "-ic" "fish" ];
+        args = [ "-ic" "${config.programs.fish.package}/bin/fish" ];
       };
       colors = {
         # Default colors

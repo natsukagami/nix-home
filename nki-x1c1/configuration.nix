@@ -12,6 +12,8 @@
       # Fonts
       ../modules/personal/fonts
     ];
+  # Use the latest kernel
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -27,7 +29,7 @@
   networking.wireless.iwd.enable = true; # Enables wireless support via iwd.
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "America/Toronto";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -48,6 +50,7 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.autorun = false;
 
 
   # Enable the Plasma 5 Desktop Environment.
@@ -64,14 +67,20 @@
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
+  i18n.inputMethod.enabled = "ibus";
+  i18n.inputMethod.ibus.engines = (with pkgs.ibus-engines; [ bamboo mozc libpinyin ]);
+
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
-  hardware.pulseaudio.package = pkgs.pulseaudioFull;
+  hardware.pulseaudio = {
+    enable = true;
+    extraModules = [ pkgs.pulseaudio-modules-bt ];
+    package = pkgs.pulseaudioFull;
+  };
 
   # Enable bluetooth
   hardware.bluetooth.enable = true;
@@ -89,8 +98,29 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     kakoune # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    fish
     firefox
+
+    ## System Monitoring tools
+    usbutils
+    pciutils
   ];
+
+  # Gnome-keyring is useful
+  services.gnome.gnome-keyring.enable = true;
+
+  ## Environment variables
+  environment.variables = {
+    # Input method overrides
+    GTK_IM_MODULE = "ibus";
+    QT_IM_MODULE = "ibus";
+    "XMODIFIERS=@im" = "ibus";
+
+    # Basic editor setup
+    EDITOR = "kak";
+    VISUAL = "kak";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
