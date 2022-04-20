@@ -92,7 +92,7 @@ in
         "${mod}+v" = "split v";
         "${mod}+Shift+v" = "split h";
         ## Run
-        "${mod}+r" = config.wayland.windowManager.sway.config.menu;
+        "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
         "${mod}+Shift+r" = "mode resize";
         # "${mod}+d" = "exec i3-dmenu-desktop --dmenu='${pkgs.dmenu}/bin/dmenu -i'";
       } // (
@@ -179,14 +179,14 @@ in
     settings = [
       # Top bar
       {
-        layer = "top";
         position = "top";
         modules-left = [
           "sway/workspaces"
           "sway/mode"
+        ];
+        modules-center = [
           "sway/window"
         ];
-        modules-center = [ ];
         modules-right = [
           "tray"
           "pulseaudio"

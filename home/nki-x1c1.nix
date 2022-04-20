@@ -34,6 +34,12 @@
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 14.0;
+  # Keyboard support
+  wayland.windowManager.sway.config = {
+    input."1:1:AT_Translated_Set_2_keyboard" = {
+      xkb_options = "ctrl:swapcaps";
+    };
+  };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
