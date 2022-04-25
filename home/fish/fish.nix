@@ -55,6 +55,9 @@
       ## Set some kak-focused keybindings
       bind -M default gi beginning-of-line
       bind -M default gl end-of-line
+
+      # Set up direnv
+      ${pkgs.direnv}/bin/direnv hook fish | source
     '';
     plugins = [
       {
