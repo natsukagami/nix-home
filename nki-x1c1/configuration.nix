@@ -11,6 +11,8 @@
       ./hardware-configuration.nix
       # Fonts
       ../modules/personal/fonts
+      # Some PAM stuff
+      ../modules/services/pam/gnome-keyring.nix
     ];
   # Use the latest kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -142,6 +144,7 @@
   # };
 
   # List services that you want to enable:
+  nki.services.pam.enableGnomeKeyring = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
