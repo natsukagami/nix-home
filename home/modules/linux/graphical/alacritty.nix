@@ -41,6 +41,10 @@ with lib;
         bright.cyan = "0x4fb8cc";
         bright.white = "0xf1f1f1";
       };
+
+      key_bindings = [
+        { key = "C"; mods = "Shift|Control"; action = "SpawnNewInstance"; }
+      ];
     };
   };
 }
