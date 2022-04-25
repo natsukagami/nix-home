@@ -7,7 +7,7 @@ with lib;
     package = pkgs.unstable.alacritty;
 
     settings = {
-      window.opacity = 0.95;
+      window.opacity = 0.8;
       font = {
         size = 14.0;
         normal.family = "Fantasque Sans Mono Nerd Font";
