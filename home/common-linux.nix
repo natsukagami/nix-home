@@ -8,8 +8,7 @@ with lib; {
       components = [ "pkcs11" "secrets" "ssh" ];
     };
     services.gpg-agent.enable = true;
-    services.gpg-agent.enableSshSupport = true;
-    services.gpg-agent.pinentryFlavor = "gtk2";
+    services.gpg-agent.pinentryFlavor = "gnome3";
   });
 }
 
