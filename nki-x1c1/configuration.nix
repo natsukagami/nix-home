@@ -76,11 +76,17 @@
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio = {
+  services.pipewire = {
     enable = true;
-    extraModules = [ pkgs.pulseaudio-modules-bt ];
-    package = pkgs.pulseaudioFull;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
   };
+  # hardware.pulseaudio = {
+  #   enable = true;
+  #   extraModules = [ pkgs.pulseaudio-modules-bt ];
+  #   package = pkgs.pulseaudioFull;
+  # };
 
   # Enable bluetooth
   hardware.bluetooth.enable = true;
@@ -121,6 +127,11 @@
     EDITOR = "kak";
     VISUAL = "kak";
   };
+
+  # Enable some xdg stuff
+  services.dbus.enable = true;
+  xdg.portal.enable = true;
+  xdg.portal.wlr.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

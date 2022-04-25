@@ -75,41 +75,48 @@ in
       #
       # Terminal
       terminal = cfg.terminal;
+      menu = "${pkgs.dmenu}/bin/dmenu_path | ${pkgs.bemenu}/bin/bemenu | ${pkgs.findutils}/bin/xargs swaymsg exec --";
       # Startup
       startup = [
         # Dex for autostart
         { command = "${pkgs.dex}/bin/dex -ae sway"; }
         # Waybar
         { command = "systemctl --user restart waybar"; always = true; }
+        # Startup programs
+        { command = "${pkgs.flameshot}/bin/flameshot"; }
+        { command = "${pkgs.firefox}/bin/firefox"; }
+        { command = "${pkgs.unstable.discord}/bin/discord"; }
       ];
 
       ### Keybindings
       #
       # Main modifier
       modifier = mod;
-      keybindings = lib.mkOptionDefault ({
-        ## Splits
-        "${mod}+v" = "split v";
-        "${mod}+Shift+v" = "split h";
-        ## Run
-        "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
-        "${mod}+Shift+r" = "mode resize";
-        # "${mod}+d" = "exec i3-dmenu-desktop --dmenu='${pkgs.dmenu}/bin/dmenu -i'";
-      } // (
-        # Map the workspaces
-        builtins.listToAttrs (lib.flatten (map
-          (key: [
-            {
-              name = "${mod}+${key}";
-              value = "workspace ${builtins.getAttr key wsAttrs}";
-            }
-            {
-              name = "${mod}+Shift+${key}";
-              value = "move to workspace ${builtins.getAttr key wsAttrs}";
-            }
-          ])
-          (builtins.attrNames wsAttrs))
-        )));
+      keybindings = lib.mkOptionDefault
+        ({
+          ## Splits
+          "${mod}+v" = "split v";
+          "${mod}+Shift+v" = "split h";
+          ## Run
+          "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
+          "${mod}+Shift+r" = "mode resize";
+          ## Screenshot
+          "Print" = "exec ${pkgs.flameshot}/bin/flameshot gui";
+        } // (
+          # Map the workspaces
+          builtins.listToAttrs (lib.flatten (map
+            (key: [
+              {
+                name = "${mod}+${key}";
+                value = "workspace ${builtins.getAttr key wsAttrs}";
+              }
+              {
+                name = "${mod}+Shift+${key}";
+                value = "move to workspace ${builtins.getAttr key wsAttrs}";
+              }
+            ])
+            (builtins.attrNames wsAttrs))
+          )));
 
       ### Fonts
       #
@@ -139,7 +146,7 @@ in
         ];
       };
       focus.followMouse = true;
-      focus.mouseWarping = false;
+      focus.mouseWarping = true;
       focus.newWindow = "urgent";
       # Gaps
       gaps.outer = 3;
@@ -169,9 +176,26 @@ in
       export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
     '';
     # Extra
-    systemdIntegration = true;
     wrapperFeatures.base = true;
     wrapperFeatures.gtk = true;
+
+    # Fix D-Bus starting up
+    extraConfig = ''
+      exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
+           hash dbus-update-activation-environment 2>/dev/null && \
+           dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
+           systemctl --user start sway-session.target
+    '';
+  };
+
+  config.systemd.user.targets.sway-session = {
+    Unit = {
+      Description = "sway compositor session";
+      Documentation = [ "man:systemd.special(7)" ];
+      BindsTo = [ "graphical-session.target" ];
+      Wants = [ "graphical-session-pre.target" ];
+      After = [ "graphical-session-pre.target" ];
+    };
   };
 
   config.programs.waybar = mkIf cfg.enable {
