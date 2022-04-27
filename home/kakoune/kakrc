@@ -1,7 +1,7 @@
 # Color scheme
-# colorscheme github
-# face global Default rgb:121213,default
-# face global BufferPadding rgb:A0A0A0,default
+colorscheme github
+face global Default rgb:121213,default
+face global BufferPadding rgb:A0A0A0,default
 face global MenuForeground blue,white+bF
 face global MenuBackground bright-blue,white+F
 face global Information bright-blue,white
