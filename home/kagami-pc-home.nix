@@ -30,6 +30,7 @@
 
   # Enable X11 configuration
   linux.graphical.type = "x11";
+  linux.graphical.wallpaper = ./images/wallpaper_1.png;
   linux.graphical.x11.hidpi = true;
   linux.graphical.x11.enablei3 = true;
 
