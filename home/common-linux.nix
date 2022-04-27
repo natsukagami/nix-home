@@ -9,6 +9,11 @@ with lib; {
     };
     services.gpg-agent.enable = true;
     services.gpg-agent.pinentryFlavor = "gnome3";
+
+    # Git "safe-directory"
+    programs.git.extraConfig.safe.directory = [
+      "${config.home.homeDirectory}/.config/nixpkgs"
+    ];
   });
 }
 

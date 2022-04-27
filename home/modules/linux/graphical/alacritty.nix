@@ -1,13 +1,27 @@
 { pkgs, config, lib, ... }:
 
 with lib;
+let
+  cfg = config.linux.graphical.alacritty;
+in
 {
-  programs.alacritty = mkIf (config.linux.graphical.type != null) {
+  options.linux.graphical.alacritty = {
+    enable = mkOption {
+      type = types.bool;
+      default = true;
+    };
+    package = mkOption {
+      type = types.package;
+      default = pkgs.alacritty;
+    };
+  };
+  config.programs.alacritty = mkIf (config.linux.graphical.type != null && cfg.enable) {
     enable = true;
-    package = pkgs.unstable.alacritty;
+    package = cfg.package;
 
     settings = {
-      window.opacity = 0.8;
+      window.opacity = mkIf (strings.hasPrefix "0.10" cfg.package.version) 0.9;
+      background_opacity = mkIf (strings.hasPrefix "0.9" cfg.package.version) 0.9;
       font = {
         size = 14.0;
         normal.family = "Fantasque Sans Mono Nerd Font";
