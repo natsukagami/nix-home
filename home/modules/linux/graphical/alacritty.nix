@@ -57,7 +57,7 @@ in
       };
 
       key_bindings = [
-        { key = "C"; mods = "Shift|Control"; action = "SpawnNewInstance"; }
+        { key = "C"; mods = "Alt|Control"; action = "SpawnNewInstance"; }
       ];
     };
   };
