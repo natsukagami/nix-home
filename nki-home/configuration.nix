@@ -184,25 +184,6 @@
   # Peripherals
   hardware.opentabletdriver.enable = true;
 
-  # VPN
-  sops.secrets."windscribe/privateKey" = { mode = "0755"; };
-  sops.secrets."windscribe/presharedKey" = { mode = "0755"; };
-  networking.wg-quick.interfaces = {
-    windscribe = {
-      privateKeyFile = config.sops.secrets."windscribe/privateKey".path;
-      address = [ "100.70.42.56/32" ];
-      dns = [ "10.255.255.2" ];
-      peers = [
-        {
-          allowedIPs = [ "0.0.0.0/0" ];
-          endpoint = "yyz-197-wg.whiskergalaxy.com:443";
-          presharedKeyFile = config.sops.secrets."windscribe/presharedKey".path;
-          publicKey = "U5s7Yy/2fCqlaFcI96dFKupqEVCn+BYF04LRLD1zOhg=";
-        }
-      ];
-    };
-  };
-
   # Mounting disks!
   fileSystems =
     let
@@ -214,7 +195,7 @@
     in
     {
       "/mnt/Data" = ntfsMount "/dev/disk/by-uuid/A90680F8BBE62FE3";
-      "/mnt/Windows" = ntfsMount "/dev/disk/by-uuid/C2F6FBACF6FB9F3B";
+      "/mnt/Windows" = ntfsMount "/dev/disk/by-uuid/F4EA78DCEA789D14";
       "/mnt/Stuff" = ntfsMount "/dev/disk/by-uuid/717BF2EE20BB8A62";
       "/mnt/Shared" = ntfsMount "/dev/disk/by-uuid/76AC086BAC0827E7";
     };
