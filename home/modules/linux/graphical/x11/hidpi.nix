@@ -25,7 +25,6 @@ in
     # Load 4k Xresources
     xsession.initExtra = ''
       xrdb -merge ~/.config/X11/.Xresources
-      feh --bg-fill ~/wallpaper.jpg
     '';
   };
 }
