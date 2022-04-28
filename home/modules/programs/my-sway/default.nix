@@ -104,6 +104,10 @@ in
           "${mod}+Shift+r" = "mode resize";
           ## Screenshot
           "Print" = "exec ${pkgs.flameshot}/bin/flameshot gui";
+          ## Locking
+          "${mod}+semicolon" = "exec ${pkgs.swaylock}/bin/swaylock"
+            + (if cfg.wallpaper == "" then "" else " -i ${cfg.wallpaper} -s fit")
+            + " -l -k";
         } // (
           # Map the workspaces
           builtins.listToAttrs (lib.flatten (map

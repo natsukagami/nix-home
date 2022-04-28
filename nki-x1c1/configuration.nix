@@ -13,6 +13,7 @@
       ../modules/personal/fonts
       # Some PAM stuff
       ../modules/services/pam/gnome-keyring.nix
+      ../modules/services/swaylock.nix
       ../modules/services/input-remapper.nix
     ];
   # Use the latest kernel
@@ -147,6 +148,7 @@
   # List services that you want to enable:
   nki.services.pam.enableGnomeKeyring = true;
   services.input-remapper.enable = true;
+  services.swaylock.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
