@@ -5,6 +5,10 @@ with lib; {
     ./modules/X11/xfce4-notifyd.nix
   ];
   config = (mkIf (strings.hasSuffix "linux" pkgs.system) {
+    home.packages = with pkgs; [
+      unfree.vivaldi
+    ];
+
     ## Gnome-keyring
     services.gnome-keyring = {
       enable = true;
