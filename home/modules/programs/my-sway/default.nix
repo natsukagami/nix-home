@@ -194,7 +194,7 @@ in
     '';
   };
 
-  config.systemd.user.targets.sway-session = {
+  config.systemd.user.targets.sway-session = mkIf cfg.enable {
     Unit = {
       Description = "sway compositor session";
       Documentation = [ "man:systemd.special(7)" ];

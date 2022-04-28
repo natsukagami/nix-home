@@ -1,6 +1,9 @@
 { pkgs, config, lib, ... }:
 with lib; {
-  imports = [ ./modules/linux/graphical ./modules/X11/xfce4-notifyd.nix ];
+  imports = [
+    ./modules/linux/graphical
+    ./modules/X11/xfce4-notifyd.nix
+  ];
   config = (mkIf (strings.hasSuffix "linux" pkgs.system) {
     ## Gnome-keyring
     services.gnome-keyring = {
