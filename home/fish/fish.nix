@@ -30,6 +30,11 @@
       if test -e /opt/homebrew/bin/brew
         /opt/homebrew/bin/brew shellenv | source
       end
+
+      # Gnome-keyring startup
+      if type -q gnome-keyring-daemon
+        set -x (gnome-keyring-daemon --start | string split "=")
+      end
     '';
 
     interactiveShellInit = ''
@@ -50,6 +55,9 @@
       ## Set some kak-focused keybindings
       bind -M default gi beginning-of-line
       bind -M default gl end-of-line
+
+      # Set up direnv
+      ${pkgs.direnv}/bin/direnv hook fish | source
     '';
     plugins = [
       {

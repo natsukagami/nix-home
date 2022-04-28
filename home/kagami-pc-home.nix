@@ -1,16 +1,13 @@
-{ pkgs, config, lib, ... } :
+{ pkgs, config, lib, ... }:
 
 {
   imports = [
-      # Common configuration
-      ./common.nix
-      # Set up X11-specific common configuration
-      ./X11/default.nix
-      ./X11/hidpi.nix # Enable hiDPI
-      # We use our own firefox
-      ./firefox.nix
-      # osu!
-      ./osu.nix
+    # Common configuration
+    ./common.nix
+    # We use our own firefox
+    ./firefox.nix
+    # osu!
+    ./osu.nix
   ];
 
   # Home Manager needs a bit of information about you and the
@@ -20,16 +17,22 @@
 
   # More packages
   home.packages = (with pkgs; [
-      # CLI stuff
-      python
-      zip
-      # TeX
-      texlive.combined.scheme-full
+    # CLI stuff
+    python
+    zip
+    # TeX
+    texlive.combined.scheme-full
 
-      # Java & sbt
-      openjdk11
-      sbt
+    # Java & sbt
+    openjdk11
+    sbt
   ]);
+
+  # Enable X11 configuration
+  linux.graphical.type = "x11";
+  linux.graphical.wallpaper = ./images/wallpaper_1.png;
+  linux.graphical.x11.hidpi = true;
+  linux.graphical.x11.enablei3 = true;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

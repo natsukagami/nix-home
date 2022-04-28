@@ -5,6 +5,8 @@
     ./kakoune/kak.nix
     ./fish/fish.nix
     ./modules/programs/my-broot.nix
+    ./modules/programs/my-sway
+    ./common-linux.nix
   ];
 
   # Let Home Manager install and manage itself.
@@ -55,7 +57,7 @@
     bottom
 
     ## To do tunneling with cloudflare
-    cloudflared
+    pkgs.unfree.cloudflared
 
     # Databases
     postgresql

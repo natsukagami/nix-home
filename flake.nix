@@ -16,7 +16,6 @@
     # Imported apps
     naersk.url = "github:nix-community/naersk";
     rnix-lsp.url = "github:nix-community/rnix-lsp";
-    rnix-lsp.inputs.naersk.follows = "naersk";
     rnix-lsp.inputs.nixpkgs.follows = "nixpkgs-unstable";
     youmubot.url = "github:natsukagami/youmubot";
     nix-gaming.url = github:fufexan/nix-gaming;
@@ -90,6 +89,23 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.nki = import ./home/kagami-pc-home.nix;
+          }
+          (overlayForSystem "x86_64-linux")
+        ];
+      };
+      # x1c1 configuration
+      nixosConfigurations."nki-x1c1" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./modules/my-tinc
+          sops-nix.nixosModules.sops
+          ./nki-x1c1/configuration.nix
+          nixpkgsAsRegistry
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.nki = import ./home/nki-x1c1.nix;
           }
           (overlayForSystem "x86_64-linux")
         ];
