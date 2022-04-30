@@ -131,7 +131,10 @@
     },
     "naersk_3": {
       "inputs": {
-        "nixpkgs": "nixpkgs_7"
+        "nixpkgs": [
+          "youmubot",
+          "nixpkgs"
+        ]
       },
       "locked": {
         "lastModified": 1648544490,
@@ -271,34 +274,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_7": {
-      "locked": {
-        "lastModified": 1651273796,
-        "narHash": "sha256-kqWfHMfXUz2d9Y8KDA9D5vk03xj28Y+I2AyxzrQ14Vo=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "3080554891b4404fcbc5f09a4fe1d4ea0334d829",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_8": {
-      "locked": {
-        "lastModified": 1635956637,
-        "narHash": "sha256-65J/mVWr0M1y/59QOGSq6jOqiYYo6zoURJqdc0EzSZA=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "e01b7650cc3e2240021f2b094d31c2ff8815b926",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
     "nur": {
       "locked": {
         "lastModified": 1648466133,
@@ -419,14 +394,16 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "naersk": "naersk_3",
-        "nixpkgs": "nixpkgs_8"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
-        "lastModified": 1651275064,
-        "narHash": "sha256-mWlnPZXA636P6JJnERAQ6IoIwS99CsZTIV3LVFzx7gw=",
+        "lastModified": 1651276856,
+        "narHash": "sha256-76WjeAAFEas3EeJUphc5UXbB6L3NulZQEq3Z2hLw8Vc=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "2e3c6f61beee30ac68f37f364036d70d28a97589",
+        "rev": "431c67e14ca89f8c897f737c4b6e5e3e7db8c367",
         "type": "github"
       },
       "original": {
