@@ -13,6 +13,8 @@
       ./secrets
       # Fonts
       ../modules/personal/fonts
+      # Encrypted DNS
+      ../modules/services/edns
     ];
 
   # Set kernel version to latest
@@ -57,7 +59,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   nix = {
-    package = pkgs.nixUnstable;
+    package = pkgs.nixFlakes;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -166,6 +168,8 @@
 
   # List services that you want to enable:
   services.gnome.gnome-keyring.enable = true;
+  nki.services.edns.enable = true;
+  nki.services.edns.ipv6 = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
