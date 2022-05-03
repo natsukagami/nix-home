@@ -73,11 +73,14 @@
   #   keyMap = "us";
   # };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
+  # Enable sway on login.
+  environment.loginShellInit = ''
+    if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
+        exec sway
+    fi
+  '';
   # Configure keymap in X11
-  services.xserver.layout = "jp";
+  # services.xserver.layout = "jp";
   # services.xserver.xkbOptions = "";
 
   # Enable CUPS to print documents.
@@ -154,9 +157,9 @@
 
   # Enable Desktop Environment.
   services.xserver.displayManager = {
-    lightdm.enable = true;
+    # lightdm.enable = true;
   };
-  services.xserver.desktopManager.cinnamon.enable = true;
+  # services.xserver.desktopManager.cinnamon.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -228,15 +231,6 @@
     ed25519PrivateKey = config.sops.secrets."tinc/ed25519-private-key".path;
     bindPort = 6565;
   };
-
-  # extra host for my personal server
-  sops.secrets.hosts = {
-    mode = "0755";
-  };
-  services.dnsmasq.enable = true;
-  services.dnsmasq.extraConfig = ''
-    addn-hosts=${config.sops.secrets.hosts.path}
-  '';
 
   # Gaming!
   programs.steam.enable = true;

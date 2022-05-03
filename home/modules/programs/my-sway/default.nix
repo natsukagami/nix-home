@@ -54,6 +54,12 @@ in
       description = "The command to the terminal emulator to be used";
       default = "${pkgs.alacritty}/bin/alacritty";
     };
+
+    enableLaptopBars = mkOption {
+      type = types.bool;
+      description = "Whether to enable laptop-specific bars (battery)";
+      default = true;
+    };
   };
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
@@ -225,8 +231,11 @@ in
           "memory"
           "temperature"
           "backlight"
-          "battery"
-          "battery#bat2"
+        ] ++ (
+          if cfg.enableLaptopBars
+          then [ "battery" "battery#bat2" ]
+          else [ ]
+        ) ++ [
           "clock"
         ];
 
@@ -261,7 +270,7 @@ in
             states = [ 0 50 ];
             format-icons = [ "" "" ];
           };
-          "battery" = {
+          "battery" = mkIf cfg.enableLaptopBars {
             states = {
               good = 95;
               warning = 30;
@@ -272,7 +281,7 @@ in
             # format-full = "";
             format-icons = [ "" "" "" "" "" ];
           };
-          "battery#bat2" = {
+          "battery#bat2" = mkIf cfg.enableLaptopBars {
             bat = "BAT2";
           };
           "network" = {

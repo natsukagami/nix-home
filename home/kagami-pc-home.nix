@@ -29,10 +29,20 @@
   ]);
 
   # Enable X11 configuration
-  linux.graphical.type = "x11";
+  linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_1.png;
-  linux.graphical.x11.hidpi = true;
-  linux.graphical.x11.enablei3 = true;
+  programs.my-sway.enable = true;
+  programs.my-sway.fontSize = 13.0;
+  programs.my-sway.enableLaptopBars = false;
+  # Keyboard options
+  wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
+  # 144hz adaptive refresh ON!
+  wayland.windowManager.sway.config.output."ViewSonic Corporation XG2402 SERIES V4K182501054" = {
+    mode = "1920x1080@144Hz";
+    adaptive_sync = "on";
+  };
+  # linux.graphical.x11.hidpi = true;
+  # linux.graphical.x11.enablei3 = true;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

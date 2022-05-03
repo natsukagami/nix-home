@@ -91,6 +91,7 @@
             home-manager.useUserPackages = true;
             home-manager.users.nki = import ./home/kagami-pc-home.nix;
           }
+          inputs.secrets.nixosModules.x86_64-linux.common
           (overlayForSystem "x86_64-linux")
         ];
       };
