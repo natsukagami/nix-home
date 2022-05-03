@@ -26,7 +26,6 @@ in
         ipv6_servers = cfg.ipv6;
         require_dnssec = true;
         require_nofilter = true;
-        skip_incompatible = true;
 
         # Sources
         sources.public_resolvers = {
@@ -42,6 +41,7 @@ in
         anonymized_dns.routes = [
           { server_name = "*"; via = [ "anon-plan9-dns" "anon-v.dnscrypt.up-ipv4" ]; }
         ];
+        anonymized_dns.skip_incompatible = true;
       };
     };
   };
