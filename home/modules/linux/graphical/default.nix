@@ -40,8 +40,8 @@ in
     # Cursor
     xsession.pointerCursor = {
       package = pkgs.numix-cursor-theme;
-      name = "Numix-Cursor-Light";
-      size = 32;
+      name = "Numix-Cursor";
+      size = 24;
     };
 
     # MIME set ups

@@ -79,6 +79,11 @@ in
       # Wallpaper
       output."*".bg = if cfg.wallpaper == "" then "#000000 solid_color" else "${cfg.wallpaper} fill";
 
+      ### Seats
+      #
+      # Cursor
+      seat."*".xcursor_theme = "${config.xsession.pointerCursor.name} ${toString config.xsession.pointerCursor.size}";
+
       ### Programs
       #
       # Terminal
