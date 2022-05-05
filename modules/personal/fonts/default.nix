@@ -22,7 +22,7 @@ with lib;
         monospace = lib.mkBefore [ "IBM Plex Mono" ];
       };
     };
-  } else {}) // (if (strings.hasSuffix "darwin" pkgs.system) then {
-    enableFontDir = true;
-  } else {});
+  } else { }) // (if (strings.hasSuffix "darwin" pkgs.system) then {
+    fontDir.enable = true;
+  } else { });
 }
