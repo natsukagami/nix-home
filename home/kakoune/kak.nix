@@ -3,7 +3,7 @@
 let
   kakounePkg =
     let
-      rev = "6e81879afd61a3fba0c8cbf3b63dc2bcf51e9b12";
+      rev = "5c6238ef113da8c2844ff9bcfa27c87e3473c150";
     in
     pkgs.kakoune.override {
       kakoune = pkgs.kakoune-unwrapped.overrideAttrs (oldAttrs: {
@@ -12,7 +12,7 @@ let
           repo = "kakoune";
           owner = "mawww";
           rev = rev;
-          sha256 = "sha256-nHFET023GDO0ElWzmsGMbEPefG9j9+nd2L6ZTfSG30c=";
+          sha256 = "sha256-ogjeUcOKvX3Dd7PG2jiyHkAzbzFidXmLIeN5jaifMvc=";
           # sha256 = lib.fakeSha256;
         };
       });
@@ -27,9 +27,9 @@ let
 
   kak-lsp =
     let
-      rev = "e98868235515664aeb42f0784073128dcda63ce1";
-      version = "r${builtins.substring 0 6 rev}";
-      # version = rev;
+      rev = "v12.2.0";
+      # version = "r${builtins.substring 0 6 rev}";
+      version = rev;
     in
     pkgs.unstable.rustPlatform.buildRustPackage
       rec {
@@ -40,11 +40,11 @@ let
           owner = pname;
           repo = pname;
           rev = rev;
-          sha256 = "sha256-xjfYdwDNp2Ak7t0dfp0SWJcFVve2iDcEKzDukcxVmzI=";
+          sha256 = "sha256-Il3eF9bVrAaJkTDPB1DzEjROnJxIAnnk27qdT9qsp1k=";
           # sha256 = lib.fakeSha256;
         };
 
-        cargoSha256 = "sha256-xfo/LPx8KC4e5KbVkLs6+ezqcZrjjqIE3egB8aSWxo4=";
+        cargoSha256 = "sha256-GnSGgC7m13a4zW0Drl+5ZkYaQZAW5xnXuoih+44l1OI=";
         # cargoSha256 = lib.fakeSha256;
 
         buildInputs = (with pkgs;
