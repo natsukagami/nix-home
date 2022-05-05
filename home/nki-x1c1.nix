@@ -43,6 +43,16 @@
     };
   };
 
+  # Multiple screen setup
+  services.kanshi = {
+    enable = true;
+    profiles.undocked.outputs = [{ criteria = "LVDS-1"; }];
+    profiles.docked-hdmi.outputs = [
+      { criteria = "LVDS-1"; status = "disable"; }
+      { criteria = "HDMI-A-1"; }
+    ];
+  };
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
