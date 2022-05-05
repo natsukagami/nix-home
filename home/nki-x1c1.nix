@@ -36,8 +36,10 @@
   programs.my-sway.fontSize = 14.0;
   # Keyboard support
   wayland.windowManager.sway.config = {
+    input."1278:34:HHKB-Hybrid_3_Keyboard".xkb_layout = "jp";
     input."1:1:AT_Translated_Set_2_keyboard" = {
       xkb_options = "ctrl:swapcaps";
+      xkb_layout = "us";
     };
   };
 
