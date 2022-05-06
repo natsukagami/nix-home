@@ -1,10 +1,30 @@
 # Color scheme
 colorscheme github
-face global Default rgb:121213,default
-face global BufferPadding rgb:A0A0A0,default
+face global Default        rgb:121213,default
+face global BufferPadding  rgb:A0A0A0,default
 face global MenuForeground blue,white+bF
 face global MenuBackground bright-blue,white+F
-face global Information bright-blue,white
+face global Information    bright-blue,white
+# Markdown help color scheme
+face global InfoDefault               Information
+face global InfoBlock                 @block
+face global InfoBlockQuote            +i@block
+face global InfoBullet                @bullet
+face global InfoHeader                @header
+face global InfoLink                  @link
+face global InfoLinkMono              +b@mono
+face global InfoMono                  @mono
+face global InfoRule                  +b@Information
+face global InfoDiagnosticError       @DiagnosticError
+face global InfoDiagnosticHint        @DiagnosticHint
+face global InfoDiagnosticInformation @Information
+face global InfoDiagnosticWarning     @DiagnosticWarning
+# Extra faces
+face global macro +b@function
+face global method +i@function
+face global format_specifier +i@string
+face global mutable_variable +u@variable
+face global class +b@variable
 
 # Enable line numbers
 addhl global/ number-lines
@@ -101,13 +121,16 @@ hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c
     lsp-auto-hover-enable
     # lsp-auto-hover-insert-mode-enable
     set buffer lsp_hover_anchor true
+    lsp-inlay-diagnostics-enable buffer
 }
 hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix) %{
+    # Note that fsharp is not here
+    lsp-inlay-hints-enable buffer
     # Format the document if possible
     hook window BufWritePre .* %{ lsp-formatting-sync }
 }
 
-hook global WinSetOption filetype=(rust|go) %{
+hook global WinSetOption filetype=(rust|go|fsharp) %{
   hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
   hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
   hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
@@ -116,19 +139,10 @@ hook global WinSetOption filetype=(rust|go) %{
   }
 }
 
-hook global WinSetOption filetype=rust %{
-  hook window -group rust-inlay-hints BufReload .* rust-analyzer-inlay-hints
-  hook window -group rust-inlay-hints NormalIdle .* rust-analyzer-inlay-hints
-  hook window -group rust-inlay-hints InsertIdle .* rust-analyzer-inlay-hints
-  hook -once -always window WinSetOption filetype=.* %{
-    remove-hooks window rust-inlay-hints
-  }
-}
-
 # <a-a> in Insert mode moves to end of line.
 map global insert <a-a> '<esc>A'
 
-hook global WinSetOption filetype=(fsharp) %{
+    hook global WinSetOption filetype=(fsharp) %{
     set-option buffer comment_line "//"
 }
 

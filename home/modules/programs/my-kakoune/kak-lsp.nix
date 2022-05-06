@@ -152,13 +152,35 @@ let
           roots = [ "Cargo.toml" ];
         };
       };
-      semantic_scopes = {
-        entity_name_function = "function";
-        entity_name_namespace = "module";
-        entity_name_type = "type";
-        variable = "variable";
-        variable_other_enummember = "variable";
-      };
+      semantic_tokens.faces = [
+        ## Items
+        # (Rust) Macros
+        { face = "attribute"; token = "attribute"; }
+        { face = "attribute"; token = "derive"; }
+        { face = "macro"; token = "macro"; } # Function-like Macro
+        # Keyword and Fixed Tokens
+        { face = "keyword"; token = "keyword"; }
+        { face = "operator"; token = "operator"; }
+        # Functions and Methods
+        { face = "function"; token = "function"; }
+        { face = "method"; token = "method"; }
+        # Constants
+        { face = "string"; token = "string"; }
+        { face = "format_specifier"; token = "formatSpecifier"; }
+        # Variables
+        { face = "mutable_variable"; token = "variable"; modifiers = [ "mutable" ]; }
+        { face = "variable"; token = "variable"; }
+        { face = "module"; token = "namespace"; }
+        { face = "variable"; token = "type_parameter"; }
+        { face = "class"; token = "enum"; }
+        { face = "class"; token = "struct"; }
+        { face = "class"; token = "trait"; }
+        { face = "class"; token = "union"; }
+
+        ## Comments
+        { face = "documentation"; token = "comment"; modifiers = [ "documentation" ]; }
+        { face = "comment"; token = "comment"; }
+      ];
       server = { timeout = 1800; };
       snippet_support = false;
       verbosity = 255;
@@ -218,10 +240,10 @@ in
       description = "Enable snippet support";
     };
 
-    semanticScopes = mkOption {
-      type = types.attrsOf types.str;
-      default = lspConfig.semantic_scopes;
-      description = "The semantic scopes mapping given to kak";
+    semanticTokens.faces = mkOption {
+      type = types.listOf types.anything;
+      default = lspConfig.semantic_tokens.faces;
+      description = "The semantic tokens faces mapping given to kak";
     };
 
     serverTimeout = mkOption {
@@ -250,7 +272,7 @@ in
         yj -jt -i \
           < ${
             pkgs.writeText "config.json" (builtins.toJSON {
-              semantic_scopes = cfg.semanticScopes;
+              semantic_tokens.faces = cfg.semanticTokens.faces;
               server.timeout = cfg.serverTimeout;
               snippet_support = cfg.enableSnippets;
               verbosity = 255;
