@@ -66,6 +66,15 @@
         system = "aarch64-darwin";
         modules = [
           ./darwin/configuration.nix
+          # Set nix path
+          ({ ... }: {
+            nix.nixPath = [
+              "nixpkgs=${nixpkgs-unstable}"
+              "nixpkgs-unstable=${nixpkgs-unstable}"
+              "/nix/var/nix/profiles/per-user/root/channels"
+              "\$HOME/.nix-defexpr/channels"
+            ];
+          })
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
