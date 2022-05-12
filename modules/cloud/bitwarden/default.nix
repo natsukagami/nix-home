@@ -11,6 +11,8 @@ let
 
   port = 8001;
   notificationsPort = 8002;
+
+  host = "bw.nkagami.me";
 in
 {
   options.cloud.bitwarden = { };
@@ -26,12 +28,11 @@ in
     cloud.postgresql.databases = [ databaseUser ];
     # traefik
     cloud.traefik.hosts.bitwarden = {
-      inherit port;
-      host = "bw.nkagami.me";
+      inherit port host;
     };
     cloud.traefik.hosts.bitwarden-notifications = {
+      inherit host;
       port = notificationsPort;
-      host = "bw.nkagami.me";
       path = "/notifications/hub";
     };
     # systemd unit
@@ -50,6 +51,8 @@ in
 
         WEBSOCKET_ENABLED = "true";
         WEBSOCKET_PORT = toString notificationsPort;
+
+        DOMAIN = "https://${host}";
       };
       serviceConfig = {
         User = user;
