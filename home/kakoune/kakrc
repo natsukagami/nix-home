@@ -120,14 +120,16 @@ hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c
     map global normal <c-l> ": enter-user-mode lsp<ret>"
     lsp-auto-hover-enable
     # lsp-auto-hover-insert-mode-enable
-    set buffer lsp_hover_anchor true
-    lsp-inlay-diagnostics-enable buffer
+    set window lsp_hover_anchor true
 }
 hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix) %{
-    # Note that fsharp is not here
-    lsp-inlay-hints-enable buffer
     # Format the document if possible
     hook window BufWritePre .* %{ lsp-formatting-sync }
+}
+
+hook global WinSetOption filetype=(rust) %{
+    # Enable inlay hints
+    lsp-inlay-hints-enable window
 }
 
 hook global WinSetOption filetype=(rust|go|fsharp) %{
@@ -142,8 +144,11 @@ hook global WinSetOption filetype=(rust|go|fsharp) %{
 # <a-a> in Insert mode moves to end of line.
 map global insert <a-a> '<esc>A'
 
-    hook global WinSetOption filetype=(fsharp) %{
-    set-option buffer comment_line "//"
+hook global WinSetOption filetype=(fsharp) %{
+    set-option window comment_line "//"
+    # Set up formatting
+    set-option window formatcmd "~/.dotnet/tools/fantomas --stdin --stdout"
+    hook window -group fsharp-format BufWritePre .* %{ format }
 }
 
 hook global WinSetOption filetype=(ocaml) %{
