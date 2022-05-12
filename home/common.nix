@@ -88,6 +88,7 @@
 
     direnv.enable = true;
     direnv.nix-direnv.enable = true;
+    direnv.config.global.load_dotenv = true;
 
     exa = {
       enable = true;
