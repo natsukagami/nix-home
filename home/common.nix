@@ -47,6 +47,7 @@
     fd
     ripgrep
     fossil
+    openssh
     ## Blog generator
     hugo
     ## File Manager

@@ -58,6 +58,9 @@
 
     # .NET
     DOTNET_CLI_TELEMETRY_OPTOUT = "true";
+
+    # Override home-manager package path to first
+    PATH = "/etc/profiles/per-user/${config.home.username}/bin:$PATH";
   };
 
   # This value determines the Home Manager release that your
