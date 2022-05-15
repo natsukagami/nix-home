@@ -15,6 +15,8 @@
       ../modules/personal/fonts
       # Encrypted DNS
       ../modules/services/edns
+      # Other services
+      ../modules/services/swaylock.nix
     ];
 
   # Set kernel version to latest
@@ -129,6 +131,9 @@
     ## Security stuff
     libsForQt5.qtkeychain
 
+    ## Wayland
+    qt5.qtwayland
+
     ## Enable nix-flakes
     # (pkgs.writeShellScriptBin "nixFlakes" ''
     #   exec ${pkgs.nixUnstable}/bin/nix --experimental-features "nix-command flakes" "$@"
@@ -210,6 +215,7 @@
   # PAM
   security.pam.services.lightdm.enableKwallet = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
+  services.swaylock.enable = true;
 
 
   # This value determines the NixOS release from which the default
