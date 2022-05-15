@@ -17,6 +17,7 @@
       ../modules/services/edns
       # Other services
       ../modules/services/swaylock.nix
+      ../modules/personal/u2f.nix
     ];
 
   # Set kernel version to latest
@@ -216,6 +217,7 @@
   security.pam.services.lightdm.enableKwallet = true;
   security.pam.services.lightdm.enableGnomeKeyring = true;
   services.swaylock.enable = true;
+  personal.u2f.enable = true;
 
 
   # This value determines the NixOS release from which the default
