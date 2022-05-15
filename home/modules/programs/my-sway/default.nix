@@ -97,8 +97,8 @@ in
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
         { command = "${pkgs.flameshot}/bin/flameshot"; }
-        { command = "${pkgs.firefox}/bin/firefox"; }
-        { command = "${pkgs.unstable.discord}/bin/discord"; }
+        { command = "${config.programs.firefox.package}/bin/firefox"; }
+        { command = "${pkgs.discord}/bin/discord"; }
       ];
 
       ### Keybindings
@@ -159,7 +159,7 @@ in
           { class = "^firefox$"; }
         ];
         "${builtins.elemAt workspaces 1}" = [
-          { class = "^Discord$"; }
+          { class = "^(d|D)iscord$"; }
         ];
       };
       focus.followMouse = true;
