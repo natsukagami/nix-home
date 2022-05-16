@@ -29,6 +29,9 @@ with lib;
 
     # CLI tools
     "pinentry-mac" # UI for Pin Entry on gpg Mac
+
+    # U2F
+    "pam-u2f"
   ] ++ (optionals (pkgs.system == "aarch64-darwin") [
     # Because python on Nix is a bit abababa
     "python@3.9"
