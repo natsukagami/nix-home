@@ -82,7 +82,7 @@ in
       ### Seats
       #
       # Cursor
-      seat."*".xcursor_theme = "${config.xsession.pointerCursor.name} ${toString config.xsession.pointerCursor.size}";
+      seat."*".xcursor_theme = "${config.home.pointerCursor.name} ${toString config.home.pointerCursor.size}";
 
       ### Programs
       #
