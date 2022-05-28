@@ -2,11 +2,11 @@
   description = "nki's systems";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-21.11";
+    home-manager.url = "github:nix-community/home-manager/release-22.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     deploy-rs.url = "github:Serokell/deploy-rs";
@@ -14,12 +14,12 @@
 
     # ---
     # Imported apps
-    naersk.url = "github:nix-community/naersk";
     rnix-lsp.url = "github:nix-community/rnix-lsp";
     rnix-lsp.inputs.nixpkgs.follows = "nixpkgs-unstable";
     youmubot.url = "github:natsukagami/youmubot";
     youmubot.inputs.nixpkgs.follows = "nixpkgs";
     nix-gaming.url = github:fufexan/nix-gaming;
+    nix-gaming.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---
     # DEPLOYMENT ONLY! secrets
