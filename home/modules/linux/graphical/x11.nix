@@ -19,6 +19,9 @@ with lib;
       '')
     ];
 
+    # Apply cursor settings
+    home.pointerCursor.x11.enable = true;
+
     # Notification system
     services.X11.xfce4-notifyd.enable = true;
 

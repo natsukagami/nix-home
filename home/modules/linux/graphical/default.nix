@@ -38,7 +38,7 @@ in
     ]);
 
     # Cursor
-    xsession.pointerCursor = {
+    home.pointerCursor = {
       package = pkgs.numix-cursor-theme;
       name = "Numix-Cursor";
       size = 24;
