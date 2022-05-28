@@ -179,6 +179,11 @@
   services.gnome.gnome-keyring.enable = true;
   nki.services.edns.enable = true;
   nki.services.edns.ipv6 = true;
+  services.flatpak.enable = true;
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
