@@ -39,6 +39,7 @@ with lib;
   ]);
 
   homebrew.casks = [
+    "anki"
     "blackhole-2ch"
     "eloston-chromium"
     "finicky"
