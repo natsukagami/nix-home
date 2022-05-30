@@ -27,7 +27,7 @@ let
 
   kak-lsp =
     let
-      rev = "v12.2.0";
+      rev = "v12.2.1";
       # version = "r${builtins.substring 0 6 rev}";
       version = rev;
     in
@@ -40,11 +40,11 @@ let
           owner = pname;
           repo = pname;
           rev = rev;
-          sha256 = "sha256-Il3eF9bVrAaJkTDPB1DzEjROnJxIAnnk27qdT9qsp1k=";
+          sha256 = "sha256-lKlHEJnA4GYS9oda/6cZPe8IW3Ud9KhDT3z651X0PrA=";
           # sha256 = lib.fakeSha256;
         };
 
-        cargoSha256 = "sha256-GnSGgC7m13a4zW0Drl+5ZkYaQZAW5xnXuoih+44l1OI=";
+        cargoSha256 = "sha256-Z0mITH+A68KCTYAvVMdhwNeIOfuRvn+w5SNMw4ol9Hs=";
         # cargoSha256 = lib.fakeSha256;
 
         buildInputs = (with pkgs;
