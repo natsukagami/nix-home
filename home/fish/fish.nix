@@ -38,7 +38,10 @@
     '';
 
     interactiveShellInit = ''
-      set fish_greeting
+      function fish_greeting
+        ${pkgs.imgcat}/bin/imgcat ${./arona.jpg}
+        printf (env LANG=ja_JP date +"ご主人様、お帰りなさい！\n今日は%A、%Y年%m月%d日ですねー！今の時間って、%H時%M分です〜 \n言って言ってご主人様、コンピュターちゃんと何がするつもりでしょーか？〜エヘヘっ\n")
+      end
 
       # Set up an editor alias
       if test -n "$EDITOR"
