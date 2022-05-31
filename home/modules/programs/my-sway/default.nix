@@ -29,6 +29,13 @@ let
     in
     f from;
 
+  screenshotScript = pkgs.writeScriptBin "screenshot" ''
+    #! ${pkgs.fish}/bin/fish
+
+    ${pkgs.grim}/bin/grim -g (${pkgs.slurp}/bin/slurp) - | ${pkgs.wl-clipboard}/bin/wl-copy -t image/png
+  '';
+
+
 in
 {
   imports = [ ./ibus.nix ];
@@ -96,7 +103,6 @@ in
         # Waybar
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
-        { command = "${pkgs.flameshot}/bin/flameshot"; }
         { command = "${config.programs.firefox.package}/bin/firefox"; }
         { command = "${pkgs.discord}/bin/discord"; }
       ];
@@ -114,7 +120,7 @@ in
           "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
           "${mod}+Shift+r" = "mode resize";
           ## Screenshot
-          "Print" = "exec ${pkgs.flameshot}/bin/flameshot gui";
+          "Print" = "exec ${screenshotScript}/bin/screenshot";
           ## Locking
           "${mod}+semicolon" = "exec ${pkgs.swaylock}/bin/swaylock"
             + (if cfg.wallpaper == "" then "" else " -i ${cfg.wallpaper} -s fit")
