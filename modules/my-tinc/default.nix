@@ -10,7 +10,7 @@ let
 in
 {
   imports = [ ./hosts.nix ];
-  
+
   options.services.my-tinc = {
     enable = mkEnableOption "my private tinc cloud configuration";
     rsaPrivateKey = mkOption {
@@ -38,61 +38,63 @@ in
 
   config = mkIf cfg.enable (builtins.seq
     (mkIf (isNull cfg.rsaPrivateKey && isNull cfg.ed25519PrivateKey) (builtins.abort "one of the keys must be defined"))
-    (let
-      networkName = "my-tinc";
+    (
+      let
+        networkName = "my-tinc";
 
-      myHost = builtins.getAttr cfg.hostName hosts;
-      myMeshIp = myHost.subnetAddr;
-    in
-    {
-      # Scripts that set up the tinc services
-      environment.etc = {
-        "tinc/${networkName}/tinc-up".source = pkgs.writeScript "tinc-up-${networkName}" ''
+        myHost = builtins.getAttr cfg.hostName hosts;
+        myMeshIp = myHost.subnetAddr;
+      in
+      {
+        # Scripts that set up the tinc services
+        environment.etc = {
+          "tinc/${networkName}/tinc-up".source = pkgs.writeScript "tinc-up-${networkName}" ''
             #!${pkgs.stdenv.shell}
             ${pkgs.nettools}/bin/ifconfig $INTERFACE ${myMeshIp} netmask 255.255.255.0
-        '';
-        "tinc/${networkName}/tinc-down".source = pkgs.writeScript "tinc-down-${networkName}" ''
+          '';
+          "tinc/${networkName}/tinc-down".source = pkgs.writeScript "tinc-down-${networkName}" ''
             #!${pkgs.stdenv.shell}
             /run/wrappers/bin/sudo ${pkgs.nettools}/bin/ifconfig $INTERFACE down
-        '';
-      };
+          '';
+        };
 
-      # Allow the tinc service to call ifconfig without sudo password.
-      security.sudo.extraRules = [
-        {
-          users    = [ "tinc.${networkName}" ];
-          commands = [
-            {
-              command  = "${pkgs.nettools}/bin/ifconfig";
-              options  = [ "NOPASSWD" ];
-            }
-          ];
-        }
-      ];
+        # Allow the tinc service to call ifconfig without sudo password.
+        security.sudo.extraRules = [
+          {
+            users = [ "tinc.${networkName}" ];
+            commands = [
+              {
+                command = "${pkgs.nettools}/bin/ifconfig";
+                options = [ "NOPASSWD" ];
+              }
+            ];
+          }
+        ];
 
-      # simple interface setup
-      # ----------------------
-      networking.interfaces."tinc.${networkName}".ipv4.addresses = [ { address = myMeshIp; prefixLength = 24; } ];
+        # simple interface setup
+        # ----------------------
+        networking.interfaces."tinc.${networkName}".ipv4.addresses = [{ address = myMeshIp; prefixLength = 24; }];
 
-      # firewall
-      networking.firewall.allowedUDPPorts = [ 655 ];
-      networking.firewall.allowedTCPPorts = [ 655 ];
+        # firewall
+        networking.firewall.allowedUDPPorts = [ 655 ];
+        networking.firewall.allowedTCPPorts = [ 655 ];
 
-      # configure tinc service
-      # ----------------------
-      services.tinc.networks."${networkName}"= {
+        # configure tinc service
+        # ----------------------
+        services.tinc.networks."${networkName}" = {
 
-        name          = cfg.hostName;       # who are we in this network.
+          name = cfg.hostName; # who are we in this network.
 
-        debugLevel    = 3;            # the debug level for journal -u tinc.private
-        chroot        = false;        # otherwise addresses can't be a DNS
-        interfaceType = "tap";        # tun might also work.
+          debugLevel = 3; # the debug level for journal -u tinc.private
+          chroot = false; # otherwise addresses can't be a DNS
+          interfaceType = "tap"; # tun might also work.
 
-        bindToAddress = "* ${toString cfg.bindPort}";
+          bindToAddress = "* ${toString cfg.bindPort}";
 
-        ed25519PrivateKeyFile = cfg.ed25519PrivateKey;
-        rsaPrivateKeyFile = cfg.rsaPrivateKey;
-      };
-    })
+          ed25519PrivateKeyFile = cfg.ed25519PrivateKey;
+          rsaPrivateKeyFile = cfg.rsaPrivateKey;
+        };
+      }
+    )
   );
 }

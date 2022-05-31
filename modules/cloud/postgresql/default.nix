@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... } :
+{ pkgs, config, lib, ... }:
 
 with lib;
 let
@@ -7,7 +7,7 @@ let
   # From a database name, create an "ensureUser"
   # entry with the same name and assign all permissions
   # to that database.
-  userFromDatabase = databaseName : {
+  userFromDatabase = databaseName: {
     name = databaseName;
     ensurePermissions = {
       "DATABASE ${databaseName}" = "ALL PRIVILEGES";
@@ -17,7 +17,7 @@ in
 {
   options.cloud.postgresql.databases = mkOption {
     type = types.listOf types.str;
-    default = [];
+    default = [ ];
     description = ''
       The list of databases to be created.
       An user with the same name

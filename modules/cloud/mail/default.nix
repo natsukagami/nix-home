@@ -341,8 +341,8 @@ in
           ExecStart = "${cfg.package}/bin/maddy ${if cfg.debug then "-debug " else ""}-config ${configFile}";
         };
         reload = ''
-            /bin/kill -USR1 $MAINPID
-            /bin/kill -USR2 $MAINPID
+          /bin/kill -USR1 $MAINPID
+          /bin/kill -USR2 $MAINPID
         '';
       };
     };
