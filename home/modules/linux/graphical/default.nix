@@ -35,6 +35,7 @@ in
       ## CLI stuff
       dex # .desktop file management, startup
       sct # Display color temperature
+      xdg-utils # Open stuff
     ]);
 
     # Cursor
