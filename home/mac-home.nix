@@ -2,7 +2,7 @@
 
 {
   imports = [ ./common.nix ];
-    
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -13,12 +13,11 @@
 
   # Additional packages to be used only on this MacBook.
   home.packages = with pkgs; [
-      anki-bin
+    anki-bin
   ];
 
   # Additional settings for programs
-  programs.fish.shellAliases = {
-  };
+  programs.fish.shellAliases = { };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

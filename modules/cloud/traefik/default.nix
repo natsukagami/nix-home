@@ -1,22 +1,24 @@
-{ pkgs, config, lib, ... } :
+{ pkgs, config, lib, ... }:
 
 with lib;
 let
   # Copied from traefik.nix
   jsonValue = with types;
     let
-      valueType = nullOr (oneOf [
-        bool
-        int
-        float
-        str
-        (lazyAttrsOf valueType)
-        (listOf valueType)
-      ]) // {
+      valueType = nullOr
+        (oneOf [
+          bool
+          int
+          float
+          str
+          (lazyAttrsOf valueType)
+          (listOf valueType)
+        ]) // {
         description = "JSON value";
         emptyValue.value = { };
       };
-    in valueType;
+    in
+    valueType;
 
   cfg = config.cloud.traefik;
 in
@@ -30,7 +32,7 @@ in
 
     config = mkOption {
       type = jsonValue;
-      default = {};
+      default = { };
       description = "The dynamic configuration to be passed to traefik";
     };
 
@@ -40,7 +42,7 @@ in
       description = "The location to read and write the certificates file onto";
     };
   };
-  
+
   config.services.traefik = {
     enable = true;
 
@@ -62,7 +64,7 @@ in
 
       # Logging
       # -------
-      accessLog = {};
+      accessLog = { };
       log.level = "info";
 
       # ACME Automatic SSL

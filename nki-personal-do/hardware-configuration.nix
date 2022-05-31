@@ -6,5 +6,5 @@
   fileSystems."/" = { device = "/dev/vda1"; fsType = "ext4"; };
 
   # swap
-  swapDevices = [ { device = "/var/swapfile"; } ];
+  swapDevices = [{ device = "/var/swapfile"; }];
 }
