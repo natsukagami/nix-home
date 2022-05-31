@@ -104,7 +104,7 @@ in
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
         { command = "${config.programs.firefox.package}/bin/firefox"; }
-        { command = "${pkgs.discord}/bin/discord"; }
+        { command = "${pkgs.unstable.discord}/bin/discord"; }
       ];
 
       ### Keybindings

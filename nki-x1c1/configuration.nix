@@ -14,7 +14,6 @@
       # Some PAM stuff
       ../modules/services/pam/gnome-keyring.nix
       ../modules/services/swaylock.nix
-      ../modules/services/input-remapper.nix
     ];
   # Use the latest kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
