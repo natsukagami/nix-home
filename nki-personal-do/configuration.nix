@@ -67,9 +67,11 @@
   };
 
   # Youmubot
-  sops.secrets.youmubot-env = {};
+  sops.secrets.youmubot-env = { };
   services.youmubot = {
     enable = true;
     envFile = config.sops.secrets.youmubot-env.path;
   };
+
+  system.stateVersion = "21.11";
 }
