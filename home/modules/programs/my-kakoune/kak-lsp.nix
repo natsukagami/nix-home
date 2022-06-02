@@ -62,6 +62,7 @@ let
           command = "haskell-language-server-wrapper";
           filetypes = [ "haskell" ];
           roots = [ "Setup.hs" "stack.yaml" "*.cabal" "package.yaml" ];
+          settings_section = "haskell";
         };
         html = {
           args = [ "--stdio" ];
