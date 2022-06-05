@@ -69,7 +69,7 @@ with lib;
 
     # Development
     "Developer" = 640199958;
-    "Xcode" = 497799835;
+    # "Xcode" = 497799835;
 
     # Chat
     "Messenger" = 1480068668;

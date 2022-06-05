@@ -48,8 +48,6 @@
     ripgrep
     fossil
     openssh
-    ## Blog generator
-    hugo
     ## File Manager
     nnn
     ## PDF Processors
