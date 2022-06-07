@@ -5,6 +5,8 @@
     ./tide/nix-shell.nix
   ];
 
+  home.packages = [ pkgs.timg ];
+
   programs.fish = {
     enable = true;
     package = pkgs.unstable.fish;
@@ -33,14 +35,14 @@
 
       # Gnome-keyring startup
       if type -q gnome-keyring-daemon
-        set -x (gnome-keyring-daemon --start | string split "=")
+        set -x (gnome-keyring-daemon | string split "=")
       end
     '';
 
     interactiveShellInit = ''
       function fish_greeting
-        ${pkgs.imgcat}/bin/imgcat ${./arona.jpg}
-        printf (env LANG=ja_JP date +"ご主人様、お帰りなさい！\n今日は%A、%Y年%m月%d日ですねー！今の時間って、%H時%M分です〜 \n言って言ってご主人様、コンピュターちゃんと何がするつもりでしょーか？〜エヘヘっ\n")
+        ${pkgs.timg}/bin/timg ${./arona.jpg}
+        printf (env LANG=ja_JP.UTF-8 date +"ご主人様、お帰りなさい！\n今日は%A、%Y年%m月%d日ですねー！今の時間って、%H時%M分です〜 \n言って言ってご主人様、コンピュターちゃんと何がするつもりでしょーか？〜エヘヘっ\n")
       end
 
       # Set up an editor alias
