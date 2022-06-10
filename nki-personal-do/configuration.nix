@@ -57,7 +57,6 @@
   };
   cloud.traefik.certsDumper.enable = true;
   cloud.conduit.enable = true;
-  cloud.conduit.allow_registration = true;
 
   # Mail
   sops.secrets.mail-users = { owner = "maddy"; };
