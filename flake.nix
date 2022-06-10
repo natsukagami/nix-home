@@ -21,11 +21,10 @@
     youmubot.url = "github:natsukagami/youmubot";
     youmubot.inputs.nixpkgs.follows = "nixpkgs";
     nix-gaming.url = github:fufexan/nix-gaming;
-    nix-gaming.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---
     # DEPLOYMENT ONLY! secrets
-    secrets.url = "git+ssh://git@github.com/natsukagami/nix-deploy-secrets";
+    secrets.url = "git+https://github.com/natsukagami/nix-deploy-secrets";
   };
 
   outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, nur, ... }@inputs:

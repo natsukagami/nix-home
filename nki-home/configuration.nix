@@ -176,7 +176,6 @@
   };
 
   # List services that you want to enable:
-  services.gnome.gnome-keyring.enable = true;
   nki.services.edns.enable = true;
   nki.services.edns.ipv6 = true;
   services.flatpak.enable = true;
