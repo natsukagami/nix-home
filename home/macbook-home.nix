@@ -20,6 +20,7 @@
   programs.fish.shellAliases = {
     brew64 = "arch -x86_64 /usr/local/bin/brew";
   };
+  nki.programs.kitty.background = ./images/chise-bg.png;
 
   home.sessionPath = [
     # Personal .bin

@@ -53,7 +53,16 @@
       end
 
       # Source iTerm2 integration
-      test -e ~/.iterm2_shell_integration.fish && source ~/.iterm2_shell_integration.fish
+      if test -e ~/.iterm2_shell_integration.fish; and test $__CFBundleIdentifier = "com.googlecode.iterm2"
+        source ~/.iterm2_shell_integration.fish
+      end
+
+      # Source Kitty integration
+      if set -q KITTY_INSTALLATION_DIR
+        set --global KITTY_SHELL_INTEGRATION enabled
+        source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
+        set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
+      end
 
       # Enable vi keybindings
       fish_vi_key_bindings

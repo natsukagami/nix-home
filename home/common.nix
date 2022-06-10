@@ -6,6 +6,7 @@
     ./fish/fish.nix
     ./modules/programs/my-broot.nix
     ./modules/programs/my-sway
+    ./modules/programs/my-kitty
     ./common-linux.nix
   ];
 
@@ -73,6 +74,8 @@
     # Sometimes we want to install custom scripts here
     "~/.local/bin"
   ];
+
+  nki.programs.kitty.enable = true;
 
   # Programs
   programs = {
