@@ -355,11 +355,11 @@
         "rev": "f8320c88e4c073f18e49abeb60091c1c73dd0d9a",
         "revCount": 2,
         "type": "git",
-        "url": "https://github.com/natsukagami/nix-deploy-secrets"
+        "url": "ssh://git@github.com/natsukagami/nix-deploy-secrets"
       },
       "original": {
         "type": "git",
-        "url": "https://github.com/natsukagami/nix-deploy-secrets"
+        "url": "ssh://git@github.com/natsukagami/nix-deploy-secrets"
       }
     },
     "sops-nix": {

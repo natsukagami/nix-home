@@ -24,7 +24,7 @@
 
     # ---
     # DEPLOYMENT ONLY! secrets
-    secrets.url = "git+https://github.com/natsukagami/nix-deploy-secrets";
+    secrets.url = "git+ssh://git@github.com/natsukagami/nix-deploy-secrets";
   };
 
   outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, nur, ... }@inputs:
