@@ -7,6 +7,7 @@
     ../modules/cloud/traefik
     ../modules/cloud/bitwarden
     ../modules/cloud/mail
+    ../modules/cloud/conduit
   ];
 
   boot.cleanTmpDir = true;
@@ -55,6 +56,8 @@
     usersFile = config.sops.secrets.traefik-dashboard-users.path;
   };
   cloud.traefik.certsDumper.enable = true;
+  cloud.conduit.enable = true;
+  cloud.conduit.allow_registration = true;
 
   # Mail
   sops.secrets.mail-users = { owner = "maddy"; };
