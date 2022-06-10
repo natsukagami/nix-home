@@ -22,6 +22,11 @@ with lib;
       type = types.bool;
       default = false;
     };
+
+    well-known_port = mkOption {
+      type = types.int;
+      default = 6166;
+    };
   };
 
   config.services.matrix-conduit = mkIf cfg.enable {
@@ -34,8 +39,25 @@ with lib;
     };
   };
 
-  config.cloud.traefik.hosts.conduit = mkIf cfg.enable {
-    inherit (cfg) port host;
+  # Serving .well-known files
+  config.services.nginx = mkIf cfg.enable {
+    enable = true;
+    virtualHosts.conduit-well-kwown = {
+      listen = [{ addr = "127.0.0.1"; port = cfg.well-known_port; }];
+      root = pkgs.writeTextDir ".well-known/matrix/server" ''
+        {
+              "m.server": "${cfg.host}:443"
+        }
+      '';
+    };
+  };
+
+  config.cloud.traefik.hosts = mkIf cfg.enable {
+    conduit = { inherit (cfg) port host; };
+    conduit-well-kwown = {
+      port = cfg.well-known_port;
+      filter = "Host(`${cfg.host}`) && PathPrefix(`/.well-known`)";
+    };
   };
 }
 
