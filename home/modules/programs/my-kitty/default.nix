@@ -43,7 +43,7 @@ with lib;
             background_opacity = "0.9";
             dynamic_background_opacity = true;
           } else {
-            background_image = cfg.background;
+            background_image = "${cfg.background}";
             background_image_layout = "scaled";
             background_tint = "0.85";
           };
