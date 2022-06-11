@@ -58,6 +58,13 @@
   cloud.traefik.certsDumper.enable = true;
   cloud.conduit.enable = true;
 
+  # Navidrome back to the PC
+  cloud.traefik.hosts.navidrome = {
+    host = "navidrome.nkagami.me";
+    port = 4533;
+    localHost = "11.0.0.2";
+  };
+
   # Mail
   sops.secrets.mail-users = { owner = "maddy"; };
   cloud.mail = {

@@ -188,7 +188,7 @@
   services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [ 22 4533 ];
   networking.firewall.allowedUDPPorts = [ 22 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
@@ -231,7 +231,6 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.05"; # Did you read the comment?
-  system.autoUpgrade.channel = "https://nixos.org/channels/nixos-21.05/";
 
   # tinc network
   sops.secrets."tinc/ed25519-private-key" = { };
@@ -249,5 +248,13 @@
   hardware.opengl.driSupport = true;
   # For 32 bit applications
   hardware.opengl.driSupport32Bit = true;
+
+  # Music server
+  services.navidrome.enable = true;
+  services.navidrome.settings = {
+    Address = "11.0.0.2";
+    MusicFolder = "/mnt/Stuff/Music";
+  };
+  systemd.services.navidrome.serviceConfig.BindReadOnlyPaths = lib.mkAfter [ "/etc" ];
 }
 

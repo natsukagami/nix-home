@@ -38,6 +38,11 @@ let
         default = null;
         description = "The filter syntax for the router. Overrides `host` and `path` if provided";
       };
+      localHost = mkOption {
+        type = types.nullOr types.str;
+        description = "The local host of the service. Must be an IP if protocol is TCP. Default to localhost/127.0.0.1";
+        default = null;
+      };
       port = mkOption {
         type = types.port;
         description = "The port that the service is listening on";
@@ -91,9 +96,18 @@ let
         else abort "Cannot have middlewares on tcp routers"
       );
       services."${name}-service".loadBalancer.servers = [
-        (if host.protocol == "http" then
-          { url = "http://localhost:${toString host.port}"; }
-        else { address = "127.0.0.1:${toString host.port}"; }
+        (
+          let
+            localhost =
+              if isNull host.localHost then
+                (
+                  if host.protocol == "http" then "localhost"
+                  else "127.0.0.1"
+                ) else host.localHost;
+          in
+          if host.protocol == "http" then
+            { url = "http://${localhost}:${toString host.port}"; }
+          else { address = "${localhost}:${toString host.port}"; }
         )
       ];
     } // (if (host.middlewares != [ ]) then {
