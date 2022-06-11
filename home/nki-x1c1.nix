@@ -34,6 +34,7 @@
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 14.0;
+  programs.my-sway.terminal = "${config.programs.kitty.package}/bin/kitty";
   # Keyboard support
   wayland.windowManager.sway.config = {
     input."1278:34:HHKB-Hybrid_3_Keyboard".xkb_layout = "jp";
@@ -41,6 +42,11 @@
       xkb_options = "ctrl:swapcaps";
       xkb_layout = "us";
     };
+  };
+  # Kitty
+  nki.programs.kitty = {
+    enable = true;
+    fontSize = 16;
   };
 
   # Multiple screen setup

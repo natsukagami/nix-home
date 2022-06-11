@@ -37,27 +37,27 @@ with lib; {
         (x: attrsets.nameValuePair "${cmd}+${toString x}" "goto_tab ${toString x}")
         (lists.range 1 9));
 
-    extraConfig = mkAfter ''
+    settings = {
       # Tab settings
-      tab_bar_edge top
-      tab_bar_style powerline
-      tab_powerline_style slanted
-      tab_title_template "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.lightgreen}{fmt.bold}[{index}]{fmt.nobold} {fmt.fg.tab}{title}"
-      active_tab_title_template "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title}"
-      tab_bar_background #555
-      active_tab_font_style normal
+      tab_bar_edge = "top";
+      tab_bar_style = "powerline";
+      tab_powerline_style = "slanted";
+      tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.lightgreen}{fmt.bold}[{index}]{fmt.nobold} {fmt.fg.tab}{title}";
+      active_tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.tab}{title}";
+      tab_bar_background = "#555";
+      active_tab_font_style = "normal";
 
       # Layouts
       ## Mouse focus
-      focus_follows_mouse yes
+      focus_follows_mouse = true;
       ## Layout options
       # Layouts
-      enabled_layouts Splits
-      inactive_text_alpha 0.65
+      enabled_layouts = "Splits";
+      inactive_text_alpha = "0.65";
 
       # MacOS specific
-      macos_option_as_alt = left
-    '';
+      macos_option_as_alt = "left";
+    };
   };
 }
 
