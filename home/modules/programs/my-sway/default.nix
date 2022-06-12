@@ -59,7 +59,7 @@ in
     terminal = mkOption {
       type = types.str;
       description = "The command to the terminal emulator to be used";
-      default = "${pkgs.alacritty}/bin/alacritty";
+      default = "${config.programs.kitty.package}/bin/kitty";
     };
 
     enableLaptopBars = mkOption {

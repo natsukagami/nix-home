@@ -41,6 +41,7 @@
     mode = "1920x1080@144Hz";
     adaptive_sync = "on";
   };
+  nki.programs.kitty.fontSize = 16;
   # linux.graphical.x11.hidpi = true;
   # linux.graphical.x11.enablei3 = true;
 
