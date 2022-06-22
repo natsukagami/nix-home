@@ -32,11 +32,6 @@
       if test -e /opt/homebrew/bin/brew
         /opt/homebrew/bin/brew shellenv | source
       end
-
-      # Gnome-keyring startup
-      if type -q gnome-keyring-daemon
-        set -x (gnome-keyring-daemon | string split "=")
-      end
     '';
 
     interactiveShellInit = ''
