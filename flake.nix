@@ -29,15 +29,29 @@
 
   outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, nur, ... }@inputs:
     let
-      overlayForSystem = import ./overlay.nix inputs;
+      overlays = import ./overlay.nix inputs;
 
-      nixpkgsAsRegistry = { ... }: {
-        nix.registry.nixpkgs.flake = nixpkgs;
+      pkgs = system: import nixpkgs { inherit system overlays; };
+      pkgs-unstable = system: import nixpkgs-unstable { inherit system overlays; };
+
+      nixpkgsAsRegistry_ = stable: { ... }: {
+        nix.registry.nixpkgs.flake = stable;
         nix.registry.nixpkgs-unstable.flake = nixpkgs-unstable;
         nix.nixPath = [
           "nixpkgs=${nixpkgs}"
           "nixpkgs-unstable=${nixpkgs-unstable}"
           "/nix/var/nix/profiles/per-user/root/channels"
+        ];
+      };
+      nixpkgsAsRegistry = nixpkgsAsRegistry_ nixpkgs;
+
+      haskellDotNix = { ... }: {
+        # Binary Cache for Haskell.nix  
+        nix.binaryCachePublicKeys = [
+          "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+        ];
+        nix.binaryCaches = [
+          "https://cache.iog.io"
         ];
       };
 
@@ -63,31 +77,26 @@
     in
     {
       # MacBook configuration: nix-darwin + home-manager
-      darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem {
+      darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem rec {
         system = "aarch64-darwin";
+        pkgs = pkgs-unstable system;
         modules = [
           ./darwin/configuration.nix
           # Set nix path
-          ({ ... }: {
-            nix.nixPath = [
-              "nixpkgs=${nixpkgs-unstable}"
-              "nixpkgs-unstable=${nixpkgs-unstable}"
-              "/nix/var/nix/profiles/per-user/root/channels"
-              "\$HOME/.nix-defexpr/channels"
-            ];
-          })
+          haskellDotNix
+          (nixpkgsAsRegistry_ nixpkgs-unstable)
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.nki = import ./home/macbook-home.nix;
           }
-          (overlayForSystem "aarch64-darwin")
         ];
       };
 
       # Home configuration
-      nixosConfigurations."nki-home" = nixpkgs.lib.nixosSystem {
+      nixosConfigurations."nki-home" = nixpkgs.lib.nixosSystem rec {
+        pkgs = pkgs system;
         system = "x86_64-linux";
         modules = [
           ./modules/my-tinc
@@ -102,11 +111,11 @@
             home-manager.users.nki = import ./home/kagami-pc-home.nix;
           }
           inputs.secrets.nixosModules.x86_64-linux.common
-          (overlayForSystem "x86_64-linux")
         ];
       };
       # x1c1 configuration
-      nixosConfigurations."nki-x1c1" = nixpkgs.lib.nixosSystem {
+      nixosConfigurations."nki-x1c1" = nixpkgs.lib.nixosSystem rec {
+        pkgs = pkgs system;
         system = "x86_64-linux";
         modules = [
           ./modules/my-tinc
@@ -119,12 +128,12 @@
             home-manager.useUserPackages = true;
             home-manager.users.nki = import ./home/nki-x1c1.nix;
           }
-          (overlayForSystem "x86_64-linux")
         ];
       };
 
       # DigitalOcean node
-      nixosConfigurations."nki-personal-do" = nixpkgs.lib.nixosSystem {
+      nixosConfigurations."nki-personal-do" = nixpkgs.lib.nixosSystem rec {
+        pkgs = pkgs system;
         system = "x86_64-linux";
         modules = [
           ./modules/my-tinc
@@ -132,7 +141,6 @@
           sops-nix.nixosModules.sops
           ./nki-personal-do/configuration.nix
           inputs.secrets.nixosModules.x86_64-linux.nki-personal-do
-          (overlayForSystem "x86_64-linux")
         ];
       };
       deploy.nodes."nki-personal-do" = {

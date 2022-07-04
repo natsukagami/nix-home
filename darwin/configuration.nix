@@ -16,7 +16,7 @@
 
   # Auto upgrade nix package and the daemon service.
   # services.nix-daemon.enable = true;
-  nix.package = pkgs.nixUnstable;
+  nix.package = pkgs.nixFlakes;
 
   # Create /etc/bashrc that loads the nix-darwin environment.
   programs.zsh.enable = true; # default shell on catalina
@@ -24,9 +24,6 @@
 
   ## Networking related settings
   networking.hostName = "nki-macbook";
-
-  ## Programs
-  nixpkgs.config.allowUnfree = true;
 
   environment.variables = {
     EDITOR = ""; # don't set it by default

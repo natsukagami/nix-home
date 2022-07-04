@@ -16,27 +16,12 @@ with lib;
   ];
 
   homebrew.brews = [
-    # Base libraries
-    "coreutils"
-
-    # Compilers and Language Interpreters
-    "elm"
-    "llvm"
-    "luajit-openresty"
-    "node"
-    "perl"
-    "ruby@2.7"
-
     # CLI tools
     "pinentry-mac" # UI for Pin Entry on gpg Mac
 
     # U2F
     "pam-u2f"
-  ] ++ (optionals (pkgs.system == "aarch64-darwin") [
-    # Because python on Nix is a bit abababa
-    "python@3.9"
-    "scipy"
-  ]);
+  ];
 
   homebrew.casks = [
     "anki"
