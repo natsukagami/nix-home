@@ -8,6 +8,11 @@ with lib;
   options.cloud.conduit = {
     enable = mkEnableOption "Enable the conduit server";
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.matrix-conduit;
+    };
+
     host = mkOption {
       type = types.str;
       default = "m.nkagami.me";
@@ -30,6 +35,7 @@ with lib;
   };
 
   config.services.matrix-conduit = mkIf cfg.enable {
+    inherit (cfg) package;
     enable = true;
 
     settings.global = {
