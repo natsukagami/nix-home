@@ -11,6 +11,9 @@ let
   };
   overlay-imported = final: prev: {
     rnix-lsp = inputs.rnix-lsp.defaultPackage."${prev.system}";
+
+    # A list of source-style inputs.
+    sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
   };
 
   overlay-versioning = final: prev: {
@@ -92,6 +95,5 @@ in
   nur.overlay
 
   # Bug fixes
-  (import ./overlays/bugfixes/delta)
 ] # we assign the overlay created before to the overlays of nixpkgs.
 

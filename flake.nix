@@ -22,6 +22,12 @@
     youmubot.inputs.nixpkgs.follows = "nixpkgs";
     nix-gaming.url = github:fufexan/nix-gaming;
 
+    # --- Sources
+    kakoune.url = github:mawww/kakoune;
+    kakoune.flake = false;
+    kak-lsp.url = github:kak-lsp/kak-lsp;
+    kak-lsp.flake = false;
+
     # ---
     # DEPLOYMENT ONLY! secrets
     secrets.url = "git+ssh://git@github.com/natsukagami/nix-deploy-secrets";
