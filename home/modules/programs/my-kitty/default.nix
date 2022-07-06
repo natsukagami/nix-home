@@ -48,13 +48,19 @@ with lib;
             background_tint = "0.85";
           };
       in
-      background // {
-        # Scrollback (128MBs)
-        scrollback_pager_history_size = 128;
+      mkMerge [
+        background
+        {
+          # Scrollback (128MBs)
+          scrollback_pager_history_size = 128;
 
-        # Disable Shell integration (leave it for Nix)
-        shell_integration = "no-rc";
-      };
+          # Disable Shell integration (leave it for Nix)
+          shell_integration = "no-rc";
+
+          # Allow remote control (for kakoune integration)
+          allow_remote_control = true;
+        }
+      ];
 
     keybindings = { };
   };

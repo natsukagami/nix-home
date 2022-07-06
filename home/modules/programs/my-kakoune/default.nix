@@ -59,8 +59,8 @@ in
       (builtins.listToAttrs (map kakouneAutoload ([
         # include the original autoload files
         {
-          name = "rc";
-          src = "${cfg.package}/share/kak/autoload";
+          name = "00-rc";
+          src = "${cfg.package}/share/kak/autoload/rc";
         }
       ] ++ cfg.autoload)));
   };

@@ -46,13 +46,6 @@ set global grepcmd "rg --line-number --no-column --no-heading --color=never ''"
 # }
 # map global user t -docstring "Open a side terminal on the current directory" ' :iterm-terminal-horizontal fish<ret>'
 
-# fzf.kak
-require-module fzf
-# set global fzf_terminal_command 'iterm-terminal-horizontal kak -c %val{session} -e "%arg{@}"'
-# set global fzf_grep_command 'rg'
-set global fzf_highlight_command 'bat --style=plain --theme=GitHub --color=always {}'
-map global user f -docstring "FZF mode" ': fzf-mode<ret>'
-
 # Comment line and block
 map global normal <#> ': comment-line<ret>'
 map global normal <a-#> ': comment-block<ret>'

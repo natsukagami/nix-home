@@ -58,9 +58,18 @@ let
           maintainers = [ maintainers.spacekookie ];
         };
       };
+
+  activationScript = text: pkgs.writeText "config.kak" ''
+    hook global KakBegin .* %{
+      ${text}
+    }
+  '';
 in
 {
   imports = [ ../modules/programs/my-kakoune ./kaktex.nix ];
+
+  # ctags for peneira
+  home.packages = [ pkgs.universal-ctags ];
 
   # Enable the kakoune package.
   programs.my-kakoune.enable = true;
@@ -120,13 +129,59 @@ in
 
     # Plugins
     {
-      name = "fzf.kak";
+      name = "01-luar";
       src = pkgs.fetchFromGitHub {
-        owner = "andreyorst";
-        repo = "fzf.kak";
-        rev = "68f21eb78638e5a55027f11aa6cbbaebef90c6fb";
-        sha256 = "12zfvyxqgy18l96sg2xng20vfm6b9py6bxmx1rbpbpxr8szknyh6";
+        owner = "gustavo-hms";
+        repo = "luar";
+        rev = "2f430316f8fc4d35db6c93165e2e77dc9f3d0450";
+        sha256 = "sha256-vHn/V3sfzaxaxF8OpA5jPEuPstOVwOiQrogdSGtT6X4=";
       };
+    }
+    {
+      name = "02-luar-config.kak";
+      src = activationScript ''
+        # Enable luar
+        require-module luar
+        # Use luajit
+        set-option global luar_interpreter ${pkgs.luajit}/bin/luajit
+      '';
+    }
+    {
+      name = "03-peneira";
+      src = pkgs.fetchFromGitHub {
+        owner = "natsukagami";
+        repo = "peneira";
+        rev = "743b9971472853a752475e7c070ce99089c6840c";
+        sha256 = "sha256-E4ndbF9YC1p0KrvSuGgwmG1Y2IGTuGKJo/AuMixhzlM=";
+      };
+    }
+    {
+      name = "04-peneira-config.kak";
+      src = activationScript ''
+        require-module peneira
+
+        # Change selection color
+        set-face global PeneiraSelected @PrimarySelection
+
+        # Buffers list
+        define-command -hidden peneira-buffers %{
+            peneira 'buffers: ' %{ printf '%s\n' $kak_quoted_buflist } %{
+                buffer %arg{1}
+            }
+        }
+
+        # A peneira menu
+        declare-user-mode fuzzy-match-menu
+
+        map -docstring "Switch to buffer"                            global fuzzy-match-menu b ": peneira-buffers<ret>"
+        map -docstring "Symbols"                                     global fuzzy-match-menu s ": peneira-symbols<ret>"
+        map -docstring "Lines"                                       global fuzzy-match-menu l ": peneira-lines<ret>"
+        map -docstring "Files in project"                            global fuzzy-match-menu f ": peneira-files<ret>"
+        map -docstring "Files in currently opening file's directory" global fuzzy-match-menu F ": peneira-local-files<ret>"
+
+        # Bind menu to user mode
+        map -docstring "Fuzzy matching" global user f ": enter-user-mode fuzzy-match-menu<ret>"
+      '';
     }
     {
       name = "01-cargo.kak";
