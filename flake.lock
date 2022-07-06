@@ -108,6 +108,38 @@
         "type": "github"
       }
     },
+    "kak-lsp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1657090719,
+        "narHash": "sha256-PzI8CzfGSeNJNvHYc9O32/WZ4EJJnMsIpYTYKtVWkw8=",
+        "owner": "kak-lsp",
+        "repo": "kak-lsp",
+        "rev": "b29989a3056914d1b62eb62cd33495ff389679bd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kak-lsp",
+        "repo": "kak-lsp",
+        "type": "github"
+      }
+    },
+    "kakoune": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1656974620,
+        "narHash": "sha256-OQXbxda3GmfdRA19+zlKvEWnEKtIKVRtoijsqtHg4FY=",
+        "owner": "mawww",
+        "repo": "kakoune",
+        "rev": "f3cb2e434004a718d1225cb0d74c694e66a7248b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mawww",
+        "repo": "kakoune",
+        "type": "github"
+      }
+    },
     "naersk": {
       "inputs": {
         "nixpkgs": [
@@ -338,6 +370,8 @@
         "deploy-rs": "deploy-rs",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
+        "kak-lsp": "kak-lsp",
+        "kakoune": "kakoune",
         "nix-gaming": "nix-gaming",
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-unstable": "nixpkgs-unstable",

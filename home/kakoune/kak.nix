@@ -2,19 +2,10 @@
 
 let
   kakounePkg =
-    let
-      rev = "5c6238ef113da8c2844ff9bcfa27c87e3473c150";
-    in
     pkgs.kakoune.override {
       kakoune = pkgs.kakoune-unwrapped.overrideAttrs (oldAttrs: {
-        version = "r${builtins.substring 0 6 rev}";
-        src = pkgs.fetchFromGitHub {
-          repo = "kakoune";
-          owner = "mawww";
-          rev = rev;
-          sha256 = "sha256-ogjeUcOKvX3Dd7PG2jiyHkAzbzFidXmLIeN5jaifMvc=";
-          # sha256 = lib.fakeSha256;
-        };
+        version = "r${builtins.substring 0 6 pkgs.sources.kakoune.rev}";
+        src = pkgs.sources.kakoune;
       });
     };
 
@@ -26,25 +17,14 @@ let
   }) + "/evince_synctex.py";
 
   kak-lsp =
-    let
-      rev = "v12.2.1";
-      # version = "r${builtins.substring 0 6 rev}";
-      version = rev;
-    in
     pkgs.unstable.rustPlatform.buildRustPackage
       rec {
-        inherit rev version;
         pname = "kak-lsp";
+        version = "r${builtins.substring 0 6 pkgs.sources.kak-lsp.rev}";
 
-        src = pkgs.fetchFromGitHub {
-          owner = pname;
-          repo = pname;
-          rev = rev;
-          sha256 = "sha256-lKlHEJnA4GYS9oda/6cZPe8IW3Ud9KhDT3z651X0PrA=";
-          # sha256 = lib.fakeSha256;
-        };
+        src = pkgs.sources.kak-lsp;
 
-        cargoSha256 = "sha256-Z0mITH+A68KCTYAvVMdhwNeIOfuRvn+w5SNMw4ol9Hs=";
+        cargoSha256 = "sha256-QmAkO8iDoOI1AHyCjFVVmXlZWo/lMd01k5/VY1xdTkI=";
         # cargoSha256 = lib.fakeSha256;
 
         buildInputs = (with pkgs;
