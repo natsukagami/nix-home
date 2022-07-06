@@ -11,6 +11,11 @@ with lib;
   options.nki.programs.kitty = {
     enable = mkEnableOption "Enable kitty";
 
+    package = mkOption {
+      type = types.package;
+      default = pkgs.kitty;
+    };
+
     # font
     fontSize = mkOption {
       type = types.int;
@@ -28,6 +33,8 @@ with lib;
 
   config.programs.kitty = mkIf cfg.enable {
     enable = true;
+
+    package = cfg.package;
 
     font.package = pkgs.fantasque-sans-mono;
     font.name = "Fantasque Sans Mono";

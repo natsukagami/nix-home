@@ -170,12 +170,22 @@ in
             }
         }
 
+        # Grep in the current location
+        define-command peneira-grep %{
+          peneira 'line: ' "rg -n ." %{
+            lua %arg{1} %{
+                local file, line = arg[1]:match("([^:]+):(%d+):")
+                kak.edit(file, line)
+            }
+        } 
+
         # A peneira menu
         declare-user-mode fuzzy-match-menu
 
         map -docstring "Switch to buffer"                            global fuzzy-match-menu b ": peneira-buffers<ret>"
         map -docstring "Symbols"                                     global fuzzy-match-menu s ": peneira-symbols<ret>"
         map -docstring "Lines"                                       global fuzzy-match-menu l ": peneira-lines<ret>"
+        map -docstring "Lines in the current directory"              global fuzzy-match-menu g ": peneira-grep<ret>"
         map -docstring "Files in project"                            global fuzzy-match-menu f ": peneira-files<ret>"
         map -docstring "Files in currently opening file's directory" global fuzzy-match-menu F ": peneira-local-files<ret>"
 
