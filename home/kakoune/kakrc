@@ -64,12 +64,12 @@ define-command -params 0 -docstring "Copy line down" copyline %{
     execute-keys -draft 'xy'%val{count}'P'
 }
 map global normal <+> -docstring "Copy line down" ': copyline<ret>'
-define-command -params 0 -docstring "Delete current character" delete-one %{
+define-command -params 0 -docstring "Delete current pair of brackets" delete-current-brackets %{
     execute-keys 'm<a-:>'
     execute-keys -draft '<a-S>d'
     execute-keys 'H'
 }
-map global normal D ": delete-one<ret>"
+map global normal D ": delete-current-brackets<ret>"
 
 # Disable write-to
 # unalias global w
@@ -125,7 +125,7 @@ hook global WinSetOption filetype=(rust) %{
     lsp-inlay-hints-enable window
 }
 
-hook global WinSetOption filetype=(rust|go|fsharp) %{
+hook global WinSetOption filetype=(rust|go|fsharp|haskell) %{
   hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
   hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
   hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens

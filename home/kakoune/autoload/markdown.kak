@@ -9,7 +9,7 @@ map -docstring "Toggle the checkboxes on the same line" global markdown-menu t "
 
 define-command -hidden markdown-toggle-checkbox %{
     try %{
-        execute-keys -draft "<a-x>s^\s*- \[( |x)\]<ret>h: markdown-toggle-checkbox-selections<ret>"
+        execute-keys -draft "xs^\s*- \[( |x)\]<ret>h: markdown-toggle-checkbox-selections<ret>"
     }
 }
 
