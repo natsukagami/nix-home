@@ -42,6 +42,16 @@
     adaptive_sync = "on";
   };
   nki.programs.kitty.fontSize = 16;
+
+  # Yellow light!
+  services.wlsunset = {
+    enable = true;
+    # Waterloo
+    latitude = "43.3";
+    longitude = "-80.3";
+  };
+
+
   # linux.graphical.x11.hidpi = true;
   # linux.graphical.x11.enablei3 = true;
 
