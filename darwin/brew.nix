@@ -45,7 +45,7 @@ with lib;
     "Refined GitHub" = 1519867270;
 
     # Productivity
-    "GoodNotes" = 1444383602;
+    # "GoodNotes" = 1444383602;
     "Amphetamine" = 937984704; # Turns off auto display dimming and sleep for some time
     "Session Pal" = 1515213004;
     "Flow" = 1423210932;
