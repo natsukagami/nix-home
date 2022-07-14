@@ -31,8 +31,8 @@
     let
       overlays = import ./overlay.nix inputs;
 
-      pkgs = system: import nixpkgs { inherit system overlays; };
-      pkgs-unstable = system: import nixpkgs-unstable { inherit system overlays; };
+      pkgs' = system: import nixpkgs { inherit system overlays; config.allowUnfree = true; };
+      pkgs-unstable = system: import nixpkgs-unstable { inherit system overlays; config.allowUnfree = true; };
 
       nixpkgsAsRegistry_ = stable: { ... }: {
         nix.registry.nixpkgs.flake = stable;
@@ -96,8 +96,8 @@
 
       # Home configuration
       nixosConfigurations."nki-home" = nixpkgs.lib.nixosSystem rec {
-        pkgs = pkgs system;
         system = "x86_64-linux";
+        pkgs = pkgs' system;
         modules = [
           ./modules/my-tinc
           sops-nix.nixosModules.sops
@@ -115,7 +115,7 @@
       };
       # x1c1 configuration
       nixosConfigurations."nki-x1c1" = nixpkgs.lib.nixosSystem rec {
-        pkgs = pkgs system;
+        pkgs = pkgs' system;
         system = "x86_64-linux";
         modules = [
           ./modules/my-tinc
@@ -133,7 +133,7 @@
 
       # DigitalOcean node
       nixosConfigurations."nki-personal-do" = nixpkgs.lib.nixosSystem rec {
-        pkgs = pkgs system;
+        pkgs = pkgs' system;
         system = "x86_64-linux";
         modules = [
           ./modules/my-tinc
