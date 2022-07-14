@@ -57,6 +57,9 @@
         set --global KITTY_SHELL_INTEGRATION enabled
         source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
         set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
+
+        # Add fish to PATH if installed as a MacOS App
+        test -e $KITTY_INSTALLATION_DIR/../../MacOS && set -x PATH $PATH "$KITTY_INSTALLATION_DIR/../../MacOS"
       end
 
       # Enable vi keybindings
