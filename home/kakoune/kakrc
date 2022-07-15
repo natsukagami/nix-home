@@ -125,7 +125,7 @@ hook global WinSetOption filetype=(rust) %{
     lsp-inlay-hints-enable window
 }
 
-hook global WinSetOption filetype=(rust|go|fsharp|haskell) %{
+hook global WinSetOption filetype=(rust|go|fsharp) %{
   hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
   hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
   hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
