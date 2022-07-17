@@ -24,7 +24,7 @@ let
 
         src = pkgs.sources.kak-lsp;
 
-        cargoSha256 = "sha256-QmAkO8iDoOI1AHyCjFVVmXlZWo/lMd01k5/VY1xdTkI=";
+        cargoSha256 = "sha256-TIsuHHFNne79cFo6os6NgT61YMbMV/fKHta2qPRrRkU=";
         # cargoSha256 = lib.fakeSha256;
 
         buildInputs = (with pkgs;

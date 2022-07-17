@@ -111,11 +111,11 @@
     "kak-lsp": {
       "flake": false,
       "locked": {
-        "lastModified": 1657090719,
-        "narHash": "sha256-PzI8CzfGSeNJNvHYc9O32/WZ4EJJnMsIpYTYKtVWkw8=",
+        "lastModified": 1657872964,
+        "narHash": "sha256-Nl/CPI/59GpNBzw8ZgT1rWPt8IFumT/IuFtBDF4QtUI=",
         "owner": "kak-lsp",
         "repo": "kak-lsp",
-        "rev": "b29989a3056914d1b62eb62cd33495ff389679bd",
+        "rev": "8d00dafa230574be935e5295ebb2f9f28c51c650",
         "type": "github"
       },
       "original": {
@@ -127,11 +127,11 @@
     "kakoune": {
       "flake": false,
       "locked": {
-        "lastModified": 1656974620,
-        "narHash": "sha256-OQXbxda3GmfdRA19+zlKvEWnEKtIKVRtoijsqtHg4FY=",
+        "lastModified": 1657679054,
+        "narHash": "sha256-qDzwNsKxDXBaTAU+A0+oT/94sZHFp3cMTVPhv2rcajo=",
         "owner": "mawww",
         "repo": "kakoune",
-        "rev": "f3cb2e434004a718d1225cb0d74c694e66a7248b",
+        "rev": "c7fbf1f3905f77f136e898479352e590787434d2",
         "type": "github"
       },
       "original": {
