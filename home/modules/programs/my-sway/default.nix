@@ -326,7 +326,7 @@ in
           border: none;
           border-radius: 0;
           font-family: IBM Plex Mono,'Font Awesome 5', 'SFNS Display',  Helvetica, Arial, sans-serif;
-          font-size: 13px;
+          font-size: ${toString cfg.fontSize}px;
           min-height: 0;
       }
 

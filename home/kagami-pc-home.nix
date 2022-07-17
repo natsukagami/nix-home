@@ -32,7 +32,7 @@
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_1.png;
   programs.my-sway.enable = true;
-  programs.my-sway.fontSize = 13.0;
+  programs.my-sway.fontSize = 15.0;
   programs.my-sway.enableLaptopBars = false;
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
@@ -42,6 +42,16 @@
     adaptive_sync = "on";
   };
   nki.programs.kitty.fontSize = 16;
+
+  # Yellow light!
+  services.wlsunset = {
+    enable = true;
+    # Waterloo
+    latitude = "43.3";
+    longitude = "-80.3";
+  };
+
+
   # linux.graphical.x11.hidpi = true;
   # linux.graphical.x11.enablei3 = true;
 
