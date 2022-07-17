@@ -58,22 +58,7 @@
   };
   cloud.traefik.certsDumper.enable = true;
   cloud.conduit.enable = true;
-  cloud.conduit.package = pkgs.matrix-conduit.overrideAttrs (old: rec {
-    version = "0.4.0";
-
-    src = pkgs.fetchFromGitLab {
-      owner = "famedly";
-      repo = "conduit";
-      rev = "v${version}";
-      sha256 = "sha256-QTXDIvGz12ZxsWmPiMiJ8mBUWoJ2wnaeTZdXcwBh35o=";
-    };
-
-    cargoDeps = old.cargoDeps.overrideAttrs (_old: {
-      inherit src version;
-      outputHash = "sha256-tILjIR3rFDfq5aMblGE/vikttXbX7qQ2W7e017knntw=";
-    });
-
-  });
+  cloud.conduit.package = pkgs.unstable.matrix-conduit;
 
   # Navidrome back to the PC
   cloud.traefik.hosts.navidrome = {
