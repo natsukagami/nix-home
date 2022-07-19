@@ -19,8 +19,6 @@
     shellAliases = {
       cat = "bat --theme=GitHub ";
       l = "exa -l --color=always ";
-      htop = "btm --color nord-light -b --tree";
-      Htop = "btm --color nord-light --tree";
 
       # My own commands for easy access
       thisterm = "cd ~/Projects/uw/$CURRENT_TERM";

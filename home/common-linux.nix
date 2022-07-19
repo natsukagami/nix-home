@@ -7,6 +7,7 @@ with lib; {
   config = (mkIf (strings.hasSuffix "linux" pkgs.system) {
     home.packages = with pkgs; [
       unfree.vivaldi
+      psmisc # killall and friends
     ];
 
     ## Gnome-keyring

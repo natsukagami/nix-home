@@ -54,7 +54,7 @@
     ## PDF Processors
     poppler_utils
     ## htop replacement
-    bottom
+    htop-vim
 
     ## To do tunneling with cloudflare
     pkgs.unfree.cloudflared
