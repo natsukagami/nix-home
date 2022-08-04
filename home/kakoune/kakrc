@@ -26,6 +26,9 @@ face global format_specifier +i@string
 face global mutable_variable +u@variable
 face global class +b@variable
 
+# Assistant
+set global ui_options terminal_assistant=cat
+
 # Enable line numbers
 addhl global/ number-lines
 
