@@ -40,7 +40,6 @@ in
       after = [ "network.target" ];
       path = with pkgs; [ openssl ];
       environment = {
-        DISABLE_ADMIN_TOKEN = "true";
         SIGNUPS_ALLOWED = "false";
         DATABASE_URL = databaseUrl;
 
