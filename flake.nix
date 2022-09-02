@@ -12,7 +12,10 @@
     deploy-rs.url = "github:Serokell/deploy-rs";
     nur.url = "github:nix-community/NUR";
 
+    # --- Build tools
     flake-utils.url = github:numtide/flake-utils;
+    crane.url = github:ipetkov/crane;
+    crane.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # ---
     # Imported apps
@@ -52,10 +55,10 @@
 
       haskellDotNix = { ... }: {
         # Binary Cache for Haskell.nix  
-        nix.binaryCachePublicKeys = [
+        nix.settings.trusted-public-keys = [
           "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
         ];
-        nix.binaryCaches = [
+        nix.settings.substituters = [
           "https://cache.iog.io"
         ];
       };
@@ -74,8 +77,8 @@
         };
         hardware.pulseaudio.enable = lib.mkOverride 0 false;
 
-        nix.binaryCaches = [ "https://nix-gaming.cachix.org" ];
-        nix.binaryCachePublicKeys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
+        nix.settings.substituters = [ "https://nix-gaming.cachix.org" ];
+        nix.settings.trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
 
         environment.systemPackages = [ inputs.nix-gaming.packages.x86_64-linux.osu-stable ];
       };

@@ -16,28 +16,13 @@ let
     sha256 = "sha256-Q9kZ/XmXEsoZpflF5n16I5bsyS2S8gS9OYkOPM47ryg=";
   }) + "/evince_synctex.py";
 
-  kak-lsp =
-    pkgs.unstable.rustPlatform.buildRustPackage
-      rec {
-        pname = "kak-lsp";
-        version = "r${builtins.substring 0 6 pkgs.sources.kak-lsp.rev}";
-
-        src = pkgs.sources.kak-lsp;
-
-        cargoSha256 = "sha256-UASQXntFdX69fa+9x1WZ+sCIgKDxklI4FWnTtQkhH5k=";
-        # cargoSha256 = lib.fakeSha256;
-
-        buildInputs = (with pkgs;
-          lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration ])
-        );
-
-        meta = with lib; {
-          description = "Kakoune Language Server Protocol Client";
-          homepage = "https://github.com/kak-lsp/kak-lsp";
-          license = with licenses; [ unlicense /* or */ mit ];
-          maintainers = [ maintainers.spacekookie ];
-        };
-      };
+  kak-lsp = pkgs.libs.crane.buildPackage {
+    src = pkgs.sources.kak-lsp;
+    buildInputs = (with pkgs;
+      lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration ])
+    ) ++ (with pkgs; [ libiconv ]
+    );
+  };
 
   activationScript = text: pkgs.writeText "config.kak" ''
     hook global KakBegin .* %{

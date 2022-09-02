@@ -17,6 +17,10 @@ let
   };
 
   overlay-versioning = final: prev: { };
+
+  overlay-libs = final: prev: {
+    libs.crane = inputs.crane.lib.${prev.system};
+  };
 in
 [
   (import ./overlays/openrazer)
@@ -24,6 +28,7 @@ in
   overlay-needs-unstable
   overlay-imported
   overlay-versioning
+  overlay-libs
   nur.overlay
 
   # Bug fixes
