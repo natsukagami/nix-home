@@ -7,7 +7,7 @@ let
       GASPAR_PASSWORD=$(rbw get gaspar)
       GASPAR_TOKEN=$(rbw code gaspar)
 
-      printf "%s\n%s" "$GASPAR_PASSWORD" "$GASPAR_TOKEN" | /usr/bin/sudo openconnect \
+      printf "%s\n%s" "$GASPAR_PASSWORD" "$GASPAR_TOKEN" | sudo openconnect \
           --passwd-on-stdin \
           -u pham \
           "https://vpn.epfl.ch"
