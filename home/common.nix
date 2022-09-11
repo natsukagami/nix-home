@@ -7,6 +7,7 @@
     ./modules/programs/my-broot.nix
     ./modules/programs/my-sway
     ./modules/programs/my-kitty
+    ./modules/programs/openconnect-epfl.nix
     ./common-linux.nix
   ];
 
