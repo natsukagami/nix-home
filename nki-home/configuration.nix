@@ -45,7 +45,7 @@
   };
 
   networking.hostName = "kagamiPC"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.wireless.iwd.enable = true;
 
   # Set your time zone.
   time.timeZone = "America/Toronto";
@@ -54,8 +54,8 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp8s0.useDHCP = true;
-  # networking.interfaces.wlp7s0.useDHCP = true;
+  networking.interfaces.enp38s0.useDHCP = true;
+  networking.interfaces.wlan0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";

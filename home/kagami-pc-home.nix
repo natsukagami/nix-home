@@ -41,7 +41,7 @@
     mode = "1920x1080@144Hz";
     adaptive_sync = "on";
   };
-  nki.programs.kitty.fontSize = 16;
+  nki.programs.kitty.fontSize = 14;
 
   # Yellow light!
   services.wlsunset = {

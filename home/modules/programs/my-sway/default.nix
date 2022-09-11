@@ -158,7 +158,7 @@ in
       ### Windows
       #
       # Border
-      window.border = 2;
+      window.border = 4;
       # Assigning windows to workspaces
       assigns = {
         "${builtins.elemAt workspaces 0}" = [
