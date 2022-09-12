@@ -48,7 +48,7 @@
   networking.wireless.iwd.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/Toronto";
+  time.timeZone = "Europe/Zurich";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
@@ -170,10 +170,10 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
+  # programs.gnupg.agent = {
+  #   enable = true;
+  #   enableSSHSupport = true;
+  # };
 
   # List services that you want to enable:
   nki.services.edns.enable = true;
@@ -183,6 +183,7 @@
     enable = true;
     wlr.enable = true;
   };
+  services.gnome.gnome-keyring.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;

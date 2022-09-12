@@ -13,11 +13,11 @@ with lib; {
     ## Gnome-keyring
     services.gnome-keyring = {
       enable = true;
-      components = [ "pkcs11" "secrets" ];
+      components = [ "pkcs11" "secrets" "ssh" ];
     };
-    services.gpg-agent.enable = true;
-    services.gpg-agent.pinentryFlavor = "curses";
-    services.gpg-agent.enableSshSupport = true;
+    # services.gpg-agent.enable = true;
+    # services.gpg-agent.pinentryFlavor = "curses";
+    # services.gpg-agent.enableSshSupport = true;
 
     # Git "safe-directory"
     programs.git.extraConfig.safe.directory = [

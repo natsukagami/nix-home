@@ -197,7 +197,11 @@ in
       export SDL_VIDEODRIVER=wayland
       export QT_QPA_PLATFORM=wayland
       export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
-    '';
+    '' + (if config.services.gnome-keyring.enable then ''
+      # gnome-keyring
+      eval `${pkgs.gnome.gnome-keyring}/bin/gnome-keyring-daemon -r -d -c secrets,ssh,pkcs11`
+      export SSH_AUTH_SOCK
+    '' else "");
     # Extra
     wrapperFeatures.base = true;
     wrapperFeatures.gtk = true;
