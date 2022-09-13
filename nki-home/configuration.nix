@@ -250,6 +250,12 @@
   # For 32 bit applications
   hardware.opengl.driSupport32Bit = true;
 
+  # Evolution wants a plugin
+  programs.evolution = {
+    enable = true;
+    plugins = with pkgs; [ evolution-ews ];
+  };
+
   # Music server
   services.navidrome.enable = true;
   services.navidrome.settings = {

@@ -41,14 +41,22 @@
     mode = "1920x1080@144Hz";
     adaptive_sync = "on";
   };
+  wayland.windowManager.sway.config.output."Unknown 24G2W1G4 ATNN21A005410" = {
+    mode = "1920x1080@144Hz";
+    adaptive_sync = "on";
+  };
   nki.programs.kitty.fontSize = 14;
 
   # Yellow light!
   services.wlsunset = {
     enable = true;
-    # Waterloo
-    latitude = "43.3";
-    longitude = "-80.3";
+    # # Waterloo
+    # latitude = "43.3";
+    # longitude = "-80.3";
+
+    # Lausanne
+    latitude = "46.31";
+    longitude = "6.38";
   };
 
 

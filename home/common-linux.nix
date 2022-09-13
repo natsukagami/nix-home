@@ -8,6 +8,8 @@ with lib; {
     home.packages = with pkgs; [
       unfree.vivaldi
       psmisc # killall and friends
+
+      pinentry-gnome
     ];
 
     ## Gnome-keyring
