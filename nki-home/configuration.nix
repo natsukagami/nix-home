@@ -35,8 +35,8 @@
   boot.initrd.kernelModules = [ "usb_storage" ];
   boot.initrd.luks.devices = {
     root = {
-      keyFile = "/dev/disk/by-id/usb-090c___B1608112001295-0:0";
-      keyFileSize = 4096;
+      # keyFile = "/dev/disk/by-id/usb-090c___B1608112001295-0:0";
+      # keyFileSize = 4096;
       fallbackToPassword = true;
       device = "/dev/disk/by-uuid/7c6e40a8-900b-4f85-9712-2b872caf1892";
       preLVM = true;
