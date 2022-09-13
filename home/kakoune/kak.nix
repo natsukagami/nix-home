@@ -47,6 +47,11 @@ in
     filetypes = [ "typescript" ];
     roots = [ "package.json" ];
   };
+  programs.kak-lsp.languages.scala = {
+    command = "metals";
+    filetypes = [ "scala" ];
+    roots = [ "build.sbt" ];
+  };
   programs.kak-lsp.languages.latex = {
     command = "texlab";
     filetypes = [ "latex" ];
