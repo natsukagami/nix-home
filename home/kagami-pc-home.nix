@@ -59,6 +59,9 @@
     longitude = "6.38";
   };
 
+  # OwnCloud
+  services.owncloud-client.enable = true;
+
 
   # linux.graphical.x11.hidpi = true;
   # linux.graphical.x11.enablei3 = true;
