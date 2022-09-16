@@ -34,6 +34,7 @@
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 15.0;
   programs.my-sway.enableLaptopBars = false;
+  programs.my-sway.enableMpd = true;
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
   # 144hz adaptive refresh ON!
@@ -62,6 +63,14 @@
   # OwnCloud
   services.owncloud-client.enable = true;
 
+  # mpd stuff
+  services.mpd-discord-rpc.enable = true;
+  services.mpd-discord-rpc.package = pkgs.unstable.mpd-discord-rpc;
+  services.mpdris2.enable = true;
+  # ncmpcpp
+  programs.ncmpcpp.enable = true;
+
+  services.mpris-proxy.enable = true;
 
   # linux.graphical.x11.hidpi = true;
   # linux.graphical.x11.enablei3 = true;

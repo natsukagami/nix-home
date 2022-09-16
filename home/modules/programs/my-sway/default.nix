@@ -67,6 +67,11 @@ in
       description = "Whether to enable laptop-specific bars (battery)";
       default = true;
     };
+    enableMpd = mkOption {
+      type = types.bool;
+      description = "Whether to enable mpd on waybar";
+      default = false;
+    };
   };
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
@@ -238,21 +243,23 @@ in
         modules-center = [
           "sway/window"
         ];
-        modules-right = [
-          "tray"
-          "pulseaudio"
-          "network"
-          "cpu"
-          "memory"
-          "temperature"
-          "backlight"
-        ] ++ (
-          if cfg.enableLaptopBars
-          then [ "battery" "battery#bat2" ]
-          else [ ]
-        ) ++ [
-          "clock"
-        ];
+        modules-right =
+          (if cfg.enableMpd then [ "mpd" ] else [ ])
+          ++ [
+            "tray"
+            "pulseaudio"
+            "network"
+            "cpu"
+            "memory"
+            "temperature"
+            "backlight"
+          ] ++ (
+            if cfg.enableLaptopBars
+            then [ "battery" "battery#bat2" ]
+            else [ ]
+          ) ++ [
+            "clock"
+          ];
 
         modules = {
           "sway/mode" = {
@@ -322,6 +329,31 @@ in
             };
             on-click = "pavucontrol";
           };
+          "mpd" = {
+            "format" = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) 🎧";
+            "format-disconnected" = "Disconnected 🎧";
+            "format-stopped" = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped 🎧";
+            "interval" = 2;
+            "consume-icons" = {
+              "on" = " "; # Icon shows only when "consume" is on
+            };
+            "random-icons" = {
+              "off" = "<span color=\"#f53c3c\"></span> "; # Icon grayed out when "random" is off;
+              "on" = " ";
+            };
+            "repeat-icons" = {
+              "on" = " ";
+            };
+            "single-icons" = {
+              "on" = "1 ";
+            };
+            "state-icons" = {
+              "paused" = "";
+              "playing" = "";
+            };
+            "tooltip-format" = "MPD (connected)";
+            "tooltip-format-disconnected" = "MPD (disconnected)";
+          };
         };
       }
     ];
@@ -365,7 +397,7 @@ in
           border-bottom: 3px solid #ffffff;
       }
 
-      #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #custom-media, #tray, #mode, #idle_inhibitor {
+      #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #custom-media, #tray, #mode, #idle_inhibitor, #mpd {
           padding: 0 10px;
           margin: 0 5px;
       }
@@ -465,9 +497,13 @@ in
           background-color: #ecf0f1;
           color: #2d3436;
       }
+
+      #mpd {
+          background-color: teal;
+          color: white;
+      }
     '';
   };
-
   config.home.packages = mkIf cfg.enable (with pkgs; [
     # Needed for QT_QPA_PLATFORM
     qt5.qtwayland

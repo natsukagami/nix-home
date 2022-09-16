@@ -263,5 +263,37 @@
     MusicFolder = "/mnt/Stuff/Music";
   };
   systemd.services.navidrome.serviceConfig.BindReadOnlyPaths = lib.mkAfter [ "/etc" ];
+
+
+  # mpd
+  services.mpd = {
+    enable = true;
+    user = "nki";
+    startWhenNeeded = true;
+    extraConfig = ''
+      audio_output {
+        type "pipewire"
+        name "pipewire local"
+        dsd "yes"
+      }
+    '';
+  };
+  systemd.services.mpd.environment = {
+    # https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/609
+    XDG_RUNTIME_DIR = "/run/user/1000"; # User-id 1000 must match above user. MPD will look inside this directory for the PipeWire socket.
+  };
+  sops.secrets."scrobble/lastfm" = { };
+  sops.secrets."scrobble/listenbrainz" = { };
+  services.mpdscribble = {
+    enable = true;
+    endpoints."last.fm" = {
+      username = "natsukagami";
+      passwordFile = config.sops.secrets."scrobble/lastfm".path;
+    };
+    endpoints."listenbrainz" = {
+      username = "natsukagami";
+      passwordFile = config.sops.secrets."scrobble/listenbrainz".path;
+    };
+  };
 }
 
