@@ -11,13 +11,13 @@ define-command -hidden create-begin-block %{
     execute-keys "<a-/>b0<ret><a-N>"
     execute-keys -with-hooks -with-maps "c"
     hook -once buffer ModeChange .*:normal %{
-        execute-keys -with-maps "<space>gl"
+        execute-keys -with-maps ",gl"
     }
 }
 # Create a begin block with the given parameter as block name.
 define-command -params 1 create-begin-block-with %{
     execute-keys "<esc>i\begin{b0}<ret>\end{b0}<esc>"
-    execute-keys "<a-/>b0<ret><a-N>c%arg{1}<esc><space>"
+    execute-keys "<a-/>b0<ret><a-N>c%arg{1}<esc>,"
     execute-keys "o<esc>k"
     execute-keys -with-maps "gl"
 }
