@@ -69,6 +69,52 @@
   services.mpdris2.enable = true;
   # ncmpcpp
   programs.ncmpcpp.enable = true;
+  programs.ncmpcpp.bindings = [
+    { key = "j"; command = "scroll_down"; }
+    { key = "k"; command = "scroll_up"; }
+    { key = "J"; command = [ "select_item" "scroll_down" ]; }
+    { key = "K"; command = [ "select_item" "scroll_up" ]; }
+  ];
+  programs.ncmpcpp.settings = {
+    # General
+    colors_enabled = "yes";
+    enable_window_title = "yes";
+    main_window_color = "default";
+    execute_on_song_change = "${pkgs.libnotify}/bin/notify-send 'Now Playing' \"$(${pkgs.mpc_cli}/bin/mpc --format '%title% \\n%artist%' current)\"";
+    autocenter_mode = "yes";
+    centered_cursor = "yes";
+    user_interface = "classic";
+
+    # Progess Bar
+    progressbar_look = "━━╸";
+    progressbar_color = "white";
+    progressbar_elapsed_color = "green";
+
+    # UI Visibility
+    # header_visibility = "no";
+    # statusbar_visibility = "no";
+    # titles_visibility = "no";
+    startup_screen = "playlist";
+    #startup_slave_screen = "visualizer"
+    locked_screen_width_part = 50;
+    ask_for_locked_screen_width_part = "no";
+
+    # UI Appearance
+    now_playing_prefix = "$b$3";
+    now_playing_suffix = "$/b$9";
+    song_status_format = "$7%t";
+    song_list_format = "$8%a - %t$R  $5%l";
+    song_columns_list_format = "(3f)[green]{} (60)[magenta]{t|f:Title} (1)[]{}";
+    song_library_format = "{{%a - %t} (%b)}|{%f}";
+    song_window_title_format = "Music";
+
+    # Visualizer
+    visualizer_in_stereo = "no";
+    visualizer_type = "ellipse";
+    visualizer_fps = "60";
+    visualizer_look = "●●";
+    visualizer_color = "33,39,63,75,81,99,117,153,189";
+  };
 
   services.mpris-proxy.enable = true;
 
