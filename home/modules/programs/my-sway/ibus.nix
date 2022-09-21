@@ -17,16 +17,18 @@ let
             else nextRec (tail l);
         in
         nextRec input-methods;
+      changeTo = m: ''
+        ${pkgs.libnotify}/bin/notify-send \
+          -a ibus \
+          -u low \
+          -t 3000 \
+          "${m}" \
+          "Input engine changed"
+        ${pkgs.ibus}/bin/ibus engine ${m}
+      '';
       inputCase = m: ''
-        if test $current = "${m}"
-          ${pkgs.libnotify}/bin/notify-send \
-            -a ibus \
-            -u low \
-            -t 3000 \
-            "${next m}" \
-            "Input engine changed"
-          ${pkgs.ibus}/bin/ibus engine ${next m}
-        end
+        case "${m}"
+          ${changeTo (next m)}
       '';
     in
     pkgs.writeScriptBin "ibus-next-engine" ''
@@ -34,7 +36,11 @@ let
 
       set current (${pkgs.ibus}/bin/ibus engine)
 
-      ${strings.concatMapStrings inputCase input-methods}
+      switch $current
+        ${strings.concatMapStrings inputCase input-methods}
+        case '*'
+          ${changeTo (head input-methods)}
+      end
     ''
   );
 
