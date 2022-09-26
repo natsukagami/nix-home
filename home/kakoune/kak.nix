@@ -180,24 +180,6 @@ in
       '';
     }
     {
-      name = "01-cargo.kak";
-      src = pkgs.fetchFromGitHub {
-        owner = "krornus";
-        repo = "kakoune-cargo";
-        rev = "784e9d412a1331c6d2f2da61621a694d3e2c4281";
-        sha256 = "1as0jss2fjvx4cyi3d6b9wqknzcf4p4046i5lf0ds582zsa60nis";
-      };
-    }
-    {
-      name = "00-kakoune-mouvre"; # needs to load before cargo.kak
-      src = pkgs.fetchFromGitHub {
-        owner = "krornus";
-        repo = "kakoune-mouvre";
-        rev = "47e6f20027d16806097d0bbee72b54717bcebaca";
-        sha256 = "14fp3p1d0m98rgdjaaik5g44f0fabr6w39np3cqdaxq1i8skq6xv";
-      };
-    }
-    {
       name = "kakoune-inc-dec";
       src = pkgs.fetchFromGitLab {
         owner = "Screwtapello";
