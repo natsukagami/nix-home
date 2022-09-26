@@ -42,9 +42,17 @@
     mode = "1920x1080@144Hz";
     adaptive_sync = "on";
   };
+  wayland.windowManager.sway.config.output."Unknown U28G2G6B PPYM9JA001554" = {
+    mode = "3840x2160@60Hz";
+    scale = "2";
+    adaptive_sync = "on";
+    render_bit_depth = "10";
+    position = "0 0";
+  };
   wayland.windowManager.sway.config.output."Unknown 24G2W1G4 ATNN21A005410" = {
     mode = "1920x1080@144Hz";
     adaptive_sync = "on";
+    position = "1920 0";
   };
   nki.programs.kitty.fontSize = 14;
 
