@@ -111,6 +111,7 @@
     extraGroups = [
       "wheel" # Enable ‘sudo’ for the user.
       "plugdev" # Enable openrazer-daemon privileges
+      "adbusers" # Android
     ];
   };
 
@@ -255,6 +256,9 @@
     enable = true;
     plugins = with pkgs; [ evolution-ews ];
   };
+
+  # Android
+  programs.adb.enable = true;
 
   # Music server
   services.navidrome.enable = true;
