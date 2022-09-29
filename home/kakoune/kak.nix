@@ -9,13 +9,6 @@ let
       });
     };
 
-  evince-synctex = (pkgs.fetchFromGitHub {
-    owner = "latex-lsp";
-    repo = "evince-synctex";
-    rev = "593b00c938d82786b8bbaf584ebe68744f9c8407";
-    sha256 = "sha256-Q9kZ/XmXEsoZpflF5n16I5bsyS2S8gS9OYkOPM47ryg=";
-  }) + "/evince_synctex.py";
-
   kak-lsp = pkgs.libs.crane.buildPackage {
     src = pkgs.sources.kak-lsp;
     buildInputs = (with pkgs;
@@ -70,8 +63,8 @@ in
           args = [ "-r" "-g" "%l" "%p" "%f" ];
         } else
           {
-            executable = "${pkgs.qpdfview}/bin/qpdfview";
-            args = [ "--unique" "%p#src:%f:%l:1" ];
+            executable = "${pkgs.zathura}/bin/zathura";
+            args = [ "--synctex-forward" "%l:1:%f" "%p" "-x" "/home/nki/.bin/kaktex jump %{input} %{line}" ];
           });
     };
   };
