@@ -117,22 +117,23 @@ in
       # Main modifier
       modifier = mod;
       keybindings = lib.mkOptionDefault
-        ({
-          ## Splits
-          "${mod}+v" = "split v";
-          "${mod}+Shift+v" = "split h";
-          ## Run
-          "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
-          "${mod}+Shift+r" = "mode resize";
-          ## Screenshot
-          "Print" = "exec ${screenshotScript}/bin/screenshot";
-          ## Locking
-          "${mod}+semicolon" = "exec ${pkgs.swaylock}/bin/swaylock"
+        (
+          {
+            ## Splits
+            "${mod}+v" = "split v";
+            "${mod}+Shift+v" = "split h";
+            ## Run
+            "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
+            "${mod}+Shift+r" = "mode resize";
+            ## Screenshot
+            "Print" = "exec ${screenshotScript}/bin/screenshot";
+            ## Locking
+            "${mod}+semicolon" = "exec ${pkgs.swaylock}/bin/swaylock"
             + (if cfg.wallpaper == "" then "" else " -i ${cfg.wallpaper} -s fit")
             + " -l -k";
-        } // (
+          } //
           # Map the workspaces
-          builtins.listToAttrs (lib.flatten (map
+          (builtins.listToAttrs (lib.flatten (map
             (key: [
               {
                 name = "${mod}+${key}";
@@ -144,7 +145,13 @@ in
               }
             ])
             (builtins.attrNames wsAttrs))
-          )));
+          )) //
+          # Move workspaces between outputs
+          {
+            "${mod}+ctrl+h" = "move workspace to output left";
+            "${mod}+ctrl+l" = "move workspace to output right";
+          }
+        );
 
       ### Fonts
       #
