@@ -17,19 +17,27 @@ with lib; {
       # Backslash
       "0x5d" = "send_text all \\u005c";
 
-      "${cmd}+shift+o" = "launch --location=vsplit";
-      "${cmd}+o" = "launch --location=hsplit";
+      "${cmd}+t" = "new_tab_with_cwd";
+      "${cmd}+shift+t" = "new_tab";
+      "${cmd}+shift+o" = "launch --cwd=current --location=vsplit";
+      "${cmd}+o" = "launch --cwd=current --location=hsplit";
       "${cmd}+shift+r" = "layout_action rotate";
       ## Move the active window in the indicated direction
       "${cmd}+shift+h" = "move_window left";
-      "${cmd}+shift+j" = "move_window up";
-      "${cmd}+shift+k" = "move_window down";
+      "${cmd}+shift+k" = "move_window up";
+      "${cmd}+shift+j" = "move_window down";
       "${cmd}+shift+l" = "move_window right";
       ## Switch focus to the neighboring window in the indicated direction
       "${cmd}+h" = "neighboring_window left";
-      "${cmd}+j" = "neighboring_window up";
-      "${cmd}+k" = "neighboring_window down ";
+      "${cmd}+k" = "neighboring_window up";
+      "${cmd}+j" = "neighboring_window down ";
       "${cmd}+l" = "neighboring_window right";
+      ## Detach window to its own tab
+      "${cmd}+d" = "detach_window new-tab";
+      ## Change layout to fullscreen (stack) and back
+      "${cmd}+f" = "toggle_layout stack";
+      ## Hints
+      "ctrl+shift+p>n" = "kitten hints --type=linenum --linenum-action=tab kak {path} +{line}";
     }
     # Tab bindings
     // builtins.listToAttrs
@@ -52,7 +60,7 @@ with lib; {
       focus_follows_mouse = true;
       ## Layout options
       # Layouts
-      enabled_layouts = "Splits";
+      enabled_layouts = "splits,stack";
       inactive_text_alpha = "0.65";
 
       # MacOS specific
