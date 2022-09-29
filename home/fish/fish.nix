@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -86,6 +86,15 @@
           repo = "fzf";
           rev = "479fa67d7439b23095e01b64987ae79a91a4e283";
           sha256 = "0k6l21j192hrhy95092dm8029p52aakvzis7jiw48wnbckyidi6v";
+        };
+      }
+      {
+        name = "fenv";
+        src = pkgs.fetchFromGitHub {
+          owner = "oh-my-fish";
+          repo = "plugin-foreign-env";
+          rev = "b3dd471bcc885b597c3922e4de836e06415e52dd";
+          sha256 = "sha256-3h03WQrBZmTXZLkQh1oVyhv6zlyYsSDS7HTHr+7WjY8=";
         };
       }
     ];
