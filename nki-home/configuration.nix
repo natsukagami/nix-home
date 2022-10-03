@@ -177,6 +177,9 @@
   # };
 
   # List services that you want to enable:
+  services.resolved.enable = true;
+  services.resolved.domains = [ "127.0.0.1" ];
+  services.resolved.fallbackDns = [ "127.0.0.1" ];
   nki.services.edns.enable = true;
   nki.services.edns.ipv6 = true;
   services.flatpak.enable = true;
@@ -268,6 +271,8 @@
   };
   systemd.services.navidrome.serviceConfig.BindReadOnlyPaths = lib.mkAfter [ "/etc" ];
 
+  # Printers
+  services.printing.enable = true;
 
   # mpd
   services.mpd = {

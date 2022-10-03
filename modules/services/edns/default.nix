@@ -11,10 +11,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    networking.nameservers = [ "127.0.0.1" "::1" ];
-    networking.resolvconf.enable = mkOverride 1000 false;
-    networking.dhcpcd.extraConfig = "nohook resolv.conf";
-    networking.networkmanager.dns = "none";
+    # networking.nameservers = [ "127.0.0.1" "::1" ];
+    # networking.resolvconf.enable = mkOverride 1000 false;
+    # networking.dhcpcd.extraConfig = "nohook resolv.conf";
+    # networking.networkmanager.dns = "none";
 
     services.dnscrypt-proxy2 = {
       enable = true;
