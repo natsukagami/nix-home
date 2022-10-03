@@ -6,7 +6,8 @@ with lib;
   homebrew.brewPrefix =
     if pkgs.system == "aarch64-darwin" then "/opt/homebrew/bin"
     else "/usr/local/bin";
-  homebrew.cleanup = "zap";
+  homebrew.onActivation.cleanup = "zap";
+  homebrew.onActivation.upgrade = true;
 
   # All needed taps
   homebrew.taps = [
