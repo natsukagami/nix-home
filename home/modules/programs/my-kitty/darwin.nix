@@ -47,7 +47,7 @@ with lib; {
 
     settings = {
       # Tab settings
-      tab_bar_edge = "top";
+      tab_bar_edge = "bottom";
       tab_bar_style = "powerline";
       tab_powerline_style = "slanted";
       tab_title_template = "{fmt.fg.red}{bell_symbol}{activity_symbol}{fmt.fg.lightgreen}{fmt.bold}[{index}]{fmt.nobold} {fmt.fg.tab}{title}";
