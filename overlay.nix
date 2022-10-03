@@ -2,7 +2,6 @@
 let
   overlay-unstable = final: prev: {
     unstable = import nixpkgs-unstable { config.allowUnfree = true; system = prev.system; };
-    unfree = import nixpkgs { config.allowUnfree = true; system = prev.system; };
     x86 = import nixpkgs-unstable { system = prev.system; config.allowUnsupportedSystem = true; };
   };
   overlay-needs-unstable = final: prev: {

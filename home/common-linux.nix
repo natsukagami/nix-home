@@ -6,7 +6,7 @@ with lib; {
   ];
   config = (mkIf (strings.hasSuffix "linux" pkgs.system) {
     home.packages = with pkgs; [
-      unfree.vivaldi
+      vivaldi
       psmisc # killall and friends
 
       pinentry-gnome

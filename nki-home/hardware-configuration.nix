@@ -37,5 +37,5 @@
   hardware.opengl.enable = true;
 
   # bluetooth usb
-  hardware.firmware = [ pkgs.unfree.rtl8761b-firmware ];
+  hardware.firmware = [ pkgs.rtl8761b-firmware ];
 }

@@ -58,7 +58,7 @@
     htop-vim
 
     ## To do tunneling with cloudflare
-    pkgs.unfree.cloudflared
+    pkgs.cloudflared
 
     # Databases
     postgresql
