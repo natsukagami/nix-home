@@ -17,11 +17,6 @@ let
     );
   };
 
-  activationScript = text: pkgs.writeText "config.kak" ''
-    hook global KakBegin .* %{
-      ${text}
-    }
-  '';
 in
 {
   imports = [ ../modules/programs/my-kakoune ./kaktex.nix ];
@@ -92,17 +87,14 @@ in
 
     # Plugins
     {
-      name = "01-luar";
+      name = "luar";
       src = pkgs.fetchFromGitHub {
         owner = "gustavo-hms";
         repo = "luar";
         rev = "2f430316f8fc4d35db6c93165e2e77dc9f3d0450";
         sha256 = "sha256-vHn/V3sfzaxaxF8OpA5jPEuPstOVwOiQrogdSGtT6X4=";
       };
-    }
-    {
-      name = "02-luar-config.kak";
-      src = activationScript ''
+      activationScript = ''
         # Enable luar
         require-module luar
         # Use luajit
@@ -110,17 +102,14 @@ in
       '';
     }
     {
-      name = "03-peneira";
+      name = "peneira";
       src = pkgs.fetchFromGitHub {
         owner = "natsukagami";
         repo = "peneira";
         rev = "743b9971472853a752475e7c070ce99089c6840c";
         sha256 = "sha256-E4ndbF9YC1p0KrvSuGgwmG1Y2IGTuGKJo/AuMixhzlM=";
       };
-    }
-    {
-      name = "04-peneira-config.kak";
-      src = activationScript ''
+      activationScript = ''
         require-module peneira
 
         # Change selection color
@@ -158,17 +147,14 @@ in
       '';
     }
     {
-      name = "01-kakoune-focus";
+      name = "kakoune-focus";
       src = pkgs.fetchFromGitHub {
         owner = "caksoylar";
         repo = "kakoune-focus";
         rev = "949c0557cd4c476822acfa026ca3c50f3d38a3c0";
         sha256 = "sha256-ZV7jlLJQyL420YG++iC9rq1SMjo3WO5hR9KVvJNUiCs=";
       };
-    }
-    {
-      name = "02-kakoune-focus-config.kak";
-      src = activationScript ''
+      activationScript = ''
         map global user <space> ': focus-toggle<ret>' -docstring "toggle selections focus"
       '';
     }
@@ -179,7 +165,6 @@ in
         repo = "kakoune-inc-dec";
         rev = "7bfe9c51";
         sha256 = "0f33wqxqbfygxypf348jf1fiscac161wf2xvnh8zwdd3rq5yybl0";
-        # leaveDotGit = true;
       };
     }
     {
@@ -194,6 +179,23 @@ in
     {
       name = "kakoune-discord";
       src = (builtins.getFlake "github:natsukagami/kakoune-discord/03f95e40d6efd8fd3de7bca31653d43de2dcfc5f").packages.${pkgs.system}.kakoune-discord-rc + "/rc";
+    }
+    rec {
+      name = "kakoune-mirror";
+      src = pkgs.fetchFromGitHub
+        {
+          owner = "Delapouite";
+          repo = "kakoune-mirror";
+          rev = "5710635f440bcca914d55ff2ec1bfcba9efe0f15";
+          sha256 = "sha256-uslx4zZhvjUylrPWvTOugsKYKKpF0EEz1drc1Ckrpjk=";
+        } + "/mirror.kak";
+      wrapAsModule = true;
+      activationScript = ''
+        require-module ${name}
+
+        # Bind <a-w> to ${name}
+        map global normal <a-w> ': enter-user-mode -lock mirror<ret>'
+      '';
     }
   ];
 }

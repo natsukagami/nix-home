@@ -14,6 +14,16 @@ let
         type = types.path;
         description = "Path to the autoload script/folder.";
       };
+      wrapAsModule = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Wrap the given source file in a `provide-module` command. Fails if the `src` is not a single file.";
+      };
+      activationScript = mkOption {
+        type = types.nullOr types.lines;
+        default = null;
+        description = "Add an activation script to the module. It will be wrapped in a `hook global KakBegin .*` wrapper.";
+      };
     };
   };
 in
@@ -44,24 +54,48 @@ in
 
     home.file =
       let
-        kakouneAutoload = { name, src }: {
-          name = "kakoune/autoload/${name}";
-          value = {
-            source = src;
-            target = ".config/kak/autoload/${name}";
-          };
-        };
+        kakouneAutoload = { name, src, wrapAsModule ? false, activationScript ? null }:
+          [
+            (if !wrapAsModule then {
+              name = "kakoune/autoload/${name}";
+              value = {
+                source = src;
+                target = ".config/kak/autoload/${name}";
+              };
+            } else {
+              name = "kakoune/autoload/${name}/module.kak";
+              value = {
+                text = ''
+                  provide-module ${name} %◍
+                    ${readFile src}
+                  ◍
+                '';
+                target = ".config/kak/autoload/${name}/module.kak";
+              };
+            })
+          ] ++ (if activationScript == null then [ ] else [{
+            name = "kakoune/autoload/on-load/${name}.kak";
+            value = {
+              text = ''
+                hook global KakBegin .* %{
+                  ${activationScript}
+                }
+              '';
+              target = ".config/kak/autoload/on-load/${name}.kak";
+            };
+          }]);
       in
       {
         # kakrc
         ".config/kak/kakrc".text = cfg.rc;
       } //
-      (builtins.listToAttrs (map kakouneAutoload ([
+      (builtins.listToAttrs (lib.lists.flatten (map kakouneAutoload ([
         # include the original autoload files
         {
-          name = "00-rc";
+          name = "rc";
           src = "${cfg.package}/share/kak/autoload/rc";
         }
-      ] ++ cfg.autoload)));
+      ] ++ cfg.autoload))));
   };
 }
+
