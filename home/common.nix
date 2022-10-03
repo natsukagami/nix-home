@@ -38,7 +38,7 @@
     tectonic
     texlab
     ## Python
-    python310
+    python3
 
     # Fonts
     fantasque-sans-mono
