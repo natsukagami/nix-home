@@ -38,22 +38,31 @@
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
   # 144hz adaptive refresh ON!
-  wayland.windowManager.sway.config.output."ViewSonic Corporation XG2402 SERIES V4K182501054" = {
-    mode = "1920x1080@144Hz";
-    adaptive_sync = "on";
-  };
-  wayland.windowManager.sway.config.output."Unknown U28G2G6B PPYM9JA001554" = {
-    mode = "3840x2160@60Hz";
-    scale = "2";
-    adaptive_sync = "on";
-    render_bit_depth = "10";
-    position = "0 0";
-  };
-  wayland.windowManager.sway.config.output."Unknown 24G2W1G4 ATNN21A005410" = {
-    mode = "1920x1080@144Hz";
-    adaptive_sync = "on";
-    position = "1920 0";
-  };
+  wayland.windowManager.sway.config.output =
+    let
+      scale = 1.5;
+      top_x = builtins.ceil (3840 / scale);
+      top_y = builtins.ceil (((2160 / scale) - 1080) / 2);
+    in
+    {
+      "Unknown U28G2G6B PPYM9JA001554" = {
+        mode = "3840x2160@60Hz";
+        scale = toString scale;
+        adaptive_sync = "on";
+        render_bit_depth = "10";
+        position = "0 0";
+      };
+      "Unknown 24G2W1G4 ATNN21A005410" = {
+        mode = "1920x1080@144Hz";
+        adaptive_sync = "on";
+        position = "${toString top_x} ${toString top_y}";
+      };
+
+      "ViewSonic Corporation XG2402 SERIES V4K182501054" = {
+        mode = "1920x1080@144Hz";
+        adaptive_sync = "on";
+      };
+    };
   nki.programs.kitty.fontSize = 14;
 
   # Yellow light!
