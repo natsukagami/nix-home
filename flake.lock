@@ -147,15 +147,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1656169755,
-        "narHash": "sha256-Nlnm4jeQWEGjYrE6hxi/7HYHjBSZ/E0RtjCYifnNsWk=",
-        "owner": "nix-community",
+        "lastModified": 1665306232,
+        "narHash": "sha256-uvF5ExKsqlk/FcxlETKBvBppHxfJ73GD+z5CoiPhMsY=",
+        "owner": "natsukagami",
         "repo": "home-manager",
-        "rev": "4a3d01fb53f52ac83194081272795aa4612c2381",
+        "rev": "d136b57cb31adf25519f2543bfc8494d530307b5",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
+        "owner": "natsukagami",
         "ref": "release-22.05",
         "repo": "home-manager",
         "type": "github"
