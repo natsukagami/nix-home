@@ -161,6 +161,22 @@ hook global WinSetOption filetype=(rust) %{
     set-option buffer makecmd "cargo check"
 }
 
+hook global WinSetOption filetype=(scala) %{
+    # Format the document if possible
+    hook -group scala-fmt window BufWritePre .* %{ lsp-formatting-sync }
+
+    set window tabstop 2
+    set window indentwidth 2
+}
+
+define-command -params 0 -docstring "Set up build" scala-build-connect %{
+    lsp-execute-command 'build-connect' '"[]"'
+}
+
+define-command -params 0 -docstring "Import build" scala-build-import %{
+    lsp-execute-command 'build-import' '"[]"'
+}
+
 def -hidden insert-c-n %{
  try %{
    lsp-snippets-select-next-placeholders
