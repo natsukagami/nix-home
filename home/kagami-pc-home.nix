@@ -70,6 +70,7 @@
 
   # OwnCloud
   services.owncloud-client.enable = true;
+  services.owncloud-client.package = pkgs.unstable.owncloud-client;
 
   # mpd stuff
   services.mpd-discord-rpc.enable = true;
