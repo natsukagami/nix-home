@@ -197,6 +197,23 @@ in
         map global normal <a-w> ': enter-user-mode -lock mirror<ret>'
       '';
     }
+    {
+      name = "unicode-math";
+      src = pkgs.fetchFromGitHub {
+        owner = "natsukagami";
+        repo = "kakoune-unicode-math";
+        rev = "75b25c507234addd6e56f7cbd9b913357c322004";
+        # sha256 = lib.fakeSha256;
+        sha256 = "sha256-MG0jzFBVudEjQ2OIBr+MipYjXCvWFSk1q+q8YsO4jLo=";
+        fetchSubmodules = true;
+      };
+      activationScript = ''
+        require-module unicode-math
+
+        # Bind <c-s> to the menu
+        map global insert <c-s> '<a-;>: insert-unicode '
+      '';
+    }
   ];
 }
 
