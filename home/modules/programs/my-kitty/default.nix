@@ -69,7 +69,10 @@ with lib;
         }
       ];
 
-    keybindings = { };
+    keybindings = {
+      "ctrl+shift+equal" = "no_op"; # Not possible with a JIS keyboard
+      "ctrl+shift+^" = "change_font_size all +2.0"; # ... so use ^ instead
+    };
   };
 }
 
