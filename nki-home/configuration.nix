@@ -114,6 +114,7 @@
       "adbusers" # Android
     ];
   };
+  services.getty.autologinUser = "nki";
 
   # Allow all packages
   nixpkgs.config.allowUnfree = true;
