@@ -17,7 +17,6 @@ in
       u2f = {
         enable = true;
         cue = true;
-        interactive = true;
       };
 
       # Services
