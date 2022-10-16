@@ -9,6 +9,9 @@ with lib; {
       vivaldi
       psmisc # killall and friends
 
+      mpv # for anki
+      pkgs.unstable.anki-bin
+
       pinentry-gnome
     ];
 
