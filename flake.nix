@@ -29,6 +29,8 @@
     kakoune.flake = false;
     kak-lsp.url = github:kak-lsp/kak-lsp;
     kak-lsp.flake = false;
+    nixos-m1.url = github:tpwrules/nixos-m1;
+    nixos-m1.flake = false;
 
     # ---
     # DEPLOYMENT ONLY! secrets
@@ -135,6 +137,24 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.nki = import ./home/nki-x1c1.nix;
+          }
+        ];
+      };
+      # macbook nixos
+      nixosConfigurations."kagami-air-m1" = nixpkgs.lib.nixosSystem rec {
+        pkgs = pkgs' system;
+        system = "aarch64-linux";
+        modules = [
+          ./modules/my-tinc
+          sops-nix.nixosModules.sops
+          "${inputs.nixos-m1}/nix/m1-support"
+          ./kagami-air-m1/configuration.nix
+          nixpkgsAsRegistry
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.nki = import ./home/macbook-nixos.nix;
           }
         ];
       };

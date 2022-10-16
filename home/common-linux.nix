@@ -6,14 +6,18 @@ with lib; {
   ];
   config = (mkIf (strings.hasSuffix "linux" pkgs.system) {
     home.packages = with pkgs; [
-      vivaldi
       psmisc # killall and friends
 
-      mpv # for anki
-      pkgs.unstable.anki-bin
-
       pinentry-gnome
-    ];
+    ] ++ (
+    	if pkgs.system == "x86-64_linux"
+    	then [
+          vivaldi
+          mpv # for anki
+          pkgs.unstable.anki-bin
+    	]
+    	else []
+    );
 
     ## Gnome-keyring
     services.gnome-keyring = {
