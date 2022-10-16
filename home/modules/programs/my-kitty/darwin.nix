@@ -36,6 +36,9 @@ with lib; {
       "${cmd}+d" = "detach_window new-tab";
       ## Change layout to fullscreen (stack) and back
       "${cmd}+f" = "toggle_layout stack";
+      ## Clear screen
+      "${cmd}+backspace" = "clear_terminal to_cursor active";
+      "${cmd}+shift+backspace" = "clear_terminal reset active";
       ## Hints
       "ctrl+shift+p>n" = "kitten hints --type=linenum --linenum-action=tab kak {path} +{line}";
     }
