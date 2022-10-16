@@ -3,10 +3,32 @@
 let
   kakounePkg =
     pkgs.kakoune.override {
-      kakoune = pkgs.kakoune-unwrapped.overrideAttrs (oldAttrs: {
+      kakoune = with lib; pkgs.unstable.gcc11Stdenv.mkDerivation rec {
+        pname = "kakoune-unwrapped";
         version = "r${builtins.substring 0 6 pkgs.sources.kakoune.rev}";
         src = pkgs.sources.kakoune;
-      });
+        makeFlags = ["debug=no" "PREFIX=${placeholder "out"}"];
+
+        preConfigure = ''
+          export version="v${version}";
+        '';
+
+        enableParallelBuilding = true;
+
+        doInstallCheck = true;
+        installCheckPhase = ''
+          $out/bin/kak -ui json -e "kill 0"
+        '';
+
+        postInstall = ''
+          # make share/kak/autoload a directory
+          cd "$out/share/kak"
+          autoload_target=$(readlink autoload)
+          rm autoload
+          mkdir autoload
+          ln -s --relative "$autoload_target" autoload
+        '';
+      };
     };
 
   kak-lsp = pkgs.libs.crane.buildPackage {
