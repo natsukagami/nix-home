@@ -61,6 +61,16 @@ in
       description = "The command to the terminal emulator to be used";
       default = "${config.programs.kitty.package}/bin/kitty";
     };
+    browser = mkOption {
+      type = types.str;
+      description = "The command for the browser";
+      default = "${pkgs.firefox-wayland}/bin/firefox";
+    };
+    discord = mkOption {
+      type = types.nullOr types.str;
+      description = "The command for discord";
+      default = "${pkgs.discord}/bin/discord";
+    };
 
     enableLaptopBars = mkOption {
       type = types.bool;
@@ -108,9 +118,10 @@ in
         # Waybar
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
-        { command = "${config.programs.firefox.package}/bin/firefox"; }
-        { command = "${pkgs.unstable.discord}/bin/discord"; }
-      ];
+        { command = "${cfg.browser}"; }
+      ] ++ (if cfg.discord != null then [
+        { command = "${cfg.discord}"; }
+      ] else [ ]);
 
       ### Keybindings
       #
