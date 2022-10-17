@@ -45,8 +45,10 @@
   # tinc
   services.my-tinc.enable = true;
   services.my-tinc.hostName = "cloud";
-  sops.secrets.tinc-private-key = { };
-  services.my-tinc.rsaPrivateKey = config.sops.secrets.tinc-private-key.path;
+  sops.secrets."tinc/rsa-private-key" = { };
+  sops.secrets."tinc/ed25519-private-key" = { };
+  services.my-tinc.rsaPrivateKey = config.sops.secrets."tinc/rsa-private-key".path;
+  services.my-tinc.ed25519PrivateKey = config.sops.secrets."tinc/ed25519-private-key".path;
 
   # Set up traefik
   sops.secrets.cloudflare-dns-api-token = { owner = "traefik"; };

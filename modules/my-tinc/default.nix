@@ -93,6 +93,8 @@ in
 
           ed25519PrivateKeyFile = cfg.ed25519PrivateKey;
           rsaPrivateKeyFile = cfg.rsaPrivateKey;
+
+          settings.ExperimentalProtocol = "yes";
         };
       }
     )

@@ -4,6 +4,7 @@
     subnetAddr = "11.0.0.1";
     address = "nki.personal";
     rsaPublicKey = builtins.readFile ./nki-cloud.pub;
+    ed25519PublicKey = "fZi75omD1Z2vZYH7FleZ+ygKLqGj2emlLMvw3XcmZPM";
   };
 
   home = {
