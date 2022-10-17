@@ -171,11 +171,10 @@
   sops.secrets."tinc/ed25519-private-key" = { };
   services.my-tinc = {
     enable = true;
-    hostName = "macbook-nixos";
+    hostName = "macbooknix";
     ed25519PrivateKey = config.sops.secrets."tinc/ed25519-private-key".path;
     bindPort = 6565;
   };
-
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
