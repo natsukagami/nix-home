@@ -102,9 +102,6 @@
       enableAliases = true;
     };
 
-    # later
-    firefox = { };
-
     fzf = {
       enable = true;
       enableFishIntegration = true;
