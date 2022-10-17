@@ -21,5 +21,12 @@ in
         settings.Ed25519PublicKey = mkIf (host ? "ed25519PublicKey") host.ed25519PublicKey;
       })
       hosts;
+
+    # Add all of them to host
+    networking.extraHosts = lib.strings.concatStringsSep
+      "\n"
+      (lib.attrsets.mapAttrsToList
+        (name: host: "${host.subnetAddr} ${name}.tinc")
+        hosts);
   };
 }
