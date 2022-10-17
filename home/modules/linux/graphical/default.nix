@@ -28,8 +28,6 @@ in
       pkgs.unstable.vscode
       feh
       deluge # Torrent client
-      mailspring
-      unstable.discord
       pavucontrol # PulseAudio control panel
       unstable.slack
 
@@ -37,7 +35,10 @@ in
       dex # .desktop file management, startup
       sct # Display color temperature
       xdg-utils # Open stuff
-    ]);
+    ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
+      mailspring
+      unstable.discord
+    ]));
 
     # Cursor
     home.pointerCursor = {
