@@ -23,8 +23,7 @@
     # TeX
     texlive.combined.scheme-full
 
-    (firefox.override { cfg.enablePlasmaBrowserIntegration = true; })
-    plasma-browser-integration
+    firefox-wayland
 
     # Java & sbt
     openjdk11
@@ -32,25 +31,53 @@
   ]);
 
   # Graphical set up
-  linux.graphical.type = "x11";
+  linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_0.png;
   # Enable sway
-  # programs.my-sway.enable = true;
-  # programs.my-sway.fontSize = 14.0;
-  # programs.my-sway.terminal = "${config.programs.kitty.package}/bin/kitty";
-  # Keyboard support
-  # wayland.windowManager.sway.config = {
-  #   input."1278:34:HHKB-Hybrid_3_Keyboard".xkb_layout = "jp";
-  #   input."1:1:AT_Translated_Set_2_keyboard" = {
-  #     xkb_options = "ctrl:swapcaps";
-  #     xkb_layout = "us";
-  #   };
-  # };
+  programs.my-sway.enable = true;
+  programs.my-sway.fontSize = 20.0;
+  programs.my-sway.enableLaptopBars = true;
+  programs.my-sway.enableMpd = false;
+  programs.my-sway.discord = null;
+  # Keyboard options
+  wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
+  wayland.windowManager.sway.config.output."Unknown-1" = {
+    mode = "2560x1600@60Hz";
+    scale = "1";
+    subpixel = "vrgb";
+  };
+  wayland.windowManager.sway.config.input."1452:641:Apple_Internal_Keyboard_/_Trackpad" = {
+    # Keyboard stuff
+    xkb_layout = "jp";
+    repeat_delay = "300";
+    repeat_rate = "10";
+    # Trackpad stuff
+    accel_profile = "adaptive";
+    drag = "enabled";
+    dwt = "enabled";
+    middle_emulation = "enabled";
+    natural_scroll = "enabled";
+    pointer_accel = "0.5";
+    tap = "disabled";
+  };
+
   # Kitty
   nki.programs.kitty = {
     enable = true;
-    fontSize = 16;
+    fontSize = 22;
     enableTabs = true;
+  };
+
+  # Yellow light!
+  services.wlsunset = {
+    enable = true;
+    # # Waterloo
+    # latitude = "43.3";
+    # longitude = "-80.3";
+
+    # Lausanne
+    latitude = "46.31";
+    longitude = "6.38";
   };
 
   home.file.".gnupg/gpg-agent.conf" = {
@@ -62,6 +89,12 @@
       echo RELOADAGENT | gpg-connect-agent
     '';
   };
+
+  # Autostart
+  xdg.configFile."autostart/polkit.desktop".text = ''
+    ${builtins.readFile "${pkgs.pantheon.pantheon-agent-polkit}/etc/xdg/autostart/io.elementary.desktop.agent-polkit.desktop"}
+    OnlyShowIn=sway;
+  '';
 
   # Multiple screen setup
   # services.kanshi = {

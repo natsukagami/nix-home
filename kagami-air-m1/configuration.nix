@@ -13,6 +13,7 @@
       ./m1-support/firmware
       # Fonts
       ../modules/personal/fonts
+      ../modules/services/swaylock.nix
       # Encrypted DNS
       ../modules/services/edns
     ];
@@ -37,7 +38,9 @@
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+  # networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+  networking.wireless.iwd.enable = true;
+  networking.interfaces.wlan0.useDHCP = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Zurich";
@@ -64,10 +67,10 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.sddm.enableHidpi = true;
-  services.xserver.desktopManager.plasma5.enable = true;
+  # services.xserver.enable = true;
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.displayManager.sddm.enableHidpi = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
   services.udev.packages = with pkgs; [ libfido2 ];
@@ -98,6 +101,8 @@
   # Keyboard
   services.input-remapper.enable = true;
   hardware.uinput.enable = true;
+  hardware.opengl.enable = true;
+  services.swaylock.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nki = {
@@ -116,7 +121,20 @@
     wget
 
     libfido2
+
+    ## Security stuff
+    libsForQt5.qtkeychain
+
+    ## Wayland
+    qt5.qtwayland
   ];
+
+  # Enable sway on login.
+  environment.loginShellInit = ''
+    if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
+        exec sway
+    fi
+  '';
 
   # Environment variables
   environment.variables = {
