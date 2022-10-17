@@ -156,6 +156,7 @@
             home-manager.useUserPackages = true;
             home-manager.users.nki = import ./home/macbook-nixos.nix;
           }
+          inputs.secrets.nixosModules.${system}.common
         ];
       };
 

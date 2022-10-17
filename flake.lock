@@ -140,6 +140,21 @@
         "type": "github"
       }
     },
+    "flake-utils_4": {
+      "locked": {
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -453,12 +468,15 @@
       }
     },
     "secrets": {
+      "inputs": {
+        "flake-utils": "flake-utils_3"
+      },
       "locked": {
-        "lastModified": 1651588062,
-        "narHash": "sha256-4AQqNsc2vTkpJZJOFW7nuVD7hV1w+ZRLAhiJhRQEiSE=",
+        "lastModified": 1666006086,
+        "narHash": "sha256-wjrQ9ngadZwfbz2o+iiNQvOTuRYS06Ate9FCXQEv94I=",
         "ref": "master",
-        "rev": "f8320c88e4c073f18e49abeb60091c1c73dd0d9a",
-        "revCount": 2,
+        "rev": "333e5e06c0f40dab2c6f9556a6ea09f44971561b",
+        "revCount": 3,
         "type": "git",
         "url": "ssh://git@github.com/natsukagami/nix-deploy-secrets"
       },
@@ -518,7 +536,7 @@
     },
     "youmubot": {
       "inputs": {
-        "flake-utils": "flake-utils_3",
+        "flake-utils": "flake-utils_4",
         "naersk": "naersk_2",
         "nixpkgs": [
           "nixpkgs"
