@@ -17,7 +17,7 @@
     rsaPublicKey = builtins.readFile ./nki-macbook.pub;
     ed25519PublicKey = "lkNkBTl5GmcQFrtA7F1nN2gq5gFK7KuGqHUN8fiJU7H";
   };
-  macbook-nixos = {
+  macbooknix = {
     subnetAddr = "11.0.0.4";
     ed25519PublicKey = "6MN5LVE4juavv8qJW2dTN4t/haKCADWquAQj/ADF7iN";
   };
