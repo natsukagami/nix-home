@@ -31,6 +31,7 @@ in
       mailspring
       unstable.discord
       pavucontrol # PulseAudio control panel
+      unstable.slack
 
       ## CLI stuff
       dex # .desktop file management, startup
