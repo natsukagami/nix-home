@@ -10,13 +10,13 @@ with lib; {
 
       pinentry-gnome
     ] ++ (
-    	if pkgs.system == "x86-64_linux"
-    	then [
-          vivaldi
-          mpv # for anki
-          pkgs.unstable.anki-bin
-    	]
-    	else []
+      if pkgs.system == "x86-64_linux"
+      then [
+        vivaldi
+        mpv # for anki
+        pkgs.unstable.anki-bin
+      ]
+      else [ ]
     );
 
     ## Gnome-keyring
