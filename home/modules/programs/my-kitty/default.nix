@@ -6,7 +6,7 @@ let
 in
 with lib;
 {
-  imports = [ ./darwin.nix ./linux.nix ];
+  imports = [ ./darwin.nix ./linux.nix ./tabs.nix ];
 
   options.nki.programs.kitty = {
     enable = mkEnableOption "Enable kitty";
@@ -23,12 +23,23 @@ with lib;
       default = 21;
     };
 
-    background = mkOption
-      {
-        type = types.nullOr types.path;
-        description = "Path to the background image. If not set, default to a 0.9 opacity";
-        default = null;
-      };
+    background = mkOption {
+      type = types.nullOr types.path;
+      description = "Path to the background image. If not set, default to a 0.9 opacity";
+      default = null;
+    };
+
+    cmd = mkOption {
+      type = types.str;
+      description = "The main control key";
+      default = if pkgs.stdenv.isDarwin then "cmd" else "ctrl";
+    };
+
+    enableTabs = mkOption {
+      type = types.bool;
+      description = "Enable tabs";
+      default = pkgs.stdenc.isDarwin;
+    };
   };
 
   config.programs.kitty = mkIf cfg.enable {
@@ -66,12 +77,21 @@ with lib;
 
           # Allow remote control (for kakoune integration)
           allow_remote_control = true;
+
+          # Mouse focus
+          focus_follows_mouse = true;
         }
       ];
 
     keybindings = {
-      "ctrl+shift+equal" = "no_op"; # Not possible with a JIS keyboard
-      "ctrl+shift+^" = "change_font_size all +2.0"; # ... so use ^ instead
+      "${cfg.cmd}+shift+equal" = "no_op"; # Not possible with a JIS keyboard
+      "${cfg.cmd}+shift+^" = "change_font_size all +2.0"; # ... so use ^ instead
+
+      ## Clear screen
+      "${cfg.cmd}+backspace" = "clear_terminal to_cursor active";
+      "${cfg.cmd}+shift+backspace" = "clear_terminal reset active";
+      ## Hints
+      "${cfg.cmd}+shift+p>n" = "kitten hints --type=linenum --linenum-action=tab kak {path} +{line}";
     };
   };
 }
