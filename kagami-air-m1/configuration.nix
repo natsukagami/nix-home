@@ -68,6 +68,7 @@
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.sddm.enableHidpi = true;
   services.xserver.desktopManager.plasma5.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
   services.udev.packages = with pkgs; [ libfido2 ];
 
@@ -175,6 +176,8 @@
     ed25519PrivateKey = config.sops.secrets."tinc/ed25519-private-key".path;
     bindPort = 6565;
   };
+
+  services.dbus.packages = with pkgs; [ gcr ];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
