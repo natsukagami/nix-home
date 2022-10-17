@@ -24,6 +24,14 @@
   # boot.kernelBuildIsCross = true;
   boot.kernelBuildIs16K = false;
 
+  boot.kernelPatches = [{
+    name = "enable_uinput";
+    patch = null;
+    extraConfig = ''
+      CONFIG_INPUT_UINPUT m
+    '';
+  }];
+
   networking.hostName = "kagami-air-m1"; # Define your hostname.
 
   # networking.hostName = "nixos"; # Define your hostname.
@@ -59,7 +67,6 @@
   services.xserver.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
 
-
   # Configure keymap in X11
   # services.xserver.layout = "jp106";
   # services.xserver.xkbOptions = {
@@ -72,10 +79,20 @@
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  services.pipewire = {
+    enable = true;
+    # alsa is optional
+    alsa.enable = true;
+    alsa.support32Bit = true;
+
+    pulse.enable = true;
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
+  # Keyboard
+  services.input-remapper.enable = true;
+  hardware.uinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nki = {
@@ -121,6 +138,7 @@
   ## Bluetooth
   #
   hardware.bluetooth.enable = true;
+
 
   # PAM
   security.pam.services.lightdm.enableKwallet = true;
