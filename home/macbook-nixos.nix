@@ -55,7 +55,7 @@
 
   home.file.".gnupg/gpg-agent.conf" = {
     text = ''
-      pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
+      pinentry-program ${pkgs.pinentry-gnome}/bin/pinentry-gnome3
     '';
     onChange = ''
       echo "Reloading gpg-agent"
