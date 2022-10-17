@@ -65,7 +65,11 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.sddm.enableHidpi = true;
   services.xserver.desktopManager.plasma5.enable = true;
+
+  services.udev.packages = with pkgs; [ libfido2 ];
 
   # Configure keymap in X11
   # services.xserver.layout = "jp106";
@@ -99,7 +103,6 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [
-      firefox
       # kakoune
       # thunderbird
     ];
@@ -110,6 +113,8 @@
   environment.systemPackages = with pkgs; [
     kakoune # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+
+    libfido2
   ];
 
   # Environment variables
@@ -141,8 +146,8 @@
 
 
   # PAM
-  security.pam.services.lightdm.enableKwallet = true;
-  security.pam.services.lightdm.enableGnomeKeyring = true;
+  security.pam.services.sddm.enableKwallet = true;
+  security.pam.services.sddm.enableGnomeKeyring = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -151,11 +156,26 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  programs.kdeconnect.enable = true;
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  # Secrets
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+  ## tinc
+  sops.secrets."tinc/ed25519-private-key" = { };
+  services.my-tinc = {
+    enable = true;
+    hostName = "macbook-nixos";
+    ed25519PrivateKey = config.sops.secrets."tinc/ed25519-private-key".path;
+    bindPort = 6565;
+  };
+
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
