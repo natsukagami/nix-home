@@ -23,6 +23,9 @@
     # TeX
     texlive.combined.scheme-full
 
+    (firefox.override { cfg.enablePlasmaBrowserIntegration = true; })
+    plasma-browser-integration
+
     # Java & sbt
     openjdk11
     sbt
