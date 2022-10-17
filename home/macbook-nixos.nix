@@ -29,8 +29,8 @@
   ]);
 
   # Graphical set up
-  # linux.graphical.type = "wayland";
-  # linux.graphical.wallpaper = ./images/wallpaper_0.png;
+  linux.graphical.type = "x11";
+  linux.graphical.wallpaper = ./images/wallpaper_0.png;
   # Enable sway
   # programs.my-sway.enable = true;
   # programs.my-sway.fontSize = 14.0;
@@ -47,16 +47,27 @@
   nki.programs.kitty = {
     enable = true;
     fontSize = 16;
+    enableTabs = true;
+  };
+
+  home.file.".gnupg/gpg-agent.conf" = {
+    text = ''
+      pinentry-program ${pkgs.kwalletcli}/bin/pinentry-kwallet
+    '';
+    onChange = ''
+      echo "Reloading gpg-agent"
+      echo RELOADAGENT | gpg-connect-agent
+    '';
   };
 
   # Multiple screen setup
   # services.kanshi = {
-    # enable = true;
-    # profiles.undocked.outputs = [{ criteria = "LVDS-1"; }];
-    # profiles.docked-hdmi.outputs = [
-      # { criteria = "LVDS-1"; status = "disable"; }
-      # { criteria = "HDMI-A-1"; }
-    # ];
+  # enable = true;
+  # profiles.undocked.outputs = [{ criteria = "LVDS-1"; }];
+  # profiles.docked-hdmi.outputs = [
+  # { criteria = "LVDS-1"; status = "disable"; }
+  # { criteria = "HDMI-A-1"; }
+  # ];
   # };
 
   # This value determines the Home Manager release that your
