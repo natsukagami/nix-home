@@ -1,0 +1,9 @@
+keys:
+  - &admin_macbook_m1 age169v95f5fqx0sg5mjpp63sumrj9sma9se203ra2c05qa67h2h2drs3tvdph
+  - &machine_macbook_m1 age10dd4t507h3ey68l2alu7z94s5lw0kshjq9lre5sv2vehrm9hg4rqk2let7
+creation_rules:
+  - path_regex: kagami-air-m1/secrets\.yaml$
+    key_groups:
+    - age:
+        - *admin_macbook_m1
+        - *machine_macbook_m1
