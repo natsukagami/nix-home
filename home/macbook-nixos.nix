@@ -1,5 +1,12 @@
 { pkgs, config, lib, ... }:
 
+let
+  discord = pkgs.writeShellApplication {
+    name = "discord";
+    runtimeInputs = with pkgs; [ nodejs pkgs.unstable.electron ];
+    text = "cd ~/Projects/ArmCord/ && electron --force-device-scale-factor=1.5 ts-out/main.js";
+  };
+in
 {
   imports = [
     # Common configuration
@@ -25,6 +32,8 @@
 
     firefox-wayland
 
+    discord
+
     # Java & sbt
     openjdk11
     sbt
@@ -38,7 +47,7 @@
   programs.my-sway.fontSize = 20.0;
   programs.my-sway.enableLaptopBars = true;
   programs.my-sway.enableMpd = false;
-  programs.my-sway.discord = null;
+  programs.my-sway.discord = "${discord}/bin/discord";
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
   wayland.windowManager.sway.config.output."Unknown-1" = {
@@ -50,7 +59,7 @@
     # Keyboard stuff
     xkb_layout = "jp";
     repeat_delay = "300";
-    repeat_rate = "10";
+    repeat_rate = "15";
     # Trackpad stuff
     accel_profile = "adaptive";
     drag = "enabled";
@@ -65,7 +74,7 @@
   nki.programs.kitty = {
     enable = true;
     fontSize = 22;
-    enableTabs = true;
+    enableTabs = false;
   };
 
   # Yellow light!
