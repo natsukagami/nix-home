@@ -202,6 +202,21 @@
 
   services.dbus.packages = with pkgs; [ gcr ];
 
+  # Power Management
+  powerManagement = {
+    enable = true;
+    powerDownCommands = ''
+      /run/current-system/sw/bin/rmmod brcmfmac # Disable wifi
+      /run/current-system/sw/bin/rmmod hci_bcm4377 # Disable bluetooth
+    '';
+    resumeCommands = ''
+      /run/current-system/sw/bin/modprobe brcmfmac # Enable wifi
+      /run/current-system/sw/bin/modprobe hci_bcm4377 # Enable bluetooth
+      /run/current-system/sw/bin/systemctl restart iwd
+      /run/current-system/sw/bin/systemctl restart bluetooth
+    '';
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
