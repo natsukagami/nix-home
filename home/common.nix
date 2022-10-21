@@ -80,8 +80,6 @@
     "~/.local/bin"
   ];
 
-  nki.programs.kitty.enable = true;
-
   # Programs
   programs = {
     bat = {

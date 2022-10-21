@@ -127,7 +127,12 @@
 
     ## Wayland
     qt5.qtwayland
+
+    ## Drivers...?
+    libimobiledevice
   ];
+
+  services.usbmuxd.enable = true;
 
   # Enable sway on login.
   environment.loginShellInit = ''

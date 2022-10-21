@@ -22,6 +22,9 @@ in
   home.username = "nki";
   home.homeDirectory = "/home/nki";
 
+  # No gpu terminal renderers...
+  programs.my-sway.terminal = "${pkgs.mate.mate-terminal}/bin/mate-terminal";
+
   # More packages
   home.packages = (with pkgs; [
     # CLI stuff
@@ -29,6 +32,7 @@ in
     zip
     # TeX
     texlive.combined.scheme-full
+    mate.mate-terminal
 
     firefox-wayland
 
@@ -71,11 +75,11 @@ in
   };
 
   # Kitty
-  nki.programs.kitty = {
-    enable = true;
-    fontSize = 22;
-    enableTabs = false;
-  };
+  # nki.programs.kitty = {
+  #   enable = true;
+  #   fontSize = 22;
+  #   enableTabs = false;
+  # };
 
   # Yellow light!
   services.wlsunset = {
