@@ -38,7 +38,7 @@ with lib;
     enableTabs = mkOption {
       type = types.bool;
       description = "Enable tabs";
-      default = pkgs.stdenc.isDarwin;
+      default = pkgs.stdenv.isDarwin;
     };
   };
 
