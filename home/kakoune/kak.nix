@@ -7,7 +7,7 @@ let
         pname = "kakoune-unwrapped";
         version = "r${builtins.substring 0 6 pkgs.sources.kakoune.rev}";
         src = pkgs.sources.kakoune;
-        makeFlags = ["debug=no" "PREFIX=${placeholder "out"}"];
+        makeFlags = [ "debug=no" "PREFIX=${placeholder "out"}" ];
 
         preConfigure = ''
           export version="v${version}";
