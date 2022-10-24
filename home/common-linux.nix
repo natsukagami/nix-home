@@ -32,6 +32,9 @@ with lib; {
     programs.git.extraConfig.safe.directory = [
       "${config.home.homeDirectory}/.config/nixpkgs"
     ];
+
+    # Bluetooth controls
+    services.mpris-proxy.enable = true;
   });
 }
 
