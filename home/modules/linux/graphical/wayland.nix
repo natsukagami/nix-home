@@ -16,9 +16,23 @@ with lib;
     ];
 
     # Notification system
-    programs.mako = {
+    services.dunst = {
       enable = true;
-      borderRadius = 5;
+      settings.global.follow = "keyboard";
+
+      settings.global.width = "(400, 800)";
+      settings.global.notification_limit = 5;
+
+      settings.global.font = "Monospace 12";
+
+      settings.global.dmenu = "${pkgs.bemenu}/bin/bemenu";
+      settings.global.browser = "${pkgs.firefox-wayland}/bin/firefox";
+
+      settings.global.mouse_left_click = "do_action, close_current";
+      settings.global.mouse_right_click = "close_current";
+      settings.global.mouse_middle_click = "close_all";
+
+      settings.experimental.per_monitor_dpi = "true";
     };
 
     # Forward wallpaper settings to sway
