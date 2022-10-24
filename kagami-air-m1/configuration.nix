@@ -172,6 +172,8 @@
   # PAM
   security.pam.services.sddm.enableKwallet = true;
   security.pam.services.sddm.enableGnomeKeyring = true;
+  security.pam.services.login.enableKwallet = true;
+  security.pam.services.login.enableGnomeKeyring = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
