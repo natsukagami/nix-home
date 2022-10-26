@@ -63,6 +63,7 @@
         adaptive_sync = "on";
       };
     };
+  nki.programs.kitty.enable = true;
   nki.programs.kitty.fontSize = 14;
 
   # Yellow light!
