@@ -25,7 +25,7 @@
     nix-gaming.url = github:fufexan/nix-gaming;
 
     # --- Sources
-    kakoune.url = github:natsukagami/kakoune/79acbed4d5ccf4e8e43ba5b99b0a5c954bdc5cf7;
+    kakoune.url = github:natsukagami/kakoune/revert-latex-changes;
     kakoune.flake = false;
     kak-lsp.url = github:kak-lsp/kak-lsp;
     kak-lsp.flake = false;
