@@ -10,7 +10,7 @@ with lib; {
 
       pinentry-gnome
     ] ++ (
-      if pkgs.system == "x86-64_linux"
+      if pkgs.stdenv.isx86_64
       then [
         vivaldi
         mpv # for anki
