@@ -12,7 +12,7 @@ with lib;
       noto-fonts-cjk
       merriweather
     ];
-  } // (if (strings.hasSuffix "linux" pkgs.system) then {
+  } // (if pkgs.stdenv.isLinux then {
     enableDefaultFonts = false;
     fontconfig = {
       defaultFonts = {
@@ -23,7 +23,7 @@ with lib;
       };
     };
     fontDir.enable = true;
-  } else { }) // (if (strings.hasSuffix "darwin" pkgs.system) then {
+  } else { }) // (if pkgs.stdenv.isDarwin then {
     fontDir.enable = true;
   } else { });
 }

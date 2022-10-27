@@ -4,7 +4,7 @@ with lib; {
     ./modules/linux/graphical
     ./modules/X11/xfce4-notifyd.nix
   ];
-  config = (mkIf (strings.hasSuffix "linux" pkgs.system) {
+  config = (mkIf pkgs.stdenv.isLinux {
     home.packages = with pkgs; [
       psmisc # killall and friends
 
