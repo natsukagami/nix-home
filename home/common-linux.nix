@@ -35,6 +35,12 @@ with lib; {
 
     # Bluetooth controls
     services.mpris-proxy.enable = true;
+
+    # Owncloud
+    services.owncloud-client = {
+      enable = true;
+      package = pkgs.unstable.owncloud-client;
+    };
   });
 }
 

@@ -78,10 +78,6 @@
     longitude = "6.38";
   };
 
-  # OwnCloud
-  services.owncloud-client.enable = true;
-  services.owncloud-client.package = pkgs.unstable.owncloud-client;
-
   # mpd stuff
   services.mpd-discord-rpc.enable = true;
   services.mpd-discord-rpc.package = pkgs.unstable.mpd-discord-rpc;
