@@ -100,6 +100,15 @@
   services.xserver.libinput.enable = true;
   # Keyboard
   services.input-remapper.enable = true;
+  services.input-remapper.package = pkgs.input-remapper.overridePythonAttrs {
+    src = pkgs.fetchFromGitHub {
+      owner = "sezanzeb";
+      repo = "input-remapper";
+      rev = "c27f37a69127d06f5cc0b1c9c5957b13f498e8e9";
+      sha256 = "sha256-O+pS4dtfrVDiQ7VkIlFzqvMryrKmz68QcAso8UaoFgw=";
+    };
+  };
+  services.input-remapper.serviceWantedBy = [ "multi-user.target" ];
   hardware.uinput.enable = true;
   hardware.opengl.enable = true;
   services.swaylock.enable = true;
