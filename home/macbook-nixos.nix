@@ -45,7 +45,7 @@ in
 
   # Graphical set up
   linux.graphical.type = "wayland";
-  linux.graphical.wallpaper = ./images/wallpaper_0.png;
+  linux.graphical.wallpaper = ./images/wallpaper_macbook.png;
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 20.0;

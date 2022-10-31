@@ -7,6 +7,7 @@ with lib; {
   config = (mkIf pkgs.stdenv.isLinux {
     home.packages = with pkgs; [
       psmisc # killall and friends
+      file # Query file type
 
       pinentry-gnome
     ] ++ (
