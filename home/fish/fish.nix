@@ -38,6 +38,12 @@
         printf (env LANG=ja_JP.UTF-8 date +"ご主人様、お帰りなさい！\n今日は%A、%Y年%m月%d日ですねー！今の時間って、%H時%M分です〜 \n言って言ってご主人様、コンピュターちゃんと何がするつもりでしょーか？〜エヘヘっ\n")
       end
 
+      functions --copy fish_title __original_fish_title
+      functions --erase fish_title
+      function fish_title
+        echo (__original_fish_title) - fish
+      end
+
       # Set up an editor alias
       if test -n "$EDITOR"
           alias e="$EDITOR"

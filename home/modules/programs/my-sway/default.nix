@@ -35,6 +35,8 @@ let
     ${pkgs.grim}/bin/grim -g (${pkgs.slurp}/bin/slurp) - | ${pkgs.wl-clipboard}/bin/wl-copy -t image/png
   '';
 
+  ignored-devices = [ "Surface_Headphones" ];
+  playerctl = "${pkgs.playerctl}/bin/playerctl --ignore-player=${strings.concatStringsSep "," ignored-devices}";
 
 in
 {
@@ -127,42 +129,48 @@ in
       #
       # Main modifier
       modifier = mod;
-      keybindings = lib.mkOptionDefault
-        (
+      keybindings = lib.mkOptionDefault ({
+        ## Splits
+        "${mod}+v" = "split v";
+        "${mod}+Shift+v" = "split h";
+        ## Run
+        "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
+        "${mod}+Shift+r" = "mode resize";
+        ## Screenshot
+        "Print" = "exec ${screenshotScript}/bin/screenshot";
+        ## Locking
+        "${mod}+semicolon" = "exec ${pkgs.swaylock}/bin/swaylock"
+          + (if cfg.wallpaper == "" then "" else " -i ${cfg.wallpaper} -s fit")
+          + " -l -k";
+        ## Multimedia
+        "XF86AudioPrev" = "exec ${playerctl} previous";
+        "XF86AudioPlay" = "exec ${playerctl} play-pause";
+        "Shift+XF86AudioPlay" = "exec ${playerctl} stop";
+        "XF86AudioNext" = "exec ${playerctl} next";
+        "XF86AudioRecord" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Capture toggle";
+        "XF86AudioMute" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master toggle";
+        "XF86AudioLowerVolume" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master 3%-";
+        "XF86AudioRaiseVolume" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master 3%+";
+      } //
+      # Map the workspaces
+      (builtins.listToAttrs (lib.flatten (map
+        (key: [
           {
-            ## Splits
-            "${mod}+v" = "split v";
-            "${mod}+Shift+v" = "split h";
-            ## Run
-            "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
-            "${mod}+Shift+r" = "mode resize";
-            ## Screenshot
-            "Print" = "exec ${screenshotScript}/bin/screenshot";
-            ## Locking
-            "${mod}+semicolon" = "exec ${pkgs.swaylock}/bin/swaylock"
-            + (if cfg.wallpaper == "" then "" else " -i ${cfg.wallpaper} -s fit")
-            + " -l -k";
-          } //
-          # Map the workspaces
-          (builtins.listToAttrs (lib.flatten (map
-            (key: [
-              {
-                name = "${mod}+${key}";
-                value = "workspace ${builtins.getAttr key wsAttrs}";
-              }
-              {
-                name = "${mod}+Shift+${key}";
-                value = "move to workspace ${builtins.getAttr key wsAttrs}";
-              }
-            ])
-            (builtins.attrNames wsAttrs))
-          )) //
-          # Move workspaces between outputs
-          {
-            "${mod}+ctrl+h" = "move workspace to output left";
-            "${mod}+ctrl+l" = "move workspace to output right";
+            name = "${mod}+${key}";
+            value = "workspace ${builtins.getAttr key wsAttrs}";
           }
-        );
+          {
+            name = "${mod}+Shift+${key}";
+            value = "move to workspace ${builtins.getAttr key wsAttrs}";
+          }
+        ])
+        (builtins.attrNames wsAttrs))
+      )) //
+      # Move workspaces between outputs
+      {
+        "${mod}+ctrl+h" = "move workspace to output left";
+        "${mod}+ctrl+l" = "move workspace to output right";
+      });
 
       ### Fonts
       #
@@ -257,31 +265,41 @@ in
         modules-left = [
           "sway/workspaces"
           "sway/mode"
-        ];
-        modules-center = [
           "sway/window"
         ];
-        modules-right =
-          (if cfg.enableMpd then [ "mpd" ] else [ ])
-          ++ [
-            "tray"
-            "pulseaudio"
-            "network"
-            "cpu"
-            "memory"
-            "temperature"
-            "backlight"
-          ] ++ (
-            if cfg.enableLaptopBars
-            then [ "battery" "battery#bat2" ]
-            else [ ]
-          ) ++ [
-            "clock"
-          ];
+        modules-center = [
+        ];
+        modules-right = [
+          (if cfg.enableMpd then "mpd" else "custom/media")
+          "tray"
+          "pulseaudio"
+          "network"
+          "cpu"
+          "memory"
+          "temperature"
+          "backlight"
+        ] ++ (
+          if cfg.enableLaptopBars
+          then [ "battery" "battery#bat2" ]
+          else [ ]
+        ) ++ [
+          "clock"
+        ];
 
         modules = {
           "sway/mode" = {
             format = "<span style=\"italic\">{}</span>";
+          };
+          "sway/window" = {
+            max-length = 70;
+            format = "{title}";
+            "rewrite" = {
+              "(.*) — Mozilla Firefox" = "🌎 $1";
+              "(.*) - Kakoune" = "⌨️$1";
+              "(.*) - fish" = ">_ $1";
+              "• Discord \\| (.*)" = "🗨️ $1";
+              "\\((\\d+)\\) Discord \\| (.*)" = "🗨️ [$1] $2";
+            };
           };
           "tray" = {
             icon-size = 21;
@@ -372,6 +390,17 @@ in
             "tooltip-format" = "MPD (connected)";
             "tooltip-format-disconnected" = "MPD (disconnected)";
           };
+          "custom/media" = {
+            "format" = "{icon}{}";
+            "return-type" = "json";
+            "format-icons" = {
+              "Playing" = " ";
+              "Paused" = " ";
+            };
+            "max-length" = 80;
+            "exec" = "${playerctl} -a metadata --format '{\"text\": \"{{artist}} - {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
+            "on-click" = "${playerctl} play-pause";
+          };
         };
       }
     ];
@@ -408,6 +437,10 @@ in
 
       #workspaces button.urgent {
           background-color: #eb4d4b;
+      }
+
+      #window, #sway, #sway-window {
+          padding: 0 10px;
       }
 
       #mode {
