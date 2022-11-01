@@ -10,7 +10,24 @@
   programs.fish = {
     enable = true;
     package = pkgs.unstable.fish;
-    functions = { };
+    functions = {
+      # Simplify nix usage!
+      nx = "test (count $argv) -gt 0 && nix run nixpkgs#$argv[1] -- $argv[2..]";
+      nsh = "test (count $argv) -gt 0 && nix shell nixpkgs#$argv -c fish";
+      # Grep stuff
+      eg = {
+        body = ''
+          if test (count $argv) -gt 0
+            ${pkgs.ripgrep}/bin/rg --vimgrep $argv | e
+          else
+            echo "eg {ripgrep options}"
+            return 1
+          end
+        '';
+        wraps = "rg";
+        description = "Search with ripgrep and put results into the editor";
+      };
+    };
 
     tide = {
       nix-shell.enable = true;
