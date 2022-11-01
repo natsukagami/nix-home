@@ -12,8 +12,49 @@
     package = pkgs.unstable.fish;
     functions = {
       # Simplify nix usage!
-      nx = "test (count $argv) -gt 0 && nix run nixpkgs#$argv[1] -- $argv[2..]";
-      nsh = "test (count $argv) -gt 0 && nix shell nixpkgs#$argv -c fish";
+      nx = {
+        body = ''
+          set impure
+          if test $argv[1] = "--impure"
+            set impure "--impure"
+            set argv $argv[2..]
+          end
+          if test (count $argv) -gt 0
+            nix run $impure nixpkgs#$argv[1] -- $argv[2..]
+          else
+            echo "nx [--impure] {package} [args...]"
+            exit 1
+          end
+        '';
+        wraps = "nix run";
+        description = "Runs an app from the nixpkgs store.";
+      };
+
+      nsh = {
+        description = "Spawns a shell from the given nixpkgs packages";
+        wraps = "nix shell";
+        body = ''
+          set impure
+          if test $argv[1] = "--impure"
+            set impure "--impure"
+            set argv $argv[2..]
+          end
+          if test (count $argv) -gt 0
+            set minusc (contains -i -- "-c" $argv)
+            if test -z $minusc
+              nix shell $impure nixpkgs#$argv -c fish
+            else if test $minusc -eq (count $argv)
+              echo "nsh [--impure] {packages} [-c command args...]"
+              return 1
+            else
+              nix shell $impure nixpkgs#$argv[..(math $minusc - 1)] $argv[$minusc..]
+            end
+          else
+            echo "nsh [--impure] {packages} [-c command args...]"
+            return 1
+          end
+        '';
+      };
       # Grep stuff
       eg = {
         body = ''
