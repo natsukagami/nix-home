@@ -9,8 +9,6 @@
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      # Firmware extracted manually
-      ./m1-support/firmware
       # Fonts
       ../modules/personal/fonts
       ../modules/services/swaylock.nix
@@ -22,16 +20,9 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = false;
 
-  # boot.kernelBuildIsCross = true;
-  boot.kernelBuildIs16K = false;
-
-  boot.kernelPatches = [{
-    name = "enable_uinput";
-    patch = null;
-    extraConfig = ''
-      CONFIG_INPUT_UINPUT m
-    '';
-  }];
+  # Asahi kernel configuration
+  hardware.asahi.peripheralFirmwareDirectory = ./firmware;
+  hardware.asahi.use4KPages = true;
 
   networking.hostName = "kagami-air-m1"; # Define your hostname.
 

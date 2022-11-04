@@ -29,7 +29,7 @@
     kakoune.flake = false;
     kak-lsp.url = github:kak-lsp/kak-lsp;
     kak-lsp.flake = false;
-    nixos-m1.url = github:natsukagami/nixos-m1;
+    nixos-m1.url = github:tpwrules/nixos-m1;
     nixos-m1.flake = false;
 
     # ---
