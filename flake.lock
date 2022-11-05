@@ -587,11 +587,11 @@
         "nixpkgs-unstable": "nixpkgs-unstable_2"
       },
       "locked": {
-        "lastModified": 1666985394,
-        "narHash": "sha256-fs8fqu7RtWjQaxkh7Wp7f6wMkFWYSgo6Y3Kyp/v0oys=",
+        "lastModified": 1667662637,
+        "narHash": "sha256-F65Ag+JaN0ZN8bFCAEYZlP81FaO4fmd7msEE0QMcjgY=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "7e1b80aff93fd91a62de435fa7ebed364f49c281",
+        "rev": "556ada2b9d98142c03589984ef21de427fd9951b",
         "type": "github"
       },
       "original": {
