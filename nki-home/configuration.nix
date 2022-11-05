@@ -47,6 +47,9 @@
   networking.hostName = "kagamiPC"; # Define your hostname.
   networking.wireless.iwd.enable = true;
 
+  # Allow qmk boards to boot
+  services.udev.packages = with pkgs; [ qmk-udev-rules ];
+
   # Set your time zone.
   time.timeZone = "Europe/Zurich";
 
