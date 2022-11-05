@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -95,8 +95,8 @@
     src = pkgs.fetchFromGitHub {
       owner = "sezanzeb";
       repo = "input-remapper";
-      rev = "c27f37a69127d06f5cc0b1c9c5957b13f498e8e9";
-      sha256 = "sha256-O+pS4dtfrVDiQ7VkIlFzqvMryrKmz68QcAso8UaoFgw=";
+      rev = "b047843545c85543e43f36ecc3b51e343c29c872";
+      sha256 = "sha256-um7fsoEndFLd8JzvCiSSIDpFFmBwtS9GmRag310iKfk=";
     };
   };
   services.input-remapper.serviceWantedBy = [ "multi-user.target" ];
