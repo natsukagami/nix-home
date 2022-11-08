@@ -3,6 +3,7 @@ with lib; {
   imports = [
     ./modules/linux/graphical
     ./modules/X11/xfce4-notifyd.nix
+    ./modules/programs/discord.nix
   ];
   config = (mkIf pkgs.stdenv.isLinux {
     home.packages = with pkgs; [
@@ -16,6 +17,9 @@ with lib; {
         vivaldi
         mpv # for anki
         pkgs.unstable.anki-bin
+
+        tdesktop
+        whatsapp-for-linux
       ]
       else [ ]
     );

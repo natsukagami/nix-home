@@ -71,7 +71,7 @@ in
     discord = mkOption {
       type = types.nullOr types.str;
       description = "The command for discord";
-      default = "${pkgs.discord}/bin/discord";
+      default = "${config.nki.programs.discord.package}/bin/discord";
     };
 
     lockCmd = mkOption {

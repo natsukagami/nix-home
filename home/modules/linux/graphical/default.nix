@@ -37,9 +37,10 @@ in
       xdg-utils # Open stuff
     ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
       mailspring
-      unstable.discord
       unstable.slack
     ]));
+
+    nki.programs.discord.enable = pkgs.stdenv.isx86_64;
 
     # Cursor
     home.pointerCursor = {
