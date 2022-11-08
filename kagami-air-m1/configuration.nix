@@ -24,6 +24,18 @@
   hardware.asahi.peripheralFirmwareDirectory = ./firmware;
   hardware.asahi.use4KPages = true;
 
+  # Power Management
+  services.upower = {
+    enable = true;
+    criticalPowerAction = "PowerOff";
+    ignoreLid = true;
+
+    usePercentageForPolicy = true;
+    percentageCritical = 3;
+    percentageLow = 10;
+  };
+  services.logind.lidSwitch = "ignore";
+
   networking.hostName = "kagami-air-m1"; # Define your hostname.
 
   # networking.hostName = "nixos"; # Define your hostname.
