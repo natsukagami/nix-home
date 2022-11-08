@@ -74,6 +74,13 @@ in
       default = "${pkgs.discord}/bin/discord";
     };
 
+    lockCmd = mkOption {
+      type = types.str;
+      description = "The screen lock command";
+      default = "${pkgs.swaylock}/bin/swaylock"
+        + (if cfg.wallpaper == "" then "" else " -i ${cfg.wallpaper} -s fill")
+        + " -l -k";
+    };
     enableLaptopBars = mkOption {
       type = types.bool;
       description = "Whether to enable laptop-specific bars (battery)";
@@ -141,9 +148,7 @@ in
         ## Screenshot
         "Print" = "exec ${flameshot}/bin/flameshot gui";
         ## Locking
-        "${mod}+semicolon" = "exec ${pkgs.swaylock}/bin/swaylock"
-          + (if cfg.wallpaper == "" then "" else " -i ${cfg.wallpaper} -s fit")
-          + " -l -k";
+        "${mod}+semicolon" = "exec ${cfg.lockCmd}";
         ## Multimedia
         "XF86AudioPrev" = "exec ${playerctl} previous";
         "XF86AudioPlay" = "exec ${playerctl} play-pause";
@@ -239,13 +244,18 @@ in
     wrapperFeatures.base = true;
     wrapperFeatures.gtk = true;
 
-    # Fix D-Bus starting up
-    extraConfig = ''
-      exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
-           hash dbus-update-activation-environment 2>/dev/null && \
-           dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
-           systemctl --user start sway-session.target
-    '';
+    extraConfig =
+      (if cfg.enableLaptopBars then ''
+        # Lock screen on lid close
+        bindswitch --reload lid:off exec ${cfg.lockCmd}
+      '' else "") +
+      ''
+        # Fix D-Bus starting up
+        exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
+             hash dbus-update-activation-environment 2>/dev/null && \
+             dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
+             systemctl --user start sway-session.target
+      '';
   };
 
   config.systemd.user.targets.sway-session = mkIf cfg.enable {
@@ -256,6 +266,14 @@ in
       Wants = [ "graphical-session-pre.target" ];
       After = [ "graphical-session-pre.target" ];
     };
+  };
+
+  config.services.swayidle = mkIf cfg.enable {
+    enable = true;
+    timeouts = [
+      # Lock after 15 minutes of idle
+      { timeout = 15 * 60; command = cfg.lockCmd; }
+    ];
   };
 
   config.programs.waybar = mkIf cfg.enable {
