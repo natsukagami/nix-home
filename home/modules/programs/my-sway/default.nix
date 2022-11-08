@@ -29,11 +29,11 @@ let
     in
     f from;
 
-  screenshotScript = pkgs.writeScriptBin "screenshot" ''
-    #! ${pkgs.fish}/bin/fish
-
-    ${pkgs.grim}/bin/grim -g (${pkgs.slurp}/bin/slurp) - | ${pkgs.wl-clipboard}/bin/wl-copy -t image/png
-  '';
+  flameshot = pkgs.unstable.flameshot.overrideAttrs
+    (attrs: {
+      nativeBuildInputs = attrs.nativeBuildInputs ++ (with pkgs.unstable; [ libsForQt5.kguiaddons ]);
+      cmakeFlags = [ "-DUSE_WAYLAND_CLIPBOARD=true" ];
+    });
 
   ignored-devices = [ "Surface_Headphones" ];
   playerctl = "${pkgs.playerctl}/bin/playerctl --ignore-player=${strings.concatStringsSep "," ignored-devices}";
@@ -121,6 +121,8 @@ in
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
         { command = "${cfg.browser}"; }
+        # Screenshot
+        { command = "${flameshot}/bin/flameshot"; }
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
       ] else [ ]);
@@ -137,7 +139,7 @@ in
         "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
         "${mod}+Shift+r" = "mode resize";
         ## Screenshot
-        "Print" = "exec ${screenshotScript}/bin/screenshot";
+        "Print" = "exec ${flameshot}/bin/flameshot gui";
         ## Locking
         "${mod}+semicolon" = "exec ${pkgs.swaylock}/bin/swaylock"
           + (if cfg.wallpaper == "" then "" else " -i ${cfg.wallpaper} -s fit")
@@ -562,5 +564,7 @@ in
     qt5.qtwayland
     # For waybar
     font-awesome
+
+    flameshot
   ]);
 }
