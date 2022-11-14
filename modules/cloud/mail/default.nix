@@ -31,6 +31,12 @@ in
       description = "The hostname where the server is run on";
     };
 
+    local_ip = mkOption {
+      type = types.str;
+      default = "";
+      description = "The local IP address used as the sender IP during delivery";
+    };
+
     primaryDomain = mkOption {
       type = types.str;
       default = "nkagami.me";
@@ -185,6 +191,7 @@ in
                     min_mx_level none
                 }
             }
+            ${if cfg.local_ip == "" then "" else "local_ip ${cfg.local_ip}"}
         }
 
         target.queue remote_queue {

@@ -74,6 +74,7 @@
   cloud.mail = {
     enable = true;
     debug = true;
+    local_ip = "178.128.135.11"; # resolved from mx1.nkagami.me
     tls.certFile = "${config.cloud.traefik.certsDumper.destination}/${config.cloud.mail.hostname}/certificate.crt";
     tls.keyFile = "${config.cloud.traefik.certsDumper.destination}/${config.cloud.mail.hostname}/privatekey.key";
     usersFile = config.sops.secrets.mail-users.path;
