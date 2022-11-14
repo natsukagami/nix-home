@@ -8,6 +8,7 @@
     ../modules/cloud/bitwarden
     ../modules/cloud/mail
     ../modules/cloud/conduit
+    ../modules/cloud/writefreely
   ];
 
   boot.cleanTmpDir = true;
@@ -86,6 +87,9 @@
     enable = true;
     envFile = config.sops.secrets.youmubot-env.path;
   };
+
+  # Writefreely
+  cloud.writefreely.enable = true;
 
   system.stateVersion = "21.11";
 }
