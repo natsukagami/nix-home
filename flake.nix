@@ -9,6 +9,8 @@
     home-manager.url = "github:natsukagami/home-manager/release-22.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    sops-nix.inputs.nixpkgs-22_05.follows = "nixpkgs";
     deploy-rs.url = "github:Serokell/deploy-rs";
     nur.url = "github:nix-community/NUR";
 

@@ -29,6 +29,7 @@ in
       feh
       deluge # Torrent client
       pavucontrol # PulseAudio control panel
+      thunderbird
 
       ## CLI stuff
       dex # .desktop file management, startup
