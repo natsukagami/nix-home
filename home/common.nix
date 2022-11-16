@@ -56,6 +56,8 @@
     poppler_utils
     ## htop replacement
     htop-vim
+    ## Bitwarden
+    rbw
 
     ## To do tunneling with cloudflare
     pkgs.cloudflared

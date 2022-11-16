@@ -107,8 +107,9 @@
     src = pkgs.fetchFromGitHub {
       owner = "sezanzeb";
       repo = "input-remapper";
-      rev = "b047843545c85543e43f36ecc3b51e343c29c872";
-      sha256 = "sha256-um7fsoEndFLd8JzvCiSSIDpFFmBwtS9GmRag310iKfk=";
+      rev = "cfdcda4deab202fe5491e71334dc461e86dac548";
+      sha256 = "sha256-5YXNCoMMNO9XWrqeVH6ErUjjAkVIbOBtFQU4nJKpJ84=";
+      # sha256 = lib.fakeSha256;
     };
   };
   services.input-remapper.serviceWantedBy = [ "multi-user.target" ];
