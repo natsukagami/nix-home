@@ -38,6 +38,7 @@ in
     ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
       mailspring
       unstable.slack
+      zotero
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
