@@ -22,7 +22,7 @@
 
   # Asahi kernel configuration
   hardware.asahi.peripheralFirmwareDirectory = ./firmware;
-  hardware.asahi.use4KPages = true;
+  hardware.asahi.use4KPages = false;
 
   # Power Management
   services.upower = {
@@ -220,16 +220,16 @@
   # Power Management
   powerManagement = {
     enable = true;
-    powerDownCommands = ''
-      /run/current-system/sw/bin/rmmod brcmfmac # Disable wifi
-      /run/current-system/sw/bin/rmmod hci_bcm4377 # Disable bluetooth
-    '';
-    resumeCommands = ''
-      /run/current-system/sw/bin/modprobe brcmfmac # Enable wifi
-      /run/current-system/sw/bin/modprobe hci_bcm4377 # Enable bluetooth
-      /run/current-system/sw/bin/systemctl restart iwd
-      /run/current-system/sw/bin/systemctl restart bluetooth
-    '';
+    # powerDownCommands = ''
+    #   /run/current-system/sw/bin/rmmod brcmfmac # Disable wifi
+    #   /run/current-system/sw/bin/rmmod hci_bcm4377 # Disable bluetooth
+    # '';
+    # resumeCommands = ''
+    #   /run/current-system/sw/bin/modprobe brcmfmac # Enable wifi
+    #   /run/current-system/sw/bin/modprobe hci_bcm4377 # Enable bluetooth
+    #   /run/current-system/sw/bin/systemctl restart iwd
+    #   /run/current-system/sw/bin/systemctl restart bluetooth
+    # '';
   };
 
   # Open ports in the firewall.
