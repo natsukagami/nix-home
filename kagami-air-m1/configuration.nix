@@ -19,6 +19,15 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = false;
+  boot.kernelPatches = [
+    {
+      name = "enable-suspend";
+      patch = null;
+      extraConig = ''
+        SUSPEND y
+      '';
+    }
+  ];
 
   # Asahi kernel configuration
   hardware.asahi.peripheralFirmwareDirectory = ./firmware;
@@ -28,13 +37,12 @@
   services.upower = {
     enable = true;
     criticalPowerAction = "PowerOff";
-    ignoreLid = true;
 
     usePercentageForPolicy = true;
     percentageCritical = 3;
     percentageLow = 10;
   };
-  services.logind.lidSwitch = "ignore";
+  services.logind.lidSwitch = "suspend";
 
   networking.hostName = "kagami-air-m1"; # Define your hostname.
 

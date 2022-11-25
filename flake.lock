@@ -273,15 +273,16 @@
     "nixos-m1": {
       "flake": false,
       "locked": {
-        "lastModified": 1669316732,
-        "narHash": "sha256-T98mWoyOgOkasvkYVKqM+LD2hwg84ChMb3wfB2XQDJw=",
-        "owner": "tpwrules",
+        "lastModified": 1669380419,
+        "narHash": "sha256-YKtdevoz3nDuoAbE9hoowX/Aizwb6ukCoF2zhld3Gpg=",
+        "owner": "natsukagami",
         "repo": "nixos-m1",
-        "rev": "3531027b101fb9e87dfc928b952596e4839f8eb7",
+        "rev": "a6fccba573b2a21373858181516ed1d1777d29b3",
         "type": "github"
       },
       "original": {
-        "owner": "tpwrules",
+        "owner": "natsukagami",
+        "ref": "custom-kernel-patches",
         "repo": "nixos-m1",
         "type": "github"
       }
