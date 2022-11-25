@@ -2,6 +2,7 @@
 with lib;
 let
   cfg = config.programs.my-sway;
+  swayCfg = config.wayland.windowManager.sway;
 
   mod = "Mod4";
   # List of workspaces
@@ -144,7 +145,52 @@ in
       #
       # Main modifier
       modifier = mod;
-      keybindings = lib.mkOptionDefault ({
+      keybindings = {
+        ### Default Bindings
+        #
+        ## App management
+        "${mod}+Return" = "exec ${swayCfg.config.terminal}";
+        "${mod}+Shift+q" = "kill";
+        "${mod}+d" = "exec ${swayCfg.config.menu}";
+        ## Windowing
+        # Focus
+        "${mod}+${swayCfg.config.left}" = "focus left";
+        "${mod}+${swayCfg.config.down}" = "focus down";
+        "${mod}+${swayCfg.config.up}" = "focus up";
+        "${mod}+${swayCfg.config.right}" = "focus right";
+        "${mod}+Left" = "focus left";
+        "${mod}+Down" = "focus down";
+        "${mod}+Up" = "focus up";
+        "${mod}+Right" = "focus right";
+        # Move
+        "${mod}+Shift+${swayCfg.config.left}" = "move left";
+        "${mod}+Shift+${swayCfg.config.down}" = "move down";
+        "${mod}+Shift+${swayCfg.config.up}" = "move up";
+        "${mod}+Shift+${swayCfg.config.right}" = "move right";
+        "${mod}+Shift+Left" = "move left";
+        "${mod}+Shift+Down" = "move down";
+        "${mod}+Shift+Up" = "move up";
+        "${mod}+Shift+Right" = "move right";
+        # Toggles
+        "${mod}+f" = "fullscreen toggle";
+        "${mod}+a" = "focus parent";
+        # Layouts
+        "${mod}+s" = "layout stacking";
+        "${mod}+w" = "layout tabbed";
+        "${mod}+e" = "layout toggle split";
+        # Floating
+        "${mod}+Shift+space" = "floating toggle";
+        "${mod}+space" = "focus mode_toggle";
+        # Scratchpad
+        "${mod}+Shift+minus" = "move scratchpad";
+        # Resize
+        "${mod}+r" = "mode resize";
+        "${mod}+minus" = "scratchpad show";
+        ## Reload and exit
+        "${mod}+Shift+c" = "reload";
+        "${mod}+Shift+e" =
+          "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
+      } // {
         ## Splits
         "${mod}+v" = "split v";
         "${mod}+Shift+v" = "split h";
@@ -164,6 +210,11 @@ in
         "XF86AudioMute" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master toggle";
         "XF86AudioLowerVolume" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master 3%-";
         "XF86AudioRaiseVolume" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master 3%+";
+        ## Backlight
+        "XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl s 10%-";
+        "XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl s 10%+";
+        "Shift+XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl -d kbd_backlight s 25%-";
+        "Shift+XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl -d kbd_backlight s 25%+";
       } //
       # Map the workspaces
       (builtins.listToAttrs (lib.flatten (map
@@ -183,7 +234,7 @@ in
       {
         "${mod}+ctrl+h" = "move workspace to output left";
         "${mod}+ctrl+l" = "move workspace to output right";
-      });
+      };
 
       ### Fonts
       #
@@ -253,7 +304,7 @@ in
     extraConfig =
       (if cfg.enableLaptopBars then ''
         # Lock screen on lid close
-        bindswitch --reload lid:off exec ${cfg.lockCmd}
+        bindswitch lid:off exec ${cfg.lockCmd}
       '' else "") +
       ''
         # Fix D-Bus starting up
