@@ -23,7 +23,7 @@
     {
       name = "enable-suspend";
       patch = null;
-      extraConig = ''
+      extraConfig = ''
         SUSPEND y
       '';
     }

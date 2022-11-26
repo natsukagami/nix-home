@@ -273,11 +273,11 @@
     "nixos-m1": {
       "flake": false,
       "locked": {
-        "lastModified": 1669380419,
-        "narHash": "sha256-YKtdevoz3nDuoAbE9hoowX/Aizwb6ukCoF2zhld3Gpg=",
+        "lastModified": 1669469129,
+        "narHash": "sha256-7THGCQCGx5X2DBczqwvJvUnFNfEFl7rbGOn50KbInNE=",
         "owner": "natsukagami",
         "repo": "nixos-m1",
-        "rev": "a6fccba573b2a21373858181516ed1d1777d29b3",
+        "rev": "15c18f15b2a1b1a04cef40d188501978d27c5478",
         "type": "github"
       },
       "original": {
