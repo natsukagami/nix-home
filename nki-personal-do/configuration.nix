@@ -41,7 +41,7 @@
 
   # Secret management
   sops.defaultSopsFile = ./secrets/secrets.yaml;
-  sops.age.sshKeyPaths = [ "/root/.ssh/id_ed25519" ];
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
   # tinc
   services.my-tinc.enable = true;
@@ -75,7 +75,7 @@
   cloud.mail = {
     enable = true;
     debug = true;
-    local_ip = (builtins.elemAt config.networking.interfaces.eth0.ipv4.addresses 0).address;
+    # local_ip = (builtins.elemAt config.networking.interfaces.eth0.ipv4.addresses 0).address;
     tls.certFile = "${config.cloud.traefik.certsDumper.destination}/${config.cloud.mail.hostname}/certificate.crt";
     tls.keyFile = "${config.cloud.traefik.certsDumper.destination}/${config.cloud.mail.hostname}/privatekey.key";
     usersFile = config.sops.secrets.mail-users.path;

@@ -500,11 +500,11 @@
         "flake-utils": "flake-utils_3"
       },
       "locked": {
-        "lastModified": 1666006086,
-        "narHash": "sha256-wjrQ9ngadZwfbz2o+iiNQvOTuRYS06Ate9FCXQEv94I=",
-        "ref": "master",
-        "rev": "333e5e06c0f40dab2c6f9556a6ea09f44971561b",
-        "revCount": 3,
+        "lastModified": 1669915544,
+        "narHash": "sha256-wByoZ+HWXo7L9QyUefMhe26IUUeFGtffG6v/AL31neo=",
+        "ref": "refs/heads/master",
+        "rev": "9142ca82ec1e9a6e1314d2727cdc15db30c94c14",
+        "revCount": 4,
         "type": "git",
         "url": "ssh://git@github.com/natsukagami/nix-deploy-secrets"
       },

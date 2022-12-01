@@ -182,10 +182,10 @@ in
             }
             mx_auth {
                 dane
-                mtasts {
-                    cache fs
-                    fs_dir mtasts_cache/
-                }
+                # mtasts {
+                #     cache fs
+                #     fs_dir mtasts_cache/
+                # }
                 local_policy {
                     min_tls_level encrypted
                     min_mx_level none
