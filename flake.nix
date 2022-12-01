@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
+    nixpkgs-2211.url = "github:nixos/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -44,6 +45,7 @@
       overlays = import ./overlay.nix inputs;
 
       pkgs' = system: import nixpkgs { inherit system overlays; config.allowUnfree = true; };
+      pkgs-2211 = system: import inputs.nixpkgs-2211 { inherit system overlays; config.allowUnfree = true; };
       pkgs-unstable = system: import nixpkgs-unstable { inherit system overlays; config.allowUnfree = true; };
 
       nixpkgsAsRegistry_ = stable: { ... }: {
@@ -107,9 +109,9 @@
       };
 
       # Home configuration
-      nixosConfigurations."nki-home" = nixpkgs.lib.nixosSystem rec {
+      nixosConfigurations."nki-home" = inputs.nixpkgs-2211.lib.nixosSystem rec {
         system = "x86_64-linux";
-        pkgs = pkgs' system;
+        pkgs = pkgs-2211 system;
         modules = [
           ./modules/my-tinc
           sops-nix.nixosModules.sops
