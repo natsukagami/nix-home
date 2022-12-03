@@ -165,8 +165,8 @@
       };
 
       # DigitalOcean node
-      nixosConfigurations."nki-personal-do" = nixpkgs.lib.nixosSystem rec {
-        pkgs = pkgs' system;
+      nixosConfigurations."nki-personal-do" = inputs.nixpkgs-2211.lib.nixosSystem rec {
+        pkgs = pkgs-2211 system;
         system = "x86_64-linux";
         modules = [
           ./modules/my-tinc

@@ -4,8 +4,6 @@ let
   cfg = config.cloud.writefreely;
 in
 {
-  imports = [ ./writefreely.nix ];
-
   options.cloud.writefreely = {
     enable = mkEnableOption "Enable the write.as instance";
     package = mkOption {
