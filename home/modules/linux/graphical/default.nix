@@ -33,7 +33,7 @@ in
 
       ## CLI stuff
       dex # .desktop file management, startup
-      sct # Display color temperature
+      # sct # Display color temperature
       xdg-utils # Open stuff
     ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
       mailspring

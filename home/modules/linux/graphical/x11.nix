@@ -36,7 +36,7 @@ with lib;
     # Picom: X Compositor
     services.picom = mkIf (!cfg.hasDE) {
       enable = true;
-      blur = true;
+      # blur = true;
       fade = true;
       fadeDelta = 3;
       shadow = true;

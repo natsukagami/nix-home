@@ -13,9 +13,9 @@ in
   config = mkIf cfg.enable {
     programs.broot = {
       enable = true;
-      modal = true;
+      settings.modal = true;
 
-      verbs = [
+      settings.verbs = [
         {
           invocation = "edit";
           key = "enter";
@@ -25,7 +25,7 @@ in
         }
       ];
 
-      skin = {
+      settings.skin = {
         default = "none none";
         tree = "gray(7) None / gray(18) None";
         file = "gray(3) None / gray(8) None";

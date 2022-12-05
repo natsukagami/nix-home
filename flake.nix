@@ -2,16 +2,15 @@
   description = "nki's systems";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
-    nixpkgs-2211.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    home-manager.url = "github:natsukagami/home-manager/release-22.05";
+    home-manager.url = "github:natsukagami/home-manager/release-22.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    sops-nix.inputs.nixpkgs-22_05.follows = "nixpkgs";
+    sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
     deploy-rs.url = "github:Serokell/deploy-rs";
     nur.url = "github:nix-community/NUR";
 
@@ -45,7 +44,6 @@
       overlays = import ./overlay.nix inputs;
 
       pkgs' = system: import nixpkgs { inherit system overlays; config.allowUnfree = true; };
-      pkgs-2211 = system: import inputs.nixpkgs-2211 { inherit system overlays; config.allowUnfree = true; };
       pkgs-unstable = system: import nixpkgs-unstable { inherit system overlays; config.allowUnfree = true; };
 
       nixpkgsAsRegistry_ = stable: { ... }: {
@@ -109,9 +107,9 @@
       };
 
       # Home configuration
-      nixosConfigurations."nki-home" = inputs.nixpkgs-2211.lib.nixosSystem rec {
+      nixosConfigurations."nki-home" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        pkgs = pkgs-2211 system;
+        pkgs = pkgs' system;
         modules = [
           ./modules/my-tinc
           sops-nix.nixosModules.sops
@@ -165,8 +163,8 @@
       };
 
       # DigitalOcean node
-      nixosConfigurations."nki-personal-do" = inputs.nixpkgs-2211.lib.nixosSystem rec {
-        pkgs = pkgs-2211 system;
+      nixosConfigurations."nki-personal-do" = nixpkgs.lib.nixosSystem rec {
+        pkgs = pkgs' system;
         system = "x86_64-linux";
         modules = [
           ./modules/my-tinc

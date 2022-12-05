@@ -111,15 +111,15 @@
   services.xserver.libinput.enable = true;
   # Keyboard
   services.input-remapper.enable = true;
-  services.input-remapper.package = pkgs.input-remapper.overridePythonAttrs {
-    src = pkgs.fetchFromGitHub {
-      owner = "sezanzeb";
-      repo = "input-remapper";
-      rev = "ac07769854b5c0b3d5e99ee130516243699687ed";
-      sha256 = "sha256-/Jh2hXcv8NSceYoobSqugWwX8jUf+FP1i922Ufp2H9w=";
-      # sha256 = lib.fakeSha256;
-    };
-  };
+  # services.input-remapper.package = pkgs.input-remapper.overridePythonAttrs {
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "sezanzeb";
+  #     repo = "input-remapper";
+  #     rev = "ac07769854b5c0b3d5e99ee130516243699687ed";
+  #     sha256 = "sha256-/Jh2hXcv8NSceYoobSqugWwX8jUf+FP1i922Ufp2H9w=";
+  #     # sha256 = lib.fakeSha256;
+  #   };
+  # };
   services.input-remapper.serviceWantedBy = [ "multi-user.target" ];
   hardware.uinput.enable = true;
   hardware.opengl.enable = true;
