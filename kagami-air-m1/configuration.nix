@@ -115,8 +115,8 @@
     src = pkgs.fetchFromGitHub {
       owner = "sezanzeb";
       repo = "input-remapper";
-      rev = "cfdcda4deab202fe5491e71334dc461e86dac548";
-      sha256 = "sha256-5YXNCoMMNO9XWrqeVH6ErUjjAkVIbOBtFQU4nJKpJ84=";
+      rev = "ac07769854b5c0b3d5e99ee130516243699687ed";
+      sha256 = "sha256-/Jh2hXcv8NSceYoobSqugWwX8jUf+FP1i922Ufp2H9w=";
       # sha256 = lib.fakeSha256;
     };
   };
