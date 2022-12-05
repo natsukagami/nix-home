@@ -4,7 +4,9 @@ let
   discord = pkgs.writeShellApplication {
     name = "discord";
     runtimeInputs = with pkgs; [ nodejs pkgs.unstable.electron ];
-    text = "cd ~/Projects/ArmCord/ && electron --force-device-scale-factor=1.5 ts-out/main.js";
+    text = ''
+      cd ~/Projects/ArmCord/ && electron --force-device-scale-factor=1.5 ts-out/main.js "$@"
+    '';
   };
 in
 {
