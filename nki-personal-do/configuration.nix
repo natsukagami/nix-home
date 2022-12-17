@@ -1,4 +1,4 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, lib, ... }: {
   imports = [
     ./hardware-configuration.nix
 
@@ -22,7 +22,11 @@
 
   environment.systemPackages = with pkgs; [
     git
+
+    docker-compose
   ];
+
+  virtualisation.docker.enable = true;
 
   services.do-agent.enable = true;
 
@@ -91,5 +95,66 @@
   # Writefreely
   cloud.writefreely.enable = true;
 
+  # Authentik (running under docker-compose T_T)
+  cloud.traefik.hosts.authentik = { host = "auth.dtth.ch"; port = 9480; };
+
+  # Outline
+  sops.secrets.minio-secret-key = { };
+  sops.secrets.authentik-oidc-client-secret = { owner = "outline"; };
+  services.outline = {
+    enable = true;
+    package = pkgs.outline.overrideAttrs (attrs: rec {
+      src = pkgs.fetchFromGitHub {
+        owner = "outline";
+        repo = "outline";
+        rev = "08a471f2306c045ea96b4c838b73ad28d8448875";
+        sha256 = "sha256-HF/E9Spr7mJF8wrSFJv2HmV/wkjmNqmylvWshnvxg3w=";
+      };
+
+      yarnOfflineCache = pkgs.fetchYarnDeps {
+        yarnLock = src + "/yarn.lock";
+        sha256 = "sha256-8sWtN9uE5EUI9sybD1A5xAOq8mqBMQOx2AJ9Pw8i+rM=";
+      };
+    });
+    databaseUrl = "postgres://outline:outline@localhost/outline?sslmode=disable";
+    sequelizeArguments = "--env=production-ssl-disabled";
+    redisUrl = "local";
+    publicUrl = "https://wiki.dtth.ch";
+    port = 18729;
+    storage = {
+      accessKey = "minio";
+      secretKeyFile = config.sops.secrets.minio-secret-key.path;
+      region = config.services.minio.region;
+      uploadBucketUrl = "https://s3.dtth.ch";
+      uploadBucketName = "dtth-outline";
+      uploadMaxSize = 50 * 1024 * 1000;
+    };
+    maximumImportSize = 50 * 1024 * 1000;
+
+    oidcAuthentication = {
+      clientId = "3a0c10e00cdcb4a1194315577fa208a747c1a5f7";
+      clientSecretFile = config.sops.secrets.authentik-oidc-client-secret.path;
+      authUrl = "https://auth.dtth.ch/application/o/authorize/";
+      tokenUrl = "https://auth.dtth.ch/application/o/token/";
+      userinfoUrl = "https://auth.dtth.ch/application/o/userinfo/";
+      displayName = "DTTH Account";
+    };
+
+    forceHttps = false;
+  };
+  systemd.services.outline.environment.PGSSLMODE = "disable";
+  cloud.postgresql.databases = [ "outline" ];
+  cloud.traefik.hosts.outline = { host = "wiki.dtth.ch"; port = 18729; };
+
+  # Minio
+  sops.secrets.minio-credentials = { };
+  services.minio = {
+    enable = true;
+    listenAddress = ":61929";
+    consoleAddress = ":62929";
+    rootCredentialsFile = config.sops.secrets.minio-credentials.path;
+  };
+  cloud.traefik.hosts.minio = { host = "s3.dtth.ch"; port = 61929; };
   system.stateVersion = "21.11";
 }
+
