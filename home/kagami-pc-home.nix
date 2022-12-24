@@ -79,6 +79,7 @@
   };
 
   # mpd stuff
+  services.mpd.musicDirectory = "${config.home.homeDirectory}/Music";
   services.mpd-discord-rpc.enable = true;
   services.mpd-discord-rpc.package = pkgs.unstable.mpd-discord-rpc;
   services.mpdris2.enable = true;
