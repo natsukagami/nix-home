@@ -32,8 +32,8 @@
     # Rust
     "$HOME/.cargo/bin"
     # Haskell
-    "$HOME/.ghcup/bin"
     "$HOME/.cabal/bin"
+    "$HOME/.ghcup/bin"
     # Go
     "$HOME/go/bin"
     # Node.js

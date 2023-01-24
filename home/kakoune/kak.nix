@@ -34,7 +34,7 @@ let
   kak-lsp = pkgs.libs.crane.buildPackage {
     src = pkgs.sources.kak-lsp;
     buildInputs = (with pkgs;
-      lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration ])
+      lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
     ) ++ (with pkgs; [ libiconv ]
     );
   };
