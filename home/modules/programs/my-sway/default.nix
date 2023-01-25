@@ -49,7 +49,7 @@ let
 
 in
 {
-  imports = [ ./ibus.nix ];
+  # imports = [ ./ibus.nix ];
 
   options.programs.my-sway = {
     enable = mkEnableOption "Enable the sway configuration";

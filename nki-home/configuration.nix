@@ -73,8 +73,16 @@
   };
   # Select internationalisation properties.
   i18n.defaultLocale = "ja_JP.UTF-8";
-  i18n.inputMethod.enabled = "ibus";
-  i18n.inputMethod.ibus.engines = (with pkgs.ibus-engines; [ bamboo mozc libpinyin ]);
+  # i18n.inputMethod.enabled = "ibus";
+  # i18n.inputMethod.ibus.engines = (with pkgs.ibus-engines; [ bamboo mozc libpinyin ]);
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-mozc
+      fcitx5-unikey
+      fcitx5-gtk
+    ];
+  };
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -157,9 +165,9 @@
   # Environment variables
   environment.variables = {
     # Input method overrides
-    GTK_IM_MODULE = "ibus";
-    QT_IM_MODULE = "ibus";
-    "XMODIFIERS=@im" = "ibus";
+    # GTK_IM_MODULE = "ibus";
+    # QT_IM_MODULE = "ibus";
+    # "XMODIFIERS=@im" = "ibus";
 
     # Basic editor setup
     EDITOR = "kak";

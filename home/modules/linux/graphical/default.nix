@@ -67,12 +67,12 @@ in
     };
 
     # IBus configuration
-    dconf.settings."desktop/ibus/general" = {
-      engines-order = hm.gvariant.mkArray hm.gvariant.type.string [ "xkb:jp::jpn" "mozc-jp" "Bamboo" ];
-      reload-engines = hm.gvariant.mkArray hm.gvariant.type.string [ "xkb:jp::jpn" "mozc-jp" "Bamboo" ];
-    };
-    dconf.settings."desktop/ibus/general/hotkey" = {
-      triggers = hm.gvariant.mkArray hm.gvariant.type.string [ "<Super>z" ];
-    };
+    # dconf.settings."desktop/ibus/general" = {
+    #   engines-order = hm.gvariant.mkArray hm.gvariant.type.string [ "xkb:jp::jpn" "mozc-jp" "Bamboo" ];
+    #   reload-engines = hm.gvariant.mkArray hm.gvariant.type.string [ "xkb:jp::jpn" "mozc-jp" "Bamboo" ];
+    # };
+    # dconf.settings."desktop/ibus/general/hotkey" = {
+    #   triggers = hm.gvariant.mkArray hm.gvariant.type.string [ "<Super>z" ];
+    # };
   };
 }
