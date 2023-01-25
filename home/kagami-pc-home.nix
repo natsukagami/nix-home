@@ -4,8 +4,6 @@
   imports = [
     # Common configuration
     ./common.nix
-    # We use our own firefox
-    ./firefox.nix
     # osu!
     ./osu.nix
   ];
