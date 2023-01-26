@@ -139,6 +139,7 @@ in
         { command = "${cfg.browser}"; }
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
+        { command = "${pkgs.premid}/bin/premid"; }
       ] else [ ]);
 
       ### Keybindings
