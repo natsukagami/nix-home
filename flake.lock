@@ -197,16 +197,15 @@
     "kakoune": {
       "flake": false,
       "locked": {
-        "lastModified": 1670235597,
-        "narHash": "sha256-4LO/SbhrtcUajHsDrG38ntq2GxY+JRwc4Bl1qgL/Fzo=",
-        "owner": "natsukagami",
+        "lastModified": 1674455980,
+        "narHash": "sha256-y4r+UPLGzOu9rocZfFjoYR+r9I0BD04cuH758hv8hzo=",
+        "owner": "mawww",
         "repo": "kakoune",
-        "rev": "39c875856a8dcfc2dcb0d796df05474e0eb30a3f",
+        "rev": "509788460889ed934e4a51d03243aedf776e8b96",
         "type": "github"
       },
       "original": {
-        "owner": "natsukagami",
-        "ref": "revert-latex-changes",
+        "owner": "mawww",
         "repo": "kakoune",
         "type": "github"
       }
