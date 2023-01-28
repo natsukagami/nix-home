@@ -32,7 +32,7 @@ set global ui_options terminal_assistant=cat
 # Enable line numbers
 addhl global/ number-lines
 
-set global grepcmd "rg --line-number --no-column --no-heading --color=never ''"
+set global grepcmd "rg --line-number --no-column --no-heading --color=never "
 
 # Floating terminal
 # define-command floating-terminal -params 1 -docstring "Open a floating terminal running the given command" %{
