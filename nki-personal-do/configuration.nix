@@ -103,19 +103,7 @@
   sops.secrets.authentik-oidc-client-secret = { owner = "outline"; };
   services.outline = {
     enable = true;
-    package = pkgs.outline.overrideAttrs (attrs: rec {
-      src = pkgs.fetchFromGitHub {
-        owner = "outline";
-        repo = "outline";
-        rev = "08a471f2306c045ea96b4c838b73ad28d8448875";
-        sha256 = "sha256-HF/E9Spr7mJF8wrSFJv2HmV/wkjmNqmylvWshnvxg3w=";
-      };
-
-      yarnOfflineCache = pkgs.fetchYarnDeps {
-        yarnLock = src + "/yarn.lock";
-        sha256 = "sha256-8sWtN9uE5EUI9sybD1A5xAOq8mqBMQOx2AJ9Pw8i+rM=";
-      };
-    });
+    package = pkgs.unstable.outline;
     databaseUrl = "postgres://outline:outline@localhost/outline?sslmode=disable";
     sequelizeArguments = "--env=production-ssl-disabled";
     redisUrl = "local";
