@@ -101,6 +101,7 @@
   # Outline
   sops.secrets.minio-secret-key = { };
   sops.secrets.authentik-oidc-client-secret = { owner = "outline"; };
+  sops.secrets."outline/smtp-password" = { owner = "outline"; };
   services.outline = {
     enable = true;
     package = pkgs.unstable.outline;
@@ -126,6 +127,16 @@
       tokenUrl = "https://auth.dtth.ch/application/o/token/";
       userinfoUrl = "https://auth.dtth.ch/application/o/userinfo/";
       displayName = "DTTH Account";
+    };
+
+    smtp = {
+      fromEmail = "DTTH Wiki <dtth.wiki@nkagami.me>";
+      replyEmail = "";
+      host = "mx1.nkagami.me";
+      username = "dtth.wiki@nkagami.me";
+      passwordFile = config.sops.secrets."outline/smtp-password".path;
+      port = 465;
+      secure = true;
     };
 
     forceHttps = false;
