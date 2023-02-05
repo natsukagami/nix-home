@@ -16,7 +16,7 @@ in
 
     package = mkOption {
       type = types.package;
-      default = cfg.basePackage.override { withOpenASAR = true; nss = pkgs.nss_latest; };
+      default = cfg.basePackage.override { nss = pkgs.nss_latest; };
       description = "The actual package to use";
     };
   };
