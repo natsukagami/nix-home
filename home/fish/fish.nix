@@ -5,7 +5,13 @@
     ./tide/nix-shell.nix
   ];
 
-  home.packages = [ pkgs.timg ];
+  home.packages = with pkgs; [
+    timg
+    # For fzf.fish
+    fzf
+    fd
+    bat
+  ];
 
   programs.fish = {
     enable = true;
@@ -135,6 +141,9 @@
 
       # Set up tty for GPG
       export GPG_TTY=(tty)
+
+      # Set up fzf bindings
+      fzf_configure_bindings --directory=\ct --processes=\cp
     '';
     plugins = [
       {
@@ -149,10 +158,10 @@
       {
         name = "fzf";
         src = pkgs.fetchFromGitHub {
-          owner = "jethrokuan";
-          repo = "fzf";
-          rev = "479fa67d7439b23095e01b64987ae79a91a4e283";
-          sha256 = "0k6l21j192hrhy95092dm8029p52aakvzis7jiw48wnbckyidi6v";
+          owner = "PatrickF1";
+          repo = "fzf.fish";
+          rev = "v9.7";
+          sha256 = "sha256-haNSqXJzLL3JGvD4JrASVmhLJz6i9lna6/EdojXdFOo=";
         };
       }
       {
