@@ -29,7 +29,7 @@
             nix run $impure nixpkgs#$argv[1] -- $argv[2..]
           else
             echo "nx [--impure] {package} [args...]"
-            exit 1
+            return 1
           end
         '';
         wraps = "nix run";
@@ -144,6 +144,15 @@
 
       # Set up fzf bindings
       fzf_configure_bindings --directory=\ct --processes=\cp
+
+      # Perl stuff
+      set -x PATH ${config.home.homeDirectory}/perl5/bin $PATH 2>/dev/null;
+      set -q PERL5LIB; and set -x PERL5LIB ${config.home.homeDirectory}/perl5/lib/perl5:$PERL5LIB;
+      set -q PERL5LIB; or set -x PERL5LIB ${config.home.homeDirectory}/perl5/lib/perl5;
+      set -q PERL_LOCAL_LIB_ROOT; and set -x PERL_LOCAL_LIB_ROOT ${config.home.homeDirectory}/perl5:$PERL_LOCAL_LIB_ROOT;
+      set -q PERL_LOCAL_LIB_ROOT; or set -x PERL_LOCAL_LIB_ROOT ${config.home.homeDirectory}/perl5;
+      set -x PERL_MB_OPT --install_base\ \"${config.home.homeDirectory}/perl5\";
+      set -x PERL_MM_OPT INSTALL_BASE=${config.home.homeDirectory}/perl5;
     '';
     plugins = [
       {
