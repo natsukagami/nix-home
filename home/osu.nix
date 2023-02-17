@@ -1,17 +1,31 @@
 { pkgs, config, lib, ... }:
 
 let
-  # pkgsUnstableOsu = import "/home/nki/nixpkgs/osu-lazer" {};
-  # osu = pkgs.osu-lazer.overrideAttrs (oldAttrs : rec {
-  #     version = "2021.1006.1";
-  #     src = pkgs.fetchFromGitHub {
-  #         owner = "ppy";
-  #         repo = "osu";
-  #         rev = version;
-  #         sha256 = "11qwrsp9kfxgz7dvh56mbgkry252ic3l5mgx3hwchrwzll71f0yd";
-  #     };
-  # });
+  osu-pkg = with pkgs; with lib;
+    appimageTools.wrapType2 rec {
+      pname = "osu-lazer-bin";
+      version = "2023.123.0";
+
+      src = fetchurl {
+        url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
+        sha256 = "sha256-edu93pvTEM5/s0kW55U1xfYGDl0eUpGXypvuYIwsM3w=";
+      };
+
+      extraPkgs = pkgs: with pkgs; [ icu ];
+
+      extraInstallCommands =
+        let contents = appimageTools.extract { inherit pname version src; };
+        in
+        ''
+          mv -v $out/bin/${pname}-${version} $out/bin/osu\!
+          install -m 444 -D ${contents}/osu\!.desktop -t $out/share/applications
+          for i in 16 32 48 64 96 128 256 512 1024; do
+            install -D ${contents}/osu\!.png $out/share/icons/hicolor/''${i}x$i/apps/osu\!.png
+          done
+        '';
+    };
 in
 {
-  home.packages = [ pkgs.unstable.osu-lazer ];
+  home.packages = [ osu-pkg ];
+  # home.packages = [ pkgs.osu-lazer ];
 }
