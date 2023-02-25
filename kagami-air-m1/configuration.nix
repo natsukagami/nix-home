@@ -20,18 +20,24 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = false;
   boot.kernelPatches = [
-    {
-      name = "enable-suspend";
-      patch = null;
-      extraConfig = ''
-        SUSPEND y
-      '';
-    }
+    # {
+    #   name = "enable-suspend";
+    #   patch = null;
+    #   extraConfig = ''
+    #     SUSPEND y
+    #   '';
+    # }
   ];
 
   # Asahi kernel configuration
-  hardware.asahi.peripheralFirmwareDirectory = ./firmware;
-  hardware.asahi.use4KPages = false;
+  hardware.asahi = {
+    peripheralFirmwareDirectory = ./firmware;
+    use4KPages = false;
+    withRust = true;
+    addEdgeKernelConfig = true;
+    useExperimentalGPUDriver = true;
+    experimentalGPUInstallMode = "overlay";
+  };
 
   # Power Management
   services.upower = {
@@ -60,13 +66,6 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Select internationalisation properties.
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.inputMethod.enabled = "ibus";

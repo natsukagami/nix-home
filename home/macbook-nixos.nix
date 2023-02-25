@@ -56,7 +56,7 @@ in
   programs.my-sway.discord = "${discord}/bin/discord";
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
-  wayland.windowManager.sway.config.output."Unknown-1" = {
+  wayland.windowManager.sway.config.output."eDP-1" = {
     mode = "2560x1600@60Hz";
     scale = "1";
     subpixel = "vrgb";

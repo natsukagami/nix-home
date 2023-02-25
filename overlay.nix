@@ -20,6 +20,22 @@ let
   overlay-libs = final: prev: {
     libs.crane = inputs.crane.lib.${prev.system};
   };
+
+  overlay-aarch64-linux = final: prev:
+    {
+      fd =
+        if prev.system == "aarch64-linux" then
+          prev.fd.overrideAttrs
+            (attrs:
+              {
+                preBuild = ''
+                  export JEMALLOC_SYS_WITH_LG_PAGE=16
+                '';
+              }) else prev.fd;
+
+    };
+
+  overlay-asahi = inputs.nixos-m1.overlays.default;
 in
 [
   (import ./overlays/openrazer)
@@ -28,6 +44,8 @@ in
   overlay-imported
   overlay-versioning
   overlay-libs
+  overlay-asahi
+  overlay-aarch64-linux
   nur.overlay
 
   # Bug fixes

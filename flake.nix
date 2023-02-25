@@ -17,7 +17,6 @@
     # --- Build tools
     flake-utils.url = github:numtide/flake-utils;
     crane.url = github:ipetkov/crane;
-    crane.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # ---
     # Imported apps
@@ -31,8 +30,8 @@
     kakoune.flake = false;
     kak-lsp.url = github:kak-lsp/kak-lsp;
     kak-lsp.flake = false;
-    nixos-m1.url = github:tpwrules/nixos-m1;
-    nixos-m1.flake = false;
+    nixos-m1.url = github:tpwrules/nixos-apple-silicon;
+    nixos-m1.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---
     # DEPLOYMENT ONLY! secrets
@@ -149,7 +148,7 @@
         modules = [
           ./modules/my-tinc
           sops-nix.nixosModules.sops
-          "${inputs.nixos-m1}/nix/m1-support"
+          inputs.nixos-m1.nixosModules.apple-silicon-support
           ./kagami-air-m1/configuration.nix
           nixpkgsAsRegistry
           home-manager.nixosModules.home-manager

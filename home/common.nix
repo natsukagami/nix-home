@@ -1,16 +1,5 @@
 { config, pkgs, lib, ... }:
 
-let
-  fd =
-    if pkgs.stdenv.isAarch64 && pkgs.stdenv.isLinux then
-      pkgs.fd.overrideAttrs
-        (attrs:
-          {
-            preBuild = ''
-              export JEMALLOC_SYS_WITH_LG_PAGE=16
-            '';
-          }) else pkgs.fd;
-in
 {
   imports = [
     ./kakoune/kak.nix

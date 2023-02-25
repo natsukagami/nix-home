@@ -139,8 +139,11 @@ in
         { command = "${cfg.browser}"; }
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
-        { command = "${pkgs.premid}/bin/premid"; }
-      ] else [ ]);
+      ] ++ lib.lists.optional
+        (!pkgs.stdenv.isAarch64)
+        (
+          { command = "${pkgs.premid}/bin/premid"; }
+        ) else [ ]);
 
       ### Keybindings
       #
@@ -642,3 +645,4 @@ in
     font-awesome
   ]);
 }
+

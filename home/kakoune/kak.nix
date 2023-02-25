@@ -35,8 +35,7 @@ let
     src = pkgs.sources.kak-lsp;
     buildInputs = (with pkgs;
       lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
-    ) ++ (with pkgs; [ libiconv ]
-    );
+    ) ++ (with pkgs; [ libiconv libgcc ]);
   };
 
 in
