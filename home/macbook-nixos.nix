@@ -24,8 +24,12 @@ in
   home.username = "nki";
   home.homeDirectory = "/home/nki";
 
-  # No gpu terminal renderers...
-  programs.my-sway.terminal = "${pkgs.mate.mate-terminal}/bin/mate-terminal";
+  nki.programs.kitty.enable = true;
+  nki.programs.kitty.fontSize = 24;
+  programs.fish.shellInit = lib.mkAfter ''
+    set -eg MESA_GL_VERSION_OVERRIDE
+    set -eg MESA_GLSL_VERSION_OVERRIDE
+  '';
 
   # More packages
   home.packages = (with pkgs; [

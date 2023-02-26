@@ -22,17 +22,23 @@ let
   };
 
   overlay-aarch64-linux = final: prev:
+    let
+      optionalOverride = pkg: alt:
+        if prev.stdenv.isLinux && prev.stdenv.isAarch64 then alt else pkg;
+    in
     {
-      fd =
-        if prev.system == "aarch64-linux" then
-          prev.fd.overrideAttrs
-            (attrs:
-              {
-                preBuild = ''
-                  export JEMALLOC_SYS_WITH_LG_PAGE=16
-                '';
-              }) else prev.fd;
-
+      fd = optionalOverride prev.fd (prev.fd.overrideAttrs (attrs: {
+        preBuild = ''
+          export JEMALLOC_SYS_WITH_LG_PAGE=16
+        '';
+      }));
+      kitty = optionalOverride prev.kitty (final.writeShellApplication {
+        name = "kitty";
+        runtimeInputs = [ ];
+        text = ''
+          MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ${prev.kitty}/bin/kitty "$@"
+        '';
+      });
     };
 
   overlay-asahi = inputs.nixos-m1.overlays.default;
