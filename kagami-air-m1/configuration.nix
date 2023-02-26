@@ -67,9 +67,14 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.inputMethod.enabled = "ibus";
-  i18n.inputMethod.ibus.engines = (with pkgs.ibus-engines; [ bamboo mozc libpinyin ]);
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-mozc
+      fcitx5-unikey
+      fcitx5-gtk
+    ];
+  };
   console = {
     # font = "ter-v32n";
     keyMap = "jp106";
@@ -163,11 +168,6 @@
 
   # Environment variables
   environment.variables = {
-    # Input method overrides
-    GTK_IM_MODULE = "ibus";
-    QT_IM_MODULE = "ibus";
-    "XMODIFIERS=@im" = "ibus";
-
     # Basic editor setup
     EDITOR = "kak";
     VISUAL = "kak";
