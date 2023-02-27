@@ -76,6 +76,7 @@ in
     dwt = "enabled";
     middle_emulation = "enabled";
     natural_scroll = "enabled";
+    scroll_factor = "2.5";
     pointer_accel = "0.5";
     tap = "disabled";
   };

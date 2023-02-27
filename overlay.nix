@@ -27,11 +27,13 @@ let
         if prev.stdenv.isLinux && prev.stdenv.isAarch64 then alt else pkg;
     in
     {
+      # See https://github.com/sharkdp/fd/issues/1085
       fd = optionalOverride prev.fd (prev.fd.overrideAttrs (attrs: {
         preBuild = ''
           export JEMALLOC_SYS_WITH_LG_PAGE=16
         '';
       }));
+      # See https://www.reddit.com/r/AsahiLinux/comments/zqejue/kitty_not_working_with_mesaasahiedge/
       kitty = optionalOverride prev.kitty (final.writeShellApplication {
         name = "kitty";
         runtimeInputs = [ ];
@@ -39,6 +41,8 @@ let
           MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ${prev.kitty}/bin/kitty "$@"
         '';
       });
+      # Zotero does not have their own aarch64-linux build
+      zotero = final.callPackage ./packages/aarch64-linux/zotero.nix { };
     };
 
   overlay-asahi = inputs.nixos-m1.overlays.default;

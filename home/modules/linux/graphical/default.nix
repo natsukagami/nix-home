@@ -30,6 +30,7 @@ in
       deluge # Torrent client
       pavucontrol # PulseAudio control panel
       thunderbird
+      zotero
 
       ## CLI stuff
       dex # .desktop file management, startup
@@ -38,7 +39,6 @@ in
     ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
       mailspring
       unstable.slack
-      zotero
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
