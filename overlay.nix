@@ -43,6 +43,10 @@ let
       });
       # Zotero does not have their own aarch64-linux build
       zotero = final.callPackage ./packages/aarch64-linux/zotero.nix { };
+      # Typora for aarch64-linux only
+      typora = optionalOverride
+        (builtins.abort "no support for non-aarch64-linux")
+        (final.callPackage ./packages/aarch64-linux/typora.nix { });
     };
 
   overlay-asahi = inputs.nixos-m1.overlays.default;

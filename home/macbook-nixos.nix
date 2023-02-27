@@ -44,6 +44,8 @@ in
 
     discord
 
+    typora
+
     # Java & sbt
     openjdk11
     sbt
