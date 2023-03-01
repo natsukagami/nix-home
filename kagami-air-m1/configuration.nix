@@ -50,6 +50,10 @@
   };
   services.logind.lidSwitch = "suspend";
 
+  # Printing
+  services.printing.enable = true;
+  services.printing.drivers = with pkgs;[ epfl-cups-drivers ];
+
   networking.hostName = "kagami-air-m1"; # Define your hostname.
 
   # networking.hostName = "nixos"; # Define your hostname.

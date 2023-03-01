@@ -62,6 +62,8 @@ in
   overlay-aarch64-linux
   nur.overlay
 
+  (import ./packages/common)
+
   # Bug fixes
 ] # we assign the overlay created before to the overlays of nixpkgs.
 
