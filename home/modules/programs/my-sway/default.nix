@@ -30,18 +30,10 @@ let
     in
     f from;
 
-  wayshot = pkgs.unstable.wayshot.overrideAttrs (attrs: {
-    src = pkgs.fetchFromGitHub {
-      owner = "waycrate";
-      repo = "wayshot";
-      rev = "27cf882ed0a90e657c66b73a44cf2327c322864b";
-      sha256 = "sha256-sWF5dV22lJfZooFb8p8+hhXqJ2DazVZYFu4k4XFPtu8=";
-    };
-  });
   screenshotScript = pkgs.writeScriptBin "screenshot" ''
     #! ${pkgs.fish}/bin/fish
 
-    ${wayshot}/bin/wayshot -s (${pkgs.slurp}/bin/slurp  -f '%x %y %w %h') --stdout | ${pkgs.wl-clipboard}/bin/wl-copy
+    ${pkgs.grim}/bin/grim -g (${pkgs.slurp}/bin/slurp) - | ${pkgs.wl-clipboard}/bin/wl-copy
   '';
 
   ignored-devices = [ "Surface_Headphones" ];
