@@ -1,13 +1,9 @@
 { pkgs, config, lib, ... }:
 
 let
-  discord = pkgs.writeShellApplication {
-    name = "discord";
-    runtimeInputs = with pkgs; [ nodejs pkgs.unstable.electron ];
-    text = ''
-      cd ~/Projects/ArmCord/ && electron --force-device-scale-factor=1.5 ts-out/main.js "$@"
-    '';
-  };
+  discord = pkgs.writeShellScriptBin "discord" ''
+    ${pkgs.armcord}/bin/armcord --force-device-scale-factor=1.5 ts-out/main.js "$@"
+  '';
 in
 {
   imports = [
