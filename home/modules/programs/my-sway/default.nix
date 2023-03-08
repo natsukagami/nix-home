@@ -347,6 +347,7 @@ in
           (if cfg.enableMpd then "mpd" else "custom/media")
           "tray"
           "pulseaudio"
+          "bluetooth"
           "network"
           "cpu"
           "memory"
@@ -425,6 +426,16 @@ in
             format-disconnected = "Disconnected ⚠";
             interval = 7;
           };
+          "bluetooth" = {
+            format = " {status}";
+            format-connected = " {device_alias}";
+            format-connected-battery = " {device_alias} {device_battery_percentage}%";
+            # format-device-preference= [ "device1", "device2" ], // preference list deciding the displayed devic;
+            tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
+            tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
+            tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
+            tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+          };
           "pulseaudio" = {
             # scroll-step = 1;
             format = "{volume}% {icon}";
@@ -432,8 +443,8 @@ in
             format-muted = "";
             format-icons = {
               headphones = "";
-              handsfree = "";
-              headset = "";
+              handsfree = "";
+              headset = "";
               phone = "";
               portable = "";
               car = "";
@@ -524,7 +535,7 @@ in
           border-bottom: 3px solid #ffffff;
       }
 
-      #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #custom-media, #tray, #mode, #idle_inhibitor, #mpd {
+      #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #bluetooth, #custom-media, #tray, #mode, #idle_inhibitor, #mpd {
           padding: 0 10px;
           margin: 0 5px;
       }
@@ -588,7 +599,11 @@ in
 
       #pulseaudio.muted {
           background: #90b1b1;
-          color: #2a5c45;
+      }
+
+      #bluetooth {
+          background: DarkSlateBlue;
+          color: white;
       }
 
       #custom-media {

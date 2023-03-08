@@ -142,11 +142,6 @@
 
     ## Wayland
     qt5.qtwayland
-
-    ## Enable nix-flakes
-    # (pkgs.writeShellScriptBin "nixFlakes" ''
-    #   exec ${pkgs.nixUnstable}/bin/nix --experimental-features "nix-command flakes" "$@"
-    # '')
   ];
 
   # Nix config
@@ -192,7 +187,11 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
+
+    # gtk portal needed to make gtk apps happy
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
+  programs.dconf.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
   # Enable the OpenSSH daemon.
@@ -209,6 +208,8 @@
   #
   hardware.bluetooth.enable = true;
   hardware.bluetooth.package = pkgs.bluez5-experimental;
+  hardware.bluetooth.settings.General.Experimental = true;
+  services.blueman.enable = true;
 
   # Peripherals
   hardware.opentabletdriver.enable = true;

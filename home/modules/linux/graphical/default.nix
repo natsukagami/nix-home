@@ -76,6 +76,26 @@ in
       "x-scheme-handler/mid" = [ "userapp-Thunderbird-HPUL11.desktop" ];
     };
 
+    # Theming
+    ## GTK
+    gtk.enable = true;
+    gtk.cursorTheme = { inherit (config.home.pointerCursor) package name size; };
+    gtk.font.name = "Noto Sans";
+    gtk.font.size = 10;
+    gtk.iconTheme = {
+      package = pkgs.numix-icon-theme;
+      name = "Numix";
+    };
+    gtk.theme = {
+      package = pkgs.numix-gtk-theme;
+      name = "Numix";
+    };
+    ## Qt
+    qt.enable = true;
+    qt.platformTheme = "gnome";
+    qt.style.package = pkgs.adwaita-qt;
+    qt.style.name = "adwaita";
+
     home.sessionVariables = {
       # Set up Java font style
       _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
