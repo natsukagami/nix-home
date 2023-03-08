@@ -1,7 +1,7 @@
 keys:
   - &admin_macbook_m1 age169v95f5fqx0sg5mjpp63sumrj9sma9se203ra2c05qa67h2h2drs3tvdph
   - &machine_macbook_m1 age10dd4t507h3ey68l2alu7z94s5lw0kshjq9lre5sv2vehrm9hg4rqk2let7
-  - &nki_pc age1hw22lrsskyvsrwgq9kl48eekwyzgnwt57pe9d9zx3q9xrwyrte4qgvft78
+  - &nki_pc age1tt0peqg8zdfh74m5sdgwsczcqh036nhgmwvkqnvywll88uvmm9xs433rhm
   - &nkagami_main age1n8tnmmgredzltzwkspag7aufhrn6034ny8ysjeulhkwdnf7vqqaqec4mg5
   - &nkagami_do age1z2h24mjt80fryqupajkh3kg5r4sjgw65uqy489xeqxhqj8u2a9fsm3ff36
 creation_rules:
@@ -11,6 +11,12 @@ creation_rules:
         - *admin_macbook_m1
         - *machine_macbook_m1
   - path_regex: nki-personal-do/secrets/secrets\.yaml$
+    key_groups:
+    - age:
+        - *nki_pc
+        - *nkagami_main
+        - *nkagami_do
+  - path_regex: nki-home/secrets/secrets\.yaml$
     key_groups:
     - age:
         - *nki_pc
