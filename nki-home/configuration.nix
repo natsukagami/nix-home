@@ -137,7 +137,6 @@
     kakoune # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     fish
-    firefox
 
     ## System monitoring tools
     usbutils
@@ -224,12 +223,11 @@
       ntfsMount = path: {
         device = path;
         fsType = "ntfs";
-        options = [ "rw" "uid=${toString config.users.users.nki.uid}" ];
+        options = [ "rw" "uid=${toString config.users.users.nki.uid}" "nofail" ];
       };
     in
     {
       "/mnt/Data" = ntfsMount "/dev/disk/by-uuid/A90680F8BBE62FE3";
-      "/mnt/Windows" = ntfsMount "/dev/disk/by-uuid/F4EA78DCEA789D14";
       "/mnt/Stuff" = ntfsMount "/dev/disk/by-uuid/717BF2EE20BB8A62";
       "/mnt/Shared" = ntfsMount "/dev/disk/by-uuid/76AC086BAC0827E7";
     };
