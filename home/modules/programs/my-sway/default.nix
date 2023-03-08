@@ -129,6 +129,7 @@ in
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
         { command = "${cfg.browser}"; }
+        { command = "birdtray"; }
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
       ] ++ lib.lists.optional

@@ -2,6 +2,10 @@
 with lib;
 let
   cfg = config.linux.graphical;
+
+  birdtray = pkgs.birdtray.overrideAttrs (attrs: {
+    cmakeFlags = [ "-DOPT_THUNDERBIRD_CMDLINE=${pkgs.thunderbird}/bin/thunderbird" ];
+  });
 in
 {
   imports = [ ./x11.nix ./wayland.nix ./alacritty.nix ];
@@ -29,7 +33,11 @@ in
       feh
       deluge # Torrent client
       pavucontrol # PulseAudio control panel
+      firefox
+
       thunderbird
+      birdtray
+
       zotero
 
       ## CLI stuff
@@ -53,19 +61,25 @@ in
     # MIME set ups
     xdg.enable = true;
     xdg.mimeApps.enable = true;
+
+    xdg.mimeApps.associations.added = {
+      "x-scheme-handler/mailto" = [ "userapp-Thunderbird-HPUL11.desktop" ];
+      "x-scheme-handler/mid" = [ "userapp-Thunderbird-HPUL11.desktop" ];
+    };
     xdg.mimeApps.defaultApplications = {
       "x-scheme-handler/http" = [ "firefox.desktop" ];
       "x-scheme-handler/https" = [ "firefox.desktop" ];
       "x-scheme-handler/ftp" = [ "firefox.desktop" ];
       "x-scheme-handler/ftps" = [ "firefox.desktop" ];
-      "x-scheme-handler/mailspring" = [ "Mailspring.desktop" ];
+      "x-scheme-handler/mailto" = [ "userapp-Thunderbird-HPUL11.desktop" ];
+      "message/rfc822" = [ "userapp-Thunderbird-HPUL11.desktop" ];
+      "x-scheme-handler/mid" = [ "userapp-Thunderbird-HPUL11.desktop" ];
     };
 
     home.sessionVariables = {
       # Set up Java font style
       _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
     };
-
     # IBus configuration
     # dconf.settings."desktop/ibus/general" = {
     #   engines-order = hm.gvariant.mkArray hm.gvariant.type.string [ "xkb:jp::jpn" "mozc-jp" "Bamboo" ];
@@ -76,3 +90,4 @@ in
     # };
   };
 }
+
