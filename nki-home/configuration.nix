@@ -103,11 +103,6 @@
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio = {
-    enable = true;
-    extraModules = [ pkgs.pulseaudio-modules-bt ];
-    package = pkgs.pulseaudioFull;
-  };
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -213,6 +208,7 @@
   ## Bluetooth
   #
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.package = pkgs.bluez5-experimental;
 
   # Peripherals
   hardware.opentabletdriver.enable = true;
