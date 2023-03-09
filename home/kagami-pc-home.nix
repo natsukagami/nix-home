@@ -47,7 +47,7 @@
         mode = "3840x2160@60Hz";
         scale = toString scale;
         adaptive_sync = "on";
-        render_bit_depth = "10";
+        # render_bit_depth = "10";
         position = "0 0";
       };
       "Unknown 24G2W1G4 ATNN21A005410" = {
