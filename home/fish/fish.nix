@@ -82,6 +82,7 @@
 
     shellAliases = {
       cat = "bat --theme=GitHub ";
+      catp = "bat --theme=GitHub -p ";
       l = "exa -l --color=always ";
 
       # My own commands for easy access
