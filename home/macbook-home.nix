@@ -13,7 +13,7 @@
 
   # Additional packages to be used only on this MacBook.
   home.packages = with pkgs; [
-    pkgs.x86.anki-bin
+    anki-bin
   ];
 
   # Additional settings for programs
