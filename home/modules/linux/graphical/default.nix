@@ -6,6 +6,8 @@ let
   birdtray = pkgs.birdtray.overrideAttrs (attrs: {
     cmakeFlags = [ "-DOPT_THUNDERBIRD_CMDLINE=${pkgs.thunderbird}/bin/thunderbird" ];
   });
+
+  alwaysStartup = with pkgs; [ birdtray ];
 in
 {
   imports = [ ./x11.nix ./wayland.nix ./alacritty.nix ];
@@ -19,6 +21,11 @@ in
       type = types.oneOf [ types.str types.path ];
       description = "Path to the wallpaper file";
       default = "";
+    };
+    startup = mkOption {
+      type = types.listOf types.package;
+      description = "List of packages to include in ~/.config/autostart";
+      default = [ ];
     };
   };
   config = mkIf (cfg.type != null) {
@@ -100,6 +107,24 @@ in
       # Set up Java font style
       _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
     };
+
+    xdg.configFile =
+      let
+        f = pkg: {
+          name = "autostart/${pkg.name}.desktop";
+          value = {
+            source =
+              let
+                srcFile = pkgs.runCommand "${pkg.name}-startup" { } ''
+                  mkdir -p $out
+                  cp $(ls -d ${pkg}/share/applications/*.desktop | head -n 1) $out/${pkg.name}.desktop
+                '';
+              in
+              "${srcFile}/${pkg.name}.desktop";
+          };
+        };
+      in
+      listToAttrs (map f (cfg.startup ++ alwaysStartup));
     # IBus configuration
     # dconf.settings."desktop/ibus/general" = {
     #   engines-order = hm.gvariant.mkArray hm.gvariant.type.string [ "xkb:jp::jpn" "mozc-jp" "Bamboo" ];

@@ -79,7 +79,7 @@
 
   home.sessionPath = [
     # Sometimes we want to install custom scripts here
-    "~/.local/bin"
+    "${config.home.homeDirectory}/.local/bin"
   ];
 
   # Programs

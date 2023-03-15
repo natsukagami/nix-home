@@ -38,6 +38,8 @@ with lib; {
       "${config.home.homeDirectory}/.config/nixpkgs"
     ];
 
+    systemd.user.startServices = "sd-switch";
+
     # Bluetooth controls
     services.mpris-proxy.enable = true;
 

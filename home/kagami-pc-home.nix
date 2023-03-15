@@ -16,7 +16,6 @@
   # More packages
   home.packages = (with pkgs; [
     # CLI stuff
-    python
     zip
     # TeX
     texlive.combined.scheme-full

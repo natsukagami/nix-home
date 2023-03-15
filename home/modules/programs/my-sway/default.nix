@@ -129,7 +129,7 @@ in
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
         { command = "${cfg.browser}"; }
-        { command = "birdtray"; }
+        { command = "env PYTHONPATH=$(python -m site --user-site) ${pkgs.ulauncher}/bin/ulauncher --hide-window --no-window-shadow"; }
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
       ] ++ lib.lists.optional
@@ -177,7 +177,6 @@ in
         "${mod}+e" = "layout toggle split";
         # Floating
         "${mod}+Shift+space" = "floating toggle";
-        "${mod}+space" = "focus mode_toggle";
         # Scratchpad
         "${mod}+Shift+minus" = "move scratchpad";
         # Resize
@@ -187,6 +186,8 @@ in
         "${mod}+Shift+c" = "reload";
         "${mod}+Shift+e" =
           "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
+        # Launcher
+        "${mod}+space" = "exec ${pkgs.ulauncher}/bin/ulauncher-toggle";
       } // {
         ## Splits
         "${mod}+v" = "split v";
@@ -651,6 +652,8 @@ in
     qt5.qtwayland
     # For waybar
     font-awesome
+    # For launcher
+    ulauncher
   ]);
 }
 
