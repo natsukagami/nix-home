@@ -126,6 +126,11 @@
       userName = "Natsu Kagami";
       extraConfig = {
         init.defaultBranch = "master";
+        core.excludesFile = "${pkgs.writeText ".gitignore" ''
+          .direnv
+          .envrc
+          .kakrc
+        ''}";
       };
     };
 
