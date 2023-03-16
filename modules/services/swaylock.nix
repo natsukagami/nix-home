@@ -12,6 +12,6 @@ in
     };
   };
   config = mkIf cfg.enable {
-    security.pam.services.swaylock.text = readFile "${cfg.package}/etc/pam.d/swaylock";
+    # security.pam.services.swaylock.text = readFile "${cfg.package}/etc/pam.d/swaylock";
   };
 }

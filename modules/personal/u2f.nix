@@ -20,9 +20,10 @@ in
       };
 
       # Services
-      # services.sudo.u2fAuth = true;
+      services.sudo.u2fAuth = false;
       services.login.u2fAuth = true;
-      # services.swaylock.u2fAuth = mkIf (config.services.swaylock.enable) true;
+      services.swaylock.u2fAuth = false;
+      services.sshd.u2fAuth = false;
     };
   };
 }
