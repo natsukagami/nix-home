@@ -109,7 +109,7 @@ in
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
-    package = pkgs.unstable.sway;
+    package = pkgs.swayfx;
     systemdIntegration = true;
 
     config = {
@@ -319,7 +319,16 @@ in
       (if cfg.enableLaptopBars then ''
         # Lock screen on lid close
         bindswitch lid:off exec ${cfg.lockCmd}
-      '' else "");
+      '' else "") + ''
+        # swayfx stuff
+        corner_radius 5
+        smart_corner_radius on
+        shadows on
+        shadow_blur_radius 5
+        default_dim_inactive 0.0
+        for_window [app_id="kitty"] dim_inactive 0.05
+        titlebar_separator enable
+      '';
   };
 
   config.services.swayidle = mkIf cfg.enable {

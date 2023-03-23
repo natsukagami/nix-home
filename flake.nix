@@ -24,6 +24,10 @@
     youmubot.url = "github:natsukagami/youmubot";
     youmubot.inputs.nixpkgs.follows = "nixpkgs";
     nix-gaming.url = github:fufexan/nix-gaming;
+    swayfx = {
+      url = github:WillPower3309/swayfx;
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
     # --- Sources
     kakoune.url = github:mawww/kakoune;

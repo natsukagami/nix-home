@@ -9,7 +9,8 @@ let
     nix-direnv = prev.unstable.nix-direnv;
   };
   overlay-imported = final: prev: {
-    rnix-lsp = inputs.rnix-lsp.defaultPackage."${prev.system}";
+    rnix-lsp = inputs.rnix-lsp.defaultPackage."${final.system}";
+    swayfx = inputs.swayfx.packages."${final.system}".default;
 
     # A list of source-style inputs.
     sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
