@@ -2,11 +2,6 @@
 with lib;
 let
   cfg = config.linux.graphical;
-
-  birdtray = pkgs.birdtray.overrideAttrs (attrs: {
-    cmakeFlags = [ "-DOPT_THUNDERBIRD_CMDLINE=${pkgs.thunderbird}/bin/thunderbird" ];
-  });
-
   alwaysStartup = with pkgs; [ birdtray ];
 in
 {

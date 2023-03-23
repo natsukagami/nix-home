@@ -287,7 +287,7 @@ in
       # Gaps
       gaps.outer = 3;
       gaps.inner = 4;
-      gaps.smartBorders = "on";
+      gaps.smartBorders = "off"; # until swayfx fixes clipping bug
       gaps.smartGaps = true;
 
       ### Bars
@@ -320,11 +320,14 @@ in
         # Lock screen on lid close
         bindswitch lid:off exec ${cfg.lockCmd}
       '' else "") + ''
-        # swayfx stuff
+        ## swayfx stuff
+        # Rounded corners
         corner_radius 5
-        smart_corner_radius on
+        smart_corner_radius off
+        # Shadows
         shadows on
         shadow_blur_radius 5
+        # Dimming
         default_dim_inactive 0.0
         for_window [app_id="kitty"] dim_inactive 0.05
         titlebar_separator enable
