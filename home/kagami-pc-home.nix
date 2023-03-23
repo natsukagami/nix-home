@@ -42,14 +42,14 @@
       top_y = builtins.ceil (((2160 / scale) - 1080) / 2);
     in
     {
-      "Unknown U28G2G6B PPYM9JA001554" = {
+      "AOC U28G2G6B PPYM9JA001554" = {
         mode = "3840x2160@60Hz";
         scale = toString scale;
         adaptive_sync = "on";
         # render_bit_depth = "10";
         position = "0 0";
       };
-      "Unknown 24G2W1G4 ATNN21A005410" = {
+      "AOC 24G2W1G4 ATNN21A005410" = {
         mode = "1920x1080@144Hz";
         adaptive_sync = "on";
         position = "${toString top_x} ${toString top_y}";
@@ -61,6 +61,7 @@
       };
     };
   nki.programs.kitty.enable = true;
+  nki.programs.kitty.package = pkgs.unstable.kitty; # 0.27 fixes crash on sway 1.8
   nki.programs.kitty.fontSize = 14;
 
   # Yellow light!

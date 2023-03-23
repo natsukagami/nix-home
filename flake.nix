@@ -110,6 +110,7 @@
         system = "x86_64-linux";
         pkgs = pkgs' system;
         modules = [
+          ./common.nix
           ./modules/my-tinc
           sops-nix.nixosModules.sops
           ./nki-home/configuration.nix

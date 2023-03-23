@@ -7,16 +7,16 @@ let
   mod = "Mod4";
   # List of workspaces
   workspaces = [
-    "1: web"
-    "2: chat"
-    "3: code"
-    "4: music"
-    "5: extra"
-    "6: 6"
-    "7: 7"
-    "8: 8"
-    "9: 9"
-    "10: 10"
+    "1:🌏 web"
+    "2:💬 chat"
+    "3:⚙️ code"
+    "4:🎶 music"
+    "5:🔧 extra"
+    "6:🧰 6"
+    "7:🔩 7"
+    "8:🛠️ 8"
+    "9:🔨 9"
+    "10:🎲 misc"
   ];
   wsAttrs = builtins.listToAttrs (
     map
@@ -92,10 +92,25 @@ in
       description = "Whether to enable mpd on waybar";
       default = false;
     };
+
+    waybar = {
+      extraSettings = mkOption {
+        type = types.attrs;
+        description = "Additional settings for the default waybar";
+        default = { };
+      };
+      extraStyle = mkOption {
+        type = types.str;
+        description = "Additional style for the default waybar";
+        default = "";
+      };
+    };
   };
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
+    package = pkgs.unstable.sway;
+    systemdIntegration = true;
 
     config = {
       ### Inputs
@@ -261,6 +276,11 @@ in
           { class = "^(d|D)iscord$"; }
         ];
       };
+      # Commands
+      window.commands = [
+        { criteria = { title = ".*"; }; command = "inhibit_idle fullscreen"; }
+      ];
+      # Focus
       focus.followMouse = true;
       focus.mouseWarping = true;
       focus.newWindow = "urgent";
@@ -271,12 +291,8 @@ in
       gaps.smartGaps = true;
 
       ### Bars
-      #
-      # Enable top bar, as waybar
-      bars = [{
-        command = config.programs.waybar.package + "/bin/waybar";
-        position = "top";
-      }];
+      # Let systemd manage it
+      bars = [ ];
     };
     ### Misc
     #
@@ -303,24 +319,7 @@ in
       (if cfg.enableLaptopBars then ''
         # Lock screen on lid close
         bindswitch lid:off exec ${cfg.lockCmd}
-      '' else "") +
-      ''
-        # Fix D-Bus starting up
-        exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
-             hash dbus-update-activation-environment 2>/dev/null && \
-             dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK && \
-             systemctl --user start sway-session.target
-      '';
-  };
-
-  config.systemd.user.targets.sway-session = mkIf cfg.enable {
-    Unit = {
-      Description = "sway compositor session";
-      Documentation = [ "man:systemd.special(7)" ];
-      BindsTo = [ "graphical-session.target" ];
-      Wants = [ "graphical-session-pre.target" ];
-      After = [ "graphical-session-pre.target" ];
-    };
+      '' else "");
   };
 
   config.services.swayidle = mkIf cfg.enable {
@@ -333,9 +332,10 @@ in
 
   config.programs.waybar = mkIf cfg.enable {
     enable = true;
+    systemd.enable = true;
     settings = [
       # Top bar
-      {
+      (mkMerge [{
         position = "top";
         modules-left = [
           "sway/workspaces"
@@ -363,6 +363,9 @@ in
         ];
 
         modules = {
+          "sway/workspaces" = {
+            format = "{name}";
+          };
           "sway/mode" = {
             format = "<span style=\"italic\">{}</span>";
           };
@@ -436,6 +439,7 @@ in
             tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
             tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
             tooltip-format-enumerate-connected-battery = "{device_alias}\t{device_address}\t{device_battery_percentage}%";
+            on-click = "${pkgs.blueman}/bin/blueman-manager";
           };
           "pulseaudio" = {
             # scroll-step = 1;
@@ -477,6 +481,8 @@ in
             };
             "tooltip-format" = "MPD (connected)";
             "tooltip-format-disconnected" = "MPD (disconnected)";
+            "on-click" = "${pkgs.mpc_cli}/bin/mpc toggle";
+            "on-click-right" = "${pkgs.mpc_cli}/bin/mpc stop";
           };
           "custom/media" = {
             "format" = "{icon}{}";
@@ -491,6 +497,7 @@ in
           };
         };
       }
+        cfg.waybar.extraSettings])
     ];
     style = ''
       * {
@@ -645,7 +652,7 @@ in
           background-color: teal;
           color: white;
       }
-    '';
+    '' + cfg.waybar.extraStyle;
   };
   config.home.packages = mkIf cfg.enable (with pkgs; [
     # Needed for QT_QPA_PLATFORM
