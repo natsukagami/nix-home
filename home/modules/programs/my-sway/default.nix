@@ -275,6 +275,9 @@ in
         "${builtins.elemAt workspaces 1}" = [
           { class = "^(d|D)iscord$"; }
         ];
+        "${builtins.elemAt workspaces 3}" = [
+          { app_id = "kitty_ncmpcpp"; }
+        ];
       };
       # Commands
       window.commands = [
@@ -467,7 +470,7 @@ in
               car = "";
               default = [ "" "" ];
             };
-            on-click = "pavucontrol";
+            on-click = "${pkgs.pavucontrol}/bin/pavucontrol";
           };
           "mpd" = {
             "format" = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) 🎧";
@@ -495,6 +498,7 @@ in
             "tooltip-format-disconnected" = "MPD (disconnected)";
             "on-click" = "${pkgs.mpc_cli}/bin/mpc toggle";
             "on-click-right" = "${pkgs.mpc_cli}/bin/mpc stop";
+            "on-click-middle" = "${cfg.terminal} --class=kitty_ncmpcpp ${pkgs.ncmpcpp}/bin/ncmpcpp";
           };
           "custom/media" = {
             "format" = "{icon}{}";
