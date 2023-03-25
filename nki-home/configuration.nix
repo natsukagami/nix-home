@@ -89,12 +89,6 @@
   #   keyMap = "us";
   # };
 
-  # Enable sway on login.
-  environment.loginShellInit = ''
-    if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-        exec sway
-    fi
-  '';
   # Configure keymap in X11
   # services.xserver.layout = "jp";
   # services.xserver.xkbOptions = "";

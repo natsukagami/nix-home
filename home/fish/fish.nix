@@ -154,6 +154,11 @@
       set -q PERL_LOCAL_LIB_ROOT; or set -x PERL_LOCAL_LIB_ROOT ${config.home.homeDirectory}/perl5;
       set -x PERL_MB_OPT --install_base\ \"${config.home.homeDirectory}/perl5\";
       set -x PERL_MM_OPT INSTALL_BASE=${config.home.homeDirectory}/perl5;
+
+      # Sway!
+      if status --is-login; and which sway >/dev/null; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
+        read -P "Press enter to start sway..."; and exec sway
+      end
     '';
     plugins = [
       {

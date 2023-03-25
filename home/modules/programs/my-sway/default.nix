@@ -288,10 +288,10 @@ in
       focus.mouseWarping = true;
       focus.newWindow = "urgent";
       # Gaps
-      gaps.outer = 3;
+      gaps.outer = 4;
       gaps.inner = 4;
       gaps.smartBorders = "off"; # until swayfx fixes clipping bug
-      gaps.smartGaps = true;
+      gaps.smartGaps = false;
 
       ### Bars
       # Let systemd manage it
