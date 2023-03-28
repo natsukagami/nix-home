@@ -113,10 +113,12 @@ try %{
 }
 hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala) %{
     lsp-enable-window
-    map global normal <c-l> ": enter-user-mode lsp<ret>"
-    lsp-auto-hover-enable
+    map window normal <c-l> ": enter-user-mode lsp<ret>"
+    map window normal <c-h> ": lsp-hover<ret>"
+    map window normal <c-s-h> ": lsp-hover-buffer<ret>"
     # lsp-auto-hover-insert-mode-enable
     set window lsp_hover_anchor true
+
 }
 hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix) %{
     # Format the document if possible
@@ -128,7 +130,7 @@ hook global WinSetOption filetype=(rust) %{
     lsp-inlay-hints-enable window
 }
 
-hook global WinSetOption filetype=(rust|go|fsharp) %{
+hook global WinSetOption filetype=(rust|go|fsharp|scala) %{
   hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
   hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
   hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
