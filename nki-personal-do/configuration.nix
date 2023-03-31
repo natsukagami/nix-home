@@ -64,8 +64,25 @@
     usersFile = config.sops.secrets.traefik-dashboard-users.path;
   };
   cloud.traefik.certsDumper.enable = true;
+
+  # Conduit
+  sops.secrets.heisenbridge = { owner = "heisenbridge"; };
   cloud.conduit.enable = true;
   cloud.conduit.package = pkgs.unstable.matrix-conduit;
+  cloud.conduit.heisenbridge = {
+    enable = true;
+    package = pkgs.heisenbridge.overrideAttrs (old: rec {
+      version = "1.14.2";
+
+      src = pkgs.fetchFromGitHub {
+        owner = "hifi";
+        repo = "heisenbridge";
+        rev = "refs/tags/v${version}";
+        sha256 = "sha256-qp0LVcmWf5lZ52h0V58S6FoIM8RLOd6Y3FRb85j7KRg=";
+      };
+    });
+    appserviceFile = config.sops.secrets.heisenbridge.path;
+  };
 
   # Navidrome back to the PC
   cloud.traefik.hosts.navidrome = {

@@ -5,6 +5,7 @@ let
 in
 with lib;
 {
+  imports = [ ./heisenbridge.nix ];
   options.cloud.conduit = {
     enable = mkEnableOption "Enable the conduit server";
 
