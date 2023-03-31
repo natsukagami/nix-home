@@ -46,21 +46,34 @@
     };
   };
 
+  systemd.network.enable = true;
   networking.hostName = "kagamiPC"; # Define your hostname.
   networking.wireless.iwd.enable = true;
+  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+  # Per-interface useDHCP will be mandatory in the future, so this generated config
+  # replicates the default behaviour.
+  systemd.network.networks = {
+    # Wired
+    "10-wired" = {
+      matchConfig.Name = "enp*";
+      networkConfig.DHCP = "yes";
+    };
+    # Wireless
+    "20-wireless" = {
+      matchConfig.Name = "wlan*";
+      networkConfig.DHCP = "yes";
+    };
+  };
+  # networking.useDHCP = false;
+  # networking.interfaces.enp38s0.useDHCP = true;
+  # networking.interfaces.wlan0.useDHCP = true;
+
 
   # Allow qmk boards to boot
   services.udev.packages = with pkgs; [ qmk-udev-rules ];
 
   # Set your time zone.
   time.timeZone = "Europe/Zurich";
-
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp38s0.useDHCP = true;
-  networking.interfaces.wlan0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
