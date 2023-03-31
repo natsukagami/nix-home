@@ -65,6 +65,8 @@ in
 
   (import ./packages/common)
 
+  inputs.mpd-mpris.overlays.default
+
   # Bug fixes
 ] # we assign the overlay created before to the overlays of nixpkgs.
 

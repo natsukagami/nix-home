@@ -30,6 +30,10 @@
       url = github:WillPower3309/swayfx;
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    mpd-mpris = {
+      url = github:natsukagami/mpd-mpris/nix;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # --- Sources
     kakoune.url = github:mawww/kakoune;
@@ -126,7 +130,12 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.nki = import ./home/kagami-pc-home.nix;
+            home-manager.users.nki = { ... }: {
+              imports = [
+                inputs.mpd-mpris.homeManagerModules.default
+                ./home/kagami-pc-home.nix
+              ];
+            };
           }
           inputs.secrets.nixosModules.x86_64-linux.common
         ];
