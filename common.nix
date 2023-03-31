@@ -3,7 +3,7 @@ let
   defaultShell = { lib, pkgs, config, ... }: with lib; {
     environment.shells = with pkgs; [ bash fish ];
     users.users = mkMerge [
-      { nki.shell = pkgs.fish; }
+      { nki.shell = pkgs.bash; }
       # (mkIf (builtins.hasAttr "natsukagami" config.users.users) { natsukagami.shell = pkgs.fish; })
     ];
   };

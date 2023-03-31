@@ -62,6 +62,7 @@
     "20-wireless" = {
       matchConfig.Name = "wlan*";
       networkConfig.DHCP = "yes";
+      linkConfig.RequiredForOnline = "no";
     };
   };
   # networking.useDHCP = false;
@@ -97,6 +98,7 @@
       fcitx5-gtk
     ];
   };
+  console.keyMap = "jp106";
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
