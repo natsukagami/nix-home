@@ -309,6 +309,7 @@ in
       export SDL_VIDEODRIVER=wayland
       export QT_QPA_PLATFORM=wayland
       export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+
     '' + (if config.services.gnome-keyring.enable then ''
       # gnome-keyring
       eval `${pkgs.gnome.gnome-keyring}/bin/gnome-keyring-daemon -r -d -c secrets,ssh,pkcs11`
@@ -334,6 +335,16 @@ in
         default_dim_inactive 0.0
         for_window [app_id="kitty"] dim_inactive 0.05
         titlebar_separator enable
+      '' + ''
+        # Enable portal stuff
+        exec ${pkgs.writeShellScript "start-portals.sh" ''
+        # Import the WAYLAND_DISPLAY env var from sway into the systemd user session.
+        dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+
+        # Stop any services that are running, so that they receive the new env var when they restart.
+        systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
+        systemctl --user start pipewire-media-session
+        ''}
       '';
   };
 
