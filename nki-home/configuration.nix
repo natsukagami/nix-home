@@ -4,6 +4,7 @@
 
 { lib, config, pkgs, ... }:
 
+with lib;
 {
   imports =
     [
@@ -16,213 +17,40 @@
       # Encrypted DNS
       ../modules/services/edns
       # Other services
-      ../modules/services/swaylock.nix
       ../modules/personal/u2f.nix
     ];
 
-  # Set kernel version to latest
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  # Use the systemd-boot EFI boot loader.
-  boot = {
-    plymouth.enable = true;
-    loader.timeout = 60;
-    loader.systemd-boot.enable = true;
-    loader.efi.canTouchEfiVariables = true;
-    supportedFilesystems = [ "ntfs" ];
-  };
   ## Encryption
   # Kernel modules needed for mounting USB VFAT devices in initrd stage
-  boot.initrd.systemd.enable = true;
-  boot.initrd.luks.devices = {
-    root = {
-      device = "/dev/disk/by-uuid/7c6e40a8-900b-4f85-9712-2b872caf1892";
-      preLVM = true;
-      allowDiscards = true;
+  common.linux.luksDevices.root = "/dev/disk/by-uuid/7c6e40a8-900b-4f85-9712-2b872caf1892";
 
-      crypttabExtraOpts = [
-        "tpm2-device=auto"
-        "fido2-device=auto"
-      ];
+  # Networking
+  common.linux.networking =
+    {
+      hostname = "kagamiPC"; # Define your hostname.
+      networks = {
+        "10-wired" = {
+          match = "enp*";
+          isRequired = true;
+        };
+        "20-wireless".match = "wlan*";
+      };
+      dnsServers = [ "127.0.0.1" ];
     };
-  };
+  nki.services.edns.enable = true;
+  nki.services.edns.ipv6 = true;
 
-  systemd.network.enable = true;
-  networking.hostName = "kagamiPC"; # Define your hostname.
-  networking.wireless.iwd.enable = true;
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  systemd.network.networks = {
-    # Wired
-    "10-wired" = {
-      matchConfig.Name = "enp*";
-      networkConfig.DHCP = "yes";
-    };
-    # Wireless
-    "20-wireless" = {
-      matchConfig.Name = "wlan*";
-      networkConfig.DHCP = "yes";
-      linkConfig.RequiredForOnline = "no";
-    };
-  };
-  # networking.useDHCP = false;
-  # networking.interfaces.enp38s0.useDHCP = true;
-  # networking.interfaces.wlan0.useDHCP = true;
+  # Define a user account. 
+  common.linux.username = "nki";
+  services.getty.autologinUser = "nki";
 
-
-  # Allow qmk boards to boot
-  services.udev.packages = with pkgs; [ qmk-udev-rules ];
-
-  # Set your time zone.
-  time.timeZone = "Europe/Zurich";
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-  # Select internationalisation properties.
-  i18n.defaultLocale = "ja_JP.UTF-8";
-  # i18n.inputMethod.enabled = "ibus";
-  # i18n.inputMethod.ibus.engines = (with pkgs.ibus-engines; [ bamboo mozc libpinyin ]);
-  i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-mozc
-      fcitx5-unikey
-      fcitx5-gtk
-    ];
-  };
-  console.keyMap = "jp106";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
-  # Configure keymap in X11
-  # services.xserver.layout = "jp";
-  # services.xserver.xkbOptions = "";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
+  ## Hardware
+  # Peripherals
+  hardware.opentabletdriver.enable = true;
   # Enable razer daemon
   hardware.openrazer.enable = true;
   hardware.openrazer.keyStatistics = true;
   hardware.openrazer.verboseLogging = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.nki = {
-    isNormalUser = true;
-    uid = 1000;
-    extraGroups = [
-      "wheel" # Enable ‘sudo’ for the user.
-      "plugdev" # Enable openrazer-daemon privileges
-      "adbusers" # Android
-    ];
-  };
-  services.getty.autologinUser = "nki";
-
-  # Allow all packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    kakoune # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    fish
-
-    ## System monitoring tools
-    usbutils
-    pciutils
-
-    ## Security stuff
-    libsForQt5.qtkeychain
-
-    ## Wayland
-    qt5.qtwayland
-  ];
-
-  # Nix config
-
-  # Terminal 
-  programs.gnome-terminal.enable = true;
-
-  programs.kdeconnect.enable = true;
-
-  # Environment variables
-  environment.variables = {
-    # Input method overrides
-    # GTK_IM_MODULE = "ibus";
-    # QT_IM_MODULE = "ibus";
-    # "XMODIFIERS=@im" = "ibus";
-
-    # Basic editor setup
-    EDITOR = "kak";
-    VISUAL = "kak";
-  };
-
-  # Enable Desktop Environment.
-  services.xserver.displayManager = {
-    # lightdm.enable = true;
-  };
-  # services.xserver.desktopManager.cinnamon.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-  services.resolved.enable = true;
-  services.resolved.domains = [ "127.0.0.1" ];
-  services.resolved.fallbackDns = [ "127.0.0.1" ];
-  nki.services.edns.enable = true;
-  nki.services.edns.ipv6 = true;
-  services.flatpak.enable = true;
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-
-    # gtk portal needed to make gtk apps happy
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  };
-  programs.dconf.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 4533 ];
-  networking.firewall.allowedUDPPorts = [ 22 ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-  #
-
-  ## Bluetooth
-  #
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.package = pkgs.bluez5-experimental;
-  hardware.bluetooth.settings.General.Experimental = true;
-  services.blueman.enable = true;
-
-  # Peripherals
-  hardware.opentabletdriver.enable = true;
 
   # Mounting disks!
   fileSystems =
@@ -240,11 +68,7 @@
     };
 
   # PAM
-  security.pam.services.lightdm.enableKwallet = true;
-  security.pam.services.lightdm.enableGnomeKeyring = true;
-  services.swaylock.enable = true;
   personal.u2f.enable = true;
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -265,20 +89,6 @@
     bindPort = 6565;
   };
 
-  # Gaming!
-  programs.steam.enable = true;
-  hardware.opengl.driSupport = true;
-  # For 32 bit applications
-  hardware.opengl.driSupport32Bit = true;
-
-  # Evolution wants a plugin
-  programs.evolution = {
-    enable = true;
-    plugins = with pkgs; [ evolution-ews ];
-  };
-
-  # Android
-  programs.adb.enable = true;
 
   # Music server
   services.navidrome.enable = true;

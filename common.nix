@@ -11,7 +11,11 @@ in
 # Common stuff
 { lib, pkgs, config, ... }:
 with lib; {
-  imports = [ defaultShell ];
+  imports = [
+    defaultShell
+    ./modules/common/linux
+    ./modules/my-tinc
+  ];
   # swaync disable notifications on screencast
   config.xdg.portal.wlr.settings.screencast = {
     exec_before = ''which swaync-client && swaync-client --inhibitor-add "xdg-desktop-portal-wlr" || true'';

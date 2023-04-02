@@ -11,23 +11,9 @@
       ./hardware-configuration.nix
       # Fonts
       ../modules/personal/fonts
-      ../modules/services/swaylock.nix
       # Encrypted DNS
       ../modules/services/edns
     ];
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = false;
-  boot.kernelPatches = [
-    # {
-    #   name = "enable-suspend";
-    #   patch = null;
-    #   extraConfig = ''
-    #     SUSPEND y
-    #   '';
-    # }
-  ];
 
   # Asahi kernel configuration
   hardware.asahi = {
@@ -51,117 +37,17 @@
   services.logind.lidSwitch = "suspend";
 
   # Printing
-  services.printing.enable = true;
-  services.printing.drivers = with pkgs;[ epfl-cups-drivers ];
-
-  networking.hostName = "kagami-air-m1"; # Define your hostname.
-
-  # networking.hostName = "nixos"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  networking.wireless.iwd.enable = true;
-  networking.interfaces.wlan0.useDHCP = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Zurich";
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
-  i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-mozc
-      fcitx5-unikey
-      fcitx5-gtk
-    ];
-  };
-  console = {
-    # font = "ter-v32n";
-    keyMap = "jp106";
-    # useXkbConfig = true; # use xkbOptions in tty.
-  };
-
-  # Enable the X11 windowing system.
-  # services.xserver.enable = true;
-  # services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.displayManager.sddm.enableHidpi = true;
-  # services.xserver.desktopManager.plasma5.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-
-  services.udev.packages = with pkgs; [ libfido2 ];
-
-  # Configure keymap in X11
-  # services.xserver.layout = "jp106";
-  # services.xserver.xkbOptions = {
-  #   "eurosign:e";
-  #   "caps:escape" # map caps to escape.
-  # };
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  services.pipewire = {
-    enable = true;
-    # alsa is optional
-    alsa.enable = true;
-    alsa.support32Bit = true;
-
-    pulse.enable = true;
-  };
+  services.printing.drivers = with pkgs; [ epfl-cups-drivers ];
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
   # Keyboard
   services.input-remapper.enable = true;
-  # services.input-remapper.package = pkgs.input-remapper.overridePythonAttrs {
-  #   src = pkgs.fetchFromGitHub {
-  #     owner = "sezanzeb";
-  #     repo = "input-remapper";
-  #     rev = "ac07769854b5c0b3d5e99ee130516243699687ed";
-  #     sha256 = "sha256-/Jh2hXcv8NSceYoobSqugWwX8jUf+FP1i922Ufp2H9w=";
-  #     # sha256 = lib.fakeSha256;
-  #   };
-  # };
-  services.input-remapper.serviceWantedBy = [ "multi-user.target" ];
+  services.input-remapper.serviceWantedBy = [ "graphical-session.target" ];
   hardware.uinput.enable = true;
-  hardware.opengl.enable = true;
-  services.swaylock.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.nki = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-      # kakoune
-      # thunderbird
-    ];
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    kakoune # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-
-    libfido2
-
-    ## Security stuff
-    libsForQt5.qtkeychain
-
-    ## Wayland
-    qt5.qtwayland
-
-    ## Drivers...?
-    libimobiledevice
-  ];
-
-  services.usbmuxd.enable = true;
+  common.linux.username = "nki";
 
   # Enable sway on login.
   environment.loginShellInit = ''
@@ -170,49 +56,15 @@
     fi
   '';
 
-  # Environment variables
-  environment.variables = {
-    # Basic editor setup
-    EDITOR = "kak";
-    VISUAL = "kak";
+  # Networking
+  common.linux.networking = {
+    hostname = "kagami-air-m1";
+    networks."10-wired".match = "enp*";
+    networks."20-wireless".match = "wlan*";
+    dnsServers = [ "127.0.0.1" ];
   };
-
-  services.resolved.enable = true;
-  services.resolved.domains = [ "127.0.0.1" ];
-  services.resolved.fallbackDns = [ "127.0.0.1" ];
   nki.services.edns.enable = true;
   nki.services.edns.ipv6 = true;
-  services.flatpak.enable = true;
-  xdg.portal = {
-    enable = true;
-    wlr.enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
-  };
-
-  ## Bluetooth
-  #
-  hardware.bluetooth.enable = true;
-
-
-  # PAM
-  security.pam.services.sddm.enableKwallet = true;
-  security.pam.services.sddm.enableGnomeKeyring = true;
-  security.pam.services.login.enableKwallet = true;
-  security.pam.services.login.enableGnomeKeyring = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-  programs.kdeconnect.enable = true;
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
   # Secrets
   sops.defaultSopsFile = ./secrets.yaml;

@@ -121,7 +121,6 @@
         pkgs = pkgs' system;
         modules = [
           ./common.nix
-          ./modules/my-tinc
           sops-nix.nixosModules.sops
           ./nki-home/configuration.nix
           nixpkgsAsRegistry
@@ -145,7 +144,6 @@
         pkgs = pkgs' system;
         system = "x86_64-linux";
         modules = [
-          ./modules/my-tinc
           sops-nix.nixosModules.sops
           ./nki-x1c1/configuration.nix
           nixpkgsAsRegistry
@@ -162,7 +160,7 @@
         pkgs = pkgs' system;
         system = "aarch64-linux";
         modules = [
-          ./modules/my-tinc
+          ./common.nix
           sops-nix.nixosModules.sops
           inputs.nixos-m1.nixosModules.apple-silicon-support
           ./kagami-air-m1/configuration.nix
