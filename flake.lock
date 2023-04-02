@@ -722,11 +722,11 @@
         "nixpkgs-unstable": "nixpkgs-unstable_2"
       },
       "locked": {
-        "lastModified": 1679740713,
-        "narHash": "sha256-tOIkserfyV/gkT/RzVocNG3XC70cGGOK0OuA7+yfa8w=",
+        "lastModified": 1680449714,
+        "narHash": "sha256-r99MN5pxbbg+IuwMzFhR6QilBvtUYbYP5A5MYZojDk4=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "5d69a434c0bd240e0c736073e3a8341810390a20",
+        "rev": "147976f2cc6b7ffed14abaf9aab5d86b282402b0",
         "type": "github"
       },
       "original": {
