@@ -67,8 +67,22 @@
 
   # Conduit
   sops.secrets.heisenbridge = { owner = "heisenbridge"; };
+  sops.secrets.matrix-discord-bridge = { mode = "0644"; };
   cloud.conduit.enable = true;
   cloud.conduit.package = pkgs.unstable.matrix-conduit;
+  cloud.conduit.instances = {
+    "nkagami" = {
+      host = "m.nkagami.me";
+      port = 6167;
+      well-known_port = 6168;
+    };
+    "dtth" = {
+      host = "m.dtth.ch";
+      server_name = "dtth.ch";
+      port = 6169;
+      well-known_port = 6170;
+    };
+  };
   cloud.conduit.heisenbridge = {
     enable = true;
     package = pkgs.heisenbridge.overrideAttrs (old: rec {
@@ -82,6 +96,16 @@
       };
     });
     appserviceFile = config.sops.secrets.heisenbridge.path;
+    homeserver = "https://m.nkagami.me";
+  };
+  services.matrix-appservice-discord = {
+    enable = true;
+    environmentFile = config.sops.secrets.matrix-discord-bridge.path;
+    serviceDependencies = [ "matrix-conduit-dtth.service" ];
+    settings.bridge = {
+      domain = "dtth.ch";
+      homeserverUrl = "https://m.dtth.ch:443";
+    };
   };
 
   # Navidrome back to the PC

@@ -16,6 +16,10 @@ with lib; {
       description = "The port to listen to. Leave blank to just use the appserviceFile's configuration";
       default = null;
     };
+    homeserver = mkOption {
+      type = types.str;
+      description = "The homeserver to listen to";
+    };
   };
   config = mkIf cfg.enable (
     let
@@ -43,10 +47,7 @@ with lib; {
               cfgFile
             ]
             ++ listenArgs
-            ++ [
-              # Homeserver
-              "https://${toString cfgConduit.host}"
-            ]
+            ++ [ cfg.homeserver ]
           );
 
           # Hardening options
