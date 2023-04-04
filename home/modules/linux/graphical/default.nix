@@ -2,7 +2,8 @@
 with lib;
 let
   cfg = config.linux.graphical;
-  alwaysStartup = with pkgs; [ birdtray ];
+
+  alwaysStartup = with pkgs; [ ];
 in
 {
   imports = [ ./x11.nix ./wayland.nix ./alacritty.nix ];
@@ -31,14 +32,12 @@ in
       gnome.cheese # Webcam check
       evince # PDF reader
       gparted
-      pkgs.unstable.vscode
-      feh
+      pkgs.unstable.vscode-fhs
+      feh # For images?
       deluge # Torrent client
       pavucontrol # PulseAudio control panel
       firefox
-
-      thunderbird
-      birdtray
+      cinnamon.nemo # File manager
 
       zotero
 
@@ -48,7 +47,9 @@ in
       xdg-utils # Open stuff
     ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
       mailspring
+      # Chat stuff
       unstable.slack
+      cinny-desktop
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
@@ -65,17 +66,43 @@ in
     xdg.mimeApps.enable = true;
 
     xdg.mimeApps.associations.added = {
-      "x-scheme-handler/mailto" = [ "userapp-Thunderbird-HPUL11.desktop" ];
-      "x-scheme-handler/mid" = [ "userapp-Thunderbird-HPUL11.desktop" ];
+      "x-scheme-handler/mailto" = [ "org.gnome.Evolution.desktop" ];
+      "text/plain" = [ "kakoune.desktop" ];
     };
     xdg.mimeApps.defaultApplications = {
+      # Email
+      "x-scheme-handler/mailto" = [ "org.gnome.Evolution.desktop" ];
+
+      # Default web browser stuff
+      "text/html" = [ "firefox.desktop" ];
+      "x-scheme-handler/about" = [ "firefox.desktop" ];
+      "x-scheme-handler/unknown" = [ "firefox.desktop" ];
       "x-scheme-handler/http" = [ "firefox.desktop" ];
       "x-scheme-handler/https" = [ "firefox.desktop" ];
       "x-scheme-handler/ftp" = [ "firefox.desktop" ];
       "x-scheme-handler/ftps" = [ "firefox.desktop" ];
-      "x-scheme-handler/mailto" = [ "userapp-Thunderbird-HPUL11.desktop" ];
-      "message/rfc822" = [ "userapp-Thunderbird-HPUL11.desktop" ];
-      "x-scheme-handler/mid" = [ "userapp-Thunderbird-HPUL11.desktop" ];
+
+      # Torrent
+      "application/x-bittorrent" = [ "deluge.desktop" ];
+      "x-scheme-handler/magnet" = [ "deluge.desktop" ];
+
+      # Text
+      "text/plain" = [ "kakoune.desktop" ];
+
+      # Files
+      "inode/directory" = [ "nemo.desktop" ];
+    };
+
+    # Add one for kakoune
+    xdg.desktopEntries."kakoune" = {
+      name = "Kakoune";
+      genericName = "Text Editor";
+      exec = ''kitty --class kitty-float -o initial_window_width=150c -o initial_window_height=40c ${pkgs.writeShellScript "editor.sh" ''
+        $EDITOR "$@"
+      ''} %U'';
+      # exec = "kakoune %U";
+      terminal = false;
+      mimeType = [ "text/plain" ];
     };
 
     # Theming
@@ -111,8 +138,10 @@ in
             source =
               let
                 srcFile = pkgs.runCommand "${pkg.name}-startup" { } ''
-                  mkdir -p $out
-                  cp $(ls -d ${pkg}/share/applications/*.desktop | head -n 1) $out/${pkg.name}.desktop
+                  mkdir - p $out
+                  cp $
+                  (ls - d ${
+                  pkg}/share/applications/*.desktop | head -n 1) $out/${pkg.name}.desktop
                 '';
               in
               "${srcFile}/${pkg.name}.desktop";
@@ -130,4 +159,5 @@ in
     # };
   };
 }
+
 
