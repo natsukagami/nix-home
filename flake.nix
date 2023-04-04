@@ -3,7 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:natsukagami/nixpkgs/nixpkgs-unstable";
+    # nixpkgs-unstable.follows = "nixos-m1/nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.url = "github:natsukagami/home-manager/release-22.11";
@@ -41,7 +42,7 @@
     kak-lsp.url = github:natsukagami/kak-lsp/show-message-request;
     kak-lsp.flake = false;
     nixos-m1.url = github:tpwrules/nixos-apple-silicon;
-    nixos-m1.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-m1.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     # ---
     # DEPLOYMENT ONLY! secrets
@@ -156,8 +157,8 @@
         ];
       };
       # macbook nixos
-      nixosConfigurations."kagami-air-m1" = nixpkgs.lib.nixosSystem rec {
-        pkgs = pkgs' system;
+      nixosConfigurations."kagami-air-m1" = nixpkgs-unstable.lib.nixosSystem rec {
+        pkgs = pkgs-unstable system;
         system = "aarch64-linux";
         modules = [
           ./common.nix
@@ -165,7 +166,7 @@
           inputs.nixos-m1.nixosModules.apple-silicon-support
           ./kagami-air-m1/configuration.nix
           nixpkgsAsRegistry
-          home-manager.nixosModules.home-manager
+          inputs.home-manager-unstable.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

@@ -76,7 +76,7 @@ in
   config = mkIf cfg.enable {
     ## Boot Configuration
     # Set kernel version to latest
-    boot.kernelPackages = pkgs.linuxPackages_latest;
+    boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
     # Use the systemd-boot EFI boot loader.
     boot = {
       plymouth.enable = true;
@@ -85,7 +85,7 @@ in
       loader.efi.canTouchEfiVariables = true;
       supportedFilesystems = [ "ntfs" ];
     };
-    boot.initrd.systemd.enable = true;
+    boot.initrd.systemd.enable = builtins.length (builtins.attrNames (cfg.luksDevices)) > 0;
     # LUKS devices
     boot.initrd.luks.devices = builtins.mapAttrs
       (name: path: {

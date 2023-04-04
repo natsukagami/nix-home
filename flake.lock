@@ -346,7 +346,7 @@
     "nixos-m1": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "rust-overlay": "rust-overlay_2"
       },
@@ -398,15 +398,15 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1680182246,
-        "narHash": "sha256-2WEHGApYCVt7bCm/0Ws8qYnp5Jn0mRgZ91tkoN+HrcY=",
-        "owner": "nixos",
+        "lastModified": 1680453898,
+        "narHash": "sha256-5M01OQJjVZVTmQTgpXvANosiMqb8Lx9FiThUDNyEtJc=",
+        "owner": "natsukagami",
         "repo": "nixpkgs",
-        "rev": "b7fc729117a70d0df9e9adfc624662148e32ca0a",
+        "rev": "551febe6174165d9df7941130677698e3f1831aa",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "natsukagami",
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"

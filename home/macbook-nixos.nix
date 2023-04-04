@@ -30,7 +30,7 @@ in
   # More packages
   home.packages = (with pkgs; [
     # CLI stuff
-    python
+    python3
     zip
     # TeX
     texlive.combined.scheme-full
