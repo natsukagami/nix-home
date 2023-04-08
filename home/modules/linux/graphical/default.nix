@@ -3,6 +3,8 @@ with lib;
 let
   cfg = config.linux.graphical;
 
+  vscode = with pkgs; if stdenv.isAarch64 then unstable.vscode else unstable.vscode-fhs;
+
   alwaysStartup = with pkgs; [ ];
 in
 {
@@ -32,7 +34,7 @@ in
       gnome.cheese # Webcam check
       evince # PDF reader
       gparted
-      pkgs.unstable.vscode-fhs
+      vscode
       feh # For images?
       deluge # Torrent client
       pavucontrol # PulseAudio control panel

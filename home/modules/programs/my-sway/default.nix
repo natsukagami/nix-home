@@ -382,7 +382,6 @@ in
           "cpu"
           "memory"
           "temperature"
-          "backlight"
         ] ++ (
           if cfg.enableLaptopBars
           then [ "battery" "battery#bat2" ]

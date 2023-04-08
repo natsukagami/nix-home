@@ -1,9 +1,7 @@
 { pkgs, config, lib, ... }:
 
 let
-  discord = pkgs.writeShellScriptBin "discord" ''
-    ${pkgs.armcord}/bin/armcord --force-device-scale-factor=1.5 ts-out/main.js "$@"
-  '';
+  discord = pkgs.armcord;
 in
 {
   imports = [
@@ -21,7 +19,7 @@ in
   home.homeDirectory = "/home/nki";
 
   nki.programs.kitty.enable = true;
-  nki.programs.kitty.fontSize = 24;
+  nki.programs.kitty.fontSize = 18;
   programs.fish.shellInit = lib.mkAfter ''
     set -eg MESA_GL_VERSION_OVERRIDE
     set -eg MESA_GLSL_VERSION_OVERRIDE
@@ -52,7 +50,7 @@ in
   linux.graphical.wallpaper = ./images/wallpaper-macbook.jpg;
   # Enable sway
   programs.my-sway.enable = true;
-  programs.my-sway.fontSize = 20.0;
+  programs.my-sway.fontSize = 12.0;
   programs.my-sway.enableLaptopBars = true;
   programs.my-sway.enableMpd = false;
   programs.my-sway.discord = "${discord}/bin/discord";
@@ -60,7 +58,7 @@ in
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
   wayland.windowManager.sway.config.output."eDP-1" = {
     mode = "2560x1600@60Hz";
-    scale = "1";
+    scale = "1.5";
     subpixel = "vrgb";
   };
   wayland.windowManager.sway.config.input."1452:641:Apple_Internal_Keyboard_/_Trackpad" = {
