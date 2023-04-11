@@ -231,15 +231,16 @@
     "kak-lsp": {
       "flake": false,
       "locked": {
-        "lastModified": 1677690116,
-        "narHash": "sha256-Vd8axfIszzvWV/w4dBiZyYApmEcrTUYCFwESRONt53s=",
-        "owner": "kak-lsp",
+        "lastModified": 1681127404,
+        "narHash": "sha256-6OqjR0hRBYj34DvXNKQ3Th4E6jveuGQHVpqRaXUZr+8=",
+        "owner": "natsukagami",
         "repo": "kak-lsp",
-        "rev": "72a88169514e09b4fd4ec2d7e9e4e7ffae07430b",
+        "rev": "8d7f46c5ba9dea215bb12340ee0f6579355b01ba",
         "type": "github"
       },
       "original": {
-        "owner": "kak-lsp",
+        "owner": "natsukagami",
+        "ref": "show-message-request",
         "repo": "kak-lsp",
         "type": "github"
       }

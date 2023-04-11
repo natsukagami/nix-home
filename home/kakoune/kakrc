@@ -113,6 +113,7 @@ try %{
 }
 hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala) %{
     lsp-enable-window
+    map window lsp N -docstring "Display the next message request" ": lsp-show-message-request-next<ret>"
     map window normal <c-l> ": enter-user-mode lsp<ret>"
     map window normal <c-h> ": lsp-hover<ret>"
     map window normal <c-s-h> ": lsp-hover-buffer<ret>"
