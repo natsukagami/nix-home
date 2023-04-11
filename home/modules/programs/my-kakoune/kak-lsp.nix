@@ -177,6 +177,7 @@ let
         { face = "class"; token = "struct"; }
         { face = "class"; token = "trait"; }
         { face = "class"; token = "union"; }
+        { face = "class"; token = "class"; }
 
         ## Comments
         { face = "documentation"; token = "comment"; modifiers = [ "documentation" ]; }

@@ -60,6 +60,11 @@ in
     command = "metals";
     filetypes = [ "scala" ];
     roots = [ "build.sbt" ];
+    settings_section = "metals";
+    settings.metals = {
+      enableSemanticHighlighting = true;
+      showInferredType = true;
+    };
   };
   programs.kak-lsp.languages.latex = {
     command = "texlab";
