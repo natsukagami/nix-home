@@ -274,7 +274,7 @@ in
           { class = "^firefox$"; }
         ];
         "${builtins.elemAt workspaces 1}" = [
-          { class = "^((d|D)iscord|((A|a)rmcord))$"; }
+          { class = "^((d|D)iscord|((A|a)rm(c|C)ord))$"; }
         ];
         "📧 Email" = [
           { app_id = "evolution"; }

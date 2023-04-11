@@ -53,7 +53,7 @@ in
   programs.my-sway.fontSize = 12.0;
   programs.my-sway.enableLaptopBars = true;
   programs.my-sway.enableMpd = false;
-  programs.my-sway.discord = "${discord}/bin/discord";
+  programs.my-sway.discord = "${discord}/bin/armcord";
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
   wayland.windowManager.sway.config.output."eDP-1" = {
