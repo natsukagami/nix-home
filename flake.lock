@@ -398,15 +398,15 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1680453898,
-        "narHash": "sha256-5M01OQJjVZVTmQTgpXvANosiMqb8Lx9FiThUDNyEtJc=",
-        "owner": "natsukagami",
+        "lastModified": 1681215634,
+        "narHash": "sha256-dI0SsSWb7ksK3OtTCf61vdlBhok838aIpwQ2EUM+jhY=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "551febe6174165d9df7941130677698e3f1831aa",
+        "rev": "5a156c2e89c1eca09b40bcdcee86760e0e4d79a9",
         "type": "github"
       },
       "original": {
-        "owner": "natsukagami",
+        "owner": "nixos",
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
