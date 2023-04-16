@@ -25,7 +25,7 @@ in
     fonts = with pkgs; [
       noto-fonts-emoji-blob-bin
       ibm-plex
-      (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+      (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       noto-fonts
       noto-fonts-cjk
       merriweather

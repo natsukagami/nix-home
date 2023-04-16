@@ -34,6 +34,7 @@
   programs.my-sway.enableMpd = true;
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
+  wayland.windowManager.sway.config.input."type:pointer".accel_profile = "flat";
   # 144hz adaptive refresh ON!
   wayland.windowManager.sway.config.output =
     let
