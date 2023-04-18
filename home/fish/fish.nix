@@ -138,7 +138,7 @@
       bind -M default gl end-of-line
 
       # Set up direnv
-      ${pkgs.direnv}/bin/direnv hook fish | source
+      # ${pkgs.direnv}/bin/direnv hook fish | source
 
       # Set up tty for GPG
       export GPG_TTY=(tty)

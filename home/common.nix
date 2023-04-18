@@ -139,5 +139,6 @@
     jq.enable = true;
 
     nushell.enable = true;
+    nushell.package = pkgs.unstable.nushell;
   };
 }
