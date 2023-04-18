@@ -1,4 +1,4 @@
-{ pkgs, runCommand, zstd, lib, buildFHSUserEnv }:
+{ pkgs, runCommand, zstd, lib, buildFHSEnvChroot }:
 
 let
   typora-tar = builtins.fetchurl {
@@ -11,7 +11,7 @@ let
     tar xvf ${typora-tar} -C $out
   '';
 in
-buildFHSUserEnv {
+buildFHSEnvChroot {
   name = "typora";
   targetPkgs = pkgs: with pkgs; [
     glib
