@@ -351,11 +351,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1677216540,
-        "narHash": "sha256-t7vsvKalN24LUrIABHk3OlzpXhrTfS40AdP6whv3C9I=",
+        "lastModified": 1679451428,
+        "narHash": "sha256-Xk3WBlejWUpnuOnMZzTH7mV/bTRxKIrln871ba3uQjI=",
         "owner": "tpwrules",
         "repo": "nixos-apple-silicon",
-        "rev": "e79177006306ae592bc865b03667af4229620461",
+        "rev": "696d7b4ac7ca05684a3cceedd44acfd0d1c5f1e3",
         "type": "github"
       },
       "original": {
@@ -398,15 +398,15 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1681215634,
-        "narHash": "sha256-dI0SsSWb7ksK3OtTCf61vdlBhok838aIpwQ2EUM+jhY=",
-        "owner": "nixos",
+        "lastModified": 1681740123,
+        "narHash": "sha256-RrcHEqm+f04nFpQQSnsGsUhJb2mNuqfdcGWL2DREEaY=",
+        "owner": "natsukagami",
         "repo": "nixpkgs",
-        "rev": "5a156c2e89c1eca09b40bcdcee86760e0e4d79a9",
+        "rev": "55325c13e8f5c06a57a210b30a19b2fbebe185f1",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
+        "owner": "natsukagami",
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
@@ -595,11 +595,11 @@
         "flake-utils": "flake-utils_4"
       },
       "locked": {
-        "lastModified": 1669915544,
-        "narHash": "sha256-wByoZ+HWXo7L9QyUefMhe26IUUeFGtffG6v/AL31neo=",
+        "lastModified": 1681814227,
+        "narHash": "sha256-YQET7Vnnc6f8k2M2YhKbflFSPFfdgpVCn7xFYiMLPTE=",
         "ref": "refs/heads/master",
-        "rev": "9142ca82ec1e9a6e1314d2727cdc15db30c94c14",
-        "revCount": 4,
+        "rev": "a810d3209929ec0a44efdc2171b92f3723bb8a6a",
+        "revCount": 5,
         "type": "git",
         "url": "ssh://git@github.com/natsukagami/nix-deploy-secrets"
       },

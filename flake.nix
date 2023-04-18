@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:natsukagami/nixpkgs/nixpkgs-unstable";
     # nixpkgs-unstable.follows = "nixos-m1/nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -52,11 +52,15 @@
   outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, nur, ... }@inputs:
     let
       overlays = import ./overlay.nix inputs;
+      lib = nixpkgs.lib;
 
-      pkgs' = system: import nixpkgs { inherit system overlays; config.allowUnfree = true; };
-      pkgs-unstable = system: import nixpkgs-unstable { inherit system overlays; config.allowUnfree = true; };
+      applyOverlays = { ... }: {
+        nixpkgs.overlays = lib.mkBefore overlays;
+      };
 
-      nixpkgsAsRegistry_ = stable: { ... }: {
+      nixpkgsAsRegistry_ = stable: { lib, ... }: {
+        imports = [ applyOverlays ];
+        nix.registry.current-system.flake = self;
         nix.registry.nixpkgs.flake = stable;
         nix.registry.nixpkgs-unstable.flake = nixpkgs-unstable;
         nix.nixPath = [
@@ -64,16 +68,28 @@
           "nixpkgs-unstable=${nixpkgs-unstable}"
           "/nix/var/nix/profiles/per-user/root/channels"
         ];
-      };
-      nixpkgsAsRegistry = nixpkgsAsRegistry_ nixpkgs;
-
-      haskellDotNix = { ... }: {
         # Binary Cache for Haskell.nix  
         nix.settings.trusted-public-keys = [
           "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
         ];
         nix.settings.substituters = [
           "https://cache.iog.io"
+        ];
+      };
+      nixpkgsAsRegistry = nixpkgsAsRegistry_ nixpkgs;
+
+      # Common Nix modules
+      common-nix = stable: { ... }: {
+        imports = [
+          (nixpkgsAsRegistry_ stable)
+          ./common.nix
+          sops-nix.nixosModules.sops
+        ];
+      };
+      common-nixos = stable: { ... }: {
+        imports = [
+          (common-nix stable)
+          inputs.secrets.nixosModules.common
         ];
       };
 
@@ -98,15 +114,14 @@
       };
     in
     {
+      overlays.default = lib.composeManyExtensions overlays;
+
       # MacBook configuration: nix-darwin + home-manager
       darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem rec {
         system = "aarch64-darwin";
-        pkgs = pkgs-unstable system;
         modules = [
+          (common-nix nixpkgs-unstable)
           ./darwin/configuration.nix
-          # Set nix path
-          haskellDotNix
-          (nixpkgsAsRegistry_ nixpkgs-unstable)
           inputs.home-manager-unstable.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -119,12 +134,9 @@
       # Home configuration
       nixosConfigurations."nki-home" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
-        pkgs = pkgs' system;
         modules = [
-          ./common.nix
-          sops-nix.nixosModules.sops
+          (common-nixos nixpkgs)
           ./nki-home/configuration.nix
-          nixpkgsAsRegistry
           enableOsuStable
           home-manager.nixosModules.home-manager
           {
@@ -137,17 +149,14 @@
               ];
             };
           }
-          inputs.secrets.nixosModules.x86_64-linux.common
         ];
       };
       # x1c1 configuration
       nixosConfigurations."nki-x1c1" = nixpkgs.lib.nixosSystem rec {
-        pkgs = pkgs' system;
         system = "x86_64-linux";
         modules = [
-          sops-nix.nixosModules.sops
+          (common-nixos nixpkgs)
           ./nki-x1c1/configuration.nix
-          nixpkgsAsRegistry
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -158,32 +167,27 @@
       };
       # macbook nixos
       nixosConfigurations."kagami-air-m1" = nixpkgs-unstable.lib.nixosSystem rec {
-        pkgs = pkgs-unstable system;
         system = "aarch64-linux";
         modules = [
-          ./common.nix
-          sops-nix.nixosModules.sops
+          (common-nixos nixpkgs)
           inputs.nixos-m1.nixosModules.apple-silicon-support
           ./kagami-air-m1/configuration.nix
-          nixpkgsAsRegistry
           inputs.home-manager-unstable.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.nki = import ./home/macbook-nixos.nix;
           }
-          inputs.secrets.nixosModules.${system}.common
         ];
       };
 
       # DigitalOcean node
       nixosConfigurations."nki-personal-do" = nixpkgs.lib.nixosSystem rec {
-        pkgs = pkgs' system;
         system = "x86_64-linux";
         modules = [
+          (common-nixos nixpkgs)
           ./modules/my-tinc
           inputs.youmubot.nixosModule.x86_64-linux
-          sops-nix.nixosModules.sops
           ./nki-personal-do/configuration.nix
           inputs.secrets.nixosModules.x86_64-linux.nki-personal-do
         ];

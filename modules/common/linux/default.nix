@@ -19,10 +19,18 @@ let
         networkConfig.DHCP = "yes";
       };
     };
+
+    wlr = { ... }: mkIf config.common.linux.enable {
+      # swaync disable notifications on screencast
+      xdg.portal.wlr.settings.screencast = {
+        exec_before = ''which swaync-client && swaync-client --inhibitor-add "xdg-desktop-portal-wlr" || true'';
+        exec_after = ''which swaync-client && swaync-client --inhibitor-remove "xdg-desktop-portal-wlr" || true'';
+      };
+    };
   };
 in
 {
-  imports = with modules; [ adb ios ];
+  imports = with modules; [ adb ios wlr ];
 
   options.common.linux = {
     enable = mkOption {
@@ -165,12 +173,6 @@ in
       ];
     };
 
-    ## Packages
-    # Nix options
-    # Always have flakes enabled!
-    nix.extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
     # Default packages
     environment.systemPackages = with pkgs; [
       kakoune # An editor
