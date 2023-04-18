@@ -109,7 +109,7 @@ in
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
-    package = pkgs.swayfx;
+    package = pkgs.swayfx-unwrapped;
     systemdIntegration = true;
 
     config = {
@@ -338,6 +338,9 @@ in
         default_dim_inactive 0.0
         for_window [app_id="kitty"] dim_inactive 0.05
         titlebar_separator enable
+        # Blur
+        for_window [app_id=".*kitty.*"] blur enabled
+        blur_xray enabled
       '' + ''
         # Enable portal stuff
         exec ${pkgs.writeShellScript "start-portals.sh" ''

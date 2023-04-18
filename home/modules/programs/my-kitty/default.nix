@@ -58,7 +58,7 @@ with lib;
         # Background color and transparency
         background =
           if isNull cfg.background then {
-            background_opacity = "0.9";
+            background_opacity = "0.85";
             dynamic_background_opacity = true;
           } else {
             background_image = "${cfg.background}";

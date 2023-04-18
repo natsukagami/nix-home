@@ -265,7 +265,7 @@
       "inputs": {
         "flake-utils": "flake-utils_3",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ]
       },
       "locked": {
@@ -327,14 +327,16 @@
     },
     "nix-gaming": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
       },
       "locked": {
-        "lastModified": 1678139301,
-        "narHash": "sha256-RLabMb1YvI5hmlQLD/YdUU9Y7gH0XJGTUNrPBq8ZGtY=",
+        "lastModified": 1681779687,
+        "narHash": "sha256-pTv3fJHb4BAqGZRu6xQU/wwL6CilmHvCUK8qaTOpEgY=",
         "owner": "fufexan",
         "repo": "nix-gaming",
-        "rev": "a54e76782639df4e752b2388938d271f43f9e2e6",
+        "rev": "299ee41e7bec178507e1623f9b55036ef457379a",
         "type": "github"
       },
       "original": {
@@ -346,7 +348,7 @@
     "nixos-m1": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-unstable"
+          "nixpkgs-unstable-asahi"
         ],
         "rust-overlay": "rust-overlay_2"
       },
@@ -398,6 +400,22 @@
     },
     "nixpkgs-unstable": {
       "locked": {
+        "lastModified": 1681753173,
+        "narHash": "sha256-MrGmzZWLUqh2VstoikKLFFIELXm/lsf/G9U9zR96VD4=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "0a4206a51b386e5cda731e8ac78d76ad924c7125",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-unstable-asahi": {
+      "locked": {
         "lastModified": 1681740123,
         "narHash": "sha256-RrcHEqm+f04nFpQQSnsGsUhJb2mNuqfdcGWL2DREEaY=",
         "owner": "natsukagami",
@@ -445,22 +463,6 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1677995890,
-        "narHash": "sha256-eOnCn0o3I6LP48fAi8xWFcn49V2rL7oX5jCtJTeN1LI=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a1240f6b4a0bcc84fc48008b396a140d9f3638f6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_4": {
-      "locked": {
         "lastModified": 1680122840,
         "narHash": "sha256-zCQ/9iFHzCW5JMYkkHMwgK1/1/kTMgCMHq4THPINpAU=",
         "owner": "nixos",
@@ -475,7 +477,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_5": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1656753965,
         "narHash": "sha256-BCrB3l0qpJokOnIVc3g2lHiGhnjUi0MoXiw6t1o8H1E=",
@@ -509,7 +511,7 @@
     "rnix-lsp": {
       "inputs": {
         "naersk": "naersk",
-        "nixpkgs": "nixpkgs_5",
+        "nixpkgs": "nixpkgs_4",
         "utils": "utils_4"
       },
       "locked": {
@@ -539,8 +541,9 @@
         "mpd-mpris": "mpd-mpris",
         "nix-gaming": "nix-gaming",
         "nixos-m1": "nixos-m1",
-        "nixpkgs": "nixpkgs_4",
+        "nixpkgs": "nixpkgs_3",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "nixpkgs-unstable-asahi": "nixpkgs-unstable-asahi",
         "nur": "nur",
         "rnix-lsp": "rnix-lsp",
         "secrets": "secrets",
@@ -639,11 +642,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1679331631,
-        "narHash": "sha256-tMoiwFO/AVTV7GoGMSu3XQimFnK8vv3yzf+D41kTJoE=",
+        "lastModified": 1681859040,
+        "narHash": "sha256-fjYYZG35AfePm1VKz4J3J2cbDP1Tu7EIeZnl2cHPKCQ=",
         "owner": "WillPower3309",
         "repo": "swayfx",
-        "rev": "7d5d7a3022eb17835cea7af7290b1a5d2fe4b03a",
+        "rev": "3f00052a9060764104c0fe1207640c870aea1290",
         "type": "github"
       },
       "original": {

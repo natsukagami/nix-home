@@ -53,8 +53,6 @@ let
   overlay-asahi = inputs.nixos-m1.overlays.default;
 in
 [
-  inputs.swayfx.overlays.default
-
   (import ./overlays/openrazer)
   overlay-unstable
   overlay-needs-unstable
@@ -68,6 +66,7 @@ in
   (import ./packages/common)
 
   inputs.mpd-mpris.overlays.default
+  inputs.swayfx.overlays.default
 
   # Bug fixes
 ] # we assign the overlay created before to the overlays of nixpkgs.

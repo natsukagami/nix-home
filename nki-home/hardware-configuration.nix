@@ -29,9 +29,6 @@
   swapDevices =
     [{ device = "/dev/disk/by-uuid/561f6441-1915-4059-a5e1-76a449b0c9bf"; }];
 
-  # high-resolution display
-  hardware.video.hidpi.enable = lib.mkDefault true;
-
   # GPU options
   services.xserver.videoDrivers = [ "amdgpu" ];
   hardware.opengl.enable = true;
