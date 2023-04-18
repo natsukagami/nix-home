@@ -63,6 +63,7 @@
         nix.registry.current-system.flake = self;
         nix.registry.nixpkgs.flake = stable;
         nix.registry.nixpkgs-unstable.flake = nixpkgs-unstable;
+        nixpkgs.config.allowUnfree = true;
         nix.nixPath = [
           "nixpkgs=${nixpkgs}"
           "nixpkgs-unstable=${nixpkgs-unstable}"
