@@ -11,6 +11,17 @@
     ../modules/cloud/writefreely
   ];
 
+  common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.
+
+  # Personal user
+  users.users.nki = {
+    isNormalUser = true;
+    createHome = true;
+    extraGroups = [ "wheel" ];
+    group = "users";
+    uid = 1000;
+  };
+
   boot.cleanTmpDir = true;
   networking.hostName = "nki-personal";
   networking.firewall.allowPing = true;

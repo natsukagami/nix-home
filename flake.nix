@@ -192,7 +192,7 @@
           ./modules/my-tinc
           inputs.youmubot.nixosModule.x86_64-linux
           ./nki-personal-do/configuration.nix
-          inputs.secrets.nixosModules.x86_64-linux.nki-personal-do
+          inputs.secrets.nixosModules.nki-personal-do
         ];
       };
       deploy.nodes."nki-personal-do" = {
