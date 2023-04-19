@@ -339,8 +339,8 @@ in
         for_window [app_id="kitty"] dim_inactive 0.05
         titlebar_separator enable
         # Blur
-        for_window [app_id=".*kitty.*"] blur enabled
-        blur_xray enabled
+        for_window [app_id=".*kitty.*"] blur enable
+        blur_xray disable
       '' + ''
         # Enable portal stuff
         exec ${pkgs.writeShellScript "start-portals.sh" ''
