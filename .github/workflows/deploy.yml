@@ -51,10 +51,10 @@ jobs:
         ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
     - uses: cachix/install-nix-action@v20
       with:
-          # Enable flakes
-          experimental-features = nix-command flakes
-          # Deploy tokens
-          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+        # Enable flakes
+        experimental-features = nix-command flakes
+        # Deploy tokens
+        access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
     - name: Deploy with deploy-rs
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
