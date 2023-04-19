@@ -155,19 +155,19 @@
         ];
       };
       # x1c1 configuration
-      nixosConfigurations."nki-x1c1" = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        modules = [
-          (common-nixos nixpkgs)
-          ./nki-x1c1/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.nki = import ./home/nki-x1c1.nix;
-          }
-        ];
-      };
+      # nixosConfigurations."nki-x1c1" = nixpkgs.lib.nixosSystem rec {
+      #   system = "x86_64-linux";
+      #   modules = [
+      #     (common-nixos nixpkgs)
+      #     ./nki-x1c1/configuration.nix
+      #     home-manager.nixosModules.home-manager
+      #     {
+      #       home-manager.useGlobalPkgs = true;
+      #       home-manager.useUserPackages = true;
+      #       home-manager.users.nki = import ./home/nki-x1c1.nix;
+      #     }
+      #   ];
+      # };
       # macbook nixos
       nixosConfigurations."kagami-air-m1" = inputs.nixpkgs-unstable-asahi.lib.nixosSystem rec {
         system = "aarch64-linux";
