@@ -13,8 +13,6 @@ in
 with lib; {
   imports = [
     defaultShell
-    ./modules/common/linux
-    ./modules/my-tinc
   ];
 
   ## Packages

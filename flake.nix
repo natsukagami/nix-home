@@ -91,6 +91,8 @@
       };
       common-nixos = stable: { ... }: {
         imports = [
+          ./modules/my-tinc
+          ./modules/common/linux
           (common-nix stable)
           inputs.secrets.nixosModules.common
         ];
