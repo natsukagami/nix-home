@@ -60,4 +60,4 @@ jobs:
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
-        nix run -L github:Serokell/deploy-rs . -- --hostname ${{ secrets.INSTANCE_IP }} -- -L
+        nix run -L github:Serokell/deploy-rs . -- --hostname ${{ secrets.INSTANCE_IP }} -s -- -L
