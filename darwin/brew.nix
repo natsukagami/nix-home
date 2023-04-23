@@ -14,11 +14,17 @@ with lib;
     "homebrew/bundle"
     "homebrew/cask"
     "homebrew/core"
+    "homebrew/services"
   ];
 
   homebrew.brews = [
     # CLI tools
     "pinentry-mac" # UI for Pin Entry on gpg Mac
+
+    {
+      name = "d-bus";
+      restart_service = "changed";
+    }
 
     # U2F
     "pam-u2f"
