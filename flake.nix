@@ -21,6 +21,7 @@
     # --- Build tools
     flake-utils.url = github:numtide/flake-utils;
     crane.url = github:ipetkov/crane;
+    arion.url = github:hercules-ci/arion;
 
     # ---
     # Imported apps
@@ -191,6 +192,7 @@
         system = "x86_64-linux";
         modules = [
           (common-nixos nixpkgs)
+          inputs.arion.nixosModules.arion
           ./modules/my-tinc
           inputs.youmubot.nixosModule.x86_64-linux
           ./nki-personal-do/configuration.nix

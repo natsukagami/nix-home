@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
 
     # Set up cloud
+    ../modules/cloud/authentik
     ../modules/cloud/postgresql
     ../modules/cloud/traefik
     ../modules/cloud/bitwarden
@@ -76,6 +77,9 @@
   };
   cloud.traefik.certsDumper.enable = true;
 
+  # Arion
+  virtualisation.arion.backend = "docker";
+
   # Conduit
   sops.secrets.heisenbridge = { owner = "heisenbridge"; };
   sops.secrets.matrix-discord-bridge = { mode = "0644"; };
@@ -148,7 +152,10 @@
   cloud.writefreely.enable = true;
 
   # Authentik (running under docker-compose T_T)
-  cloud.traefik.hosts.authentik = { host = "auth.dtth.ch"; port = 9480; };
+  sops.secrets.authentik-env = { };
+  cloud.authentik.enable = true;
+  cloud.authentik.envFile = config.sops.secrets.authentik-env.path;
+  cloud.traefik.hosts.authentik = { host = "auth.dtth.ch"; port = config.cloud.authentik.port; };
 
   # Outline
   sops.secrets.minio-secret-key = { };
