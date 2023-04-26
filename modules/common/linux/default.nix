@@ -27,10 +27,15 @@ let
         exec_after = ''which swaync-client && swaync-client --inhibitor-remove "xdg-desktop-portal-wlr" || true'';
       };
     };
+
+    logitech = { pkgs, ... }: mkIf cfg.enable {
+      services.ratbagd.enable = true;
+      environment.systemPackages = with pkgs; [ piper ];
+    };
   };
 in
 {
-  imports = with modules; [ adb ios wlr ];
+  imports = with modules; [ adb ios wlr logitech ];
 
   options.common.linux = {
     enable = mkOption {
