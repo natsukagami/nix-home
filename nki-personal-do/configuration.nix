@@ -4,6 +4,7 @@
 
     # Set up cloud
     ../modules/cloud/authentik
+    ../modules/cloud/firezone
     ../modules/cloud/postgresql
     ../modules/cloud/traefik
     ../modules/cloud/bitwarden
@@ -151,11 +152,28 @@
   # Writefreely
   cloud.writefreely.enable = true;
 
-  # Authentik (running under docker-compose T_T)
+  # Authentik
   sops.secrets.authentik-env = { };
   cloud.authentik.enable = true;
   cloud.authentik.envFile = config.sops.secrets.authentik-env.path;
   cloud.traefik.hosts.authentik = { host = "auth.dtth.ch"; port = config.cloud.authentik.port; };
+
+  # Firezone
+  sops.secrets.firezone-env = { };
+  cloud.firezone.enable = true;
+  cloud.firezone.envFile = config.sops.secrets.firezone-env.path;
+  cloud.traefik.hosts.firezone = {
+    host = "vpn.dtth.ch";
+    port = config.cloud.firezone.httpPort;
+    localHost = "127.0.0.1";
+  };
+  cloud.traefik.hosts.firezone-vpn = {
+    host = "vpn.dtth.ch";
+    port = config.cloud.firezone.wireguardPort;
+    entrypoints = [ "wireguard" ];
+    protocol = "udp";
+  };
+
 
   # Outline
   sops.secrets.minio-secret-key = { };

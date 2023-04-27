@@ -61,6 +61,8 @@ in
       entrypoints.imap.address = ":993";
       entrypoints.smtp-submission.address = ":587";
       entrypoints.smtp-submission-ssl.address = ":465";
+      ## Wireguard
+      entrypoints.wireguard.address = ":51820/udp";
 
       # Logging
       # -------
@@ -84,5 +86,8 @@ in
 
   # Set up firewall to allow traefik traffic.
   config.networking.firewall.allowedTCPPorts = [ 80 443 993 587 465 ];
-  config.networking.firewall.allowedUDPPorts = [ 443 ]; # QUIC
+  config.networking.firewall.allowedUDPPorts = [
+    443 # QUIC
+    51820 # Wireguard
+  ];
 }

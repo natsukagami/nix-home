@@ -48,7 +48,7 @@ let
         description = "The port that the service is listening on";
       };
       entrypoints = mkOption {
-        type = listOf (enum [ "http" "https" "smtp-submission" "smtp-submission-ssl" "imap" ]);
+        type = listOf (enum [ "http" "https" "smtp-submission" "smtp-submission-ssl" "imap" "wireguard" ]);
         default = [ "https" ];
         description = "The entrypoints that will serve the host";
       };
@@ -58,7 +58,7 @@ let
         description = "The middlewares to be used with the host.";
       };
       protocol = mkOption {
-        type = enum [ "http" "tcp" ];
+        type = enum [ "http" "tcp" "udp" ];
         default = "http";
         description = "The protocol of the router and service";
       };
@@ -82,18 +82,18 @@ let
   # Turns a host configuration into dynamic traefik configuration
   hostToConfig = name: host: {
     "${host.protocol}" = {
-      routers."${name}-router" = {
+      routers."${name}-router" = (if (host.protocol != "udp") then {
         rule = filterOfHost host;
-        entryPoints = host.entrypoints;
         tls = { certResolver = "le"; } // (if host.protocol == "tcp" then { passthrough = if (host ? tlsPassthrough) then host.tlsPassthrough else true; } else { });
+      } else { }) // {
+        entryPoints = host.entrypoints;
         service = "${name}-service";
-
       } // (
         if host.protocol == "http" then
           { middlewares = lists.imap0 (id: m: "${name}-middleware-${toString id}") host.middlewares; }
         else if host.middlewares == [ ] then
           { }
-        else abort "Cannot have middlewares on tcp routers"
+        else abort "Cannot have middlewares on non-http routers"
       );
       services."${name}-service".loadBalancer.servers = [
         (
