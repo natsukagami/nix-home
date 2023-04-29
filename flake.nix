@@ -42,7 +42,7 @@
     # --- Sources
     kakoune.url = github:mawww/kakoune;
     kakoune.flake = false;
-    kak-lsp.url = github:natsukagami/kak-lsp/show-message-request;
+    kak-lsp.url = github:kak-lsp/kak-lsp;
     kak-lsp.flake = false;
     nixos-m1.url = github:tpwrules/nixos-apple-silicon;
     nixos-m1.inputs.nixpkgs.follows = "nixpkgs-unstable-asahi";

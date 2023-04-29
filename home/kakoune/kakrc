@@ -203,6 +203,10 @@ hook global BufCreate .*[.]md %{
   add-highlighter buffer/ wrap
 }
 
+hook global BufCreate .*[.]sc %{
+  set-option buffer filetype scala
+}
+
 hook global BufOpenFile .* %{
   modeline-parse
 }
