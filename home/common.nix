@@ -65,9 +65,6 @@
     # Databases
     postgresql
     mariadb
-
-    # Docker, because it's useful ...sometimes
-    docker
   ];
 
   home.sessionVariables = {

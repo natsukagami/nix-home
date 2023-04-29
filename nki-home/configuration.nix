@@ -39,6 +39,38 @@ with lib;
     };
   nki.services.edns.enable = true;
   nki.services.edns.ipv6 = true;
+  ## DTTH Wireguard
+  #
+  sops.secrets."dtth-wg/private-key" = { owner = "root"; group = "systemd-network"; mode = "0640"; };
+  sops.secrets."dtth-wg/preshared-key" = { owner = "root"; group = "systemd-network"; mode = "0640"; };
+  systemd.network.netdevs."10-dtth-wg" = {
+    netdevConfig = {
+      Kind = "wireguard";
+      Name = "dtth-wg";
+      MTUBytes = "1280";
+    };
+    wireguardConfig = {
+      PrivateKeyFile = config.sops.secrets."dtth-wg/private-key".path;
+    };
+    wireguardPeers = [{
+      wireguardPeerConfig = {
+        PublicKey = "+7iI4jwmM1Qr+/DKB1Hv8JgFkGu7lSV0PAoo+O5d3yQ=";
+        PresharedKeyFile = config.sops.secrets."dtth-wg/preshared-key".path;
+        AllowedIPs = [ "100.64.0.0/10" "fd00::/106" ];
+        Endpoint = "vpn.dtth.ch:51820";
+        PersistentKeepalive = 25;
+      };
+    }];
+  };
+  systemd.network.networks."dtth-wg" = {
+    matchConfig.Name = "dtth-wg";
+    address = [ "100.73.146.80/32" "fd00::33:105b/128" ];
+    DHCP = "no";
+    routes = [
+      { routeConfig = { Destination = "100.64.0.0/10"; Scope = "link"; }; }
+      { routeConfig.Destination = "fd00::/106"; }
+    ];
+  };
 
   # Define a user account. 
   common.linux.username = "nki";

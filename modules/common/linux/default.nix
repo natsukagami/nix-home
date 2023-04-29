@@ -32,10 +32,20 @@ let
       services.ratbagd.enable = true;
       environment.systemPackages = with pkgs; [ piper ];
     };
+
+    virtualisation = { pkgs, ... }: mkIf cfg.enable {
+      virtualisation.podman = {
+        enable = true;
+        dockerCompat = true;
+        defaultNetwork.settings.dns_enabled = true;
+      };
+
+      virtualisation.oci-containers.backend = "podman";
+    };
   };
 in
 {
-  imports = with modules; [ adb ios wlr logitech ];
+  imports = with modules; [ adb ios wlr logitech virtualisation ];
 
   options.common.linux = {
     enable = mkOption {
