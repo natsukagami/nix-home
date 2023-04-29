@@ -43,7 +43,7 @@
       top_y = builtins.ceil (((2160 / scale) - 1080) / 2);
     in
     {
-      "AOC U28G2G6B PPYM9JA001554" = {
+      "AOC U28G2G6B PPYP2JA000013" = {
         mode = "3840x2160@60Hz";
         scale = toString scale;
         adaptive_sync = "on";
