@@ -12,6 +12,8 @@
     ../modules/cloud/conduit
     ../modules/cloud/writefreely
     ../modules/cloud/gotosocial
+
+    ./headscale.nix
   ];
 
   common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.

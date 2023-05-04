@@ -172,6 +172,8 @@ in
     # Firewall: only open to SSH now
     networking.firewall.allowedTCPPorts = [ 22 ];
     networking.firewall.allowedUDPPorts = [ 22 ];
+    # Enable tailscale
+    services.tailscale.enable = true;
 
     ## Time and Region
     time.timeZone = "Europe/Zurich";
