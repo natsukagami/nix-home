@@ -11,6 +11,7 @@
     ../modules/cloud/mail
     ../modules/cloud/conduit
     ../modules/cloud/writefreely
+    ../modules/cloud/gotosocial
   ];
 
   common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.
@@ -221,6 +222,13 @@
   systemd.services.outline.environment.PGSSLMODE = "disable";
   cloud.postgresql.databases = [ "outline" ];
   cloud.traefik.hosts.outline = { host = "wiki.dtth.ch"; port = 18729; };
+
+  # GoToSocial
+  sops.secrets.gts-env = { };
+  cloud.gotosocial = {
+    enable = true;
+    envFile = config.sops.secrets.gts-env.path;
+  };
 
   # Minio
   sops.secrets.minio-credentials = { };

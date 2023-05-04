@@ -25,6 +25,10 @@ let
     libs.crane = inputs.crane.lib.${prev.system};
   };
 
+  overlay-packages = final: prev: {
+    gotosocial-bin = final.callPackage ./packages/x86_64-linux/gotosocial-bin.nix { };
+  };
+
   overlay-aarch64-linux = final: prev:
     let
       optionalOverride = pkg: alt:
@@ -59,6 +63,7 @@ in
   (import ./overlays/openrazer)
   overlay-unstable
   overlay-needs-unstable
+  overlay-packages
   overlay-imported
   overlay-versioning
   overlay-libs
