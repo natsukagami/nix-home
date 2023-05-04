@@ -32,7 +32,10 @@ in
 
     ensureDatabases = cfg.databases;
 
-    ensureUsers = map userFromDatabase cfg.databases;
+    ensureUsers = (map userFromDatabase cfg.databases) ++ [{
+      name = "root";
+      ensurePermissions = { "ALL TABLES IN SCHEMA public" = "ALL PRIVILEGES"; };
+    }];
   };
 
   # Backup settings
