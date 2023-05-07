@@ -42,6 +42,7 @@ in
       cinnamon.nemo # File manager
 
       zotero
+      libreoffice
 
       ## CLI stuff
       dex # .desktop file management, startup
@@ -69,6 +70,7 @@ in
 
     xdg.mimeApps.associations.added = {
       "x-scheme-handler/mailto" = [ "org.gnome.Evolution.desktop" ];
+      "application/pdf" = [ "org.gnome.Evince.desktop" ];
       "text/plain" = [ "kakoune.desktop" ];
     };
     xdg.mimeApps.defaultApplications = {
@@ -90,6 +92,7 @@ in
 
       # Text
       "text/plain" = [ "kakoune.desktop" ];
+      "application/pdf" = [ "org.gnome.Evince.desktop" ];
 
       # Files
       "inode/directory" = [ "nemo.desktop" ];
