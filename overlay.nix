@@ -17,7 +17,9 @@ let
     sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
   };
 
-  overlay-versioning = final: prev: { };
+  overlay-versioning = final: prev: {
+    ulauncher = prev.ulauncher.override { webkitgtk = final.webkitgtk_4_1; };
+  };
 
   overlay-libs = final: prev: {
     libs.crane = inputs.crane.lib.${prev.system};

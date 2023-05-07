@@ -206,7 +206,7 @@ in
       qt5.qtwayland
     ];
     # Add a reliable terminal
-    programs.gnome-terminal.enable = true;
+    # programs.gnome-terminal.enable = true;
     # KDEConnect is just based
     programs.kdeconnect.enable = true;
     # Flatpaks are useful... sometimes...

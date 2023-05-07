@@ -404,16 +404,16 @@
     "nixos-m1": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs-unstable-asahi"
+          "nixpkgs-unstable"
         ],
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1679451428,
-        "narHash": "sha256-Xk3WBlejWUpnuOnMZzTH7mV/bTRxKIrln871ba3uQjI=",
+        "lastModified": 1683434835,
+        "narHash": "sha256-idBmY6LKkB5hTcTFroUi1oQdCK1/fDfJA+qNaivl1Wk=",
         "owner": "tpwrules",
         "repo": "nixos-apple-silicon",
-        "rev": "696d7b4ac7ca05684a3cceedd44acfd0d1c5f1e3",
+        "rev": "ef6f0de57ef175e0de8c7e846a95481ac6f4ce58",
         "type": "github"
       },
       "original": {
@@ -456,31 +456,15 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1681753173,
-        "narHash": "sha256-MrGmzZWLUqh2VstoikKLFFIELXm/lsf/G9U9zR96VD4=",
+        "lastModified": 1683442750,
+        "narHash": "sha256-IiJ0WWW6OcCrVFl1ijE+gTaP0ChFfV6dNkJR05yStmw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "0a4206a51b386e5cda731e8ac78d76ad924c7125",
+        "rev": "eb751d65225ec53de9cf3d88acbf08d275882389",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-unstable-asahi": {
-      "locked": {
-        "lastModified": 1681740123,
-        "narHash": "sha256-RrcHEqm+f04nFpQQSnsGsUhJb2mNuqfdcGWL2DREEaY=",
-        "owner": "natsukagami",
-        "repo": "nixpkgs",
-        "rev": "55325c13e8f5c06a57a210b30a19b2fbebe185f1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "natsukagami",
         "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
@@ -616,7 +600,6 @@
         "nixos-m1": "nixos-m1",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "nixpkgs-unstable-asahi": "nixpkgs-unstable-asahi",
         "nur": "nur",
         "rnix-lsp": "rnix-lsp",
         "secrets": "secrets",
