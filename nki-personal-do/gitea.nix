@@ -165,7 +165,7 @@ in
     lfs.enable = true;
 
     # Backup
-    dump.enable = true;
+    # dump.enable = true;
   };
 
   # Set up gpg signing key
