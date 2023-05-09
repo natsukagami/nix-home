@@ -9,6 +9,7 @@ in
 rec {
   sops.secrets."headscale/client_secret" = { owner = "headscale"; };
   sops.secrets."headscale/webui-env" = { };
+  sops.secrets."headscale/derp-servers/vnm" = { owner = "headscale"; name = "headscale/derp-servers/vnm.yaml"; };
   # database
   cloud.postgresql.databases = [ "headscale" ];
   # traefik
@@ -46,6 +47,10 @@ rec {
       ip_prefixes = [
         "fd7a:115c:a1e0::/48"
         "100.64.0.0/10"
+      ];
+
+      derp.paths = [
+        secrets."headscale/derp-servers/vnm".path
       ];
 
       oidc = {
