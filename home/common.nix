@@ -58,6 +58,11 @@
     htop-vim
     ## Bitwarden
     rbw
+    ## File compression stuff
+    zip
+    unzip
+    zstd
+    atool
 
     ## To do tunneling with cloudflare
     pkgs.cloudflared
