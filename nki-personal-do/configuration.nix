@@ -15,6 +15,7 @@
 
     ./headscale.nix
     ./gitea.nix
+    ./nextcloud.nix
   ];
 
   common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.
@@ -182,7 +183,7 @@
 
 
   # Outline
-  sops.secrets.minio-secret-key = { };
+  sops.secrets.minio-secret-key = { owner = "root"; mode = "0444"; };
   sops.secrets.authentik-oidc-client-secret = { owner = "outline"; };
   sops.secrets."outline/smtp-password" = { owner = "outline"; };
   services.outline = {
@@ -242,6 +243,7 @@
     listenAddress = ":61929";
     consoleAddress = ":62929";
     rootCredentialsFile = config.sops.secrets.minio-credentials.path;
+    dataDir = lib.mkForce [ "/mnt/minio/minio" ];
   };
   cloud.traefik.hosts.minio = { host = "s3.dtth.ch"; port = 61929; };
   system.stateVersion = "21.11";
