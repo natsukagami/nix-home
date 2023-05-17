@@ -43,7 +43,7 @@ jobs:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
         mkdir -p /home/runner/.ssh
-        echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
+        echo "${{ secrets.NIX_SECRETS_SSH_KEY }}" > /home/runner/.ssh/nix_secrets_key
         echo "${{ secrets.NIX_DEPLOY_SSH_KEY }}" > /home/runner/.ssh/nix_deploy_key
         chmod 600 /home/runner/.ssh/*
         ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
@@ -60,4 +60,4 @@ jobs:
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
-        nix run -L github:Serokell/deploy-rs . -- --hostname ${{ secrets.INSTANCE_IP }} -s -- -L
+        nix shell nixpkgs#deploy-rs -c deploy . --hostname ${{ secrets.INSTANCE_IP }} -s -- -L
