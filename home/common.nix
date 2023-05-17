@@ -50,6 +50,7 @@
     ripgrep
     fossil
     openssh
+    tea # gitea CLI (gh-like)
     ## File Manager
     nnn
     ## PDF Processors
