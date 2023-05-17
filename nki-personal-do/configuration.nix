@@ -40,6 +40,7 @@
 
   environment.systemPackages = with pkgs; [
     git
+    htop-vim
 
     docker-compose
   ];
