@@ -158,6 +158,7 @@
 
   # Writefreely
   cloud.writefreely.enable = true;
+  cloud.writefreely.package = pkgs.unstable.writefreely;
 
   # Authentik
   sops.secrets.authentik-env = { };
