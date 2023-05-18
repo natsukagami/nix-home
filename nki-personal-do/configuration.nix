@@ -16,6 +16,7 @@
     ./headscale.nix
     ./gitea.nix
     ./miniflux.nix
+    ./writefreely.nix
   ];
 
   common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.
@@ -156,9 +157,9 @@
     envFile = config.sops.secrets.youmubot-env.path;
   };
 
-  # Writefreely
-  cloud.writefreely.enable = true;
-  cloud.writefreely.package = pkgs.unstable.writefreely;
+  # Writefreely on nki
+  # cloud.writefreely.enable = true;
+  # cloud.writefreely.package = pkgs.unstable.writefreely;
 
   # Authentik
   sops.secrets.authentik-env = { };
