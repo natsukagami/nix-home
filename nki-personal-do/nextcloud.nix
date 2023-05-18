@@ -22,7 +22,7 @@ in
     package = pkgs.nextcloud26;
     enableBrokenCiphersForSSE = false;
 
-    home = "/mnt/minio/nextcloud";
+    home = "/mnt/data/nextcloud";
     https = true;
     database.createLocally = false;
 

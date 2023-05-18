@@ -8,9 +8,9 @@
   # swap
   swapDevices = [{ device = "/var/swapfile"; size = 2 * 1024; }];
   # volumes
-  fileSystems."/mnt/minio" = {
+  fileSystems.data = {
     device = "/dev/disk/by-id/scsi-0HC_Volume_31812942";
     fsType = "ext4";
-
+    mountPoint = "/mnt/data";
   };
 }

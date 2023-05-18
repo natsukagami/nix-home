@@ -244,7 +244,7 @@
     listenAddress = ":61929";
     consoleAddress = ":62929";
     rootCredentialsFile = config.sops.secrets.minio-credentials.path;
-    dataDir = lib.mkForce [ "/mnt/minio/minio" ];
+    dataDir = lib.mkForce [ "/mnt/data/minio" ];
   };
   cloud.traefik.hosts.minio = { host = "s3.dtth.ch"; port = 61929; };
   system.stateVersion = "21.11";
