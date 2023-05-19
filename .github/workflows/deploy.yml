@@ -47,6 +47,7 @@ jobs:
           -H "X-Tags: cloud" \
           -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}" \
           -d "Commit info:" \
+          -d @- \
           https://ntfy.nkagami.me/nki-personal-do
     - name: Add SSH key
       env:
@@ -80,6 +81,7 @@ jobs:
           -H "X-Tags: tada,cloud" \
           -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}" \
           -d "Commit info:" \
+          -d @- \
           https://ntfy.nkagami.me/nki-personal-do
     - name: Notify deployment failing
       if: ${{ failure() }}
@@ -92,5 +94,6 @@ jobs:
           -H "X-Tags: warning,cloud" \
           -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}" \
           -d "Commit info:" \
+          -d @- \
           https://ntfy.nkagami.me/nki-personal-do
 
