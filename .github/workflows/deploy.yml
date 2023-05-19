@@ -44,8 +44,9 @@ jobs:
           --fail-with-body \
           -u "${{ secrets.NTFY_CREDS }}" \
           -H "X-Title: Deployment to nki-personal-do started" \
+          -H "X-Priority: 1" \
           -H "X-Tags: cloud" \
-          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}" \
+          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
           -d "Commit info:
               " \
           -d @- \
@@ -80,7 +81,7 @@ jobs:
           -u "${{ secrets.NTFY_CREDS }}" \
           -H "X-Title: Deployment to nki-personal-do succeeded" \
           -H "X-Tags: tada,cloud" \
-          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}" \
+          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
           -d "Commit info:
              " \
           -d @- \
@@ -94,7 +95,7 @@ jobs:
           -H "X-Title: Deployment to nki-personal-do failed" \
           -H "X-Priority: 4" \
           -H "X-Tags: warning,cloud" \
-          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}" \
+          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
           -d "Commit info:
              " \
           -d @- \
