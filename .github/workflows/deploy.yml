@@ -41,6 +41,7 @@ jobs:
     - name: Notify deployment starting
       run: |
         git show | curl \
+          --fail-with-body \
           -u "${{ secrets.NTFY_CREDS }}" \
           -H "X-Title: Deployment to nki-personal-do started" \
           -H "X-Tags: cloud" \
@@ -73,6 +74,7 @@ jobs:
     - name: Notify deployment succeeding
       run: |
         git show | curl \
+          --fail-with-body \
           -u "${{ secrets.NTFY_CREDS }}" \
           -H "X-Title: Deployment to nki-personal-do succeeded" \
           -H "X-Tags: tada,cloud" \
@@ -83,6 +85,7 @@ jobs:
       if: ${{ failure() }}
       run: |
         git show | curl \
+          --fail-with-body \
           -u "${{ secrets.NTFY_CREDS }}" \
           -H "X-Title: Deployment to nki-personal-do failed" \
           -H "X-Priority: 4" \
