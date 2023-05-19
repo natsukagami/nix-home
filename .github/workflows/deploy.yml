@@ -38,6 +38,15 @@ jobs:
     name: Deploy
     steps:
     - uses: actions/checkout@v2.3.4
+    - name: Notify deployment starting
+      run: |
+        git show | curl \
+          -u "${{ secrets.NTFY_CREDS }}" \
+          -H "X-Title: Deployment to nki-personal-do started" \
+          -H "X-Tags: cloud" \
+          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}" \
+          -d "Commit info:" \
+          https://ntfy.nkagami.me/nki-personal-do
     - name: Add SSH key
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
@@ -61,3 +70,24 @@ jobs:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
         nix run github:serokell/deploy-rs -- . --hostname ${{ secrets.INSTANCE_IP }} -s -- -L
+    - name: Notify deployment succeeding
+      run: |
+        git show | curl \
+          -u "${{ secrets.NTFY_CREDS }}" \
+          -H "X-Title: Deployment to nki-personal-do succeeded" \
+          -H "X-Tags: tada,cloud" \
+          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}" \
+          -d "Commit info:" \
+          https://ntfy.nkagami.me/nki-personal-do
+    - name: Notify deployment failing
+      if: ${{ failure() }}
+      run: |
+        git show | curl \
+          -u "${{ secrets.NTFY_CREDS }}" \
+          -H "X-Title: Deployment to nki-personal-do failed" \
+          -H "X-Priority: 4" \
+          -H "X-Tags: warning,cloud" \
+          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}" \
+          -d "Commit info:" \
+          https://ntfy.nkagami.me/nki-personal-do
+
