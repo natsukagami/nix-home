@@ -80,6 +80,7 @@ in
   # traefik
   cloud.traefik.hosts.gitea = {
     inherit port host;
+    noCloudflare = true;
   };
 
   services.gitea = {

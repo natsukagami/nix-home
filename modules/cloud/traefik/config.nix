@@ -4,6 +4,10 @@ with lib;
 let
   cfg = config.cloud.traefik;
 
+  tlsNoCloudflare = {
+    options = "no-cloudflare";
+  };
+
   # Copied from traefik.nix
   jsonValue = with types;
     let
@@ -67,6 +71,11 @@ let
         default = true;
         description = "Sets the TCP passthrough value. Defaults to `true` if the connection is tcp";
       };
+      noCloudflare = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Bypasses the client cert requirement, enable if you don't route things through cloudflare";
+      };
     };
   };
 
@@ -84,7 +93,9 @@ let
     "${host.protocol}" = {
       routers."${name}-router" = (if (host.protocol != "udp") then {
         rule = filterOfHost host;
-        tls = { certResolver = "le"; } // (if host.protocol == "tcp" then { passthrough = if (host ? tlsPassthrough) then host.tlsPassthrough else true; } else { });
+        tls = { certResolver = "le"; }
+          // (if host.protocol == "tcp" then { passthrough = if (host ? tlsPassthrough) then host.tlsPassthrough else true; } else { })
+          // (if host.noCloudflare then tlsNoCloudflare else { });
       } else { }) // {
         entryPoints = host.entrypoints;
         service = "${name}-service";
@@ -119,6 +130,33 @@ let
         host.middlewares);
     } else { });
   };
+
+  tlsConfig = {
+    tls.options.default = {
+      sniStrict = true;
+      clientAuth = {
+        caFiles = [
+          (builtins.fetchurl {
+            url = "https://developers.cloudflare.com/ssl/static/authenticated_origin_pull_ca.pem";
+            sha256 = "sha256:0hxqszqfzsbmgksfm6k0gp0hsx9k1gqx24gakxqv0391wl6fsky1";
+          })
+        ];
+        clientAuthType = "RequireAndVerifyClientCert";
+      };
+    };
+    tls.options.no-cloudflare = {
+      sniStrict = true;
+      clientAuth = {
+        caFiles = [
+          (builtins.fetchurl {
+            url = "https://developers.cloudflare.com/ssl/static/authenticated_origin_pull_ca.pem";
+            sha256 = "sha256:0hxqszqfzsbmgksfm6k0gp0hsx9k1gqx24gakxqv0391wl6fsky1";
+          })
+        ];
+        clientAuthType = "VerifyClientCertIfGiven";
+      };
+    };
+  };
 in
 {
 
@@ -128,5 +166,8 @@ in
     description = "The HTTP hosts to run on the server";
   };
 
-  config.cloud.traefik.config = builtins.foldl' attrsets.recursiveUpdate { } (attrsets.mapAttrsToList hostToConfig cfg.hosts);
+  config.cloud.traefik.config = builtins.foldl' attrsets.recursiveUpdate { } [
+    (builtins.foldl' attrsets.recursiveUpdate { } (attrsets.mapAttrsToList hostToConfig cfg.hosts))
+    tlsConfig
+  ];
 }

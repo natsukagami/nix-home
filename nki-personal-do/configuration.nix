@@ -175,6 +175,7 @@
     host = "vpn.dtth.ch";
     port = config.cloud.firezone.httpPort;
     localHost = "127.0.0.1";
+    noCloudflare = true;
   };
   cloud.traefik.hosts.firezone-vpn = {
     host = "vpn.dtth.ch";
