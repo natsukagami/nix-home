@@ -85,7 +85,7 @@ in
   config.systemd.services.traefik.environment.CF_DNS_API_TOKEN_FILE = cfg.cloudflareKeyFile;
 
   # Set up firewall to allow traefik traffic.
-  config.networking.firewall.allowedTCPPorts = [ 80 443 993 587 465 ];
+  config.networking.firewall.allowedTCPPorts = [ 443 993 587 465 ];
   config.networking.firewall.allowedUDPPorts = [
     443 # QUIC
     51820 # Wireguard
