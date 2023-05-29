@@ -123,7 +123,7 @@
           line-numbers = true;
         };
       };
-      signing.key = null;
+      signing.key = "0x55A032EB38B49ADB";
       signing.signByDefault = true;
       userEmail = "nki@nkagami.me";
       userName = "Natsu Kagami";
