@@ -76,7 +76,7 @@ rec {
         SCRIPT_NAME = "/admin";
       };
       env_file = [ secrets."headscale/webui-env".path ];
-      ports = [ "${toString webuiPort}:5000" ];
+      ports = [ "127.0.0.1:${toString webuiPort}:5000" ];
       volumes = [
         "/var/lib/headscale/webui:/data"
         "/etc/headscale:/etc/headscale:ro"

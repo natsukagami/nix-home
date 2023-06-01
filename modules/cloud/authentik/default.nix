@@ -96,7 +96,7 @@ in
         };
         env_file = [ cfg.envFile "${authentikEnv}" ];
         ports = [
-          "${toString cfg.port}:9000"
+          "127.0.0.1:${toString cfg.port}:9000"
         ];
       };
       services.worker.service = {
