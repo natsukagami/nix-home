@@ -2,12 +2,12 @@
   description = "nki's systems";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-22.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     # nixpkgs-unstable.follows = "nixos-m1/nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    home-manager.url = "github:natsukagami/home-manager/release-22.11";
+    home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -26,7 +26,6 @@
     # Imported apps
     rnix-lsp.url = "github:nix-community/rnix-lsp";
     youmubot.url = "github:natsukagami/youmubot";
-    youmubot.inputs.nixpkgs.follows = "nixpkgs";
     nix-gaming.url = github:fufexan/nix-gaming;
     nix-gaming.inputs.nixpkgs.follows = "nixpkgs-unstable";
     swayfx = {
@@ -137,10 +136,10 @@
       };
 
       # Home configuration
-      nixosConfigurations."nki-home" = nixpkgs-unstable.lib.nixosSystem rec {
+      nixosConfigurations."nki-home" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
-          (common-nixos nixpkgs-unstable)
+          (common-nixos nixpkgs)
           ./nki-home/configuration.nix
           enableOsuStable
           inputs.home-manager-unstable.nixosModules.home-manager

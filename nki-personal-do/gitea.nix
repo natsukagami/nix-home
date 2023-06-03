@@ -89,14 +89,15 @@ in
 
     inherit user;
 
-    domain = host;
-    rootUrl = "https://${host}/";
-    httpAddress = "127.0.0.1";
-    httpPort = port;
-
     appName = "DTTHgit";
 
     settings = {
+      server = {
+        DOMAIN = host;
+        ROOT_URL = "https://${host}/";
+        HTTP_ADDRESS = "127.0.0.1";
+        HTTP_PORT = port;
+      };
       repository = {
         DEFAULT_PRIVATE = "private";
         PREFERRED_LICENSES = strings.concatStringsSep "," [ "AGPL-3.0-or-later" "GPL-3.0-or-later" "Apache-2.0" ];

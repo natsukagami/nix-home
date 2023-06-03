@@ -22,6 +22,9 @@ jobs:
         extra_nix_config: |
           # Enable flakes
           experimental-features = nix-command flakes
+          # Import my substituters
+          extra-substituters = "https://natsukagami.cachix.org"
+          trusted-public-keys = "natsukagami.cachix.org-1:3U6GV8i8gWEaXRUuXd2S4ASfYgdl2QFPWg4BKPbmYiQ="
     - name: Run format check
       run: |
         nix fmt

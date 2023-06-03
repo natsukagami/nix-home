@@ -92,7 +92,7 @@ in
     # Add an extra syntax_color config
     xdg.configFile."broot/conf.toml".source = mkOverride 1 (
       tomlFormat.generate "broot-config" (with config.programs.broot; {
-        inherit verbs modal skin;
+        inherit (settings) verbs modal skin;
         syntax_theme = "base16-ocean.light";
       })
     );

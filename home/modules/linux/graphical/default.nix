@@ -52,7 +52,6 @@ in
       mailspring
       # Chat stuff
       unstable.slack
-      cinny-desktop
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
