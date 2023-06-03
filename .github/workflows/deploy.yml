@@ -71,7 +71,7 @@ jobs:
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
           # Import my substituters
           extra-substituters = "https://natsukagami.cachix.org"
-          trusted-public-keys = "natsukagami.cachix.org-1:3U6GV8i8gWEaXRUuXd2S4ASfYgdl2QFPWg4BKPbmYiQ="
+          extra-trusted-public-keys = "natsukagami.cachix.org-1:3U6GV8i8gWEaXRUuXd2S4ASfYgdl2QFPWg4BKPbmYiQ="
     - name: Deploy with deploy-rs
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
