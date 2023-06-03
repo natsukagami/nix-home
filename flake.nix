@@ -120,6 +120,9 @@
     {
       overlays.default = lib.composeManyExtensions overlays;
 
+      packages.x86_64-linux.deploy-rs = deploy-rs.packages.x86_64-linux.default;
+      apps.x86_64-linux.deploy-rs = deploy-rs.apps.x86_64-linux.default;
+
       # MacBook configuration: nix-darwin + home-manager
       darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem rec {
         system = "aarch64-darwin";

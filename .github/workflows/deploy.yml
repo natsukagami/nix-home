@@ -22,9 +22,6 @@ jobs:
         extra_nix_config: |
           # Enable flakes
           experimental-features = nix-command flakes
-          # Import my substituters
-          extra-substituters = "https://natsukagami.cachix.org"
-          trusted-public-keys = "natsukagami.cachix.org-1:3U6GV8i8gWEaXRUuXd2S4ASfYgdl2QFPWg4BKPbmYiQ="
     - name: Run format check
       run: |
         nix fmt
@@ -72,11 +69,14 @@ jobs:
           experimental-features = nix-command flakes
           # Deploy tokens
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+          # Import my substituters
+          extra-substituters = "https://natsukagami.cachix.org"
+          trusted-public-keys = "natsukagami.cachix.org-1:3U6GV8i8gWEaXRUuXd2S4ASfYgdl2QFPWg4BKPbmYiQ="
     - name: Deploy with deploy-rs
       env:
         SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       run: |
-        nix run github:serokell/deploy-rs -- . --hostname ${{ secrets.INSTANCE_IP }} -s -- -L
+        nix run .#deploy-rs -- . --hostname ${{ secrets.INSTANCE_IP }} -s -- -L
     - name: Notify deployment succeeding
       run: |
         git show --no-patch | curl \
