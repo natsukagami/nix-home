@@ -31,7 +31,6 @@ in
 
     home.packages = (with pkgs; [
       ## GUI stuff
-      gnome.cheese # Webcam check
       evince # PDF reader
       gparted
       vscode
@@ -49,12 +48,24 @@ in
       # sct # Display color temperature
       xdg-utils # Open stuff
     ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
+      gnome.cheese # Webcam check, expensive
       mailspring
       # Chat stuff
       unstable.slack
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
+
+    # Email
+    programs.thunderbird = {
+      enable = true;
+      profiles.default = {
+        isDefault = true;
+      };
+      settings = {
+        "privacy.donottrackheader.enabled" = true;
+      };
+    };
 
     # Cursor
     home.pointerCursor = {

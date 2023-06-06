@@ -145,7 +145,6 @@ in
         # Startup programs
         { command = "${cfg.browser}"; }
         { command = "thunderbird"; } # Rely on system package with plugins
-        { command = "env PYTHONPATH=$(python -m site --user-site) ${pkgs.ulauncher}/bin/ulauncher --hide-window --no-window-shadow"; }
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
       ] ++ lib.lists.optional
@@ -203,7 +202,7 @@ in
         "${mod}+Shift+e" =
           "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
         # Launcher
-        "${mod}+space" = "exec ${pkgs.ulauncher}/bin/ulauncher-toggle";
+        "${mod}+space" = "exec rofi -show drun";
       } // {
         ## Splits
         "${mod}+v" = "split v";
@@ -691,8 +690,15 @@ in
     qt5.qtwayland
     # For waybar
     font-awesome
-    # For launcher
-    ulauncher
   ]);
+  config.programs.rofi = mkIf cfg.enable {
+    enable = true;
+    package = pkgs.rofi-wayland;
+    cycle = true;
+    font = "monospace ${toString cfg.fontSize}";
+    terminal = cfg.terminal;
+    theme = "Paper";
+    plugins = with pkgs; [ rofi-bluetooth rofi-calc rofi-rbw rofi-power-menu ];
+  };
 }
 

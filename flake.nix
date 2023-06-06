@@ -4,13 +4,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    # nixpkgs-unstable.follows = "nixos-m1/nixpkgs";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager-unstable.url = "github:nix-community/home-manager";
-    home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
@@ -27,14 +24,14 @@
     rnix-lsp.url = "github:nix-community/rnix-lsp";
     youmubot.url = "github:natsukagami/youmubot";
     nix-gaming.url = github:fufexan/nix-gaming;
-    nix-gaming.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nix-gaming.inputs.nixpkgs.follows = "nixpkgs";
     swayfx = {
       url = github:WillPower3309/swayfx;
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     mpd-mpris = {
       url = github:natsukagami/mpd-mpris/nix;
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # --- Sources
@@ -42,8 +39,8 @@
     kakoune.flake = false;
     kak-lsp.url = github:kak-lsp/kak-lsp;
     kak-lsp.flake = false;
-    nixos-m1.url = github:tpwrules/nixos-apple-silicon;
-    nixos-m1.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nixos-m1.url = github:natsukagami/nixos-m1/update-versions;
+    nixos-m1.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---
     # DEPLOYMENT ONLY! secrets
@@ -129,7 +126,7 @@
         modules = [
           (common-nix nixpkgs-unstable)
           ./darwin/configuration.nix
-          inputs.home-manager-unstable.darwinModules.home-manager
+          inputs.home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -145,7 +142,7 @@
           (common-nixos nixpkgs)
           ./nki-home/configuration.nix
           enableOsuStable
-          inputs.home-manager-unstable.nixosModules.home-manager
+          inputs.home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -173,13 +170,13 @@
       #   ];
       # };
       # macbook nixos
-      nixosConfigurations."kagami-air-m1" = inputs.nixpkgs-unstable.lib.nixosSystem rec {
+      nixosConfigurations."kagami-air-m1" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "aarch64-linux";
         modules = [
-          (common-nixos inputs.nixpkgs-unstable)
+          (common-nixos inputs.nixpkgs)
           inputs.nixos-m1.nixosModules.apple-silicon-support
           ./kagami-air-m1/configuration.nix
-          inputs.home-manager-unstable.nixosModules.home-manager
+          inputs.home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

@@ -220,16 +220,6 @@ in
     hardware.opengl.enable = true;
     hardware.opengl.driSupport = true;
     hardware.opengl.driSupport32Bit = !pkgs.stdenv.isAarch64; # For 32 bit applications
-    # Email
-    programs.thunderbird = {
-      enable = true;
-      profiles.default = {
-        isDefault = true;
-      };
-      settings = {
-        "privacy.donottrackheader.enabled" = true;
-      };
-    };
 
     ## Services
     # gnome-keyring for storing keys
