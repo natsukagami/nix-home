@@ -221,11 +221,15 @@ in
     hardware.opengl.driSupport = true;
     hardware.opengl.driSupport32Bit = !pkgs.stdenv.isAarch64; # For 32 bit applications
     # Email
-    programs.evolution = {
+    programs.thunderbird = {
       enable = true;
-      plugins = with pkgs; [ evolution-ews ]; # For @epfl.ch and @uwaterloo.ca emails
+      profiles.default = {
+        isDefault = true;
+      };
+      settings = {
+        "privacy.donottrackheader.enabled" = true;
+      };
     };
-
 
     ## Services
     # gnome-keyring for storing keys

@@ -144,7 +144,7 @@ in
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
         { command = "${cfg.browser}"; }
-        { command = "evolution"; } # Rely on system package with plugins
+        { command = "thunderbird"; } # Rely on system package with plugins
         { command = "env PYTHONPATH=$(python -m site --user-site) ${pkgs.ulauncher}/bin/ulauncher --hide-window --no-window-shadow"; }
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
@@ -277,7 +277,7 @@ in
           { class = "^((d|D)iscord|((A|a)rm(c|C)ord))$"; }
         ];
         "📧 Email" = [
-          { app_id = "evolution"; }
+          { app_id = "thunderbird"; }
         ];
       };
       # Commands
