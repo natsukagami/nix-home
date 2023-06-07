@@ -359,26 +359,6 @@
         "type": "github"
       }
     },
-    "nix-gaming": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1681779687,
-        "narHash": "sha256-pTv3fJHb4BAqGZRu6xQU/wwL6CilmHvCUK8qaTOpEgY=",
-        "owner": "fufexan",
-        "repo": "nix-gaming",
-        "rev": "299ee41e7bec178507e1623f9b55036ef457379a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "fufexan",
-        "repo": "nix-gaming",
-        "type": "github"
-      }
-    },
     "nixos-m1": {
       "inputs": {
         "nixpkgs": [
@@ -559,7 +539,6 @@
         "kak-lsp": "kak-lsp",
         "kakoune": "kakoune",
         "mpd-mpris": "mpd-mpris",
-        "nix-gaming": "nix-gaming",
         "nixos-m1": "nixos-m1",
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable",

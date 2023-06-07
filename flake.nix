@@ -23,8 +23,6 @@
     # Imported apps
     rnix-lsp.url = "github:nix-community/rnix-lsp";
     youmubot.url = "github:natsukagami/youmubot";
-    nix-gaming.url = github:fufexan/nix-gaming;
-    nix-gaming.inputs.nixpkgs.follows = "nixpkgs";
     swayfx = {
       url = github:WillPower3309/swayfx;
       inputs.nixpkgs.follows = "nixpkgs";
@@ -94,25 +92,6 @@
         ];
       };
 
-      enableOsuStable = { lib, ... }: {
-        imports = [ inputs.nix-gaming.nixosModules.pipewireLowLatency ];
-
-        services.pipewire = {
-          enable = true;
-          # alsa is optional
-          alsa.enable = true;
-          alsa.support32Bit = true;
-          # needed for osu
-          pulse.enable = true;
-          lowLatency.enable = true;
-        };
-        hardware.pulseaudio.enable = lib.mkOverride 0 false;
-
-        nix.settings.substituters = [ "https://nix-gaming.cachix.org" ];
-        nix.settings.trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
-
-        environment.systemPackages = [ inputs.nix-gaming.packages.x86_64-linux.osu-stable ];
-      };
     in
     {
       overlays.default = lib.composeManyExtensions overlays;
@@ -141,7 +120,6 @@
         modules = [
           (common-nixos nixpkgs)
           ./nki-home/configuration.nix
-          enableOsuStable
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
