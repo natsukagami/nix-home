@@ -17,7 +17,19 @@ let
     sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
   };
 
-  overlay-versioning = final: prev: { };
+  overlay-versioning = final: prev: {
+    input-remapper =
+      prev.input-remapper.overrideAttrs (oldAttrs: rec {
+        version = "2.0.0";
+        name = "input-remapper-${version}";
+        src = final.fetchFromGitHub {
+          owner = "sezanzeb";
+          repo = "input-remapper";
+          rev = "${version}";
+          sha256 = "sha256-yQRUhezzI/rz7A+s5O7NGP8DjPzzXA80gIAhhV7mc3w=";
+        };
+      });
+  };
 
   overlay-libs = final: prev: {
     libs.crane = inputs.crane.lib.${prev.system};

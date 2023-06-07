@@ -114,6 +114,8 @@ in
     ${builtins.readFile "${pkgs.pantheon.pantheon-agent-polkit}/etc/xdg/autostart/io.elementary.desktop.agent-polkit.desktop"}
     OnlyShowIn=sway;
   '';
+  xdg.configFile."autostart/input-remapper-autoload.desktop".source =
+    "${pkgs.input-remapper}/share/applications/input-remapper-autoload.desktop";
 
   # Multiple screen setup
   # services.kanshi = {

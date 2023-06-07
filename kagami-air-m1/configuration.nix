@@ -43,7 +43,7 @@
   services.xserver.libinput.enable = true;
   # Keyboard
   services.input-remapper.enable = true;
-  services.input-remapper.serviceWantedBy = [ "graphical-session.target" ];
+  services.input-remapper.serviceWantedBy = [ "multi-user.target" ];
   hardware.uinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
