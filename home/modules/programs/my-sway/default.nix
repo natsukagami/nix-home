@@ -203,6 +203,7 @@ in
           "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
         # Launcher
         "${mod}+space" = "exec rofi -show drun";
+        "${mod}+tab" = "exec ${./rofi-window.py}";
       } // {
         ## Splits
         "${mod}+v" = "split v";
@@ -325,6 +326,11 @@ in
       (if cfg.enableLaptopBars then ''
         # Lock screen on lid close
         bindswitch lid:off exec ${cfg.lockCmd}
+
+        # Gesture bindings
+        bindgesture swipe:3:right workspace prev
+        bindgesture swipe:3:left workspace next
+        bindgesture swipe:3:up exec ${./rofi-window.py}
       '' else "") + ''
         ## swayfx stuff
         # Rounded corners

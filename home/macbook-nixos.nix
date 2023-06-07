@@ -1,7 +1,17 @@
 { pkgs, config, lib, ... }:
 
 let
-  discord = pkgs.armcord;
+  discord = pkgs.armcord.overrideAttrs (attrs: {
+    postInstall = ''
+      # Wrap the startup command
+      makeWrapper $out/opt/ArmCord/armcord $out/bin/armcord \
+        "''${gappsWrapperArgs[@]}" \
+        --prefix XDG_DATA_DIRS : "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}/" \
+        --add-flags "--ozone-platform=wayland --enable-features=UseOzonePlatform --enable-features=WebRTCPipeWireCapturer" \
+        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath attrs.buildInputs}" \
+        --suffix PATH : ${lib.makeBinPath [ pkgs.xdg-utils ]}
+    '';
+  });
 in
 {
   imports = [
