@@ -126,7 +126,6 @@
             home-manager.useUserPackages = true;
             home-manager.users.nki = { ... }: {
               imports = [
-                # inputs.mpd-mpris.homeManagerModules.default
                 ./home/kagami-pc-home.nix
               ];
             };

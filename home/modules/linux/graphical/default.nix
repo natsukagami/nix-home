@@ -39,6 +39,7 @@ in
       pavucontrol # PulseAudio control panel
       firefox
       cinnamon.nemo # File manager
+      thunderbird # Email
 
       zotero
       libreoffice
@@ -56,16 +57,6 @@ in
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
 
-    # Email
-    programs.thunderbird = {
-      enable = true;
-      profiles.default = {
-        isDefault = true;
-      };
-      settings = {
-        "privacy.donottrackheader.enabled" = true;
-      };
-    };
 
     # Cursor
     home.pointerCursor = {
