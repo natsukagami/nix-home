@@ -10,7 +10,7 @@ in
 
     basePackage = mkOption {
       type = types.package;
-      default = pkgs.unstable.discord;
+      default = pkgs.discord;
       description = "The base Discord package that will get patched";
     };
 

@@ -24,7 +24,6 @@ in
   nki.services.writefreely = {
     inherit host user;
     enable = true;
-    package = pkgs.unstable.writefreely;
 
     group = user;
 

@@ -62,7 +62,6 @@
       };
     };
   nki.programs.kitty.enable = true;
-  nki.programs.kitty.package = pkgs.unstable.kitty; # 0.27 fixes crash on sway 1.8
   nki.programs.kitty.fontSize = 14;
 
   # Yellow light!
@@ -80,7 +79,6 @@
   # mpd stuff
   services.mpd.musicDirectory = "${config.home.homeDirectory}/Music";
   services.mpd-discord-rpc.enable = true;
-  services.mpd-discord-rpc.package = pkgs.unstable.mpd-discord-rpc;
   services.mpd-mpris.enable = true;
   # ncmpcpp
   programs.ncmpcpp.enable = true;

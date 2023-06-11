@@ -44,10 +44,7 @@ with lib; {
     services.mpris-proxy.enable = true;
 
     # Owncloud
-    services.owncloud-client = {
-      enable = true;
-      package = pkgs.unstable.owncloud-client;
-    };
+    services.owncloud-client.enable = true;
   });
 }
 

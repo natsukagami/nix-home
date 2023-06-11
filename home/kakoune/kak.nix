@@ -3,7 +3,7 @@
 let
   kakounePkg =
     pkgs.kakoune.override {
-      kakoune = with lib; pkgs.unstable.gcc11Stdenv.mkDerivation rec {
+      kakoune = with lib; pkgs.stdenv.mkDerivation rec {
         pname = "kakoune-unwrapped";
         version = "r${builtins.substring 0 6 pkgs.sources.kakoune.rev}";
         src = pkgs.sources.kakoune;

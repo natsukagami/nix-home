@@ -94,7 +94,6 @@
   sops.secrets.heisenbridge = { owner = "heisenbridge"; };
   sops.secrets.matrix-discord-bridge = { mode = "0644"; };
   cloud.conduit.enable = true;
-  cloud.conduit.package = pkgs.unstable.matrix-conduit;
   cloud.conduit.instances = {
     "nkagami" = {
       host = "m.nkagami.me";
@@ -157,10 +156,6 @@
     enable = true;
     envFile = config.sops.secrets.youmubot-env.path;
   };
-
-  # Writefreely on nki
-  # cloud.writefreely.enable = true;
-  # cloud.writefreely.package = pkgs.unstable.writefreely;
 
   # Authentik
   sops.secrets.authentik-env = { };

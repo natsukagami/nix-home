@@ -85,7 +85,6 @@ in
 
   services.gitea = {
     enable = true;
-    package = pkgs.unstable.gitea;
 
     inherit user;
 

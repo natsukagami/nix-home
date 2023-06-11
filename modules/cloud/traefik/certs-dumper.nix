@@ -9,7 +9,6 @@ in
     enable = mkEnableOption "Dump certs onto a given directory ";
     package = mkOption {
       type = types.package;
-      default = pkgs.unstable.traefik-certs-dumper;
       description = "The certs dumper package to use";
     };
     destination = mkOption {

@@ -25,7 +25,6 @@ rec {
 
   services.headscale = {
     enable = true;
-    package = pkgs.unstable.headscale;
     inherit port;
 
     settings = {
