@@ -19,6 +19,7 @@
     zip
     # TeX
     texlive.combined.scheme-full
+    inkscape # for TeX svg
 
     # Java & sbt
     openjdk11
