@@ -12,6 +12,7 @@
     ../modules/cloud/conduit
     ../modules/cloud/writefreely
     ../modules/cloud/gotosocial
+    ../modules/cloud/outline.nix
 
     ./headscale.nix
     ./gitea.nix
@@ -185,9 +186,8 @@
   sops.secrets.minio-secret-key = { owner = "root"; mode = "0444"; };
   sops.secrets.authentik-oidc-client-secret = { owner = "outline"; };
   sops.secrets."outline/smtp-password" = { owner = "outline"; };
-  services.outline = {
+  cloud.services.outline = {
     enable = true;
-    package = pkgs.unstable.outline;
     databaseUrl = "postgres://outline:outline@localhost/outline?sslmode=disable";
     sequelizeArguments = "--env=production-ssl-disabled";
     redisUrl = "local";
@@ -224,7 +224,6 @@
 
     forceHttps = false;
   };
-  systemd.services.outline.environment.PGSSLMODE = "disable";
   cloud.postgresql.databases = [ "outline" ];
   cloud.traefik.hosts.outline = { host = "wiki.dtth.ch"; port = 18729; };
 
