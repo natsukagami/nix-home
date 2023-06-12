@@ -1,0 +1,55 @@
+From a6dd030b929f22afa02c9bae86be6997ceda69d7 Mon Sep 17 00:00:00 2001
+From: Natsu Kagami <nki@nkagami.me>
+Date: Tue, 13 Jun 2023 01:30:15 +0200
+Subject: [PATCH] Changes for dtth-wiki
+
+---
+ server/env.ts        | 2 +-
+ server/routes/app.ts | 2 +-
+ vite.config.ts       | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/server/env.ts b/server/env.ts
+index d218dbc1f..24c0505e3 100644
+--- a/server/env.ts
++++ b/server/env.ts
+@@ -581,7 +581,7 @@ export class Environment {
+   /**
+    * The product name
+    */
+-  public APP_NAME = "Outline";
++  public APP_NAME = "DTTH Wiki";
+ 
+   /**
+    * Returns true if the current installation is the cloud hosted version at
+diff --git a/server/routes/app.ts b/server/routes/app.ts
+index 532fc2309..9acf87817 100644
+--- a/server/routes/app.ts
++++ b/server/routes/app.ts
+@@ -54,7 +54,7 @@ export const renderApp = async (
+ ) => {
+   const {
+     title = env.APP_NAME,
+-    description = "A modern team knowledge base for your internal documentation, product specs, support answers, meeting notes, onboarding, &amp; more…",
++    description = "The DTTH-maintained Wiki for DTTH members.",
+     canonical = "",
+   } = options;
+ 
+diff --git a/vite.config.ts b/vite.config.ts
+index f6a2f3d21..69c492b3d 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -53,8 +53,8 @@ export default () => {
+           },
+         },
+         manifest: {
+-          name: "Outline",
+-          short_name: "Outline",
++          name: "DTTH Wiki",
++          short_name: "DTTH Wiki",
+           theme_color: "#fff",
+           background_color: "#fff",
+           start_url: "/",
+-- 
+2.40.1
+

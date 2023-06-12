@@ -188,6 +188,9 @@
   sops.secrets."outline/smtp-password" = { owner = "outline"; };
   cloud.services.outline = {
     enable = true;
+    package = pkgs.unstable.outline.overrideAttrs (attrs: {
+      patches = attrs.patches ++ [ ../modules/cloud/outline/dtth-wiki.patch ];
+    });
     databaseUrl = "postgres://outline:outline@localhost/outline?sslmode=disable";
     sequelizeArguments = "--env=production-ssl-disabled";
     redisUrl = "local";
