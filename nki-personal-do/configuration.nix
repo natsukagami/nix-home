@@ -88,6 +88,17 @@
   };
   cloud.traefik.certsDumper.enable = true;
 
+  # Uptime-Kuma
+  services.uptime-kuma = {
+    enable = true;
+    settings.HOST = "127.0.0.1";
+    settings.PORT = "16904";
+  };
+  cloud.traefik.hosts.uptime-kuma = { host = "status.nkagami.me"; port = 16904; };
+  cloud.traefik.hosts.uptime-kuma-dtth = { host = "status.dtth.ch"; port = 16904; };
+  cloud.traefik.hosts.uptime-kuma-codefun = { host = "status.codefun.vn"; port = 16904; };
+
+
   # Arion
   virtualisation.arion.backend = "docker";
 
