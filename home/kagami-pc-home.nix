@@ -64,6 +64,12 @@
     };
   nki.programs.kitty.enable = true;
   nki.programs.kitty.fontSize = 14;
+  programs.my-sway.waybar.makeBars = barWith: [
+    # For primary
+    (barWith { extraSettings = { output = [ "AOC U28G2G6B PPYP2JA000013" ]; }; })
+    # For secondary, hide mpd
+    (barWith { showMedia = false; showConnectivity = false; extraSettings = { output = [ "AOC 24G2W1G4 ATNN21A005410" ]; }; })
+  ];
 
   # Yellow light!
   services.wlsunset = {

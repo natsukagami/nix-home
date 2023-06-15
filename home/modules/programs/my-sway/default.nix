@@ -94,9 +94,14 @@ in
     };
 
     waybar = {
+      makeBars = mkOption {
+        type = types.raw;
+        description = "Create bars with the barWith function, return a list of bars";
+        default = barWith: [ (barWith { }) ];
+      };
       extraSettings = mkOption {
-        type = types.attrs;
-        description = "Additional settings for the default waybar";
+        type = types.raw;
+        description = "Extra settings to be included with every default bar";
         default = { };
       };
       extraStyle = mkOption {
@@ -367,12 +372,9 @@ in
     ];
   };
 
-  config.programs.waybar = mkIf cfg.enable {
-    enable = true;
-    systemd.enable = true;
-    settings = [
-      # Top bar
-      (mkMerge [{
+  config.programs.waybar =
+    let
+      barWith = { showMedia ? true, showConnectivity ? true, extraSettings ? { }, ... }: (mkMerge [{
         position = "top";
         modules-left = [
           "sway/workspaces"
@@ -381,22 +383,22 @@ in
         ];
         modules-center = [
         ];
-        modules-right = [
-          (if cfg.enableMpd then "mpd" else "custom/media")
-          "tray"
-          "pulseaudio"
-          "bluetooth"
-          "network"
-          "cpu"
-          "memory"
-          "temperature"
-        ] ++ (
-          if cfg.enableLaptopBars
-          then [ "battery" "battery#bat2" ]
-          else [ ]
-        ) ++ [
-          "clock"
-        ];
+        modules-right =
+          lib.optional showMedia (if cfg.enableMpd then "mpd" else "custom/media")
+          ++ [
+            "tray"
+            "pulseaudio"
+          ] ++ lib.optionals showConnectivity [
+            "bluetooth"
+            "network"
+          ] ++ [
+            "cpu"
+            "memory"
+            "temperature"
+          ] ++ lib.optionals cfg.enableLaptopBars [ "battery" "battery#bat2" ]
+          ++ [
+            "clock"
+          ];
 
         modules = {
           "sway/workspaces" = {
@@ -409,13 +411,14 @@ in
             max-length = 70;
             format = "{title}";
             "rewrite" = {
-              "(.*) — Mozilla Firefox" = "🌎 $1";
-              "(.*) - Kakoune" = "⌨️$1";
-              "(.*) - fish" = ">_ $1";
-              "(.*) - Discord" = "🗨️ $1";
+              "(.*) — Mozilla Firefox" = "[🌎] $1";
+              "(.*) - Mozilla Thunderbird" = "[📧] $1";
+              "(.*) - Kakoune" = "[⌨️] $1";
+              "(.*) - fish" = "[>_] $1";
+              "(.*) - Discord" = "[🗨️] $1";
               # ArmCord thing
-              "• Discord \\| (.*)" = "🗨️ $1";
-              "\\((\\d+)\\) Discord \\| (.*)" = "🗨️ [$1] $2";
+              "• Discord \\| (.*)" = "[🗨️] $1";
+              "\\((\\d+)\\) Discord \\| (.*)" = "[🗨️] {$1} $2";
             };
           };
           "tray" = {
@@ -534,163 +537,168 @@ in
           };
         };
       }
-        cfg.waybar.extraSettings])
-    ];
-    style = ''
-      * {
-          border: none;
-          border-radius: 0;
-          font-family: IBM Plex Mono, 'Font Awesome 5', 'Symbols Nerd Font Mono', 'SFNS Display',  Helvetica, Arial, sans-serif;
-          font-size: ${toString cfg.fontSize}px;
-          min-height: 0;
-      }
+        cfg.waybar.extraSettings
+        extraSettings]);
+    in
+    mkIf cfg.enable {
+      enable = true;
+      systemd.enable = true;
+      settings = cfg.waybar.makeBars barWith;
+      style = ''
+        * {
+            border: none;
+            border-radius: 0;
+            font-family: IBM Plex Mono, 'Font Awesome 5', 'Symbols Nerd Font Mono', 'SFNS Display',  Helvetica, Arial, sans-serif;
+            font-size: ${toString cfg.fontSize}px;
+            min-height: 0;
+        }
 
-      window#waybar {
-          background: rgba(43, 48, 59, 0.5);
-          border-bottom: 3px solid rgba(100, 114, 125, 0.5);
-          color: #ffffff;
-      }
+        window#waybar {
+            background: rgba(43, 48, 59, 0.5);
+            border-bottom: 3px solid rgba(100, 114, 125, 0.5);
+            color: #ffffff;
+        }
 
-      window#waybar.hidden {
-          opacity: 0.0;
-      }
-      /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
-      #workspaces button {
-          padding: 0 5px;
-          background: transparent;
-          color: #ffffff;
-          border-bottom: 3px solid transparent;
-      }
+        window#waybar.hidden {
+            opacity: 0.0;
+        }
+        /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+        #workspaces button {
+            padding: 0 5px;
+            background: transparent;
+            color: #ffffff;
+            border-bottom: 3px solid transparent;
+        }
 
-      #workspaces button.focused {
-          background: #64727D;
-          border-bottom: 3px solid #ffffff;
-      }
+        #workspaces button.focused {
+            background: #64727D;
+            border-bottom: 3px solid #ffffff;
+        }
 
-      #workspaces button.urgent {
-          background-color: #eb4d4b;
-      }
+        #workspaces button.urgent {
+            background-color: #eb4d4b;
+        }
 
-      #window, #sway, #sway-window {
-          padding: 0 10px;
-      }
+        #window, #sway, #sway-window {
+            padding: 0 10px;
+        }
 
-      #mode {
-          background: #64727D;
-          border-bottom: 3px solid #ffffff;
-      }
+        #mode {
+            background: #64727D;
+            border-bottom: 3px solid #ffffff;
+        }
 
-      #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #bluetooth, #custom-media, #tray, #mode, #idle_inhibitor, #mpd {
-          padding: 0 10px;
-          margin: 0 5px;
-      }
+        #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #bluetooth, #custom-media, #tray, #mode, #idle_inhibitor, #mpd {
+            padding: 0 10px;
+            margin: 0 5px;
+        }
 
-      #clock {
-          background-color: #64727D;
-      }
+        #clock {
+            background-color: #64727D;
+        }
 
-      #battery {
-          background-color: #ffffff;
-          color: #000000;
-      }
+        #battery {
+            background-color: #ffffff;
+            color: #000000;
+        }
 
-      #battery.charging {
-          color: #ffffff;
-          background-color: #26A65B;
-      }
+        #battery.charging {
+            color: #ffffff;
+            background-color: #26A65B;
+        }
 
-      @keyframes blink {
-          to {
-              background-color: #ffffff;
-              color: #000000;
-          }
-      }
+        @keyframes blink {
+            to {
+                background-color: #ffffff;
+                color: #000000;
+            }
+        }
 
-      #battery.critical:not(.charging) {
-          background: #f53c3c;
-          color: #ffffff;
-          animation-name: blink;
-          animation-duration: 0.5s;
-          animation-timing-function: linear;
-          animation-iteration-count: infinite;
-          animation-direction: alternate;
-      }
+        #battery.critical:not(.charging) {
+            background: #f53c3c;
+            color: #ffffff;
+            animation-name: blink;
+            animation-duration: 0.5s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
 
-      #cpu {
-          background: #2ecc71;
-          color: #000000;
-      }
+        #cpu {
+            background: #2ecc71;
+            color: #000000;
+        }
 
-      #memory {
-          background: #9b59b6;
-      }
+        #memory {
+            background: #9b59b6;
+        }
 
-      #backlight {
-          background: #90b1b1;
-      }
+        #backlight {
+            background: #90b1b1;
+        }
 
-      #network {
-          background: #2980b9;
-      }
+        #network {
+            background: #2980b9;
+        }
 
-      #network.disconnected {
-          background: #f53c3c;
-      }
+        #network.disconnected {
+            background: #f53c3c;
+        }
 
-      #pulseaudio {
-          background: #f1c40f;
-          color: #000000;
-      }
+        #pulseaudio {
+            background: #f1c40f;
+            color: #000000;
+        }
 
-      #pulseaudio.muted {
-          background: #90b1b1;
-      }
+        #pulseaudio.muted {
+            background: #90b1b1;
+        }
 
-      #bluetooth {
-          background: DarkSlateBlue;
-          color: white;
-      }
+        #bluetooth {
+            background: DarkSlateBlue;
+            color: white;
+        }
 
-      #custom-media {
-          background: #66cc99;
-          color: #2a5c45;
-      }
+        #custom-media {
+            background: #66cc99;
+            color: #2a5c45;
+        }
 
-      .custom-spotify {
-          background: #66cc99;
-      }
+        .custom-spotify {
+            background: #66cc99;
+        }
 
-      .custom-vlc {
-          background: #ffa000;
-      }
+        .custom-vlc {
+            background: #ffa000;
+        }
 
-      #temperature {
-          background: #f0932b;
-      }
+        #temperature {
+            background: #f0932b;
+        }
 
-      #temperature.critical {
-          background: #eb4d4b;
-      }
+        #temperature.critical {
+            background: #eb4d4b;
+        }
 
-      #tray {
-          background-color: #2980b9;
-      }
+        #tray {
+            background-color: #2980b9;
+        }
 
-      #idle_inhibitor {
-          background-color: #2d3436;
-      }
+        #idle_inhibitor {
+            background-color: #2d3436;
+        }
 
-      #idle_inhibitor.activated {
-          background-color: #ecf0f1;
-          color: #2d3436;
-      }
+        #idle_inhibitor.activated {
+            background-color: #ecf0f1;
+            color: #2d3436;
+        }
 
-      #mpd {
-          background-color: teal;
-          color: white;
-      }
-    '' + cfg.waybar.extraStyle;
-  };
+        #mpd {
+            background-color: teal;
+            color: white;
+        }
+      '' + cfg.waybar.extraStyle;
+    };
   config.home.packages = mkIf cfg.enable (with pkgs; [
     # Needed for QT_QPA_PLATFORM
     qt5.qtwayland
