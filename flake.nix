@@ -37,7 +37,7 @@
     kakoune.flake = false;
     kak-lsp.url = github:kak-lsp/kak-lsp;
     kak-lsp.flake = false;
-    nixos-m1.url = github:natsukagami/nixos-m1/update-versions;
+    nixos-m1.url = github:tpwrules/nixos-apple-silicon;
     nixos-m1.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---
