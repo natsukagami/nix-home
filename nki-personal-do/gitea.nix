@@ -123,6 +123,7 @@ in
         ENABLE_NOTIFY_MAIL = true;
         ENABLE_BASIC_AUTHENTICATION = false;
         REGISTER_EMAIL_CONFIRM = true;
+        REQUIRE_SIGNIN_VIEW = true;
       };
       "service.explore" = {
         REQUIRE_SIGNIN_VIEW = true;
