@@ -169,7 +169,7 @@
           (common-nixos nixpkgs)
           inputs.arion.nixosModules.arion
           ./modules/my-tinc
-          inputs.youmubot.nixosModule.x86_64-linux
+          inputs.youmubot.nixosModules.default
           ./nki-personal-do/configuration.nix
           inputs.secrets.nixosModules.nki-personal-do
         ];

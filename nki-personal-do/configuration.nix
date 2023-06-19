@@ -166,6 +166,7 @@
   sops.secrets.youmubot-env = { };
   services.youmubot = {
     enable = true;
+    package = pkgs.youmubot.override { enableCodeforces = false; };
     envFile = config.sops.secrets.youmubot-env.path;
   };
 

@@ -85,6 +85,7 @@ in
 
   inputs.mpd-mpris.overlays.default
   inputs.swayfx.overlays.default
+  inputs.youmubot.overlays.default
 
   # Bug fixes
 ] # we assign the overlay created before to the overlays of nixpkgs.
