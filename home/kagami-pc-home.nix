@@ -24,6 +24,11 @@
     # Java & sbt
     openjdk11
     sbt
+
+    # Manage tlmc
+    flacon
+    ttaenc
+    picard
   ]);
 
   # Enable X11 configuration
