@@ -115,7 +115,7 @@ in
     ## GTK
     gtk.enable = true;
     gtk.cursorTheme = { inherit (config.home.pointerCursor) package name size; };
-    gtk.font.name = "Noto Sans";
+    gtk.font.name = "system-ui";
     gtk.font.size = 10;
     gtk.iconTheme = {
       package = pkgs.numix-icon-theme;

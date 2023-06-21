@@ -39,6 +39,20 @@ in
         sansSerif = lib.mkBefore [ "IBM Plex Sans" "IBM Plex Sans JP" "IBM Plex Sans KR" ];
         monospace = lib.mkBefore [ "IBM Plex Mono" ];
       };
+      localConf = ''
+        <?xml version="1.0"?>
+        <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+        <fontconfig>
+          <alias binding="same">
+            <family>system-ui</family>
+            <prefer>
+              <family>IBM Plex Sans</family>
+              <family>IBM Plex Sans JP</family>
+              <family>IBM Plex Sans KR</family>
+            </prefer>
+          </alias>
+        </fontconfig>
+      '';
     };
     fontDir.enable = true;
   } else { }) // (if pkgs.stdenv.isDarwin then {
