@@ -10,7 +10,7 @@ let
   userFromDatabase = databaseName: {
     name = databaseName;
     ensurePermissions = {
-      "DATABASE ${databaseName}" = "ALL PRIVILEGES";
+      "DATABASE \"${databaseName}\"" = "ALL PRIVILEGES";
     };
   };
 in

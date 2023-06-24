@@ -18,6 +18,7 @@
     ./gitea.nix
     ./miniflux.nix
     ./writefreely.nix
+    ./synapse.nix
   ];
 
   common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.
@@ -104,7 +105,6 @@
 
   # Conduit
   sops.secrets.heisenbridge = { owner = "heisenbridge"; };
-  sops.secrets.matrix-discord-bridge = { mode = "0644"; };
   cloud.conduit.enable = true;
   cloud.conduit.instances = {
     "nkagami" = {
@@ -128,15 +128,6 @@
     appserviceFile = config.sops.secrets.heisenbridge.path;
     homeserver = "https://m.nkagami.me";
   };
-  # services.matrix-appservice-discord = {
-  #   enable = true;
-  #   environmentFile = config.sops.secrets.matrix-discord-bridge.path;
-  #   serviceDependencies = [ "matrix-conduit-dtth.service" ];
-  #   settings.bridge = {
-  #     domain = "dtth.ch";
-  #     homeserverUrl = "https://m.dtth.ch:443";
-  #   };
-  # };
 
   # Navidrome back to the PC
   cloud.traefik.hosts.navidrome = {
