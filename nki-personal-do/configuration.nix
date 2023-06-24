@@ -112,12 +112,6 @@
       port = 6167;
       well-known_port = 6168;
     };
-    "dtth" = {
-      host = "m.dtth.ch";
-      server_name = "dtth.ch";
-      port = 6169;
-      well-known_port = 6170;
-    };
   };
   cloud.conduit.heisenbridge = {
     enable = true;
@@ -134,15 +128,15 @@
     appserviceFile = config.sops.secrets.heisenbridge.path;
     homeserver = "https://m.nkagami.me";
   };
-  services.matrix-appservice-discord = {
-    enable = true;
-    environmentFile = config.sops.secrets.matrix-discord-bridge.path;
-    serviceDependencies = [ "matrix-conduit-dtth.service" ];
-    settings.bridge = {
-      domain = "dtth.ch";
-      homeserverUrl = "https://m.dtth.ch:443";
-    };
-  };
+  # services.matrix-appservice-discord = {
+  #   enable = true;
+  #   environmentFile = config.sops.secrets.matrix-discord-bridge.path;
+  #   serviceDependencies = [ "matrix-conduit-dtth.service" ];
+  #   settings.bridge = {
+  #     domain = "dtth.ch";
+  #     homeserverUrl = "https://m.dtth.ch:443";
+  #   };
+  # };
 
   # Navidrome back to the PC
   cloud.traefik.hosts.navidrome = {
