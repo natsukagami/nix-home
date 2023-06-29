@@ -47,47 +47,52 @@ in
       default = [ ];
       description = "Sources to autoload";
     };
+    themes = mkOption {
+      type = types.attrsOf types.path;
+      default = { };
+      description = "Themes to load";
+    };
   };
 
   config = mkIf cfg.enable {
     home.packages = [ cfg.package ];
 
-    home.file =
+    xdg.configFile =
       let
         kakouneAutoload = { name, src, wrapAsModule ? false, activationScript ? null }:
           [
             (if !wrapAsModule then {
-              name = "kakoune/autoload/${name}";
-              value = {
-                source = src;
-                target = ".config/kak/autoload/${name}";
-              };
+              name = "kak/autoload/${name}";
+              value.source = src;
             } else {
-              name = "kakoune/autoload/${name}/module.kak";
-              value = {
-                text = ''
-                  provide-module ${name} %◍
-                    ${readFile src}
-                  ◍
-                '';
-                target = ".config/kak/autoload/${name}/module.kak";
-              };
+              name = "kak/autoload/${name}/module.kak";
+              value.text = ''
+                provide-module ${name} %◍
+                  ${readFile src}
+                ◍
+              '';
             })
           ] ++ (if activationScript == null then [ ] else [{
-            name = "kakoune/autoload/on-load/${name}.kak";
-            value = {
-              text = ''
-                hook global KakBegin .* %{
-                  ${activationScript}
-                }
-              '';
-              target = ".config/kak/autoload/on-load/${name}.kak";
-            };
+            name = "kak/autoload/on-load/${name}.kak";
+            value.text = ''
+              hook global KakBegin .* %{
+                ${activationScript}
+              }
+            '';
           }]);
+
+        kakouneThemes = builtins.listToAttrs (builtins.attrValues (
+          builtins.mapAttrs
+            (name: src: {
+              name = "kak/colors/${name}.kak";
+              value.source = src;
+            })
+            cfg.themes
+        ));
       in
       {
         # kakrc
-        ".config/kak/kakrc".text = cfg.rc;
+        "kak/kakrc".text = cfg.rc;
       } //
       (builtins.listToAttrs (lib.lists.flatten (map kakouneAutoload ([
         # include the original autoload files
@@ -95,7 +100,8 @@ in
           name = "rc";
           src = "${cfg.package}/share/kak/autoload/rc";
         }
-      ] ++ cfg.autoload))));
+      ] ++ cfg.autoload))))
+      // kakouneThemes;
   };
 }
 

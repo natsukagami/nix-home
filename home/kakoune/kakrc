@@ -1,30 +1,8 @@
+# Enable kak-tree-sitter
+eval %sh{ kak-tree-sitter --kakoune -d }
 # Color scheme
-colorscheme github
-face global Default        rgb:121213,default
-face global BufferPadding  rgb:A0A0A0,default
-face global MenuForeground blue,white+bF
-face global MenuBackground bright-blue,white+F
-face global Information    bright-blue,white
-# Markdown help color scheme
-face global InfoDefault               Information
-face global InfoBlock                 @block
-face global InfoBlockQuote            +i@block
-face global InfoBullet                @bullet
-face global InfoHeader                @header
-face global InfoLink                  @link
-face global InfoLinkMono              +b@mono
-face global InfoMono                  @mono
-face global InfoRule                  +b@Information
-face global InfoDiagnosticError       @DiagnosticError
-face global InfoDiagnosticHint        @DiagnosticHint
-face global InfoDiagnosticInformation @Information
-face global InfoDiagnosticWarning     @DiagnosticWarning
-# Extra faces
-face global macro +b@function
-face global method +i@function
-face global format_specifier +i@string
-face global mutable_variable +u@variable
-face global class +b@variable
+colorscheme catppuccin-latte
+set global background default
 
 # Assistant
 set global ui_options terminal_assistant=cat
@@ -131,7 +109,7 @@ hook global WinSetOption filetype=(rust) %{
     lsp-inlay-hints-enable window
 }
 
-hook global WinSetOption filetype=(rust|go|fsharp|scala) %{
+hook global WinSetOption filetype=(rust|go|fsharp) %{
   hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
   hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
   hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens

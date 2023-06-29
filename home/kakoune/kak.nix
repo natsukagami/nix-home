@@ -42,8 +42,14 @@ in
 {
   imports = [ ../modules/programs/my-kakoune ./kaktex.nix ];
 
-  # ctags for peneira
-  home.packages = [ pkgs.universal-ctags ];
+  home.packages = with pkgs; [
+    # ctags for peneira
+    universal-ctags
+    # tree-sitter for kak
+    kak-tree-sitter
+  ];
+
+  # xdg.configFile."kak-tree-sitter/config.toml".source = ./kak-tree-sitter.toml;
 
   # Enable the kakoune package.
   programs.my-kakoune.enable = true;
@@ -92,7 +98,8 @@ in
 
   programs.my-kakoune.package = kakounePkg;
   programs.my-kakoune.rc =
-    builtins.readFile ./kakrc + ''
+    builtins.readFile ./kakrc +
+    builtins.readFile ./reload-faces.kak + ''
 
       # Source any settings in the current working directory,
       # recursive upwards
@@ -269,5 +276,11 @@ in
       '';
     }
   ];
+  programs.my-kakoune.themes = {
+    catppuccin-latte = builtins.fetchurl {
+      url = "https://raw.githubusercontent.com/catppuccin/kakoune/f6d43770609433c45046632f1bb68d1395305dbb/colors/catppuccin_latte.kak";
+      sha256 = "sha256:0ycvxs8hmsvd0zrpxiby16wzmapvmz6p34b6j343pc1girw6fi4i";
+    };
+  };
 }
 

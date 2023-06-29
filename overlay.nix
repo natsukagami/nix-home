@@ -37,6 +37,7 @@ let
 
   overlay-packages = final: prev: {
     gotosocial-bin = final.callPackage ./packages/x86_64-linux/gotosocial-bin.nix { };
+    kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter.nix { rustPlatform = final.unstable.rustPlatform; };
   };
 
   overlay-aarch64-linux = final: prev:
