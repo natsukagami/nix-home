@@ -114,7 +114,6 @@ in
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
-    package = pkgs.swayfx-unwrapped;
     systemdIntegration = true;
 
     config = {
@@ -320,7 +319,7 @@ in
 
     '' + (if config.services.gnome-keyring.enable then ''
       # gnome-keyring
-      eval `${pkgs.gnome.gnome-keyring}/bin/gnome-keyring-daemon -r -d -c secrets,ssh,pkcs11`
+      eval `gnome-keyring-daemon -r -d -c secrets,ssh,pkcs11`
       export SSH_AUTH_SOCK
     '' else "");
     # Extra

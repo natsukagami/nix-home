@@ -10,7 +10,7 @@ let
   };
   overlay-imported = final: prev: {
     rnix-lsp = inputs.rnix-lsp.defaultPackage."${final.system}";
-    swayfx = final.swayfx-unwrapped;
+    sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
     deploy-rs = inputs.deploy-rs.packages.default;
 
     # A list of source-style inputs.
