@@ -96,14 +96,30 @@ in
     };
   };
 
+  programs.my-kakoune.tree-sitter.extraAliases = {
+    # Scala stuff
+    method = "function";
+    module = "namespace";
+    function_call = "function";
+    method_call = "method";
+
+    boolean = "constant_builtin_boolean";
+    number = "constant_numeric";
+    float = "constant_numeric_float";
+
+    type_qualifier = "keyword_special";
+    storageclass = "keyword_storage_modifier";
+    conditional = "keyword_conditional";
+    include = "keyword_control_import";
+  };
   programs.my-kakoune.tree-sitter.languages = {
     scala =
       let
         src = pkgs.fetchFromGitHub {
-          owner = "tree-sitter";
+          owner = "natsukagami";
           repo = "tree-sitter-scala";
-          rev = "cda0de8a038b0e4ad79a97f7aa281250fcf88560";
-          sha256 = "sha256-3R5aflBeTny56EL6sONWfMWpVnPb6VHL6IsisMdM5bk=";
+          rev = "8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203";
+          sha256 = "sha256-G83H3RJddeIdLT6JssIDD5KXVnZE6vk1chl3RpQjdCI=";
           leaveDotGit = true;
         }; in
       {
