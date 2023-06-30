@@ -116,7 +116,7 @@ in
     scala =
       let
         src = pkgs.fetchFromGitHub {
-          owner = "natsukagami";
+          owner = "tree-sitter";
           repo = "tree-sitter-scala";
           rev = "8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203";
           sha256 = "sha256-G83H3RJddeIdLT6JssIDD5KXVnZE6vk1chl3RpQjdCI=";
@@ -126,6 +126,22 @@ in
         grammar.src = src;
         queries.src = src;
         queries.path = "queries/scala";
+      };
+    haskell =
+      let
+        src = pkgs.fetchFromGitHub {
+          owner = "tree-sitter";
+          repo = "tree-sitter-haskell";
+          rev = "ba0bfb0e5d8e9e31c160d287878c6f26add3ec08";
+          sha256 = "sha256-nocX9L8vD655nzky4PQulygWAjKGC1rh3SYDr7t4wBQ=";
+          leaveDotGit = true;
+        };
+      in
+      {
+        grammar.src = src;
+        grammar.compile.args = [ "-c" "-fpic" "../parser.c" "../scanner.c" "../unicode.h" "-I" ".." ];
+        queries.src = src;
+        queries.path = "queries";
       };
   };
 
