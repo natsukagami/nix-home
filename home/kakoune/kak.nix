@@ -96,10 +96,26 @@ in
     };
   };
 
+  programs.my-kakoune.tree-sitter.languages = {
+    scala =
+      let
+        src = pkgs.fetchFromGitHub {
+          owner = "tree-sitter";
+          repo = "tree-sitter-scala";
+          rev = "cda0de8a038b0e4ad79a97f7aa281250fcf88560";
+          sha256 = "sha256-3R5aflBeTny56EL6sONWfMWpVnPb6VHL6IsisMdM5bk=";
+          leaveDotGit = true;
+        }; in
+      {
+        grammar.src = src;
+        queries.src = src;
+        queries.path = "queries/scala";
+      };
+  };
+
   programs.my-kakoune.package = kakounePkg;
   programs.my-kakoune.rc =
-    builtins.readFile ./kakrc +
-    builtins.readFile ./reload-faces.kak + ''
+    builtins.readFile ./kakrc + ''
 
       # Source any settings in the current working directory,
       # recursive upwards
@@ -107,6 +123,34 @@ in
           ${pkgs.writeScript "source-pwd" (builtins.readFile ./source-pwd)}
       }
     '';
+
+  programs.my-kakoune.extraFaces = {
+    Default = "%opt{white},%opt{background}";
+    BufferPadding = "%opt{background},%opt{background}";
+    MenuForeground = "blue,white+bF";
+    MenuBackground = "bright-blue,white+F";
+    Information = "bright-blue,white";
+    # Markdown help color scheme
+    InfoDefault = "Information";
+    InfoBlock = "@block";
+    InfoBlockQuote = "+i@block";
+    InfoBullet = "@bullet";
+    InfoHeader = "@header";
+    InfoLink = "@link";
+    InfoLinkMono = "+b@mono";
+    InfoMono = "@mono";
+    InfoRule = "+b@Information";
+    InfoDiagnosticError = "@DiagnosticError";
+    InfoDiagnosticHint = "@DiagnosticHint";
+    InfoDiagnosticInformation = "@Information";
+    InfoDiagnosticWarning = "@DiagnosticWarning";
+    # Extra faces
+    macro = "+b@function";
+    method = "+i@function";
+    format_specifier = "+i@string";
+    mutable_variable = "+u@variable";
+    class = "+b@variable";
+  };
   programs.my-kakoune.autoload = [
     # My own scripts
     {

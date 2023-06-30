@@ -28,7 +28,7 @@ let
   };
 in
 {
-  imports = [ ./kak-lsp.nix ./fish-session.nix ];
+  imports = [ ./kak-lsp.nix ./fish-session.nix ./tree-sitter.nix ];
 
   options.programs.my-kakoune = {
     enable = mkEnableOption "My version of the kakoune configuration";
@@ -51,6 +51,12 @@ in
       type = types.attrsOf types.path;
       default = { };
       description = "Themes to load";
+    };
+
+    extraFaces = mkOption {
+      type = types.attrsOf types.str;
+      default = { };
+      description = "Extra faces to include";
     };
   };
 
@@ -89,10 +95,21 @@ in
             })
             cfg.themes
         ));
+
+        kakouneFaces =
+          let
+            txt = strings.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs (name: face: "face global ${name} \"${face}\"") cfg.extraFaces));
+          in
+          pkgs.writeText "faces.kak" txt;
       in
       {
         # kakrc
-        "kak/kakrc".text = cfg.rc;
+        "kak/kakrc".text = ''
+          ${cfg.rc}
+
+          # Load faces
+          source ${kakouneFaces}
+        '';
       } //
       (builtins.listToAttrs (lib.lists.flatten (map kakouneAutoload ([
         # include the original autoload files
