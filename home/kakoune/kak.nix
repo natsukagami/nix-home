@@ -56,6 +56,21 @@ in
   programs.my-kakoune.enable-fish-session = true;
   programs.kak-lsp.enable = true;
   programs.kak-lsp.package = kak-lsp;
+  programs.kak-lsp.semanticTokens.additionalFaces = [
+    # Typst
+    { face = "header"; token = "heading"; }
+    { face = "ts_markup_link_url"; token = "link"; }
+    { face = "ts_markup_link_uri"; token = "ref"; }
+    { face = "ts_markup_link_label"; token = "label"; }
+    { face = "ts_property"; token = "pol"; }
+    { face = "ts_markup_list_checked"; token = "marker"; }
+    { face = "ts_constant_builtin_boolean"; token = "bool"; }
+    { face = "ts_keyword_control"; token = "delim"; }
+    { face = "ts_number"; token = "text"; modifiers = [ "math" ]; }
+    { face = "ts_markup_bold"; token = "text"; modifiers = [ "strong" ]; }
+    { face = "ts_markup_italic"; token = "text"; modifiers = [ "emph" ]; }
+  ];
+
   programs.kak-lsp.languages.typescript = {
     args = [ "--stdio" ];
     command = "typescript-language-server";
@@ -94,6 +109,13 @@ in
             args = [ "--synctex-forward" "%l:1:%f" "%p" "-x" "/home/nki/.bin/kaktex jump %{input} %{line}" ];
           });
     };
+  };
+  programs.kak-lsp.languages.typst = {
+    command = "${pkgs.typst-lsp}/bin/typst-lsp";
+    filetypes = [ "typst" ];
+    roots = [ ".git" "main.typ" ];
+    settings_section = "typst-lsp";
+    settings.typst-lsp = { };
   };
 
   programs.my-kakoune.tree-sitter.extraAliases = {

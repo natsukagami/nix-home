@@ -71,6 +71,8 @@ in
     ## Latex
     tectonic
     texlab
+    ## Typst
+    typst
     ## Python
     python3
 

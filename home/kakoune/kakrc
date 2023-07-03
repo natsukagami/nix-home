@@ -89,7 +89,7 @@ hook global InsertCompletionHide .* %{
 try %{
     eval %sh{test -z "$WE_STARTED_KAK" && kak-lsp --kakoune -s $kak_session}
 }
-hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala) %{
+hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala|typst) %{
     lsp-enable-window
     map window lsp N -docstring "Display the next message request" ": lsp-show-message-request-next<ret>"
     map window normal <c-l> ": enter-user-mode lsp<ret>"
@@ -109,7 +109,7 @@ hook global WinSetOption filetype=(rust) %{
     lsp-inlay-hints-enable window
 }
 
-hook global WinSetOption filetype=(rust|go|fsharp) %{
+hook global WinSetOption filetype=(rust|go|fsharp|typst) %{
   hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
   hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
   hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
@@ -150,6 +150,21 @@ hook global WinSetOption filetype=(scala) %{
     set window indentwidth 2
 }
 
+hook global WinSetOption filetype=(typst) %{
+  set-option window comment_line "//"
+  set-option window comment_block_begin "/*"
+  set-option window comment_block_end "*/"
+
+  # borrow markdown's hooks
+  require-module markdown
+
+  hook window ModeChange pop:insert:.* -group markdown-trim-indent markdown-trim-indent
+  hook window InsertChar \n -group markdown-insert markdown-insert-on-new-line
+  hook window InsertChar \n -group markdown-indent markdown-indent-on-new-line
+  hook -once -always window WinSetOption filetype=.* %{ remove-hooks window markdown-.+ }
+}
+
+
 define-command -params 0 -docstring "Set up build" scala-build-connect %{
     lsp-execute-command 'build-connect' '"[]"'
 }
@@ -183,6 +198,11 @@ hook global BufCreate .*[.]md %{
 
 hook global BufCreate .*[.]sc %{
   set-option buffer filetype scala
+}
+
+hook global BufCreate .*[.]typ %{
+  set-option buffer filetype typst
+  add-highlighter buffer/ wrap
 }
 
 hook global BufOpenFile .* %{

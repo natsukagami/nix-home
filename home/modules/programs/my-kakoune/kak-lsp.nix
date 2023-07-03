@@ -247,6 +247,11 @@ in
       default = lspConfig.semantic_tokens.faces;
       description = "The semantic tokens faces mapping given to kak";
     };
+    semanticTokens.additionalFaces = mkOption {
+      type = types.listOf types.anything;
+      default = [ ];
+      description = "The semantic tokens faces mapping given to kak";
+    };
 
     serverTimeout = mkOption {
       type = types.int;
@@ -274,7 +279,7 @@ in
         yj -jt -i \
           < ${
             pkgs.writeText "config.json" (builtins.toJSON {
-              semantic_tokens.faces = cfg.semanticTokens.faces;
+              semantic_tokens.faces = cfg.semanticTokens.faces ++ cfg.semanticTokens.additionalFaces;
               server.timeout = cfg.serverTimeout;
               snippet_support = cfg.enableSnippets;
               verbosity = 255;

@@ -7,6 +7,10 @@ let
   overlay-needs-unstable = final: prev: {
     # override some packages that needs unstable that cannot be changed in the setup.
     nix-direnv = prev.unstable.nix-direnv;
+
+    # Typst updates really quickly.
+    typst = final.unstable.typst;
+    typst-lsp = final.unstable.typst-lsp;
   };
   overlay-imported = final: prev: {
     rnix-lsp = inputs.rnix-lsp.defaultPackage."${final.system}";
