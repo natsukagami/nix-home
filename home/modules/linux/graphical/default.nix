@@ -38,6 +38,7 @@ in
       deluge # Torrent client
       pavucontrol # PulseAudio control panel
       firefox
+      librewolf
       cinnamon.nemo # File manager
       thunderbird # Email
 

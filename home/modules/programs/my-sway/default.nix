@@ -319,7 +319,7 @@ in
 
     '' + (if config.services.gnome-keyring.enable then ''
       # gnome-keyring
-      eval `gnome-keyring-daemon -r -d -c secrets,ssh,pkcs11`
+      eval `gnome-keyring-daemon`
       export SSH_AUTH_SOCK
     '' else "");
     # Extra

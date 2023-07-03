@@ -35,8 +35,8 @@ in
     set -eg MESA_GL_VERSION_OVERRIDE
     set -eg MESA_GLSL_VERSION_OVERRIDE
 
-    export GNOME_KEYRING_CONTROL=/run/user/1001/keyring
-    export SSH_AUTH_SOCK=/run/user/1001/keyring/ssh
+    # export GNOME_KEYRING_CONTROL=/run/user/1001/keyring
+    # export SSH_AUTH_SOCK=/run/user/1001/keyring/ssh
   '';
 
   # More packages
