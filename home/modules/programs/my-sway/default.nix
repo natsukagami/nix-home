@@ -547,13 +547,13 @@ in
         * {
             border: none;
             border-radius: 0;
-            font-family: IBM Plex Mono, 'Font Awesome 5', 'Symbols Nerd Font Mono', 'SFNS Display',  Helvetica, Arial, sans-serif;
-            font-size: ${toString cfg.fontSize}px;
+            font-family: monospace, 'Font Awesome 5', 'Symbols Nerd Font Mono', 'SFNS Display',  Helvetica, Arial, sans-serif;
+            font-size: ${toString (cfg.fontSize * 1.1)}px;
             min-height: 0;
         }
 
         window#waybar {
-            background: rgba(43, 48, 59, 0.5);
+            background: rgba(43, 48, 59, 0.8);
             border-bottom: 3px solid rgba(100, 114, 125, 0.5);
             color: #ffffff;
         }

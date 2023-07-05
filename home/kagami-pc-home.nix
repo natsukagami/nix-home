@@ -33,7 +33,7 @@
 
   # Enable X11 configuration
   linux.graphical.type = "wayland";
-  linux.graphical.wallpaper = ./images/wallpaper_1.png;
+  linux.graphical.wallpaper = ./images/pixiv_18776904.png;
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 15.0;
   programs.my-sway.enableLaptopBars = false;
