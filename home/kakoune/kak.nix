@@ -143,7 +143,8 @@ in
           rev = "8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203";
           sha256 = "sha256-G83H3RJddeIdLT6JssIDD5KXVnZE6vk1chl3RpQjdCI=";
           leaveDotGit = true;
-        }; in
+        };
+      in
       {
         grammar.src = src;
         queries.src = src;
