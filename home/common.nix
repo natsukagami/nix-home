@@ -1,38 +1,7 @@
 { config, pkgs, lib, ... }:
 
 let
-  texlab = pkgs.rustPlatform.buildRustPackage rec {
-    pname = "texlab";
-    version = "5.7.0";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "latex-lsp";
-      repo = "texlab";
-      rev = "refs/tags/v${version}";
-      sha256 = "sha256-GvORAPbQOdVpz4yY66b3OObewU98V26cZ6nrJ35nlkg=";
-    };
-
-    cargoSha256 = "sha256-b7v3ODOjY5BQCzVqlLCNUOaZS95AvIvyjOeas2XfRjM=";
-
-    outputs = [ "out" "man" ];
-
-    nativeBuildInputs = with pkgs; [ installShellFiles help2man ];
-
-    buildInputs = lib.optionals pkgs.stdenv.isDarwin (with pkgs; [
-      libiconv
-      Security
-      CoreServices
-    ]);
-
-    # When we cross compile we cannot run the output executable to
-    # generate the man page
-    postInstall = ''
-      # TexLab builds man page separately in CI:
-      # https://github.com/latex-lsp/texlab/blob/v5.7.0/.github/workflows/publish.yml#L127-L131
-      help2man --no-info "$out/bin/texlab" > texlab.1
-      installManPage texlab.1
-    '';
-  };
+  texlab = pkgs.unstable.texlab;
 in
 {
   imports = [
@@ -43,6 +12,13 @@ in
     ./modules/programs/my-kitty
     ./modules/programs/openconnect-epfl.nix
     ./common-linux.nix
+
+    # PATH Overrides
+    ({ config, lib, ... }: {
+      home.sessionPath = lib.mkBefore [
+        "${config.home.homeDirectory}/.bin/overrides"
+      ];
+    })
   ];
 
   # Let Home Manager install and manage itself.
@@ -114,8 +90,6 @@ in
     BAT_THEME = "GitHub";
     # Editor
     EDITOR = "kak";
-    # PATH Overrides
-    PATH = "${config.home.homeDirectory}/.bin/overrides:$PATH";
   };
 
   home.sessionPath = [

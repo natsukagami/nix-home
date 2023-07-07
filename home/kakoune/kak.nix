@@ -141,7 +141,10 @@ in
           owner = "tree-sitter";
           repo = "tree-sitter-scala";
           rev = "8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203";
-          sha256 = "sha256-G83H3RJddeIdLT6JssIDD5KXVnZE6vk1chl3RpQjdCI=";
+          sha256 =
+            if pkgs.stdenv.isDarwin
+            then "sha256-Ff8vRw7UswvPRGQS6nlSxqz46pX4eLNckuSbqa1yvtA="
+            else "sha256-G83H3RJddeIdLT6JssIDD5KXVnZE6vk1chl3RpQjdCI=";
           leaveDotGit = true;
         };
       in
@@ -156,7 +159,10 @@ in
           owner = "tree-sitter";
           repo = "tree-sitter-haskell";
           rev = "ba0bfb0e5d8e9e31c160d287878c6f26add3ec08";
-          sha256 = "sha256-nocX9L8vD655nzky4PQulygWAjKGC1rh3SYDr7t4wBQ=";
+          sha256 =
+            if pkgs.stdenv.isDarwin
+            then "sha256-lW3E4gSZV/m2RfofUqeiCu8KDz06YEvXbYKs8smXFi4="
+            else "sha256-nocX9L8vD655nzky4PQulygWAjKGC1rh3SYDr7t4wBQ=";
           leaveDotGit = true;
         };
       in
