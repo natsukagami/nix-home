@@ -297,8 +297,8 @@ in
       # Gaps
       gaps.outer = 4;
       gaps.inner = 4;
-      gaps.smartBorders = "off"; # until swayfx fixes clipping bug
-      gaps.smartGaps = false;
+      gaps.smartBorders = "on";
+      gaps.smartGaps = true;
 
       ### Bars
       # Let systemd manage it
@@ -339,7 +339,7 @@ in
         ## swayfx stuff
         # Rounded corners
         corner_radius 5
-        smart_corner_radius off
+        smart_corner_radius on
         # Shadows
         shadows on
         shadow_blur_radius 5
