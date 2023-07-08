@@ -22,6 +22,10 @@ let
     oidc-enabled = true;
     oidc-idp-name = "DTTH";
     oidc-scopes = [ "openid" "email" "profile" ];
+    # HTTP Client
+    http-client.block-ips = [ "11.0.0.0/24" ];
+    # Advanced
+    advanced-rate-limit-requests = 0;
   });
 in
 {

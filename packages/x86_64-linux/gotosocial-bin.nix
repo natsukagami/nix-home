@@ -4,11 +4,11 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "gotosocial-bin";
-  version = "0.9.0";
+  version = "0.10.0-rc1";
 
   src = builtins.fetchurl {
     url = "https://github.com/superseriousbusiness/gotosocial/releases/download/v${version}/gotosocial_${version}_linux_amd64.tar.gz";
-    sha256 = "sha256:0dv3fp0q6ci9br68d7fzni74fqj07a5p71k4hzqhhib9xdhj104v";
+    sha256 = "sha256:1a8ygs3kqi7v07mk96k3r4azbjz7sqgshlplslwbnfcsli8m60dz";
     # sha256 = fakeSha256;
   };
 
