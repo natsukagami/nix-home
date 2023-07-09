@@ -45,7 +45,7 @@ let
   };
 in
 {
-  imports = with modules; [ adb ios wlr logitech virtualisation ];
+  imports = with modules; [ adb ios wlr logitech virtualisation ] ++ [ ./networking.nix ];
 
   options.common.linux = {
     enable = mkOption {
@@ -170,6 +170,7 @@ in
     services.resolved.domains = cfg.networking.dnsServers;
     services.resolved.fallbackDns = cfg.networking.dnsServers;
     # Firewall: only open to SSH now
+    networking.nftables.enable = true;
     networking.firewall.allowedTCPPorts = [ 22 ];
     networking.firewall.allowedUDPPorts = [ 22 ];
     # Enable tailscale

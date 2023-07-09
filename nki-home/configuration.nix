@@ -125,11 +125,10 @@ with lib;
   # Music server
   services.navidrome.enable = true;
   services.navidrome.settings = {
-    Address = "11.0.0.2";
     MusicFolder = "/mnt/Stuff/Music";
   };
   systemd.services.navidrome.serviceConfig.BindReadOnlyPaths = lib.mkAfter [ "/etc" ];
-  networking.firewall.allowedTCPPorts = [ 4533 ];
+  nki.networking.allowLocalPorts = [ 4533 ];
 
   # Printers
   services.printing.enable = true;
