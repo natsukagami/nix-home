@@ -1,11 +1,18 @@
 { config, pkgs, lib, ... }:
 
+with lib;
 {
   imports = [
     ./tide/nix-shell.nix
   ];
 
-  home.packages = with pkgs; [
+  options.programs.fish.everywhereAbbrs = mkOption {
+    type = types.attrsOf types.str;
+    description = "Abbreviations that expands everywhere";
+    default = { };
+  };
+
+  config.home.packages = with pkgs; [
     timg
     # For fzf.fish
     fzf
@@ -13,7 +20,7 @@
     bat
   ];
 
-  programs.fish = {
+  config.programs.fish = {
     enable = true;
     functions = {
       # Simplify nix usage!
@@ -73,6 +80,7 @@
         wraps = "rg";
         description = "Search with ripgrep and put results into the editor";
       };
+      echo-today = "date +%F";
     };
 
     tide = {
@@ -83,10 +91,13 @@
       cat = "bat --theme=GitHub ";
       catp = "bat --theme=GitHub -p ";
       l = "exa -l --color=always ";
+    };
 
-      # My own commands for easy access
-      thisterm = "cd ~/Projects/uw/$CURRENT_TERM";
-      today = "date +%F";
+    everywhereAbbrs = {
+      lsports =
+        if pkgs.stdenv.isDarwin
+        then "lsof -i -P | grep LISTEN"
+        else "ss -tulp";
     };
 
     shellInit = ''
@@ -135,6 +146,16 @@
       ## Set some kak-focused keybindings
       bind -M default gi beginning-of-line
       bind -M default gl end-of-line
+
+      # Everywhere abbrs
+      ${
+        concatStringsSep "\n"
+          (mapAttrsToList (k: v: "abbr --add --position anywhere -- ${k} ${escapeShellArg v}")
+            config.programs.fish.everywhereAbbrs)
+      }
+
+      # Replace today with actual today
+      abbr --add --position anywhere today -f echo-today
 
       # Set up direnv
       # ${pkgs.direnv}/bin/direnv hook fish | source
@@ -192,7 +213,7 @@
   };
 
   # Source files
-  home.file = {
+  config.home.file = {
     "fish/change_cmd.fish" = {
       source = ./. + "/change_cmd.fish";
       target = ".config/fish/conf.d/change_cmd.fish";
