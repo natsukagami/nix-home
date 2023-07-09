@@ -11,6 +11,12 @@ let
     # Typst updates really quickly.
     typst = final.unstable.typst;
     typst-lsp = final.unstable.typst-lsp;
+
+    # Sublime-music has a bug with playlists in 0.11.x
+    sublime-music =
+      if builtins.compareVersions prev.sublime-music.version "0.12" < 0
+      then final.unstable.sublime-music
+      else prev.sublime-music;
   };
   overlay-imported = final: prev: {
     rnix-lsp = inputs.rnix-lsp.defaultPackage."${final.system}";

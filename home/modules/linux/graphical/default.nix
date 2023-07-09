@@ -41,6 +41,7 @@ in
       librewolf
       cinnamon.nemo # File manager
       thunderbird # Email
+      sublime-music # For navidrome
 
       zotero
       libreoffice
