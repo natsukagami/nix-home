@@ -62,6 +62,7 @@ jobs:
         ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
         ssh-add /home/runner/.ssh/*
         ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
+        ssh-keyscan git.dtth.ch >> /home/runner/.ssh/known_hosts
     - uses: cachix/install-nix-action@v20
       with:
         extra_nix_config: |
