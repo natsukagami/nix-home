@@ -115,6 +115,21 @@
       }
     },
     "flake-compat_3": {
+      "locked": {
+        "lastModified": 1688025799,
+        "narHash": "sha256-ktpB4dRtnksm9F5WawoIkEneh1nrEvuxb5lJFt1iOyw=",
+        "owner": "nix-community",
+        "repo": "flake-compat",
+        "rev": "8bf105319d44f6b9f0d764efa4fdef9f1cc9ba1c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
+    "flake-compat_4": {
       "flake": false,
       "locked": {
         "lastModified": 1673956053,
@@ -361,17 +376,18 @@
     },
     "nixos-m1": {
       "inputs": {
+        "flake-compat": "flake-compat_3",
         "nixpkgs": [
           "nixpkgs"
         ],
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1687745434,
-        "narHash": "sha256-k0Xr/Ur4mMwS4fbG0NVkD6ILyKULCbL4AxerNKZc4PQ=",
+        "lastModified": 1689219568,
+        "narHash": "sha256-03oq6imX0mOidSmjoLjt/mSE2/6D6d4q0/UQcPn5/Zc=",
         "owner": "tpwrules",
         "repo": "nixos-apple-silicon",
-        "rev": "fd3d8bf86897666317b89a0846e4817442761221",
+        "rev": "07eef29d1214b40da45ff2fae5d7e7498a0dd8ab",
         "type": "github"
       },
       "original": {
@@ -446,11 +462,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1688939073,
-        "narHash": "sha256-jYhYjeK5s6k8QS3i+ovq9VZqBJaWbxm7awTKNhHL9d0=",
+        "lastModified": 1689326639,
+        "narHash": "sha256-79zi0t83Dcc2dE0NuYZ+2hqtKXZN1yWVq5mtx8D2d7Y=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8df7a67abaf8aefc8a2839e0b48f92fdcf69a38b",
+        "rev": "9fdfaeb7b96f05e869f838c73cde8d98c640c649",
         "type": "github"
       },
       "original": {
@@ -633,7 +649,7 @@
     },
     "swayfx": {
       "inputs": {
-        "flake-compat": "flake-compat_3",
+        "flake-compat": "flake-compat_4",
         "nixpkgs": [
           "nixpkgs"
         ]

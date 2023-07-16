@@ -39,6 +39,8 @@ let
           sha256 = "sha256-yQRUhezzI/rz7A+s5O7NGP8DjPzzXA80gIAhhV7mc3w=";
         };
       });
+
+    thunderbird = final.wrapThunderbird final.thunderbirdPackages.thunderbird-115 { };
   };
 
   overlay-libs = final: prev: {
