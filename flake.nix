@@ -31,6 +31,7 @@
       url = github:natsukagami/mpd-mpris/nix;
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki/phanpy";
 
     # --- Sources
     kakoune.url = github:mawww/kakoune;
