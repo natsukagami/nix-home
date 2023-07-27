@@ -36,6 +36,12 @@ let
     ${pkgs.grim}/bin/grim -g (${pkgs.slurp}/bin/slurp) - | ${pkgs.wl-clipboard}/bin/wl-copy
   '';
 
+  screenshotEditScript = pkgs.writeScriptBin "screenshot" ''
+    #! ${pkgs.fish}/bin/fish
+
+    ${pkgs.grim}/bin/grim -g (${pkgs.slurp}/bin/slurp) - | ${pkgs.swappy}/bin/swappy -f -
+  '';
+
   ignored-devices = [ "Surface_Headphones" ];
   playerctl = "${pkgs.playerctl}/bin/playerctl --ignore-player=${strings.concatStringsSep "," ignored-devices}";
 
@@ -217,6 +223,7 @@ in
         "${mod}+Shift+r" = "mode resize";
         ## Screenshot
         "Print" = "exec ${screenshotScript}/bin/screenshot";
+        "Shift+Print" = "exec ${screenshotEditScript}/bin/screenshot";
         ## Locking
         "${mod}+semicolon" = "exec ${cfg.lockCmd}";
         ## Multimedia
