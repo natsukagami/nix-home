@@ -138,6 +138,8 @@ in
     services.udev.packages = with pkgs; [
       qmk-udev-rules # For keyboards
     ];
+    # udisks
+    services.udisks2.enable = true;
     # Bluetooth: just enable
     hardware.bluetooth.enable = true;
     hardware.bluetooth.package = pkgs.bluez5-experimental; # Why do we need experimental...?
