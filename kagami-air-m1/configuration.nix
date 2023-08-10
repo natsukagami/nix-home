@@ -15,6 +15,10 @@
       ../modules/services/edns
     ];
 
+  # I'm away
+  time.timeZone = lib.mkForce "Asia/Ho_Chi_Minh";
+
+
   # Asahi kernel configuration
   hardware.asahi = {
     peripheralFirmwareDirectory = ./firmware;
