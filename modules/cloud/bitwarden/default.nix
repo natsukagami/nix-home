@@ -15,7 +15,13 @@ let
   host = "bw.nkagami.me";
 in
 {
-  options.cloud.bitwarden = { };
+  options.cloud.bitwarden = {
+    envFile = mkOption {
+      type = types.nullOr types.path;
+      description = "Path to the env file containing stuff";
+      default = null;
+    };
+  };
 
   config = {
     # users
@@ -53,10 +59,12 @@ in
 
         DOMAIN = "https://${host}";
       };
+
       serviceConfig = {
         User = user;
         Group = user;
         ExecStart = "${pkgs.unstable.vaultwarden-postgresql}/bin/vaultwarden";
+        EnvironmentFile = lists.optional (cfg.envFile != null) cfg.envFile;
         LimitNOFILE = "1048576";
         PrivateTmp = "true";
         PrivateDevices = "true";

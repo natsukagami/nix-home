@@ -100,6 +100,9 @@
   cloud.traefik.hosts.uptime-kuma-dtth = { host = "status.dtth.ch"; port = 16904; };
   cloud.traefik.hosts.uptime-kuma-codefun = { host = "status.codefun.vn"; port = 16904; };
 
+  # Bitwarden
+  sops.secrets.vaultwarden-env = { };
+  cloud.bitwarden.envFile = config.sops.secrets.vaultwarden-env.path;
 
   # Arion
   virtualisation.arion.backend = "docker";
