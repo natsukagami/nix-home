@@ -32,6 +32,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki/phanpy";
+    conduit = {
+      url = gitlab:famedly/conduit/v0.6.0;
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
     # --- Sources
     kakoune.url = github:mawww/kakoune;

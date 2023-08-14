@@ -127,6 +127,7 @@ with lib;
               paths = [
                 (pkgs.writeTextDir ".well-known/matrix/client" (builtins.toJSON {
                   "m.homeserver".base_url = "https://${instance.host}";
+                  "org.matrix.msc3575.proxy".url = "https://${instance.host}";
                 }))
                 (pkgs.writeTextDir ".well-known/matrix/server" (builtins.toJSON {
                   "m.server" = "${instance.host}:443";
