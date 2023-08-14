@@ -113,6 +113,7 @@ in
         WorkingDirectory = "/var/lib/gotosocial";
       };
       wantedBy = [ "multi-user.target" ];
+      requires = [ "minio.service" ];
     };
   };
 }
