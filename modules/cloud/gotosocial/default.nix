@@ -26,6 +26,7 @@ let
     http-client.block-ips = [ "11.0.0.0/24" ];
     # Advanced
     advanced-rate-limit-requests = 0;
+    # instance-inject-mastodon-version = true;
   });
 in
 {
