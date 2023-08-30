@@ -64,6 +64,14 @@ in
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
 
+    # Yellow light!
+    services.wlsunset = {
+      enable = pkgs.stdenv.isx86_64;
+
+      # Lausanne
+      latitude = "46.31";
+      longitude = "6.38";
+    };
 
     # Cursor
     home.pointerCursor = {
