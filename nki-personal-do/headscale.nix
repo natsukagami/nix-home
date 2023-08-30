@@ -18,6 +18,8 @@ rec {
     filter = "Host(`hs.dtth.ch`) && !PathPrefix(`/admin`)";
     noCloudflare = true;
   };
+  # cloud.traefik.config.http.middlewares.hs-sslheader.headers.customrequestheaders.X-Forwarded-Proto = "https";
+  # cloud.traefik.config.http.routers.headscale-router.middlewares = [ "hs-sslheader" ];
   cloud.traefik.hosts.headscale_webui = {
     inherit host;
     port = webuiPort;
