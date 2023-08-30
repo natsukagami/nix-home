@@ -14,6 +14,12 @@
     deploy-rs.url = "github:Serokell/deploy-rs";
     nur.url = "github:nix-community/NUR";
 
+    # --- Secure boot
+    lanzaboote = {
+      url = github:nix-community/lanzaboote/v0.3.0;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # --- Build tools
     flake-utils.url = github:numtide/flake-utils;
     crane.url = github:ipetkov/crane;
@@ -137,20 +143,29 @@
           }
         ];
       };
-      # x1c1 configuration
-      # nixosConfigurations."nki-x1c1" = nixpkgs.lib.nixosSystem rec {
-      #   system = "x86_64-linux";
-      #   modules = [
-      #     (common-nixos nixpkgs)
-      #     ./nki-x1c1/configuration.nix
-      #     home-manager.nixosModules.home-manager
-      #     {
-      #       home-manager.useGlobalPkgs = true;
-      #       home-manager.useUserPackages = true;
-      #       home-manager.users.nki = import ./home/nki-x1c1.nix;
-      #     }
-      #   ];
-      # };
+      # yoga g8 configuration
+      nixosConfigurations."nki-yoga-g8" = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        modules = [
+          (common-nixos nixpkgs)
+          inputs.lanzaboote.nixosModules.lanzaboote
+          ({ ... }: {
+            # Sets up secure boot
+            boot.loader.systemd-boot.enable = lib.mkForce false;
+            boot.lanzaboote = {
+              enable = true;
+              pkiBundle = "/etc/secureboot";
+            };
+          })
+          ./nki-yoga-g8/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.nki = import ./home/nki-x1c1.nix;
+          }
+        ];
+      };
       # macbook nixos
       nixosConfigurations."kagami-air-m1" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "aarch64-linux";

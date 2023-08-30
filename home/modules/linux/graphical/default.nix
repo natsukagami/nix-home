@@ -25,6 +25,11 @@ in
       description = "List of packages to include in ~/.config/autostart";
       default = [ ];
     };
+    defaults.webBrowser = mkOption {
+      type = types.str;
+      default = "firefox.desktop";
+      description = "Desktop file of the default web browser";
+    };
   };
   config = mkIf (cfg.type != null) {
     # Packages
@@ -81,13 +86,13 @@ in
       "x-scheme-handler/mailto" = [ "org.gnome.Evolution.desktop" ];
 
       # Default web browser stuff
-      "text/html" = [ "firefox.desktop" ];
-      "x-scheme-handler/about" = [ "firefox.desktop" ];
-      "x-scheme-handler/unknown" = [ "firefox.desktop" ];
-      "x-scheme-handler/http" = [ "firefox.desktop" ];
-      "x-scheme-handler/https" = [ "firefox.desktop" ];
-      "x-scheme-handler/ftp" = [ "firefox.desktop" ];
-      "x-scheme-handler/ftps" = [ "firefox.desktop" ];
+      "text/html" = [ cfg.defaults.webBrowser ];
+      "x-scheme-handler/about" = [ cfg.defaults.webBrowser ];
+      "x-scheme-handler/unknown" = [ cfg.defaults.webBrowser ];
+      "x-scheme-handler/http" = [ cfg.defaults.webBrowser ];
+      "x-scheme-handler/https" = [ cfg.defaults.webBrowser ];
+      "x-scheme-handler/ftp" = [ cfg.defaults.webBrowser ];
+      "x-scheme-handler/ftps" = [ cfg.defaults.webBrowser ];
 
       # Torrent
       "application/x-bittorrent" = [ "deluge.desktop" ];

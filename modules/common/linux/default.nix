@@ -17,6 +17,7 @@ let
       systemd.network.networks."05-ios-tethering" = {
         matchConfig.Driver = "ipheth";
         networkConfig.DHCP = "yes";
+        linkConfig.RequiredForOnline = "no";
       };
     };
 
@@ -158,6 +159,7 @@ in
 
     ## Network configuration
     systemd.network.enable = true;
+    systemd.network.wait-online.enable = false;
     networking.hostName = cfg.networking.hostname;
     networking.wireless.iwd.enable = true;
     systemd.network.networks = builtins.mapAttrs
