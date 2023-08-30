@@ -37,14 +37,34 @@
   programs.my-sway.fontSize = 14.0;
   programs.my-sway.terminal = "${config.programs.kitty.package}/bin/kitty";
   programs.my-sway.browser = "librewolf";
-  # Keyboard support
   wayland.windowManager.sway.config = {
+    # Keyboard support
     input."*".xkb_layout = "jp";
     input."1278:34:HHKB-Hybrid_3_Keyboard".xkb_layout = "jp";
     input."1:1:AT_Translated_Set_2_keyboard" = {
       xkb_options = "ctrl:swapcaps";
-      # xkb_layout = "us";
     };
+
+    startup = [
+      # rotation
+      (
+        let
+          iio-sway = pkgs.stdenv.mkDerivation {
+            name = "iio-sway";
+            version = "0.0.1";
+            src = pkgs.fetchFromGitHub {
+              owner = "okeri";
+              repo = "iio-sway";
+              rev = "e07477d1b2478fede1446e97424a94c80767819d";
+              hash = "sha256-JGacKajslCOvd/BFfFSf7s1/hgF6rJqJ6H6xNnsuMb4=";
+            };
+            buildInputs = with pkgs; [ dbus ];
+            nativeBuildInputs = with pkgs; [ meson ninja pkg-config ];
+          };
+        in
+        { command = "${iio-sway}/bin/iio-sway"; }
+      )
+    ];
   };
   # input-remapping
   xdg.configFile."autostart/input-remapper-autoload.desktop".source =
