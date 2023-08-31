@@ -195,7 +195,7 @@
         ];
       };
       deploy.nodes."nki-personal-do" = {
-        hostname = "nki-personal-do";
+        hostname = "nki.personal";
         sshUser = "root";
         profiles.system = {
           user = "root";

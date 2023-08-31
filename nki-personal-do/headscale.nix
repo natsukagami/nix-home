@@ -16,11 +16,13 @@ rec {
   cloud.traefik.hosts.headscale = {
     inherit port host;
     filter = "Host(`hs.dtth.ch`) && !PathPrefix(`/admin`)";
+    noCloudflare = true;
   };
   cloud.traefik.hosts.headscale_webui = {
     inherit host;
     port = webuiPort;
     filter = "Host(`hs.dtth.ch`) && PathPrefix(`/admin`)";
+    noCloudflare = true;
   };
 
   services.headscale = {
