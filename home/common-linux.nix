@@ -1,6 +1,7 @@
 { pkgs, config, lib, ... }:
 with lib; {
   imports = [
+    ./modules/monitors.nix
     ./modules/linux/graphical
     ./modules/X11/xfce4-notifyd.nix
     ./modules/programs/discord.nix

@@ -17,6 +17,12 @@ let
       if builtins.compareVersions prev.sublime-music.version "0.12" < 0
       then final.unstable.sublime-music
       else prev.sublime-music;
+
+    # New stuff in Kanshi 1.4.0
+    kanshi =
+      if builtins.compareVersions prev.kanshi.version "1.4.0" < 0
+      then final.callPackage final.unstable.kanshi.override { }
+      else prev.kanshi;
   };
   overlay-imported = final: prev: {
     rnix-lsp = inputs.rnix-lsp.defaultPackage."${final.system}";

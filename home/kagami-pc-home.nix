@@ -48,32 +48,22 @@
       top_x = builtins.ceil (3840 / scale);
       top_y = builtins.ceil (((2160 / scale) - 1080) / 2);
     in
-    {
-      "AOC U28G2G6B PPYP2JA000013" = {
-        mode = "3840x2160@60Hz";
+    with config.common.monitors; {
+      ${home_4k.name} = {
         scale = toString scale;
-        adaptive_sync = "on";
-        # render_bit_depth = "10";
         position = "0 0";
       };
-      "AOC 24G2W1G4 ATNN21A005410" = {
-        mode = "1920x1080@144Hz";
-        adaptive_sync = "on";
+      ${home_1080.name} = {
         position = "${toString top_x} ${toString top_y}";
-      };
-
-      "ViewSonic Corporation XG2402 SERIES V4K182501054" = {
-        mode = "1920x1080@144Hz";
-        adaptive_sync = "on";
       };
     };
   nki.programs.kitty.enable = true;
   nki.programs.kitty.fontSize = 14;
-  programs.my-sway.waybar.makeBars = barWith: [
+  programs.my-sway.waybar.makeBars = with config.common.monitors; barWith: [
     # For primary
-    (barWith { extraSettings = { output = [ "AOC U28G2G6B PPYP2JA000013" ]; }; })
+    (barWith { extraSettings = { output = [ home_4k.name ]; }; })
     # For secondary, hide mpd
-    (barWith { showMedia = false; showConnectivity = false; extraSettings = { output = [ "AOC 24G2W1G4 ATNN21A005410" ]; }; })
+    (barWith { showMedia = false; showConnectivity = false; extraSettings = { output = [ home_1080.name ]; }; })
   ];
 
   # Yellow light!

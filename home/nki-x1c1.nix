@@ -82,14 +82,18 @@
   };
 
   # Multiple screen setup
-  # services.kanshi = {
-  #   enable = true;
-  #   profiles.undocked.outputs = [{ criteria = "LVDS-1"; }];
-  #   profiles.docked-hdmi.outputs = [
-  #     # { criteria = "LVDS-1"; status = "disable"; }
-  #     { criteria = "HDMI-A-1"; }
-  #   ];
-  # };
+  services.kanshi = {
+    enable = true;
+    profiles.undocked.outputs = [{ criteria = "LVDS-1"; }];
+    profiles.work-both.outputs = [
+      { criteria = "eDP-1"; position = "0,0"; status = "enable"; }
+      { criteria = config.common.monitors.work.name; position = "1920,0"; }
+    ];
+    profiles.work-one.outputs = [
+      { criteria = "eDP-1"; status = "disable"; }
+      { criteria = config.common.monitors.work.name; }
+    ];
+  };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
