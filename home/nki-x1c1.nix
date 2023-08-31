@@ -47,6 +47,10 @@
       xkb_options = "ctrl:swapcaps";
     };
 
+    # Touch and Pen
+    input."1386:21338:Wacom_HID_535A_Finger".map_to_output = "eDP-1";
+    input."1386:21338:Wacom_HID_535A_Pen".map_to_output = "eDP-1";
+
     startup = [
       # rotation
       (
