@@ -140,11 +140,11 @@ in
         src = pkgs.fetchFromGitHub {
           owner = "tree-sitter";
           repo = "tree-sitter-scala";
-          rev = "8062487fb3b7f3ce1bb7ce1fd1c84bed60c75203";
-          sha256 =
+          rev = "70afdd5632d57dd63a960972ab25945e353a52f6";
+          hash =
             if pkgs.stdenv.isDarwin
-            then "sha256-Ff8vRw7UswvPRGQS6nlSxqz46pX4eLNckuSbqa1yvtA="
-            else "sha256-G83H3RJddeIdLT6JssIDD5KXVnZE6vk1chl3RpQjdCI=";
+            then lib.fakeHash
+            else "sha256-xr43ejHGCH4mcjOqxTJpO11LWKcHKAEETt6ZWUG9vo4=";
           leaveDotGit = true;
         };
       in
