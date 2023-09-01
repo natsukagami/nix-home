@@ -8,12 +8,12 @@ let
     "work" = {
       name = "LG Electronics LG ULTRAFINE 301MAXSGHD10";
       mode = "3840x2160@60Hz";
-      scale = "1.25";
+      scale = 1.25;
     };
     "home_4k" = {
       name = "AOC U28G2G6B PPYP2JA000013";
       mode = "3840x2160@60Hz";
-      scale = mkDefault "1.5";
+      scale = 1.5;
       adaptive_sync = "on";
       # render_bit_depth = "10";
     };
@@ -33,7 +33,9 @@ let
 
   eachMonitor = _name: monitor: {
     name = monitor.name;
-    value = builtins.removeAttrs monitor [ "name" ];
+    value = builtins.removeAttrs monitor [ "scale" "name" ] // (if monitor ? scale then {
+      scale = toString monitor.scale;
+    } else { });
   };
 in
 {
@@ -44,7 +46,7 @@ in
   config.common.monitors = monitors;
   config.home.packages = mkIf config.wayland.windowManager.sway.enable (with pkgs; [ kanshi ]);
   config.wayland.windowManager.sway.config.output = mkIf config.wayland.windowManager.sway.enable (
-    mapAttrs' eachMonitor monitors
+    mapAttrs' eachMonitor config.common.monitors
   );
 }
 
