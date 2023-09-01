@@ -26,6 +26,13 @@
     percentageCritical = 3;
     percentageLow = 10;
   };
+  services.tlp.enable = true;
+  services.tlp.settings = {
+    USB_AUTOSUSPEND = 0;
+  };
+  services.power-profiles-daemon.enable = false;
+  # powerManagement.enable = true;
+  # powerManagement.powertop.enable = true;
   services.logind.lidSwitch = "suspend";
 
   # Printing
@@ -65,11 +72,6 @@
   # };
 
   services.dbus.packages = with pkgs; [ gcr ];
-
-  # Power Management
-  powerManagement = {
-    enable = true;
-  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
