@@ -47,6 +47,9 @@ in
       cinnamon.nemo # File manager
       thunderbird # Email
       sublime-music # For navidrome
+      # Note taking
+      obsidian
+      (logseq.override { electron = pkgs.electron_24; })
 
       zotero
       libreoffice
