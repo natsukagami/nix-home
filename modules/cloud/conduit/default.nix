@@ -45,6 +45,10 @@ with lib;
           port = mkOption {
             type = types.int;
           };
+          noCloudflare = mkOption {
+            type = types.bool;
+            default = false;
+          };
           allow_registration = mkOption {
             type = types.bool;
             default = false;
@@ -145,7 +149,7 @@ with lib;
   config.cloud.traefik.hosts = mkIf cfg.enable (
     (lib.attrsets.mapAttrs'
       (name: instance: lib.attrsets.nameValuePair "conduit-${name}" ({
-        inherit (instance) host port;
+        inherit (instance) host port noCloudflare;
       }))
       cfg.instances)
     // (lib.attrsets.mapAttrs'

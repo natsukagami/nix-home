@@ -13,7 +13,6 @@ in
     };
     host = mkOption {
       type = types.str;
-      default = "write.nkagami.me";
       description = "The hostname for the instance";
     };
     site.title = mkOption {

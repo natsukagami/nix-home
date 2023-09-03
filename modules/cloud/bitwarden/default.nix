@@ -35,11 +35,13 @@ in
     # traefik
     cloud.traefik.hosts.bitwarden = {
       inherit port host;
+      noCloudflare = true;
     };
     cloud.traefik.hosts.bitwarden-notifications = {
       inherit host;
       port = notificationsPort;
       path = "/notifications/hub";
+      noCloudflare = true;
     };
     # systemd unit
     systemd.services.bitwarden-server = {
@@ -73,6 +75,7 @@ in
         AmbientCapabilities = "CAP_NET_BIND_SERVICE";
         StateDirectory = "bitwarden-server";
       };
+      requires = [ "postgresql.service" ];
       wantedBy = [ "multi-user.target" ];
     };
   };

@@ -96,7 +96,7 @@
     settings.HOST = "127.0.0.1";
     settings.PORT = "16904";
   };
-  cloud.traefik.hosts.uptime-kuma = { host = "status.nkagami.me"; port = 16904; };
+  cloud.traefik.hosts.uptime-kuma = { host = "status.nkagami.me"; port = 16904; noCloudflare = true; };
   cloud.traefik.hosts.uptime-kuma-dtth = { host = "status.dtth.ch"; port = 16904; };
   cloud.traefik.hosts.uptime-kuma-codefun = { host = "status.codefun.vn"; port = 16904; };
 
@@ -115,6 +115,7 @@
       host = "m.nkagami.me";
       port = 6167;
       well-known_port = 6168;
+      noCloudflare = true;
     };
   };
   cloud.conduit.heisenbridge = {
@@ -138,6 +139,7 @@
     host = "navidrome.nkagami.me";
     port = 4533;
     localHost = "11.0.0.2";
+    noCloudflare = true;
   };
 
   # Mail
@@ -251,7 +253,7 @@
   system.stateVersion = "21.11";
 
   # ntfy
-  cloud.traefik.hosts.ntfy-sh = { host = "ntfy.nkagami.me"; port = 11161; };
+  cloud.traefik.hosts.ntfy-sh = { host = "ntfy.nkagami.me"; port = 11161; noCloudflare = true; };
   services.ntfy-sh = {
     enable = true;
     settings = {

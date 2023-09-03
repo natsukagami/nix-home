@@ -268,6 +268,7 @@ in
       cloud.traefik.hosts.maddy-mta-sts = {
         port = mtaStsPort;
         host = "mta-sts.nkagami.me";
+        noCloudflare = true;
       };
 
       # maddy itself
