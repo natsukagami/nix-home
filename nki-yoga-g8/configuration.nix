@@ -58,6 +58,19 @@
   nki.services.edns.enable = true;
   nki.services.edns.ipv6 = true;
 
+  # Backup home
+  services.btrbk.extraPackages = with pkgs; [ sudo ];
+  services.btrbk.instances.home = {
+    onCalendar = "hourly";
+    settings = {
+      snapshot_preserve = "24h 30d 6m 1y";
+      snapshot_preserve_min = "7d";
+      volume."/" = {
+        subvolume.home.snapshot_name = ".backups-home";
+      };
+    };
+  };
+
   # Secrets
   # sops.defaultSopsFile = ./secrets.yaml;
   # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
