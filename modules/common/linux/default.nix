@@ -11,8 +11,13 @@ let
       programs.adb.enable = true;
       users.users.${config.common.linux.username}.extraGroups = [ "adbusers" ];
     };
-    ios = { config, ... }: mkIf config.common.linux.enable {
+    ios = { config, pkgs, ... }: mkIf config.common.linux.enable {
       services.usbmuxd.enable = true;
+      services.usbmuxd.package = pkgs.usbmuxd2;
+      environment.systemPackages = with pkgs; [
+        libimobiledevice
+        ifuse
+      ];
       users.users.${config.common.linux.username}.extraGroups = [ config.services.usbmuxd.group ];
       systemd.network.networks."05-ios-tethering" = {
         matchConfig.Driver = "ipheth";
