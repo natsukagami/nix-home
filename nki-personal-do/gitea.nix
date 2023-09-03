@@ -100,7 +100,7 @@ in
       repository = {
         DEFAULT_PRIVATE = "private";
         PREFERRED_LICENSES = strings.concatStringsSep "," [ "AGPL-3.0-or-later" "GPL-3.0-or-later" "Apache-2.0" ];
-        DISABLE_HTTP_GIT = true;
+        # DISABLE_HTTP_GIT = true;
         DEFAULT_BRANCH = "master";
         ENABLE_PUSH_CREATE_USER = true;
       };
