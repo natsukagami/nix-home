@@ -51,6 +51,8 @@ in
     typst
     ## Python
     python3
+    ## Scala
+    pkgs.unstable.scala-cli
 
     # Fonts
     fantasque-sans-mono
