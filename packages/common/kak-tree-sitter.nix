@@ -3,23 +3,23 @@ let
   src = fetchFromGitHub {
     owner = "phaazon";
     repo = "kak-tree-sitter";
-    rev = "fcc4ec36385ee5ce1378dae1b3eca4288619ff0d";
-    sha256 = "sha256-a2EBTe6SucxHHMhElhnvyf3b6AOj5CyhHE7RHVx/Ulc=";
+    rev = "facf55f77171ae0d33332c6d54b5492e544f9ca1";
+    hash = "sha256-XMHgP4SO2HT6NthQkKUwU1rOwVFXDp7FsM99zqM4Q04=";
   };
 
   kak-tree-sitter = rustPlatform.buildRustPackage rec {
     inherit src;
     pname = "kak-tree-sitter";
-    version = "0.3.0";
-    cargoSha256 = "sha256-eDkIN7uzy2euywsjm3152R36B181Jj9KqnHsFDjyxhI=";
+    version = "0.4.3";
+    cargoHash = "sha256-JvMcwdllq0dacceZsI14cCnV7aW7wmU3h/Y9SAwHVtM=";
     cargoBuildOptions = [ "--package" "kak-tree-sitter" ];
   };
 
   ktsctl = rustPlatform.buildRustPackage rec {
     inherit src;
     name = "ktsctl";
-    version = "0.2.0";
-    cargoSha256 = "sha256-k16nuC50n9TSiGdkzP58gr6zpFR/Jh21Bw33SRWRi8U=";
+    version = "0.3.1";
+    cargoHash = "sha256-pyCUiekj79euOtS43mu9Fti+HZizaV069068h61uOT8=";
 
     cargoBuildOptions = [ "--package" "ktsctl" ];
 
