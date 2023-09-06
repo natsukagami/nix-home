@@ -72,6 +72,22 @@
       )
     ];
   };
+  ## Virtual keyboard
+  systemd.user.services.wvkbd = {
+    Unit = {
+      Description = "Wayland virtual keyboard";
+    };
+    Install.WantedBy = [ "waybar.service" ];
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.wvkbd}/bin/wvkbd-mobintl -l simple,special,emoji --landscape-layers simple,special,emoji --hidden";
+    };
+  };
+  wayland.windowManager.sway.extraConfig = ''
+    bindswitch tablet:on exec systemctl --user kill --signal SIGUSR2 wvkbd
+    bindswitch tablet:off exec systemctl --user kill --signal SIGUSR1 wvkbd
+  '';
+
   # input-remapping
   xdg.configFile."autostart/input-remapper-autoload.desktop".source =
     "${pkgs.input-remapper}/share/applications/input-remapper-autoload.desktop";

@@ -147,7 +147,7 @@
   cloud.mail = {
     enable = true;
     debug = true;
-    # local_ip = (builtins.elemAt config.networking.interfaces.eth0.ipv4.addresses 0).address;
+    local_ip = config.secrets.ipAddresses."nki.personal";
     tls.certFile = "${config.cloud.traefik.certsDumper.destination}/${config.cloud.mail.hostname}/certificate.crt";
     tls.keyFile = "${config.cloud.traefik.certsDumper.destination}/${config.cloud.mail.hostname}/privatekey.key";
     usersFile = config.sops.secrets.mail-users.path;

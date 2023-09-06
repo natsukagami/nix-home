@@ -6,7 +6,8 @@
   boot.initrd.kernelModules = [ "nvme" ];
   fileSystems."/" = { device = "/dev/sda1"; fsType = "ext4"; };
   # swap
-  swapDevices = [{ device = "/var/swapfile"; size = 4 * 1024; }];
+  swapDevices = [{ device = "/var/swapfile"; size = 4 * 1024; priority = 1024; }];
+  zramSwap.enable = true;
   # volumes
   fileSystems.data = {
     device = "/dev/disk/by-id/scsi-0HC_Volume_31812942";
