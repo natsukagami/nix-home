@@ -211,6 +211,3 @@ hook global BufOpenFile .* %{
 
 map global normal <a-[> ':inc-dec-modify-numbers + %val{count}<ret>'
 map global normal <a-]> ':inc-dec-modify-numbers - %val{count}<ret>'
-
-# Discord integration
-discord-presence-enable

@@ -314,10 +314,10 @@ in
         narHash = "sha256-IcxFmvG0jqpMCG/dT9crVRgPgMGKkic6xwrnW5z4+bc=";
       }) + "/rc";
     }
-    {
-      name = "kakoune-discord";
-      src = (builtins.getFlake "github:natsukagami/kakoune-discord/03f95e40d6efd8fd3de7bca31653d43de2dcfc5f").packages.${pkgs.system}.kakoune-discord-rc + "/rc";
-    }
+    # {
+    #   name = "kakoune-discord";
+    #   src = (builtins.getFlake "github:natsukagami/kakoune-discord/03f95e40d6efd8fd3de7bca31653d43de2dcfc5f").packages.${pkgs.system}.kakoune-discord-rc + "/rc";
+    # }
     rec {
       name = "kakoune-mirror";
       src = pkgs.fetchFromGitHub
