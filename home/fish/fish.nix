@@ -81,7 +81,9 @@ with lib;
         description = "Search with ripgrep and put results into the editor";
       };
       echo-today = "date +%F";
+      newfile = "mkdir -p (dirname $argv[-1]) && touch $argv";
     };
+
 
     tide = {
       nix-shell.enable = true;
