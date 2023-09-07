@@ -154,6 +154,8 @@ in
     hardware.bluetooth.package = pkgs.bluez5-experimental; # Why do we need experimental...?
     hardware.bluetooth.settings.General.Experimental = true;
     services.blueman.enable = true; # For a GUI
+    # ZRAM
+    zramSwap.enable = true;
 
     ## Users
     users.users.${cfg.username} = {

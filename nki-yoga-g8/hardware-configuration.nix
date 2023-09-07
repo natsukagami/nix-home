@@ -29,7 +29,7 @@
     };
 
   swapDevices = [
-    { device = "/var/swapfile"; size = 32 * 1024; }
+    { device = "/var/swapfile"; size = 32 * 1024; priority = 10; }
   ];
 
   boot.blacklistedKernelModules = [
