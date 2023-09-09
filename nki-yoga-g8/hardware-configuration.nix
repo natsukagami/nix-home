@@ -19,6 +19,10 @@
       device = "/dev/disk/by-uuid/b32d27bf-9df6-43c1-8b93-c0693811bf5b";
       fsType = "btrfs";
     };
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+  };
 
   common.linux.luksDevices."nixroot" = "/dev/disk/by-uuid/09114015-79bc-4a40-bf60-b4022e969acb";
 

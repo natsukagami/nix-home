@@ -46,6 +46,9 @@ with lib; {
 
     # Owncloud
     services.owncloud-client.enable = true;
+
+    # UDisks automounter
+    services.udiskie.enable = true;
   });
 }
 
