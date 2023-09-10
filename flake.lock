@@ -172,11 +172,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1692370893,
-        "narHash": "sha256-a/4NVGUT/jcNI6pmy/1ydl53E8LIbJXg7kytHkJ+/r4=",
+        "lastModified": 1694382265,
+        "narHash": "sha256-bHM6/6GYzY/seA0YaSSN4opvoIqfWsfRKmdS6tMsh6A=",
         "ref": "refs/heads/main",
-        "rev": "889f8277820bdbc739c25194c684bf7b651c24b3",
-        "revCount": 1549,
+        "rev": "c9ffcdf53555f2e796a26dd2c8c8174957b55020",
+        "revCount": 1635,
         "type": "git",
         "url": "ssh://gitea@git.dtth.ch/nki/phanpy"
       },
