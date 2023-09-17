@@ -114,7 +114,7 @@ in
         WorkingDirectory = "/var/lib/gotosocial";
       };
       wantedBy = [ "multi-user.target" ];
-      requires = [ "minio.service" ];
+      requires = [ "minio.service" "postgresql.service" ];
     };
   };
 }

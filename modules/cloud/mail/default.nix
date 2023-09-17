@@ -275,6 +275,7 @@ in
       systemd.services."${name}" = {
         after = [ "network.target" "traefik-certs-dumper.service" ];
         wantedBy = [ "multi-user.target" ];
+        requires = [ "postgresql.service" ];
 
         description = "maddy mail server";
         documentation = [

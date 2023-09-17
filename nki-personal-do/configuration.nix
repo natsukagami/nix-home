@@ -231,6 +231,7 @@
     forceHttps = false;
   };
   cloud.postgresql.databases = [ "outline" ];
+  systemd.services.outline.requires = [ "postgresql.service" ];
   cloud.traefik.hosts.outline = { host = "wiki.dtth.ch"; port = 18729; };
 
   # GoToSocial

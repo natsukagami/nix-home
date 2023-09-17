@@ -27,6 +27,7 @@ rec {
     noCloudflare = true;
   };
 
+  systemd.services.headscale.requires = [ "postgresql.service" ];
   services.headscale = {
     enable = true;
     inherit port;

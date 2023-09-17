@@ -16,6 +16,7 @@ in
   cloud.traefik.hosts.nextcloud = {
     inherit port host;
   };
+  systemd.services.nextcloud.requires = [ "postgresql.service" ];
   services.nextcloud = {
     enable = true;
     hostName = host;

@@ -42,7 +42,8 @@ in
   systemd.services.miniflux = {
     description = "Miniflux service";
     wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" "postgresql.service" ];
+    after = [ "network.target" ];
+    requires = [ "postgresql.service" ];
 
     serviceConfig = {
       ExecStart = "${package}/bin/miniflux";

@@ -23,6 +23,8 @@ in
   };
 
   # Synapse instance for DTTH
+  systemd.services.matrix-synapse.requires = [ "postgresql.service" ];
+
   services.matrix-synapse = {
     enable = true;
     withJemalloc = true;

@@ -83,6 +83,8 @@ in
     noCloudflare = true;
   };
 
+  systemd.services.gitea.requires = [ "postgresql.service" ];
+
   services.gitea = {
     enable = true;
 
