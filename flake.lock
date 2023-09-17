@@ -1526,11 +1526,11 @@
         "nixpkgs": "nixpkgs_11"
       },
       "locked": {
-        "lastModified": 1687432552,
-        "narHash": "sha256-azcZU43rYV820Ye9OSRA+jsUGGEKZCSdALhzbAPCyEQ=",
+        "lastModified": 1694957290,
+        "narHash": "sha256-bRdKfGBn3N2H7bp5Pk5D9KXlCuVAcAYP8Z7cdAIRGPY=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "2cd5c744d64192d82414755edc375e3d5dc0cd20",
+        "rev": "2a36b4942f46b0c0c6155042fc6d9b7ce3ceccf4",
         "type": "github"
       },
       "original": {
