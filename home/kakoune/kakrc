@@ -104,7 +104,7 @@ hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c
     hook window BufWritePre .* %{ lsp-formatting-sync }
 }
 
-hook global WinSetOption filetype=(rust) %{
+hook global WinSetOption filetype=(rust|scala) %{
     # Enable inlay hints
     lsp-inlay-hints-enable window
 }

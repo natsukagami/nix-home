@@ -701,15 +701,16 @@
     "kak-lsp": {
       "flake": false,
       "locked": {
-        "lastModified": 1693610654,
-        "narHash": "sha256-BTyDytJJMJsDvqjX4wV3e0t2XXU5Wz0xiLwQepzFDKY=",
-        "owner": "kak-lsp",
+        "lastModified": 1694964666,
+        "narHash": "sha256-0P3LvqId56qYA6qgI/p2YjKotb/Zdaz8ELvWFH0glDY=",
+        "owner": "natsukagami",
         "repo": "kak-lsp",
-        "rev": "ae3d052928a482620f62fe3ee866ad072808bac1",
+        "rev": "ceecb7656bca8b042f8a8c19d737eff3bfe10829",
         "type": "github"
       },
       "original": {
-        "owner": "kak-lsp",
+        "owner": "natsukagami",
+        "ref": "metals-support",
         "repo": "kak-lsp",
         "type": "github"
       }

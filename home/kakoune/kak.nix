@@ -80,11 +80,13 @@ in
   programs.kak-lsp.languages.scala = {
     command = "metals";
     filetypes = [ "scala" ];
-    roots = [ "build.sbt" ];
+    roots = [ "build.sbt" "build.sc" ];
     settings_section = "metals";
     settings.metals = {
       enableSemanticHighlighting = true;
       showInferredType = true;
+      decorationProvider = true;
+      inlineDecorationProvider = true;
     };
   };
   programs.kak-lsp.languages.latex = {
