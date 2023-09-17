@@ -30,6 +30,11 @@ let
     deploy-rs = inputs.deploy-rs.packages.default;
     dtth-phanpy = inputs.dtth-phanpy.packages.${final.system}.default;
     matrix-conduit = inputs.conduit.packages.${final.system}.default;
+    exa = inputs.eza.packages.${final.system}.default.overrideAttrs (attrs: {
+      postInstall = attrs.postInstall + ''
+        ln -sv $out/bin/eza $out/bin/exa
+      '';
+    });
 
     # A list of source-style inputs.
     sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;

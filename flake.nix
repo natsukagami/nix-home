@@ -42,6 +42,8 @@
       url = gitlab:famedly/conduit/v0.6.0;
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    eza.url = github:eza-community/eza/v0.12.0;
+    eza.inputs.nixpkgs.follows = "nixpkgs";
 
     # --- Sources
     kakoune.url = github:mawww/kakoune;
