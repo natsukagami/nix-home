@@ -34,7 +34,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mpd-mpris = {
-      url = github:natsukagami/mpd-mpris/nix;
+      url = github:natsukagami/mpd-mpris;
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki/phanpy";
