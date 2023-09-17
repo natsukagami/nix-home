@@ -22,8 +22,8 @@ let
     };
     authentik = mkImage {
       imageName = "ghcr.io/goauthentik/server";
-      finalImageTag = "2023.6.1";
-      imageDigest = "sha256:e16596af630d0ca004404763e6625b79c75c90da68283d28ebc4197b6e6c49bd";
+      finalImageTag = "2023.8.3";
+      imageDigest = "sha256:82a07af063e8f93d0f174b6b058fcb6d54cd31ca2a271d23173cb149e19e8116";
     };
   };
   authentikEnv = pkgs.writeText "authentik.env" ''
