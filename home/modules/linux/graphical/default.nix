@@ -69,7 +69,7 @@ in
 
     # Yellow light!
     services.wlsunset = {
-      enable = pkgs.stdenv.isx86_64;
+      enable = true;
 
       # Lausanne
       latitude = "46.31";

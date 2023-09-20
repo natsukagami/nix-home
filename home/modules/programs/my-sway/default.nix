@@ -305,7 +305,7 @@ in
       gaps.outer = 4;
       gaps.inner = 4;
       gaps.smartBorders = "on";
-      gaps.smartGaps = true;
+      gaps.smartGaps = false;
 
       ### Bars
       # Let systemd manage it

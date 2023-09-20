@@ -15,8 +15,7 @@
       ../modules/services/edns
     ];
 
-  # I'm away
-  time.timeZone = lib.mkForce "Asia/Ho_Chi_Minh";
+  # time.timeZone = lib.mkForce "Asia/Ho_Chi_Minh";
   services.xserver.desktopManager.plasma5.enable = true;
 
 
