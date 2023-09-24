@@ -99,12 +99,12 @@ hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c
     set window lsp_hover_anchor true
 
 }
-hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix) %{
+hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix|fsharp) %{
     # Format the document if possible
     hook window BufWritePre .* %{ lsp-formatting-sync }
 }
 
-hook global WinSetOption filetype=(rust|scala) %{
+hook global WinSetOption filetype=(rust|scala|fsharp) %{
     # Enable inlay hints
     lsp-inlay-hints-enable window
 }
@@ -124,8 +124,8 @@ map global insert <a-a> '<esc>A'
 hook global WinSetOption filetype=(fsharp) %{
     set-option window comment_line "//"
     # Set up formatting
-    set-option window formatcmd "~/.dotnet/tools/fantomas --stdin --stdout"
-    hook window -group fsharp-format BufWritePre .* %{ format }
+    # set-option window formatcmd "~/.dotnet/tools/fantomas --stdin --stdout"
+    # hook window -group fsharp-format BufWritePre .* %{ format }
 }
 
 hook global WinSetOption filetype=(ocaml) %{
