@@ -77,6 +77,16 @@ in
     filetypes = [ "typescript" ];
     roots = [ "package.json" ];
   };
+  programs.kak-lsp.languages.fsharp = {
+    args = [ "--adaptive-lsp-server-enabled" "--project-graph-enabled" "--source-text-factory" "RoslynSourceText" ];
+    command = "fsautocomplete";
+    filetypes = [ "fsharp" ];
+    roots = [ "*.fsproj" ];
+    settings_section = "FSharp";
+    settings.FSharp = {
+      AutomaticWorkspaceInit = true;
+    };
+  };
   programs.kak-lsp.languages.scala = {
     command = "metals";
     filetypes = [ "scala" ];
