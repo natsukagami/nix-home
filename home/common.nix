@@ -65,6 +65,8 @@ in
     fossil
     openssh
     tea # gitea CLI (gh-like)
+    fx # JSON viewer
+    glow # Markdown viewer
     ## File Manager
     nnn
     ## PDF Processors
