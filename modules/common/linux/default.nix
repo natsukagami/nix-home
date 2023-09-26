@@ -26,6 +26,16 @@ let
       };
     };
 
+    accounts = { pkgs, ... }: mkIf config.common.linux.enable {
+      environment.systemPackages = with pkgs.gnome; [ pkgs.glib gnome-control-center ];
+      services.accounts-daemon.enable = true;
+      services.gnome.gnome-online-accounts.enable = true;
+      programs.evolution.enable = true;
+      programs.evolution.plugins = with pkgs; [ evolution-ews ];
+      services.gnome.evolution-data-server.enable = true;
+      services.gnome.evolution-data-server.plugins = with pkgs; [ evolution-ews ];
+    };
+
     wlr = { ... }: mkIf config.common.linux.enable {
       # swaync disable notifications on screencast
       xdg.portal.wlr.settings.screencast = {
@@ -54,7 +64,7 @@ let
   };
 in
 {
-  imports = with modules; [ adb ios wlr logitech virtualisation ];
+  imports = with modules; [ adb ios wlr logitech virtualisation accounts ];
 
   options.common.linux = {
     enable = mkOption {
