@@ -44,6 +44,7 @@
     };
     eza.url = github:eza-community/eza/v0.12.0;
     eza.inputs.nixpkgs.follows = "nixpkgs";
+    nix-gaming.url = github:fufexan/nix-gaming;
 
     # --- Sources
     kakoune.url = github:mawww/kakoune;
@@ -87,6 +88,14 @@
         ];
       };
       nixpkgsAsRegistry = nixpkgsAsRegistry_ nixpkgs;
+
+      osuStable = { pkgs, ... }: {
+        nix.settings = {
+          substituters = [ "https://nix-gaming.cachix.org" ];
+          trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
+        };
+        environment.systemPackages = [ inputs.nix-gaming.packages.${pkgs.hostPlatform.system}.osu-stable ];
+      };
 
       # Common Nix modules
       common-nix = stable: { ... }: {
@@ -133,6 +142,7 @@
         modules = [
           (common-nixos nixpkgs)
           ./nki-home/configuration.nix
+          osuStable
           inputs.home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
