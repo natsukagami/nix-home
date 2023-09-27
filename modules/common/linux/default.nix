@@ -179,9 +179,11 @@ in
 
     ## Network configuration
     systemd.network.enable = true;
+    networking.dhcpcd.enable = lib.mkForce false;
     systemd.network.wait-online.enable = false;
     networking.hostName = cfg.networking.hostname;
     networking.wireless.iwd.enable = true;
+    networking.wireless.iwd.settings.General.EnableNetworkConfiguration = true;
     systemd.network.networks = builtins.mapAttrs
       (name: cfg: {
         matchConfig.Name = cfg.match;
