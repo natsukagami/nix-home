@@ -1,5 +1,10 @@
 # Enable kak-tree-sitter
-eval %sh{ kak-tree-sitter --kakoune -d }
+eval %sh{ kak-tree-sitter --kakoune -d --server }
+## Set some color overrides
+set global kts_yellow "rgb:e2b75e"
+set global kts_teal "rgb:008080"
+set global kts_mauve "rgb:c264ff"
+set global kts_sky "rgb:6aa622"
 # Color scheme
 colorscheme catppuccin-latte
 set global background default
