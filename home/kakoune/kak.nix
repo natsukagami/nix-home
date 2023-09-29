@@ -38,9 +38,22 @@ let
     ) ++ (with pkgs; [ libiconv ]);
   };
 
+  kak-lsp-frontend = { pkgs, lib, ... }:
+    let
+      langserver = name: {
+        args = [ "--stdio" ];
+        command = "${pkgs.nodePackages.vscode-langservers-extracted}/bin/vscode-${name}-language-server";
+        filetypes = [ name ];
+        roots = [ "package.json" ".git" ];
+      };
+    in
+    {
+      programs.kak-lsp.languages = lib.attrsets.genAttrs [ "html" "css" "json" ] langserver;
+    };
+
 in
 {
-  imports = [ ../modules/programs/my-kakoune ./kaktex.nix ];
+  imports = [ ../modules/programs/my-kakoune ./kaktex.nix kak-lsp-frontend ];
 
   home.packages = with pkgs; [
     # ctags for peneira
