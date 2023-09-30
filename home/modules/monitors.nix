@@ -17,9 +17,9 @@ let
       adaptive_sync = "on";
       # render_bit_depth = "10";
     };
-    "home_1080" = {
-      name = "AOC 24G2W1G4 ATNN21A005410";
-      mode = "1920x1080@144Hz";
+    "home_1440" = {
+      name = "AOC Q27G2G3R3B VXJP6HA000442";
+      mode = "2560x1440@165Hz";
       adaptive_sync = "on";
     };
 

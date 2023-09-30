@@ -46,14 +46,14 @@
     let
       scale = 1.5;
       top_x = builtins.ceil (3840 / scale);
-      top_y = builtins.ceil (((2160 / scale) - 1080) / 2);
+      top_y = 0;
     in
     with config.common.monitors; {
       ${home_4k.name} = {
         scale = toString scale;
         position = "0 0";
       };
-      ${home_1080.name} = {
+      ${home_1440.name} = {
         position = "${toString top_x} ${toString top_y}";
       };
     };
@@ -63,7 +63,7 @@
     # For primary
     (barWith { extraSettings = { output = [ home_4k.name ]; }; })
     # For secondary, hide mpd
-    (barWith { showMedia = false; showConnectivity = false; extraSettings = { output = [ home_1080.name ]; }; })
+    (barWith { showMedia = false; showConnectivity = false; extraSettings = { output = [ home_1440.name ]; }; })
   ];
 
   # Yellow light!
