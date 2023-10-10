@@ -231,10 +231,10 @@ in
     InfoDiagnosticInformation = "@Information";
     InfoDiagnosticWarning = "@DiagnosticWarning";
     # Extra faces
-    macro = "+b@function";
-    method = "+i@function";
+    macro = "+u@function";
+    method = "@function";
     format_specifier = "+i@string";
-    mutable_variable = "+u@variable";
+    mutable_variable = "+i@variable";
     class = "+b@variable";
   };
   programs.my-kakoune.autoload = [

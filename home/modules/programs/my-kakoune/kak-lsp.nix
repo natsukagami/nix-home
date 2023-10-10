@@ -169,8 +169,8 @@ let
         { face = "string"; token = "string"; }
         { face = "format_specifier"; token = "formatSpecifier"; }
         # Variables
-        { face = "mutable_variable"; token = "variable"; modifiers = [ "mutable" ]; }
-        { face = "variable"; token = "variable"; }
+        { face = "variable"; token = "variable"; modifiers = [ "readonly" ]; }
+        { face = "mutable_variable"; token = "variable"; }
         { face = "module"; token = "namespace"; }
         { face = "variable"; token = "type_parameter"; }
         { face = "class"; token = "enum"; }
