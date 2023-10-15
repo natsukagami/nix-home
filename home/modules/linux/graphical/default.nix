@@ -60,7 +60,6 @@ in
       xdg-utils # Open stuff
     ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
       gnome.cheese # Webcam check, expensive
-      mailspring
       # Chat stuff
       unstable.slack
     ]));
