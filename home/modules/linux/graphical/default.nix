@@ -77,9 +77,10 @@ in
 
     # Cursor
     home.pointerCursor = {
-      package = pkgs.numix-cursor-theme;
-      name = "Numix-Cursor";
-      size = 24;
+      package = pkgs.suwako-cursors;
+      gtk.enable = true;
+      name = "Suwako";
+      size = 32;
     };
 
     # MIME set ups
