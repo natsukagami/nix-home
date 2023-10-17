@@ -41,6 +41,9 @@
     "mtk_t7xx"
   ];
 
+  # Fingerprint
+  services.fprintd.enable = true;
+
   hardware.sensor.iio.enable = true; # Orientaion and ambient light sensors
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

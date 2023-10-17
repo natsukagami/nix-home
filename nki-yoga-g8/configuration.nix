@@ -85,6 +85,11 @@
     };
   };
 
+  # Enable fingerprint auth for some stuff
+  security.pam.services.sudo.fprintAuth = true;
+  security.pam.services.swaylock.fprintAuth = true;
+  security.pam.services.login.fprintAuth = true;
+
   # Secrets
   # sops.defaultSopsFile = ./secrets.yaml;
   # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
