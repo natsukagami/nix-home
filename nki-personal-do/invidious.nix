@@ -56,11 +56,10 @@ in
   systemd.timers.smart-ipv6-rotator = {
     description = "Rotate ipv6 routes to Google";
     timerConfig = { OnCalendar = "*-*-* 00,06,12,18:00:00"; };
-    wantedBy = [ "invidious.service" ];
+    wantedBy = [ "invidious.service" "timers.target" ];
     unitConfig = { };
   };
   systemd.services.smart-ipv6-rotator = {
-    wantedBy = [ "timers.target" ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${ipv6-rotator}/bin/smart-ipv6-rotator run";
