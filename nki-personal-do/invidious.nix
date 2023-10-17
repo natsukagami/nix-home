@@ -60,6 +60,7 @@ in
     unitConfig = { };
   };
   systemd.services.smart-ipv6-rotator = {
+    wantedBy = [ "timers.target" ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${ipv6-rotator}/bin/smart-ipv6-rotator run";
