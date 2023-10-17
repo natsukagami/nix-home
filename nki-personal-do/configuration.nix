@@ -20,6 +20,7 @@
     ./writefreely.nix
     ./synapse.nix
     ./phanpy.nix
+    ./invidious.nix
   ];
 
   common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.
