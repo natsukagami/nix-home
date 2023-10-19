@@ -21,6 +21,7 @@ with lib; {
 
         tdesktop
         whatsapp-for-linux
+        obs-studio
       ]
       else [ ]
     );
