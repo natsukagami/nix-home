@@ -25,6 +25,12 @@
     openjdk11
     sbt
 
+    # Gaming stuff
+    wine
+    winetricks
+    lutris
+    steam
+
     # Manage tlmc
     flacon
     ttaenc

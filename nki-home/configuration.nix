@@ -129,7 +129,7 @@ with lib;
     MusicFolder = "/mnt/Stuff/Music";
   };
   systemd.services.navidrome.serviceConfig.BindReadOnlyPaths = lib.mkAfter [ "/etc" ];
-  networking.firewall.allowedTCPPorts = [ 4533 ];
+  networking.firewall.allowedTCPPorts = [ 4533 8000 ];
 
   # Printers
   services.printing.enable = true;
