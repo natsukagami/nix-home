@@ -22,7 +22,7 @@
     inkscape # for TeX svg
 
     # Java & sbt
-    openjdk11
+    pkgs.unstable.jdk20
     sbt
 
     # Gaming stuff
