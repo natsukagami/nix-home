@@ -1599,11 +1599,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1696162302,
-        "narHash": "sha256-inKE03O75RqzKBfrj37v8yl3s79wIl8I2ltNwFG0Oc4=",
+        "lastModified": 1697987972,
+        "narHash": "sha256-Ikpaal8pe95/7ESS8BiO2JLbHkZwtRRFXS2N3UaitzU=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "a04fcca1d622651aee143f1646b78640e8561d49",
+        "rev": "17e59e71356abaa2ff3f8b870b7dd9ad70d48074",
         "type": "github"
       },
       "original": {
