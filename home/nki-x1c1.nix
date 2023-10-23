@@ -26,8 +26,7 @@
     rnote
 
     # Java & sbt
-    openjdk11
-    sbt
+    jdk19
   ]);
 
   # Graphical set up
