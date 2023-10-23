@@ -29,6 +29,7 @@ in
       noto-fonts
       noto-fonts-cjk
       merriweather
+      corefonts
     ];
   } // (if pkgs.stdenv.isLinux then {
     enableDefaultFonts = false;

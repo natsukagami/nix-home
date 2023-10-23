@@ -26,7 +26,8 @@
     sbt
 
     # Gaming stuff
-    wine
+    wineWowPackages.full
+    # wine-lol
     winetricks
     lutris
     steam
