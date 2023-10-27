@@ -885,11 +885,11 @@
         "rust-overlay": "rust-overlay_5"
       },
       "locked": {
-        "lastModified": 1695000433,
-        "narHash": "sha256-CYB6YD+NLpmj/ORWlmeS/58PIHONF1G7cQMyXHo9ILo=",
+        "lastModified": 1697932818,
+        "narHash": "sha256-Nl/8nvRA2AVP6uQo5u4AKnvLJyAH2Xn+v0NHhqGAH6M=",
         "owner": "tpwrules",
         "repo": "nixos-apple-silicon",
-        "rev": "096dc63e5426e17f70b4a8bf7716c3dd3430ba8c",
+        "rev": "08cea2d8b6b32b5dd3976d369863d4b22a22f2b4",
         "type": "github"
       },
       "original": {
