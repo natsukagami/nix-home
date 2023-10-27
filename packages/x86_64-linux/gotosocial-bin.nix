@@ -1,15 +1,15 @@
-{ stdenv, lib, autoPatchelfHook }:
+{ stdenv, lib, fetchurl, autoPatchelfHook }:
 with lib;
 let
 in
 stdenv.mkDerivation rec {
   pname = "gotosocial-bin";
-  version = "0.12.0";
+  version = "0.12.1";
 
-  src = builtins.fetchurl {
+  src = fetchurl {
     url = "https://github.com/superseriousbusiness/gotosocial/releases/download/v${version}/gotosocial_${version}_linux_amd64.tar.gz";
-    sha256 = "sha256:0ibcl1y50rh0kpl16xxbv13m9c8ij5ncvvrcs6zj9cn7r2qhkwz1";
-    # sha256 = fakeSha256;
+    hash = "sha256:1i9397iqabm539h0f0j91cl8pl1chglpkzzjb7g14w9bvl086i6y";
+    # hash = fakeSha256;
   };
 
   nativeBuildInputs = [ autoPatchelfHook ];
