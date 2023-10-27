@@ -49,7 +49,9 @@ in
       sublime-music # For navidrome
       # Note taking
       obsidian
-      (logseq.override { electron = pkgs.electron_24; })
+      (if pkgs.stdenv.isAarch64 then
+        pkgs.hello
+      else logseq.override { electron = pkgs.electron_24; /* old electron versions have trouble with touchscreens */ })
 
       zotero
       libreoffice
