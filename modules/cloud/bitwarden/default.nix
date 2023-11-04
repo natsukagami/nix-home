@@ -13,6 +13,10 @@ let
   notificationsPort = 8002;
 
   host = "bw.nkagami.me";
+
+  package = pkgs.unstable.vaultwarden-postgresql.overrideAttrs (attrs: {
+    VW_VERSION = "2023.9.0";
+  });
 in
 {
   options.cloud.bitwarden = {
@@ -65,7 +69,7 @@ in
       serviceConfig = {
         User = user;
         Group = user;
-        ExecStart = "${pkgs.unstable.vaultwarden-postgresql}/bin/vaultwarden";
+        ExecStart = "${package}/bin/vaultwarden";
         EnvironmentFile = lists.optional (cfg.envFile != null) cfg.envFile;
         LimitNOFILE = "1048576";
         PrivateTmp = "true";
