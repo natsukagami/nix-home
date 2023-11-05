@@ -47,13 +47,13 @@ in
       cinnamon.nemo # File manager
       thunderbird # Email
       sublime-music # For navidrome
+      pkgs.unstable.cinny-desktop
       # Note taking
-      obsidian
       (if pkgs.stdenv.isAarch64 then
         pkgs.hello
       else logseq.override { electron = pkgs.electron_24; /* old electron versions have trouble with touchscreens */ })
 
-      zotero
+      # (if stdenv.isAarch64 then zotero else pkgs.unstable.zotero) // kinda fucked for now from CVE
       libreoffice
 
       ## CLI stuff
