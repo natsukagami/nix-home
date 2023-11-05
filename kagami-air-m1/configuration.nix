@@ -28,6 +28,8 @@
     useExperimentalGPUDriver = true;
     experimentalGPUInstallMode = "overlay";
   };
+  ## Additional mesa-related packages
+  environment.systemPackages = with pkgs; [ SDL2 ];
 
   # Power Management
   services.upower = {

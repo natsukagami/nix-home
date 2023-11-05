@@ -2,7 +2,7 @@
 
 let
   discord =
-    (pkgs.armcord.override { nss = pkgs.nss_latest; }).overrideAttrs (attrs: {
+    (pkgs.unstable.armcord.override { nss = pkgs.nss_latest; mesa = pkgs.mesa; }).overrideAttrs (attrs: {
       postInstall = ''
         # Wrap the startup command
         makeWrapper $out/opt/ArmCord/armcord $out/bin/armcord \
