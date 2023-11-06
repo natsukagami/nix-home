@@ -51,7 +51,7 @@ in
       # Note taking
       (if pkgs.stdenv.isAarch64 then
         pkgs.hello
-      else logseq.override { electron = pkgs.electron_24; /* old electron versions have trouble with touchscreens */ })
+      else logseq)
 
       # (if stdenv.isAarch64 then zotero else pkgs.unstable.zotero) // kinda fucked for now from CVE
       libreoffice

@@ -20,6 +20,7 @@ let
     };
 in
 {
+  imports = [ ./mounting.nix ];
   # Fonts
   config.fonts = {
     fonts = with pkgs; [
