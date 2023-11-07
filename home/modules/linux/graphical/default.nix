@@ -48,6 +48,7 @@ in
       thunderbird # Email
       sublime-music # For navidrome
       pkgs.unstable.cinny-desktop
+      pkgs.unstable.gajim
       # Note taking
       (if pkgs.stdenv.isAarch64 then
         pkgs.hello
