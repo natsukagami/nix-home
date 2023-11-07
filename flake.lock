@@ -31,16 +31,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1691686916,
-        "narHash": "sha256-TpNssMHvSKcxJMas5lQNWEbIv09u4/niBN2C27Mp0JY=",
+        "lastModified": 1694631477,
+        "narHash": "sha256-35SgWnBkWTyyRwVPyUKoShjzXfX0H1+HDdEEjZ/LsXc=",
         "owner": "famedly",
         "repo": "conduit",
-        "rev": "0c2cfda3ae923d9e922d5edf379e4d8976a52d4e",
+        "rev": "3bfdae795d4d9ec9aeaac7465e7535ac88e47756",
         "type": "gitlab"
       },
       "original": {
         "owner": "famedly",
-        "ref": "v0.6.0",
+        "ref": "next",
         "repo": "conduit",
         "type": "gitlab"
       }

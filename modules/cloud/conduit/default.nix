@@ -138,10 +138,15 @@ with lib;
                 }))
               ];
             };
-          # Enable CORS from anywhere since we want all clients to find us out
-          extraConfig = ''
-            add_header 'Access-Control-Allow-Origin' "*";
-          '';
+          extraConfig =
+            # Enable CORS from anywhere since we want all clients to find us out
+            ''
+              add_header 'Access-Control-Allow-Origin' "*";
+            '' +
+            # Force returning values to be JSON data
+            ''
+              default_type application/json;
+            '';
         })
         cfg.instances;
     };

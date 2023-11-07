@@ -39,7 +39,7 @@
     };
     dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki/phanpy";
     conduit = {
-      url = gitlab:famedly/conduit/v0.6.0;
+      url = gitlab:famedly/conduit/next;
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     eza.url = github:eza-community/eza/v0.12.0;
