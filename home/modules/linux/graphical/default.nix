@@ -107,6 +107,7 @@ in
       "x-scheme-handler/https" = [ cfg.defaults.webBrowser ];
       "x-scheme-handler/ftp" = [ cfg.defaults.webBrowser ];
       "x-scheme-handler/ftps" = [ cfg.defaults.webBrowser ];
+      "x-scheme-handler/file" = [ cfg.defaults.webBrowser ];
 
       # Torrent
       "application/x-bittorrent" = [ "deluge.desktop" ];
