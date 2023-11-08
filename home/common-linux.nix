@@ -42,8 +42,11 @@ with lib; {
 
     systemd.user.startServices = "sd-switch";
 
+    # Audio stuff!
+    services.easyeffects.enable = true;
+
     # Bluetooth controls
-    services.mpris-proxy.enable = true;
+    # services.mpris-proxy.enable = true;
 
     # Owncloud
     services.owncloud-client.enable = true;
