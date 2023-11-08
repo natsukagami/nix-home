@@ -54,7 +54,7 @@ in
       functions = tideItems ({
         nix_shell = ''
           # In a Nix Shell
-          if test -f $DIRENV_FILE && rg -q "^use flake" $DIRENV_FILE
+          if set -qx DIRENV_FILE && test -f $DIRENV_FILE && rg -q "^use flake" $DIRENV_FILE
             set -U tide_nix_shell_color "FFA500"
             set -U tide_nix_shell_bg_color normal
             _tide_print_item nix_shell "❄"
