@@ -61,11 +61,6 @@ in
           end
         '';
       } // cfg.items);
-      shellInit = ''
-        # Configure tide items
-        set -U tide_left_prompt_items ${concatMapStringsSep " " escapeShellArg cfg.leftItems} newline character
-        set -U tide_right_prompt_items ${concatMapStringsSep " " escapeShellArg cfg.rightItems} time
-      '';
       plugins = [
         {
           name = "tide";
@@ -79,4 +74,14 @@ in
         }
       ];
     };
+
+  config.xdg.configFile."fish/tide/init.fish" = {
+    text = ''
+      # Configure tide items
+      set -U tide_left_prompt_items ${concatMapStringsSep " " escapeShellArg cfg.leftItems} newline character
+      set -U tide_right_prompt_items ${concatMapStringsSep " " escapeShellArg cfg.rightItems} time
+    '';
+
+    onChange = "fish ~/.config/fish/tide/init.fish";
+  };
 }
