@@ -19,6 +19,12 @@
       device = "/dev/disk/by-uuid/32a74827-4624-43ef-b066-b52e1f11793d";
       fsType = "ext4";
     };
+  fileSystems."/home/nki/Projects" =
+    {
+      device = "/dev/disk/by-uuid/025cb533-e21b-47f2-b7d5-322b7b95b831";
+      fsType = "btrfs";
+      options = [ "compress=zstd" ];
+    };
 
   fileSystems."/boot" =
     {
