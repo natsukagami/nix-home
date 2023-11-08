@@ -44,14 +44,16 @@ in
         set -gx EDITOR "kak"
         alias e="kak"
       '';
-
-      _tide_item_kakoune = ''
+    };
+    programs.fish.tide = {
+      items.kakoune = ''
         if set -q kak_session
           set -U tide_kakoune_color FFA500
           set -U tide_kakoune_bg_color normal
           _tide_print_item kakoune " " "e[$kak_session]"
         end
       '';
+      rightItems = mkAfter [ "kakoune" ];
     };
   };
 }

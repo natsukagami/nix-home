@@ -1,9 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ config, options, pkgs, lib, ... }:
 
 with lib;
 {
   imports = [
-    ./tide/nix-shell.nix
+    ./tide
   ];
 
   options.programs.fish.everywhereAbbrs = mkOption {
@@ -86,7 +86,9 @@ with lib;
 
 
     tide = {
-      nix-shell.enable = true;
+      enable = true;
+      leftItems = options.programs.fish.tide.leftItems.default;
+      rightItems = options.programs.fish.tide.rightItems.default;
     };
 
     shellAliases = {
@@ -183,16 +185,6 @@ with lib;
       end
     '';
     plugins = [
-      {
-        name = "tide";
-        src = pkgs.fetchFromGitHub {
-          owner = "IlanCosman";
-          repo = "tide";
-          rev = "v6.0.1";
-          # sha256 = lib.fakeSha256;
-          sha256 = "sha256-oLD7gYFCIeIzBeAW1j62z5FnzWAp3xSfxxe7kBtTLgA=";
-        };
-      }
       {
         name = "fzf";
         src = pkgs.fetchFromGitHub {
