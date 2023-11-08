@@ -188,9 +188,9 @@ with lib;
         src = pkgs.fetchFromGitHub {
           owner = "IlanCosman";
           repo = "tide";
-          rev = "447945d2cff8f70d5c791dd4eec8b322d37798dd";
+          rev = "v6.0.1";
           # sha256 = lib.fakeSha256;
-          sha256 = "sha256-1c2E3UC3r9hPfijAQoZ/+4yXieFxC4+hkk7wUyr30NM=";
+          sha256 = "sha256-oLD7gYFCIeIzBeAW1j62z5FnzWAp3xSfxxe7kBtTLgA=";
         };
       }
       {
