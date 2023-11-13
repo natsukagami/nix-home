@@ -18,6 +18,9 @@ let
     # Web
     web-template-base-dir = "${cfg.package}/share/web/template";
     web-asset-base-dir = "${cfg.package}/share/web/assets";
+    # Media
+    media-emoji-remote-max-size = 256 * 1024 /* bytes */;
+    media-emoji-local-max-size = 256 * 1024 /* bytes */;
     # OIDC
     oidc-enabled = true;
     oidc-idp-name = "DTTH";
