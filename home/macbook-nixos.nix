@@ -1,18 +1,7 @@
 { pkgs, config, lib, ... }:
 
 let
-  discord =
-    (pkgs.unstable.armcord.override { nss = pkgs.nss_latest; mesa = pkgs.mesa; }).overrideAttrs (attrs: {
-      postInstall = ''
-        # Wrap the startup command
-        makeWrapper $out/opt/ArmCord/armcord $out/bin/armcord \
-          "''${gappsWrapperArgs[@]}" \
-          --prefix XDG_DATA_DIRS : "${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}/" \
-          --add-flags "--ozone-platform=x11 --enable-features=UseOzonePlatform --enable-features=WebRTCPipeWireCapturer" \
-          --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath attrs.buildInputs}" \
-          --suffix PATH : ${lib.makeBinPath [ pkgs.xdg-utils ]}
-      '';
-    });
+  discord = pkgs.armcord.override { nss = pkgs.nss_latest; };
 in
 {
   imports = [
@@ -30,7 +19,7 @@ in
   home.homeDirectory = "/home/nki";
 
   nki.programs.kitty.enable = true;
-  nki.programs.kitty.fontSize = 18;
+  nki.programs.kitty.fontSize = 16;
   programs.fish.shellInit = lib.mkAfter ''
     set -eg MESA_GL_VERSION_OVERRIDE
     set -eg MESA_GLSL_VERSION_OVERRIDE
@@ -64,7 +53,7 @@ in
   linux.graphical.wallpaper = ./images/wallpaper-macbook.jpg;
   # Enable sway
   programs.my-sway.enable = true;
-  programs.my-sway.fontSize = 12.0;
+  programs.my-sway.fontSize = 14.0;
   programs.my-sway.enableLaptopBars = true;
   programs.my-sway.enableMpd = false;
   programs.my-sway.discord = "${discord}/bin/armcord";
@@ -72,7 +61,7 @@ in
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
   wayland.windowManager.sway.config.output."eDP-1" = {
     mode = "2560x1600@60Hz";
-    scale = "1.5";
+    scale = "1.25";
     subpixel = "vrgb";
   };
   wayland.windowManager.sway.config.input."1452:641:Apple_Internal_Keyboard_/_Trackpad" = {
