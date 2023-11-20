@@ -220,7 +220,6 @@ in
     environment.systemPackages = with pkgs; [
       kakoune # An editor
       wget # A simple fetcher
-      fish # Good shell
 
       ## System monitoring tools
       usbutils # lsusb and friends
@@ -234,6 +233,7 @@ in
       qt5.qtwayland
     ];
     # Add a reliable terminal
+    programs.fish.enable = true;
     # programs.gnome-terminal.enable = true;
     # KDEConnect is just based
     programs.kdeconnect.enable = true;
