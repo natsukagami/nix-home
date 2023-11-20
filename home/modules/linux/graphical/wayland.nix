@@ -51,8 +51,6 @@ let
         };
         extraStyle = mkAfter ''
           #custom-swaync {
-              padding: 0 10px;
-              margin: 0 5px;
               background: #F0FFFF;
               color: #000000;
           }

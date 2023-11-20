@@ -433,8 +433,34 @@ in
             spacing = 10;
           };
           "clock" = {
-            tooltip-format = "{:%Y-%m-%d | %H:%M}";
-            format-alt = "{:%Y-%m-%d}";
+            format = "{:📅 %Y-%m-%d | 🕰️ %H:%M [%Z]}";
+            tooltip-format = "\n<span size='9pt' font='Noto Sans Mono CJK JP'>{calendar}</span>";
+            timezones = [
+              "Europe/Zurich"
+              "America/Toronto"
+              "Asia/Tokyo"
+              "Asia/Ho_Chi_Minh"
+            ];
+            calendar = {
+              mode = "year";
+              mode-mon-col = 3;
+              weeks-pos = "right";
+              on-scroll = 1;
+              on-click-right = "mode";
+              format = {
+                months = "<span color='#ffead3'><b>{}</b></span>";
+                days = "<span color='#ecc6d9'><b>{}</b></span>";
+                weeks = "<span color='#99ffdd'><b>W{}</b></span>";
+                weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+                today = "<span color='#ff6699'><b><u>{}</u></b></span>";
+              };
+            };
+            actions = {
+              on-click-middle = "mode";
+              on-click-right = "tz_up";
+              on-scroll-up = "shift_up";
+              on-scroll-down = "shift_down";
+            };
           };
           "cpu" = {
             format = "{usage}% ";
@@ -587,7 +613,8 @@ in
         }
 
         #window, #sway, #sway-window {
-            padding: 0 10px;
+          padding-left: 1em;
+          margin-bottom: 0.4em;
         }
 
         #mode {
@@ -595,9 +622,16 @@ in
             border-bottom: 3px solid #ffffff;
         }
 
-        #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #bluetooth, #custom-media, #tray, #mode, #idle_inhibitor, #mpd {
-            padding: 0 10px;
-            margin: 0 5px;
+        /* #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #bluetooth, #custom-media, #tray, #mode, #idle_inhibitor, #mpd { */
+        .modules-right > * > * {
+          margin: 0.2em 0 0.4em 0;
+          padding: 0.2em 0.5em;
+          border: 1px solid rgba(0, 0, 0, 0.25);
+          border-radius: 0.3em;
+        }
+
+        .modules-right > *:not(:last-child) > * {
+          margin-right: 0.4em;
         }
 
         #clock {
