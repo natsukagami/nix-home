@@ -4,7 +4,7 @@ with lib;
 let
   lspConfig =
     {
-      language_servers = {
+      languages = {
         bash = {
           args = [ "start" ];
           command = "bash-language-server";
@@ -259,7 +259,7 @@ in
       description = "Server timeout";
     };
 
-    language_servers = mkOption {
+    languages = mkOption {
       type = types.attrsOf languageOption;
       default = { };
       description = "The language options";
@@ -283,7 +283,7 @@ in
               server.timeout = cfg.serverTimeout;
               snippet_support = cfg.enableSnippets;
               verbosity = 255;
-              language_server = lspConfig.language_servers // cfg.language_servers;
+              language = lspConfig.languages // cfg.languages;
             })
           } \
           > $out
