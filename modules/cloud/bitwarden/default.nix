@@ -10,13 +10,10 @@ let
   user = "bitwarden";
 
   port = 8001;
-  notificationsPort = 8002;
 
   host = "bw.nkagami.me";
 
-  package = pkgs.unstable.vaultwarden-postgresql.overrideAttrs (attrs: {
-    VW_VERSION = "2023.9.0";
-  });
+  package = pkgs.unstable.vaultwarden-postgresql;
 in
 {
   options.cloud.bitwarden = {
@@ -41,12 +38,6 @@ in
       inherit port host;
       noCloudflare = true;
     };
-    cloud.traefik.hosts.bitwarden-notifications = {
-      inherit host;
-      port = notificationsPort;
-      path = "/notifications/hub";
-      noCloudflare = true;
-    };
     # systemd unit
     systemd.services.bitwarden-server = {
       after = [ "network.target" ];
@@ -60,8 +51,7 @@ in
 
         ROCKET_PORT = toString port;
 
-        WEBSOCKET_ENABLED = "true";
-        WEBSOCKET_PORT = toString notificationsPort;
+        PUSH_ENABLED = "true";
 
         DOMAIN = "https://${host}";
       };
