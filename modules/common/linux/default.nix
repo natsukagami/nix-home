@@ -12,6 +12,7 @@ let
       users.users.${config.common.linux.username}.extraGroups = [ "adbusers" ];
     };
     ios = { config, pkgs, ... }: mkIf config.common.linux.enable {
+      services.avahi.enable = true;
       services.usbmuxd.enable = true;
       services.usbmuxd.package = pkgs.usbmuxd2;
       environment.systemPackages = with pkgs; [
