@@ -32,76 +32,76 @@ jobs:
           git status
           false
         fi
-  deploy:
-    if: "github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Deploy')"
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-    - uses: actions/checkout@v2.3.4
-    - name: Notify deployment starting
-      run: |
-        git show --no-patch | curl \
-          --fail-with-body \
-          -u "${{ secrets.NTFY_CREDS }}" \
-          -H "X-Title: Deployment to nki-personal-do started" \
-          -H "X-Priority: 1" \
-          -H "X-Tags: cloud" \
-          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-          -d "Commit info:
-              " \
-          -d @- \
-          https://ntfy.nkagami.me/nki-personal-do
-    - name: Add SSH key
-      env:
-        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      run: |
-        mkdir -p /home/runner/.ssh
-        echo "${{ secrets.NIX_SECRETS_SSH_KEY }}" > /home/runner/.ssh/nix_secrets_key
-        echo "${{ secrets.NIX_DEPLOY_SSH_KEY }}" > /home/runner/.ssh/nix_deploy_key
-        chmod 600 /home/runner/.ssh/*
-        ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
-        ssh-add /home/runner/.ssh/*
-        ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
-        ssh-keyscan git.dtth.ch >> /home/runner/.ssh/known_hosts
-    - uses: cachix/install-nix-action@v20
-      with:
-        extra_nix_config: |
-          # Enable flakes
-          experimental-features = nix-command flakes
-          # Deploy tokens
-          access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-          # Import my substituters
-          extra-substituters = https://natsukagami.cachix.org
-          extra-trusted-public-keys = natsukagami.cachix.org-1:3U6GV8i8gWEaXRUuXd2S4ASfYgdl2QFPWg4BKPbmYiQ=
-    - name: Deploy with deploy-rs
-      env:
-        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-      run: |
-        nix run .#deploy-rs -- . --hostname ${{ secrets.INSTANCE_IP }} -s -- -L
-    - name: Notify deployment succeeding
-      run: |
-        git show --no-patch | curl \
-          --fail-with-body \
-          -u "${{ secrets.NTFY_CREDS }}" \
-          -H "X-Title: Deployment to nki-personal-do succeeded" \
-          -H "X-Tags: tada,cloud" \
-          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-          -d "Commit info:
-             " \
-          -d @- \
-          https://ntfy.nkagami.me/nki-personal-do
-    - name: Notify deployment failing
-      if: ${{ failure() }}
-      run: |
-        git show --no-patch | curl \
-          --fail-with-body \
-          -u "${{ secrets.NTFY_CREDS }}" \
-          -H "X-Title: Deployment to nki-personal-do failed" \
-          -H "X-Priority: 4" \
-          -H "X-Tags: warning,cloud" \
-          -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
-          -d "Commit info:
-             " \
-          -d @- \
-          https://ntfy.nkagami.me/nki-personal-do
+  # deploy:
+  #   if: "github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Deploy')"
+  #   runs-on: ubuntu-latest
+  #   name: Deploy
+  #   steps:
+  #   - uses: actions/checkout@v2.3.4
+  #   - name: Notify deployment starting
+  #     run: |
+  #       git show --no-patch | curl \
+  #         --fail-with-body \
+  #         -u "${{ secrets.NTFY_CREDS }}" \
+  #         -H "X-Title: Deployment to nki-personal-do started" \
+  #         -H "X-Priority: 1" \
+  #         -H "X-Tags: cloud" \
+  #         -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+  #         -d "Commit info:
+  #             " \
+  #         -d @- \
+  #         https://ntfy.nkagami.me/nki-personal-do
+  #   - name: Add SSH key
+  #     env:
+  #       SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+  #     run: |
+  #       mkdir -p /home/runner/.ssh
+  #       echo "${{ secrets.NIX_SECRETS_SSH_KEY }}" > /home/runner/.ssh/nix_secrets_key
+  #       echo "${{ secrets.NIX_DEPLOY_SSH_KEY }}" > /home/runner/.ssh/nix_deploy_key
+  #       chmod 600 /home/runner/.ssh/*
+  #       ssh-agent -a $SSH_AUTH_SOCK > /dev/null   
+  #       ssh-add /home/runner/.ssh/*
+  #       ssh-keyscan ${{ secrets.INSTANCE_IP }} >> /home/runner/.ssh/known_hosts
+  #       ssh-keyscan git.dtth.ch >> /home/runner/.ssh/known_hosts
+  #   - uses: cachix/install-nix-action@v20
+  #     with:
+  #       extra_nix_config: |
+  #         # Enable flakes
+  #         experimental-features = nix-command flakes
+  #         # Deploy tokens
+  #         access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+  #         # Import my substituters
+  #         extra-substituters = https://natsukagami.cachix.org
+  #         extra-trusted-public-keys = natsukagami.cachix.org-1:3U6GV8i8gWEaXRUuXd2S4ASfYgdl2QFPWg4BKPbmYiQ=
+  #   - name: Deploy with deploy-rs
+  #     env:
+  #       SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+  #     run: |
+  #       nix run .#deploy-rs -- . --hostname ${{ secrets.INSTANCE_IP }} -s -- -L
+  #   - name: Notify deployment succeeding
+  #     run: |
+  #       git show --no-patch | curl \
+  #         --fail-with-body \
+  #         -u "${{ secrets.NTFY_CREDS }}" \
+  #         -H "X-Title: Deployment to nki-personal-do succeeded" \
+  #         -H "X-Tags: tada,cloud" \
+  #         -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+  #         -d "Commit info:
+  #            " \
+  #         -d @- \
+  #         https://ntfy.nkagami.me/nki-personal-do
+  #   - name: Notify deployment failing
+  #     if: ${{ failure() }}
+  #     run: |
+  #       git show --no-patch | curl \
+  #         --fail-with-body \
+  #         -u "${{ secrets.NTFY_CREDS }}" \
+  #         -H "X-Title: Deployment to nki-personal-do failed" \
+  #         -H "X-Priority: 4" \
+  #         -H "X-Tags: warning,cloud" \
+  #         -H "Actions: view, Open Job on GitHub, ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+  #         -d "Commit info:
+  #            " \
+  #         -d @- \
+  #         https://ntfy.nkagami.me/nki-personal-do
 
