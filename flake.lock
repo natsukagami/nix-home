@@ -1599,16 +1599,15 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1700094554,
-        "narHash": "sha256-5wWi1yIJLcdusNjheNcJqRBzkQnhp+AJAqbwOZmDOTo=",
+        "lastModified": 1700574900,
+        "narHash": "sha256-8qS+yXSuBe9RTPiVEM/g9CSamL7RHq3NmjEvV0qLEiU=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "67a7eb9aec0a5ad9a2493edf75a044fb906af2b0",
+        "rev": "220dbc21ea84f138742fd123f345c1600aec85da",
         "type": "github"
       },
       "original": {
         "owner": "natsukagami",
-        "ref": "debug",
         "repo": "youmubot",
         "type": "github"
       }
