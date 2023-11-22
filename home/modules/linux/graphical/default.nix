@@ -72,6 +72,23 @@ in
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
+    nki.programs.discord.package = (pkgs.callPackage pkgs.unstable.vesktop.override {
+      electron = pkgs.electron_27;
+      nodePackages = pkgs.nodePackages // { nodejs = pkgs.nodejs; };
+    }).overrideAttrs (attrs: {
+      nativeBuildInputs = attrs.nativeBuildInputs ++ [ pkgs.nss_latest ];
+      postBuild = ''
+        pnpm build
+        # using `pnpm exec` here apparently makes it ignore ELECTRON_SKIP_BINARY_DOWNLOAD
+        ./node_modules/.bin/electron-builder \
+          --dir \
+          -c.electronDist=${pkgs.electron_27}/lib/electron \
+          -c.electronVersion=${pkgs.electron_27.version}
+      '';
+      postInstall = ''
+        ln -s $out/bin/vencorddesktop $out/bin/discord
+      '';
+    });
 
     # Yellow light!
     services.wlsunset = {
