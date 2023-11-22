@@ -150,6 +150,7 @@ in
           .envrc
           .kakrc
         ''}";
+        merge.conflictstyle = "diff3";
       };
     };
 
