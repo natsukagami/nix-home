@@ -323,7 +323,7 @@ in
       export SDL_VIDEODRIVER=wayland
       export QT_QPA_PLATFORM=wayland
       export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
-      export NIXOS_OZONE_WL=1
+      # export NIXOS_OZONE_WL=1 # Yeah this fucks up IMEs
 
     '' + (if config.services.gnome-keyring.enable then ''
       # gnome-keyring
