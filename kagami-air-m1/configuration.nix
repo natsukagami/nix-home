@@ -13,6 +13,8 @@
       ../modules/personal/fonts
       # Encrypted DNS
       ../modules/services/edns
+      # Override base mesa
+      ({ ... }: { nixpkgs.overlays = lib.mkBefore [ (final: prev: { mesa = prev.mesa.override { enableOpenCL = true; meson = final.unstable.meson; }; }) ]; })
     ];
 
   # time.timeZone = lib.mkForce "Asia/Ho_Chi_Minh";
@@ -28,6 +30,28 @@
     useExperimentalGPUDriver = true;
     experimentalGPUInstallMode = "overlay";
   };
+  # Override mesa
+  nixpkgs.overlays = lib.mkAfter [
+    (final: prev: {
+      mesa-asahi-edge = prev.mesa-asahi-edge.overrideAttrs (attrs: {
+        version = "24.0.0";
+        # buildInputs = attrs.buildInputs ++ (with pkgslw; [ libclc cmake (spirv-llvm-translator.override { inherit (llvmPackages_15) llvm; }) ]);
+        # nativeBuildInputs = attrs.nativeBuildInputs ++ (with pkgs; [ pkgs.unstable.spirv-llvm-translator ]);
+        src = final.fetchFromGitLab {
+          # latest release
+          domain = "gitlab.freedesktop.org";
+          owner = "asahi";
+          repo = "mesa";
+          rev = "asahi-20231121";
+          hash = "sha256-IcKKe1RA8sCaUfWK71ELzF15YaBS3DjoYhNMIWiQ5Jw=";
+        };
+
+        patches = lib.forEach attrs.patches (p:
+          if lib.hasSuffix "opencl.patch" p
+          then ./mesa-asahi-edge/opencl.patch else p);
+      });
+    })
+  ];
   ## Additional mesa-related packages
   environment.systemPackages = with pkgs; [ SDL2 ];
 
