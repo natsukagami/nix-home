@@ -23,7 +23,7 @@ in
   imports = [ ./mounting.nix ];
   # Fonts
   config.fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       noto-fonts-emoji-blob-bin
       ibm-plex
       (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
@@ -33,7 +33,7 @@ in
       corefonts
     ];
   } // (if pkgs.stdenv.isLinux then {
-    enableDefaultFonts = false;
+    enableDefaultPackages = false;
     fontconfig = {
       defaultFonts = {
         emoji = lib.mkBefore [ "Blobmoji" ];

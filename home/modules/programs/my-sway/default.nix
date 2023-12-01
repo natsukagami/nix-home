@@ -120,7 +120,7 @@ in
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
-    systemdIntegration = true;
+    systemd.enable = true;
 
     config = {
       ### Inputs

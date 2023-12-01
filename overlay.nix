@@ -11,18 +11,6 @@ let
     # Typst updates really quickly.
     typst = final.unstable.typst;
     typst-lsp = final.unstable.typst-lsp;
-
-    # Sublime-music has a bug with playlists in 0.11.x
-    sublime-music =
-      if builtins.compareVersions prev.sublime-music.version "0.12" < 0
-      then final.unstable.sublime-music
-      else prev.sublime-music;
-
-    # New stuff in Kanshi 1.4.0
-    kanshi =
-      if builtins.compareVersions prev.kanshi.version "1.4.0" < 0
-      then final.callPackage final.unstable.kanshi.override { }
-      else prev.kanshi;
   };
   overlay-imported = final: prev: {
     rnix-lsp = inputs.rnix-lsp.defaultPackage."${final.system}";
@@ -33,11 +21,6 @@ let
       patches = (if "patches" ? attrs then attrs.patches else [ ]) ++ [
         ./overlays/conduit-remove-dbg.patch
       ];
-    });
-    exa = inputs.eza.packages.${final.system}.default.overrideAttrs (attrs: {
-      postInstall = attrs.postInstall + ''
-        ln -sv $out/bin/eza $out/bin/exa
-      '';
     });
 
     # A list of source-style inputs.

@@ -2,7 +2,7 @@
 let
   notificationModule = { config, pkgs, lib, ... }:
     let
-      swaync = pkgs.unstable.swaynotificationcenter;
+      swaync = pkgs.swaynotificationcenter;
     in
     with lib; mkIf (config.linux.graphical.type == "wayland") {
       home.packages = [ swaync ];

@@ -181,6 +181,8 @@ in
     ## Network configuration
     systemd.network.enable = true;
     networking.dhcpcd.enable = lib.mkForce false;
+    networking.useDHCP = false;
+    networking.useNetworkd = true;
     systemd.network.wait-online.enable = false;
     networking.hostName = cfg.networking.hostname;
     networking.wireless.iwd.enable = true;
@@ -267,6 +269,10 @@ in
       wlr.enable = true;
       # gtk portal needed to make gtk apps happy
       extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
+      config.common.default = [ "gtk" ];
+      config.common."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      config.sway.default = [ "wlr" "gtk" ];
     };
     # D-Bus
     services.dbus.packages = with pkgs; [ gcr ];

@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
 let
-  texlab = pkgs.unstable.texlab;
 in
 {
   imports = [
@@ -52,7 +51,7 @@ in
     ## Python
     python3
     ## Scala
-    pkgs.unstable.scala-cli
+    scala-cli
 
     # Fonts
     fantasque-sans-mono
@@ -116,7 +115,7 @@ in
     direnv.nix-direnv.enable = true;
     direnv.config.global.load_dotenv = true;
 
-    exa = {
+    eza = {
       enable = true;
       enableAliases = true;
     };
