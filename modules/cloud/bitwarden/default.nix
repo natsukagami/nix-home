@@ -13,7 +13,7 @@ let
 
   host = "bw.nkagami.me";
 
-  package = pkgs.unstable.vaultwarden-postgresql;
+  package = pkgs.vaultwarden-postgresql;
 in
 {
   options.cloud.bitwarden = {
@@ -47,7 +47,7 @@ in
         DATABASE_URL = databaseUrl;
 
         DATA_FOLDER = "/var/lib/bitwarden-server";
-        WEB_VAULT_FOLDER = "${pkgs.unstable.vaultwarden-vault}/share/vaultwarden/vault";
+        WEB_VAULT_FOLDER = "${pkgs.vaultwarden-vault}/share/vaultwarden/vault";
 
         ROCKET_PORT = toString port;
 

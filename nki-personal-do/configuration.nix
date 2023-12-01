@@ -10,9 +10,7 @@
     ../modules/cloud/bitwarden
     ../modules/cloud/mail
     ../modules/cloud/conduit
-    ../modules/cloud/writefreely
     ../modules/cloud/gotosocial
-    ../modules/cloud/outline.nix
 
     ./headscale.nix
     ./gitea.nix
@@ -191,13 +189,12 @@
   sops.secrets.minio-secret-key = { owner = "root"; mode = "0444"; };
   sops.secrets.authentik-oidc-client-secret = { owner = "outline"; };
   sops.secrets."outline/smtp-password" = { owner = "outline"; };
-  cloud.services.outline = {
+  services.outline = {
     enable = true;
-    package = pkgs.unstable.outline.overrideAttrs (attrs: {
+    package = pkgs.outline.overrideAttrs (attrs: {
       patches = if builtins.hasAttr "patches" attrs then attrs.patches else [ ] ++ [ ../modules/cloud/outline/dtth-wiki.patch ];
     });
     databaseUrl = "postgres://outline:outline@localhost/outline?sslmode=disable";
-    sequelizeArguments = "--env=production-ssl-disabled";
     redisUrl = "local";
     publicUrl = "https://wiki.dtth.ch";
     port = 18729;

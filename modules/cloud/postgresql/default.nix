@@ -9,9 +9,7 @@ let
   # to that database.
   userFromDatabase = databaseName: {
     name = databaseName;
-    ensurePermissions = {
-      "DATABASE \"${databaseName}\"" = "ALL PRIVILEGES";
-    };
+    ensureDBOwnership = true;
   };
 in
 {
@@ -32,10 +30,7 @@ in
 
     ensureDatabases = cfg.databases;
 
-    ensureUsers = (map userFromDatabase cfg.databases) ++ [{
-      name = "root";
-      ensurePermissions = { "ALL TABLES IN SCHEMA public" = "ALL PRIVILEGES"; };
-    }];
+    ensureUsers = (map userFromDatabase cfg.databases);
   };
 
   # Backup settings

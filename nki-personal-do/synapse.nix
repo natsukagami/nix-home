@@ -29,6 +29,7 @@ in
     enable = true;
     withJemalloc = true;
     dataDir = "${config.fileSystems.data.mountPoint}/matrix-synapse-dtth";
+    extras = [ "systemd" "url-preview" "oidc" "postgres" ];
     settings = {
       server_name = "dtth.ch";
       enable_registration = false;
