@@ -286,6 +286,8 @@ in
         ];
         "${builtins.elemAt workspaces 1}" = [
           { class = "^((d|D)iscord|((A|a)rm(c|C)ord))$"; }
+          { class = "VencordDesktop"; }
+          { app_id = "VencordDesktop"; }
         ];
         "📧 Email" = [
           { app_id = "thunderbird"; }
