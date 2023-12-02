@@ -173,11 +173,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1697923608,
-        "narHash": "sha256-XDDhdx4PWRTiSBHE6+t6OAE3Sqya4htRv/TJpHgBWWM=",
+        "lastModified": 1701472568,
+        "narHash": "sha256-UYynMKoCwMWDf00+Zc8JvMdrz+z1BgjJ/1iWMYHh9AI=",
         "ref": "refs/heads/main",
-        "rev": "2b7969f9ecdefa53ad757adcef189c9afa5fc244",
-        "revCount": 1857,
+        "rev": "c12295d0cd8cee1d32bb7f5e6902bf15b70f2ddf",
+        "revCount": 2073,
         "type": "git",
         "url": "ssh://gitea@git.dtth.ch/nki/phanpy"
       },
@@ -1080,11 +1080,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1697059129,
-        "narHash": "sha256-9NJcFF9CEYPvHJ5ckE8kvINvI84SZZ87PvqMbH6pro0=",
+        "lastModified": 1701253981,
+        "narHash": "sha256-ztaDIyZ7HrTAfEEUt9AtTDNoCYxUdSd6NrRHaYOIxtk=",
         "owner": "nixOS",
         "repo": "nixpkgs",
-        "rev": "5e4c2ada4fcd54b99d56d7bd62f384511a7e2593",
+        "rev": "e92039b55bcd58469325ded85d4f58dd5a4eaf58",
         "type": "github"
       },
       "original": {

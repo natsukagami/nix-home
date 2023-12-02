@@ -28,6 +28,32 @@ let
   };
 
   overlay-versioning = final: prev: {
+    gotosocial = prev.gotosocial.overrideAttrs (attrs: rec {
+      version = "0.13.0-rc1";
+      ldflags = [
+        "-s"
+        "-w"
+        "-X main.Version=${version}"
+      ];
+      doCheck = false;
+
+      web-assets = final.fetchurl {
+        url = "https://github.com/superseriousbusiness/gotosocial/releases/download/v${version}/gotosocial_${version}_web-assets.tar.gz";
+        hash = "sha256-2QCOf55l8O552Mko5DZkrJUlATcWln718kYr7sHw6n0=";
+      };
+      src = final.fetchFromGitHub {
+        owner = "superseriousbusiness";
+        repo = "gotosocial";
+        rev = "v${version}";
+        hash = "sha256-Ppnv35Iq3tk3qGlBAQJbTy4HA8piqK2hTLNLWREMN18=";
+      };
+      postInstall = ''
+        tar xf ${web-assets}
+        mkdir -p $out/share/gotosocial
+        mv web $out/share/gotosocial/
+      '';
+    });
+
     input-remapper =
       prev.input-remapper.overrideAttrs (oldAttrs: rec {
         version = "2.0.0";
