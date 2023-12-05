@@ -3,15 +3,15 @@ let
   src = fetchFromGitHub {
     owner = "phaazon";
     repo = "kak-tree-sitter";
-    rev = "3567f648bbf6a5d556c43bde5433dff45eabd693";
-    hash = "sha256-xr7CtOfMO4nRu2MOIQX3jR0wsKGsjYiF/TGXSAsidM4=";
+    rev = "kak-tree-sitter-v0.5.2";
+    hash = "sha256-oyb1mczin1CEZwG1YBJfy1dSEYpNpqmZ21mscrgkoBo=";
   };
 
   kak-tree-sitter = rustPlatform.buildRustPackage rec {
     inherit src;
     pname = "kak-tree-sitter";
-    version = "0.4.6";
-    cargoHash = "sha256-6HJxJTr4P1/6Yy3/dtfiaCFoHA4iKvmuwg51jTYU2eo=";
+    version = "0.5.2";
+    cargoHash = "sha256-rvysHMMiI1e6RBKX+NFObB8fXGmzVnc+4/A5qPcEcm8=";
     cargoBuildOptions = [ "--package" "kak-tree-sitter" "--package" "ktsctl" ];
 
     nativeBuildInputs = [ clang git ];
