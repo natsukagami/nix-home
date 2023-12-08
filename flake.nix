@@ -111,6 +111,7 @@
           ./modules/common/linux
           (common-nix stable)
           inputs.secrets.nixosModules.common
+          inputs.nix-gaming.nixosModules.pipewireLowLatency
         ];
       };
 
