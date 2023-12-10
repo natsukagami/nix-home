@@ -27,7 +27,6 @@
 
     # ---
     # Imported apps
-    rnix-lsp.url = "github:nix-community/rnix-lsp";
     youmubot.url = "github:natsukagami/youmubot";
     swayfx = {
       url = github:WillPower3309/swayfx;

@@ -106,7 +106,7 @@ let
           roots = [ "*.nimble" ".git" ];
         };
         nix = {
-          command = "rnix-lsp";
+          command = "${pkgs.nil}/bin/nil";
           filetypes = [ "nix" ];
           roots = [ "flake.nix" "shell.nix" ".git" ];
         };

@@ -42,7 +42,6 @@ in
     yarn
     ## Nix
     cachix
-    rnix-lsp
     ## Latex
     tectonic
     texlab

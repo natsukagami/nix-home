@@ -13,7 +13,6 @@ let
     typst-lsp = final.unstable.typst-lsp;
   };
   overlay-imported = final: prev: {
-    rnix-lsp = inputs.rnix-lsp.defaultPackage."${final.system}";
     sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
     deploy-rs = inputs.deploy-rs.packages.default;
     dtth-phanpy = inputs.dtth-phanpy.packages.${final.system}.default;
