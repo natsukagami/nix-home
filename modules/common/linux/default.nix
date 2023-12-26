@@ -144,6 +144,10 @@ in
       cfg.luksDevices;
 
     ## Hardware-related
+
+    # Firmware stuff
+    services.fwupd.enable = true;
+
     # Enable sound.
     sound.enable = true;
     services.pipewire = {
