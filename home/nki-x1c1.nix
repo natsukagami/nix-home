@@ -7,7 +7,7 @@
     # We use our own firefox
     # ./firefox.nix
     # osu!
-    # ./osu.nix
+    ./osu.nix
   ];
 
   # Home Manager needs a bit of information about you and the
