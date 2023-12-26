@@ -109,6 +109,9 @@ let
           command = "${pkgs.nil}/bin/nil";
           filetypes = [ "nix" ];
           roots = [ "flake.nix" "shell.nix" ".git" ];
+          settings.nil = {
+            formatting.command = [ "${getExe pkgs.nixpkgs-fmt}" ];
+          };
         };
         ocaml = {
           args = [ ];
