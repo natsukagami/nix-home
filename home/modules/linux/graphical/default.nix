@@ -53,7 +53,7 @@ in
       (if pkgs.stdenv.isAarch64 then
         pkgs.hello
       else
-        logseq)
+        logseq.override { electron_25 = pkgs.electron; })
 
       # (if stdenv.isAarch64 then zotero else pkgs.unstable.zotero) // kinda fucked for now from CVE
       libreoffice
