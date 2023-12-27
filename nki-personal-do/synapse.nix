@@ -76,6 +76,10 @@ in
         "fec0::/10"
       ];
       app_service_config_files = app_services;
+
+      auto_join_rooms = [
+        "#join-dtth-matrix:dtth.ch"
+      ];
     };
     extraConfigFiles = [
       (config.sops.secrets."matrix-synapse-dtth/oidc-config".path)
