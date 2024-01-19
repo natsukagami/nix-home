@@ -18,6 +18,9 @@ let
     "9:🔨 9"
     "10:🎲 misc"
   ];
+  extraWorkspaces = {
+    mail = "📧 Email";
+  };
   wsAttrs = builtins.listToAttrs (
     map
       (i: { name = toString (remainder i 10); value = builtins.elemAt workspaces (i - 1); })
@@ -154,7 +157,7 @@ in
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
         { command = "${cfg.browser}"; }
-        { command = "thunderbird"; } # Rely on system package with plugins
+        { command = "evolution"; } # Rely on system package with plugins
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
       ] ++ lib.lists.optional
@@ -255,6 +258,11 @@ in
         ])
         (builtins.attrNames wsAttrs))
       )) //
+      {
+        # Extra workspaces
+        "${mod}+asciicircum" = "workspace ${extraWorkspaces.mail}";
+        "${mod}+shift+asciicircum" = "move to workspace ${extraWorkspaces.mail}";
+      } //
       # Move workspaces between outputs
       {
         "${mod}+ctrl+h" = "move workspace to output left";
@@ -289,8 +297,9 @@ in
           { class = "VencordDesktop"; }
           { app_id = "VencordDesktop"; }
         ];
-        "📧 Email" = [
+        ${extraWorkspaces.mail} = [
           { app_id = "thunderbird"; }
+          { app_id = "evolution"; }
         ];
       };
       # Commands
