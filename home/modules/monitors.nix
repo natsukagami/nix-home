@@ -3,6 +3,11 @@
 let
   monitors = {
     # Internal
+    "framework" = {
+      name = "BOE 0x0BCA Unknown";
+      mode = "2256x1504@60Hz";
+      scale = 1.25;
+    };
     # External
     ## Work @ EPFL
     "work" = {

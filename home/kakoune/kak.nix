@@ -169,7 +169,7 @@ in
           hash =
             if pkgs.stdenv.isDarwin
             then lib.fakeHash
-            else "sha256-xr43ejHGCH4mcjOqxTJpO11LWKcHKAEETt6ZWUG9vo4=";
+            else "sha256-Q8KSI8H7+d/sUdSlcNAiOPn2THKk7SFqC3U7rLqSqtE=";
           leaveDotGit = true;
         };
       in
@@ -187,7 +187,7 @@ in
           sha256 =
             if pkgs.stdenv.isDarwin
             then "sha256-lW3E4gSZV/m2RfofUqeiCu8KDz06YEvXbYKs8smXFi4="
-            else "sha256-nocX9L8vD655nzky4PQulygWAjKGC1rh3SYDr7t4wBQ=";
+            else "sha256-H5Z4vPTZCFxDCWguOB8oVSGPJyQonrD8FWAQZTYPG2U=";
           leaveDotGit = true;
         };
       in

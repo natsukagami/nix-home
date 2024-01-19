@@ -178,6 +178,29 @@
           }
         ];
       };
+      # framework configuration
+      nixosConfigurations."nki-framework" = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        modules = [
+          (common-nixos nixpkgs)
+          # inputs.lanzaboote.nixosModules.lanzaboote
+          ({ ... }: {
+            # Sets up secure boot
+            # boot.loader.systemd-boot.enable = lib.mkForce false;
+            # boot.lanzaboote = {
+            #   enable = true;
+            #   pkiBundle = "/etc/secureboot";
+            # };
+          })
+          ./nki-framework/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.nki = import ./home/nki-framework.nix;
+          }
+        ];
+      };
       # macbook nixos
       nixosConfigurations."kagami-air-m1" = inputs.nixpkgs.lib.nixosSystem rec {
         system = "aarch64-linux";
