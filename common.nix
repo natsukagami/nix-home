@@ -12,7 +12,7 @@ in
 { lib, pkgs, config, ... }:
 with lib; {
   imports = [
-    defaultShell
+    # defaultShell
   ];
 
   ## Packages

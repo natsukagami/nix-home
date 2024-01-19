@@ -188,6 +188,7 @@ in
         "wheel" # Enable ‘sudo’ for the user.
         "plugdev" # Enable openrazer-daemon privileges
       ];
+      shell = pkgs.fish;
     };
 
     ## Network configuration
