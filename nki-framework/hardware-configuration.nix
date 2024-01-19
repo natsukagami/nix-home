@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod" ];
@@ -14,7 +15,8 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/ed6ef17f-4ad2-48ef-99bb-c4c9d12d6646";
+    {
+      device = "/dev/disk/by-uuid/fa8aaf51-b99f-4fb4-9230-8c0957d8af3f";
       fsType = "btrfs";
       options = [ "subvol=root" ];
     };
@@ -23,22 +25,25 @@
     interval = "monthly";
   };
 
-  common.linux.luksDevices."cryptroot" = "/dev/disk/by-uuid/c676ec99-31d2-420a-af19-a25c4766d87c";
+  common.linux.luksDevices."cryptroot" = "/dev/disk/by-uuid/94226aae-6d1c-401a-bfad-3aa5f371a365";
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/ed6ef17f-4ad2-48ef-99bb-c4c9d12d6646";
+    {
+      device = "/dev/disk/by-uuid/fa8aaf51-b99f-4fb4-9230-8c0957d8af3f";
       fsType = "btrfs";
       options = [ "subvol=home" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/ed6ef17f-4ad2-48ef-99bb-c4c9d12d6646";
+    {
+      device = "/dev/disk/by-uuid/fa8aaf51-b99f-4fb4-9230-8c0957d8af3f";
       fsType = "btrfs";
       options = [ "subvol=nix" ];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/4843-028F";
+    {
+      device = "/dev/disk/by-uuid/6A0E-4D23";
       fsType = "vfat";
     };
 
@@ -55,6 +60,7 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  environment.systemPackages = with pkgs; [ vulkan-validation-layers ];
 
   # Fingerprint
   services.fprintd.enable = true;

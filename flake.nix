@@ -183,14 +183,14 @@
         system = "x86_64-linux";
         modules = [
           (common-nixos nixpkgs)
-          # inputs.lanzaboote.nixosModules.lanzaboote
+          inputs.lanzaboote.nixosModules.lanzaboote
           ({ ... }: {
             # Sets up secure boot
-            # boot.loader.systemd-boot.enable = lib.mkForce false;
-            # boot.lanzaboote = {
-            #   enable = true;
-            #   pkiBundle = "/etc/secureboot";
-            # };
+            boot.loader.systemd-boot.enable = lib.mkForce false;
+            boot.lanzaboote = {
+              enable = true;
+              pkiBundle = "/etc/secureboot";
+            };
           })
           ./nki-framework/configuration.nix
           home-manager.nixosModules.home-manager
