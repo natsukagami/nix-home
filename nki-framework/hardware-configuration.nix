@@ -18,7 +18,7 @@
     {
       device = "/dev/disk/by-uuid/fa8aaf51-b99f-4fb4-9230-8c0957d8af3f";
       fsType = "btrfs";
-      options = [ "subvol=root" ];
+      options = [ "subvol=root" "compress=zstd" ];
     };
   services.btrfs.autoScrub = {
     enable = true;
@@ -31,14 +31,14 @@
     {
       device = "/dev/disk/by-uuid/fa8aaf51-b99f-4fb4-9230-8c0957d8af3f";
       fsType = "btrfs";
-      options = [ "subvol=home" ];
+      options = [ "subvol=home" "compress=zstd" ];
     };
 
   fileSystems."/nix" =
     {
       device = "/dev/disk/by-uuid/fa8aaf51-b99f-4fb4-9230-8c0957d8af3f";
       fsType = "btrfs";
-      options = [ "subvol=nix" ];
+      options = [ "subvol=nix" "compress=zstd" ];
     };
 
   fileSystems."/boot" =
