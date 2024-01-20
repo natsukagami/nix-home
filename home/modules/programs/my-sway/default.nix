@@ -305,9 +305,18 @@ in
       # Commands
       window.commands = [
         { criteria = { title = ".*"; }; command = "inhibit_idle fullscreen"; }
-        { criteria = { app_id = ".*float.*"; }; command = "floating enable"; }
-        { criteria = { class = ".*float.*"; }; command = "floating enable"; }
-      ];
+      ] ++ (
+        # Floating assignments
+        let
+          criterias = [
+            { app_id = ".*float.*"; }
+            { class = ".*float.*"; }
+            { title = "Extension: .*Bitwarden.*"; }
+          ];
+          toCommand = criteria: { inherit criteria; command = "floating enable"; };
+        in
+        map toCommand criterias
+      );
       # Focus
       focus.followMouse = true;
       focus.mouseWarping = true;
