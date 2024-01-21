@@ -17,20 +17,10 @@ addhl global/ number-lines
 
 set global grepcmd "rg --line-number --no-column --no-heading --color=never "
 
-# Floating terminal
-# define-command floating-terminal -params 1 -docstring "Open a floating terminal running the given command" %{
-#     evaluate-commands -save-regs 'a' %{
-#         set-register a %arg{@}
-#         evaluate-commands %sh{
-#             alacritty \
-#             --class=alacritty,floating \
-#             -o window.dimensions.lines=24 \
-#             -o window.dimensions.columns=120 \
-#             -e sh -c "$kak_quoted_reg_a" < /dev/null > /dev/null 2>&1 &
-#         }
-#     }
-# }
-# map global user t -docstring "Open a side terminal on the current directory" ' :iterm-terminal-horizontal fish<ret>'
+# Kitty-specific options
+hook -group windowing global KakBegin .* %{
+  set global kitty_window_type os-window
+}
 
 # Comment line and block
 map global normal <#> ': comment-line<ret>'
