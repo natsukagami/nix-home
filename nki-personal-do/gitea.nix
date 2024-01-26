@@ -152,7 +152,10 @@ in
       };
 
       federation.ENABLED = true;
+
     };
+
+    stateDir = "/mnt/data/gitea";
 
     mailerPasswordFile = secrets."gitea/mailer-password".path;
 
