@@ -47,6 +47,7 @@
   environment.systemPackages = with pkgs; [
     git
     htop-vim
+    kakoune
 
     docker-compose
   ];

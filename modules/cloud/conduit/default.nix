@@ -73,7 +73,7 @@ with lib;
               global.server_name = server_name;
               global.port = instance.port;
               global.allow_registration = instance.allow_registration;
-              global.database_path = "/var/lib/${srvName}/";
+              global.database_path = "/mnt/data/${srvName}/";
             });
           in
           {
@@ -103,7 +103,8 @@ with lib;
                 "@system-service"
                 "~@privileged"
               ];
-              StateDirectory = "${srvName}";
+              StateDirectory = "/mnt/data/${srvName}";
+              BindPaths = [ "/mnt/data/${srvName}" ];
               ExecStart = "${cfg.package}/bin/conduit";
               Restart = "on-failure";
               RestartSec = 10;
