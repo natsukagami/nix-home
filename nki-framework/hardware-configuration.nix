@@ -13,6 +13,10 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
+  boot.kernelParams = [
+    # See https://community.frame.work/t/tracking-graphical-corruption-in-fedora-39-amd-3-03-bios/39073/143
+    "amdgpu.sg_display=0"
+  ];
 
   fileSystems."/" =
     {
