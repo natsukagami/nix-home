@@ -51,6 +51,8 @@ in
       pkgs.unstable.gajim
       # Note taking
       pkgs.unstable.logseq
+      # Audio
+      qpwgraph # Pipewire graph
 
       # (if stdenv.isAarch64 then zotero else pkgs.unstable.zotero) // kinda fucked for now from CVE
       libreoffice
