@@ -50,10 +50,7 @@ in
       pkgs.unstable.cinny-desktop
       pkgs.unstable.gajim
       # Note taking
-      (if pkgs.stdenv.isAarch64 then
-        pkgs.hello
-      else
-        logseq.override { electron_25 = pkgs.electron; })
+      pkgs.unstable.logseq
 
       # (if stdenv.isAarch64 then zotero else pkgs.unstable.zotero) // kinda fucked for now from CVE
       libreoffice
