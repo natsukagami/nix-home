@@ -122,7 +122,6 @@ in
     boot.kernelPackages = mkDefault pkgs.linuxPackages_latest;
     # Use the systemd-boot EFI boot loader.
     boot = {
-      plymouth.enable = true;
       loader.timeout = 60;
       loader.systemd-boot.enable = true;
       loader.efi.canTouchEfiVariables = true;
