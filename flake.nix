@@ -36,7 +36,7 @@
       url = github:natsukagami/mpd-mpris;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki/phanpy";
+    dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki/phanpy?branch=dtth-fork";
     conduit = {
       url = gitlab:famedly/conduit/next;
       inputs.nixpkgs.follows = "nixpkgs-unstable";
