@@ -397,6 +397,10 @@ in
       # Lock after 15 minutes of idle
       { timeout = 15 * 60; command = cfg.lockCmd; }
     ];
+    events = [
+      { event = "lock"; command = cfg.lockCmd; }
+      { event = "before-sleep"; command = cfg.lockCmd; }
+    ];
   };
 
   config.programs.waybar =

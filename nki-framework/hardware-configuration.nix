@@ -16,6 +16,9 @@
   boot.kernelParams = [
     # See https://community.frame.work/t/tracking-graphical-corruption-in-fedora-39-amd-3-03-bios/39073/143
     "amdgpu.sg_display=0"
+    # Hibernation
+    "resume=UUID=fa8aaf51-b99f-4fb4-9230-8c0957d8af3f"
+    "resume_offset=5776640" # btrfs inspect-internal map-swapfile -r /var/swapfile
   ];
 
   fileSystems."/" =
