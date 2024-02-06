@@ -95,6 +95,7 @@ with lib;
       cat = "bat --theme=GitHub ";
       catp = "bat --theme=GitHub -p ";
       l = "exa -l --color=always ";
+      "cp+" = "rsync -avzP";
     };
 
     everywhereAbbrs = {
