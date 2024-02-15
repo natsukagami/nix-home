@@ -159,11 +159,6 @@ in
     qt.style.package = pkgs.adwaita-qt;
     qt.style.name = "adwaita";
 
-    home.sessionVariables = {
-      # Set up Java font style
-      _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=lcd";
-    };
-
     xdg.configFile =
       let
         f = pkg: {
