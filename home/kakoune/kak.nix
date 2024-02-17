@@ -115,7 +115,7 @@ in
   programs.kak-lsp.languages.latex = {
     command = "texlab";
     filetypes = [ "latex" ];
-    roots = [ ".git" "main.tex" "all.tex" ];
+    roots = [ "main.tex" "all.tex" ".git" ];
     settings_section = "texlab";
     settings.texlab = {
       build.executable = "latexmk";
@@ -136,11 +136,13 @@ in
     };
   };
   programs.kak-lsp.languages.typst = {
-    command = "${pkgs.typst-lsp}/bin/typst-lsp";
+    command = "typst-lsp";
     filetypes = [ "typst" ];
-    roots = [ ".git" "main.typ" ];
+    roots = [ "main.typ" ".git" ];
     settings_section = "typst-lsp";
-    settings.typst-lsp = { };
+    settings.typst-lsp = {
+      experimentalFormatterMode = "on";
+    };
   };
 
   programs.my-kakoune.tree-sitter.extraAliases = {
