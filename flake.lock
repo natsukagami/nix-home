@@ -982,16 +982,16 @@
     },
     "nixpkgs_11": {
       "locked": {
-        "lastModified": 1707650010,
-        "narHash": "sha256-dOhphIA4MGrH4ElNCy/OlwmN24MsnEqFjRR6+RY7jZw=",
+        "lastModified": 1708118438,
+        "narHash": "sha256-kk9/0nuVgA220FcqH/D2xaN6uGyHp/zoxPNUmPCMmEE=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "809cca784b9f72a5ad4b991e0e7bcf8890f9c3a6",
+        "rev": "5863c27340ba4de8f83e7e3c023b9599c3cb3c80",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-23.11",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -1544,16 +1544,16 @@
         "nixpkgs": "nixpkgs_11"
       },
       "locked": {
-        "lastModified": 1707960317,
-        "narHash": "sha256-FYprb8cfwMX9852cO7vBvJX0th9nz7BLrv3fRyXzMcE=",
+        "lastModified": 1708216543,
+        "narHash": "sha256-+13qbgTB40KI74Lo35jE0erstY5eIVGCaT1YY36wrYo=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "13ce7ebe6d08be0480dfff2b331492aae7d4d559",
+        "rev": "8a4709f541bda77386aed883f14ccece18238d2c",
         "type": "github"
       },
       "original": {
         "owner": "natsukagami",
-        "ref": "rosu-v2",
+        "ref": "serenity-0.12",
         "repo": "youmubot",
         "type": "github"
       }
