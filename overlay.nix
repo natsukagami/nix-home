@@ -53,17 +53,7 @@ let
       '';
     });
 
-    input-remapper =
-      prev.input-remapper.overrideAttrs (oldAttrs: rec {
-        version = "2.0.0";
-        name = "input-remapper-${version}";
-        src = final.fetchFromGitHub {
-          owner = "sezanzeb";
-          repo = "input-remapper";
-          rev = "${version}";
-          sha256 = "sha256-yQRUhezzI/rz7A+s5O7NGP8DjPzzXA80gIAhhV7mc3w=";
-        };
-      });
+    input-remapper = final.unstable.input-remapper;
   };
 
   overlay-libs = final: prev: {
