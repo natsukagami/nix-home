@@ -12,6 +12,10 @@ with lib; {
       file # Query file type
 
       pinentry-gnome
+
+      # Java stuff
+      jdk21
+      sbt
     ] ++ (
       if pkgs.stdenv.isx86_64
       then [

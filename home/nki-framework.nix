@@ -24,9 +24,6 @@
     texlive.combined.scheme-full
     # Note-taking
     rnote
-
-    # Java & sbt
-    jdk19
   ]);
 
   # Graphical set up

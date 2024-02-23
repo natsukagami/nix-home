@@ -21,10 +21,6 @@
     texlive.combined.scheme-full
     inkscape # for TeX svg
 
-    # Java & sbt
-    jdk21
-    sbt
-
     # Gaming stuff
     wineWowPackages.full
     # wine-lol
