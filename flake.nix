@@ -27,7 +27,7 @@
 
     # ---
     # Imported apps
-    youmubot.url = "github:natsukagami/youmubot/serenity-0.12";
+    youmubot.url = "github:natsukagami/youmubot";
     swayfx = {
       url = github:WillPower3309/swayfx;
       inputs.nixpkgs.follows = "nixpkgs";
