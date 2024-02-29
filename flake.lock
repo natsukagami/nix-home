@@ -743,11 +743,11 @@
     "kak-lsp": {
       "flake": false,
       "locked": {
-        "lastModified": 1705660298,
-        "narHash": "sha256-xsgKiv3pFaMx0nX9YurNSJv97YzjrbX2BYeq2Z9jRWg=",
+        "lastModified": 1709215348,
+        "narHash": "sha256-aVdBWPSqJLxnZ2dMbufA2cqiZIxOUdm+y9BV3BqtM3Y=",
         "owner": "natsukagami",
         "repo": "kak-lsp",
-        "rev": "a4810bbadb888a5c8b80b1855facdf18560da5f1",
+        "rev": "79e3d4484776be073732e3b3d9742af3358c3abe",
         "type": "github"
       },
       "original": {
@@ -760,11 +760,11 @@
     "kakoune": {
       "flake": false,
       "locked": {
-        "lastModified": 1705486702,
-        "narHash": "sha256-+qZC6X5Bu5NRd/lYytiTnv7rirgbB3PIgg4N4qd5aaI=",
+        "lastModified": 1709208365,
+        "narHash": "sha256-ELe7LOpRXudxluxI/RDRd8+pMNiIQFFNd4PC7LXgWss=",
         "owner": "mawww",
         "repo": "kakoune",
-        "rev": "06743119458e425b7525c6aa424a54077bc64244",
+        "rev": "504b074aa715b1d4893cd6f918f3cc333e5f3007",
         "type": "github"
       },
       "original": {
