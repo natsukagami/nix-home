@@ -169,6 +169,27 @@ in
         queries.src = src;
         queries.path = "queries";
       };
+    yaml = {
+      grammar.src = pkgs.fetchFromGitHub {
+        owner = "ikatyang";
+        repo = "tree-sitter-yaml";
+        rev = "0e36bed171768908f331ff7dff9d956bae016efb";
+        hash = "sha256-rN/a8dYffDQNuvnhNp/nfu0AzhYrR1ESACQbQWb/n5w=";
+        leaveDotGit = true;
+      };
+      grammar.compile.args = [ "-c" "-fpic" "../scanner.cc" "../parser.c" "-I" ".." ];
+      grammar.link.args = [ "-shared" "-fpic" "scanner.o" "parser.o" ];
+      grammar.link.flags = [ "-O3" "-lstdc++" ];
+
+      queries.src = pkgs.fetchFromGitHub {
+        owner = "helix-editor";
+        repo = "helix";
+        rev = "dbd248fdfa680373d94fbc10094a160aafa0f7a7";
+        hash = "sha256-dv/T8ROXmwEdjM71gza1RzF2HoINA7Zl2jmz63kCZyQ=";
+        leaveDotGit = true;
+      };
+      queries.path = "runtime/queries/yaml";
+    };
   };
 
   programs.my-kakoune.package = pkgs.kakoune;
