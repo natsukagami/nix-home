@@ -58,6 +58,11 @@ in
         account-domain = cfg.accountDomain;
         bind-address = "localhost";
         port = cfg.port;
+        # Instance
+        instance-languages = [ "en-ca" "vi" ];
+        # Accounts
+        accounts-registration-open = false;
+        accounts-allow-custom-css = true;
         # Database
         db-type = "postgres";
         db-address = "/run/postgresql"; # Use socket
