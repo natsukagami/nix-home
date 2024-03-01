@@ -54,6 +54,21 @@ let
     });
 
     input-remapper = final.unstable.input-remapper;
+
+    kakoune-unwrapped =
+      prev.kakoune-unwrapped.overrideAttrs (attrs: {
+        version = "r${builtins.substring 0 6 inputs.kakoune.rev}";
+        src = inputs.kakoune;
+        patches = [
+          # patches in the original package was already applied
+
+          # https://github.com/mawww/kakoune/pull/5108
+          (final.fetchpatch {
+            url = "https://github.com/mawww/kakoune/commit/64b3433905eeb33653ed617d61906ba68c686916.patch";
+            hash = "sha256-XYA4GcOEuWHsnDhMI0nXbg9Myv2o1UZ8qvzavIXbkJo=";
+          })
+        ];
+      });
   };
 
   overlay-libs = final: prev: {
