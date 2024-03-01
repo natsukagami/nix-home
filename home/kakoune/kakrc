@@ -1,5 +1,6 @@
 # Enable kak-tree-sitter
-eval %sh{ kak-tree-sitter --kakoune -d --server }
+eval %sh{ kak-tree-sitter --kakoune -d --server --with-text-objects }
+map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
 ## Set some color overrides
 set global kts_yellow "rgb:e2b75e"
 set global kts_teal "rgb:008080"
@@ -92,8 +93,8 @@ hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c
     map window normal <c-s-h> ": lsp-hover-buffer<ret>"
     # lsp-auto-hover-insert-mode-enable
     set window lsp_hover_anchor true
-
 }
+
 hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix|fsharp) %{
     # Format the document if possible
     hook window BufWritePre .* %{ lsp-formatting-sync }
