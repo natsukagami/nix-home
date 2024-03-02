@@ -1,14 +1,14 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, lib, ... }:
 
 let
   # osu-pkg = pkgs.unstable.osu-lazer-bin;
   osu-pkg = with pkgs; with lib;
     appimageTools.wrapType2 rec {
       pname = "osu-lazer-bin";
-      version = "2024.221.0";
+      version = "2024.302.1";
       src = pkgs.fetchurl {
         url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
-        hash = "sha256-UY1HSOpcir9ybcxDuicklArynOFWkDtKqJe/LGeQOEM=";
+        hash = "sha256-vYG3viY9GBtgaY8ThCSWss+zzjAyVa4fmrWrQdYcUow=";
       };
 
       extraPkgs = pkgs: with pkgs; [ icu ];
