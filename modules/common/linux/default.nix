@@ -161,10 +161,11 @@ in
         # enable this module
         enable = true;
         # defaults (no need to be set unless modified)
-        quantum = 64;
+        quantum = 32;
         rate = 48000;
       };
     };
+
     # udev configurations
     services.udev.packages = with pkgs; [
       qmk-udev-rules # For keyboards
