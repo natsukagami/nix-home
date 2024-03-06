@@ -194,11 +194,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1706453774,
-        "narHash": "sha256-uUxN8ZHfTu2XGSOwwVej8Ou2ikNCSEiGFAHv+VcTWOM=",
+        "lastModified": 1709729579,
+        "narHash": "sha256-w+hp4+WacDyncO+EsxNGk6VzyMitzlxtZI3NyzI3KrA=",
         "ref": "refs/heads/dtth-fork",
-        "rev": "f07236307abb34d4b1a56780d0dea10f70cf339a",
-        "revCount": 2250,
+        "rev": "20909244115724ef801b60652cc174c4ee7f6a24",
+        "revCount": 2399,
         "type": "git",
         "url": "ssh://gitea@git.dtth.ch/nki/phanpy?branch=dtth-fork"
       },
