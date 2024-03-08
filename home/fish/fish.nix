@@ -23,6 +23,14 @@ with lib;
   config.programs.fish = {
     enable = true;
     functions = {
+      rebuild = {
+        body = ''
+          command sudo -v && \
+          command sudo nixos-rebuild --flake ~/.config/nixpkgs -L --log-format internal-json -v $argv \
+            &| ${pkgs.nix-output-monitor}/bin/nom --json
+        '';
+        wraps = "nixos-rebuild";
+      };
       # Simplify nix usage!
       nx = {
         body = ''
