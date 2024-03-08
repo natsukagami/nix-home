@@ -24,16 +24,9 @@ let
           done
         '';
     };
-
-  osu-wrapper = pkgs.writeScriptBin "osu!" ''
-    export COMPlus_GCGen0MaxBudget="600000"
-    export PIPEWIRE_LATENCY="32/48000"
-    export vblank_mode="0"
-    ${osu-pkg}/bin/osu\!
-  '';
 in
 {
-  home.packages = [ osu-wrapper ];
+  home.packages = [ osu-pkg ];
   # home.packages = [ pkgs.osu-lazer ];
 }
 
