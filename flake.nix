@@ -137,7 +137,7 @@
       };
 
       # Home configuration
-      nixosConfigurations."nki-home" = nixpkgs.lib.nixosSystem rec {
+      nixosConfigurations."kagamiPC" = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
           (common-nixos nixpkgs)
