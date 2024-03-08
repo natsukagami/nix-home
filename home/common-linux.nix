@@ -10,25 +10,14 @@ with lib; {
     home.packages = with pkgs; [
       psmisc # killall and friends
       file # Query file type
+      nix-output-monitor
 
       pinentry-gnome
 
       # Java stuff
       jdk21
       sbt
-    ] ++ (
-      if pkgs.stdenv.isx86_64
-      then [
-        vivaldi
-        mpv # for anki
-        pkgs.unstable.anki-bin
-
-        tdesktop
-        whatsapp-for-linux
-        obs-studio
-      ]
-      else [ ]
-    );
+    ];
 
     ## Gnome-keyring
     services.gnome-keyring = {

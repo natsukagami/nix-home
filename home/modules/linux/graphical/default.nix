@@ -49,6 +49,7 @@ in
       sublime-music # For navidrome
       pkgs.unstable.cinny-desktop
       pkgs.unstable.gajim
+      vivaldi
       # Note taking
       pkgs.unstable.logseq
       # Audio
@@ -56,6 +57,13 @@ in
 
       # (if stdenv.isAarch64 then zotero else pkgs.unstable.zotero) // kinda fucked for now from CVE
       libreoffice
+
+      mpv # for anki
+      pkgs.unstable.anki-bin
+
+      tdesktop
+      whatsapp-for-linux
+      obs-studio
 
       ## CLI stuff
       dex # .desktop file management, startup
@@ -68,10 +76,10 @@ in
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
-    nki.programs.discord.package = pkgs.vesktop.overrideAttrs (attrs: {
+    nki.programs.discord.package = pkgs.unstable.vesktop.overrideAttrs (attrs: {
       nativeBuildInputs = attrs.nativeBuildInputs ++ [ pkgs.nss_latest ];
       postInstall = ''
-        ln -s $out/bin/vencorddesktop $out/bin/discord
+        ln -s $out/bin/vesktop $out/bin/discord
       '';
     });
 
