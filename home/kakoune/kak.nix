@@ -114,6 +114,11 @@ in
       experimentalFormatterMode = "on";
     };
   };
+  programs.kak-lsp.languages.markdown = {
+    command = "marksman";
+    filetypes = [ "markdown" ];
+    roots = [ ".marksman.toml" ".git" ];
+  };
 
   programs.my-kakoune.tree-sitter.extraAliases = {
     # Scala stuff
