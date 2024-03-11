@@ -63,9 +63,40 @@ let
       users.extraGroups.vboxusers.members = [ cfg.username ];
     };
   };
+
+  rt-audio = { pkgs, ... }: mkIf cfg.enable {
+    services.pipewire.lowLatency = {
+      # enable this module
+      enable = true;
+      # defaults (no need to be set unless modified)
+      quantum = 32;
+      rate = 48000;
+    };
+    security.rtkit.enable = true;
+
+    # Real time configurations
+    boot.kernel.sysctl = {
+      "vm.swappiness" = 10;
+      "fs.inotify.max_user_watches" = 524288;
+    };
+    security.pam.loginLimits = [
+      {
+        domain = "@audio";
+        item = "rtprio";
+        type = "-";
+        value = "90";
+      }
+      {
+        domain = "@audio";
+        item = "memlock";
+        type = "-";
+        value = "unlimited";
+      }
+    ];
+  };
 in
 {
-  imports = with modules; [ adb ios wlr logitech virtualisation accounts ];
+  imports = with modules; [ adb ios wlr logitech virtualisation accounts rt-audio ];
 
   options.common.linux = {
     enable = mkOption {
@@ -156,14 +187,6 @@ in
       alsa.support32Bit = true;
 
       pulse.enable = true;
-
-      lowLatency = {
-        # enable this module
-        enable = true;
-        # defaults (no need to be set unless modified)
-        quantum = 32;
-        rate = 48000;
-      };
     };
 
     # udev configurations
@@ -187,6 +210,7 @@ in
       extraGroups = [
         "wheel" # Enable ‘sudo’ for the user.
         "plugdev" # Enable openrazer-daemon privileges
+        "audio"
       ];
       shell = pkgs.fish;
     };

@@ -76,10 +76,10 @@ in
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
-    nki.programs.discord.package = pkgs.unstable.vesktop.overrideAttrs (attrs: {
-      nativeBuildInputs = attrs.nativeBuildInputs ++ [ pkgs.nss_latest ];
+    nki.programs.discord.package = (pkgs.callPackage pkgs.unstable.vesktop.override { }).overrideAttrs (attrs: {
+      nativeBuildInputs = attrs.nativeBuildInputs ++ [ pkgs.nss_latest pkgs.makeWrapper ];
       postInstall = ''
-        ln -s $out/bin/vesktop $out/bin/discord
+        makeWrapper $out/bin/vesktop $out/bin/discord
       '';
     });
 
