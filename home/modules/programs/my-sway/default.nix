@@ -296,6 +296,8 @@ in
           { class = "^((d|D)iscord|((A|a)rm(c|C)ord))$"; }
           { class = "VencordDesktop"; }
           { app_id = "VencordDesktop"; }
+          { class = "vesktop"; }
+          { app_id = "vesktop"; }
         ];
         ${extraWorkspaces.mail} = [
           { app_id = "thunderbird"; }
