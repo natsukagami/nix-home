@@ -1022,6 +1022,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-peertube": {
+      "locked": {
+        "lastModified": 1708065087,
+        "narHash": "sha256-/Lc6TYtIJo/tCWLjErYqbMHNph3zp0ImkcHGES8aJV8=",
+        "owner": "Izorkin",
+        "repo": "nixpkgs",
+        "rev": "937220442c4c20a1b37add5387f20294b34e18f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Izorkin",
+        "ref": "update-peertube",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1702780907,
@@ -1307,6 +1323,7 @@
         "nix-gaming": "nix-gaming",
         "nixos-m1": "nixos-m1",
         "nixpkgs": "nixpkgs_11",
+        "nixpkgs-peertube": "nixpkgs-peertube",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "secrets": "secrets",
@@ -1639,11 +1656,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1710043304,
-        "narHash": "sha256-CrYHn6pIjvSUG2KPWXV7DWgZpmxV9ZdJv7UZuehVEvc=",
+        "lastModified": 1710691902,
+        "narHash": "sha256-Wx28gVRVPnES/JUT6m5V9TDeVkISIgYdghIy0noPOek=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "13683aa2297e7c3fb495a24987a96bd4dda09bbe",
+        "rev": "94dc225b86539a83be0c55c930cd6a4dab639f8d",
         "type": "github"
       },
       "original": {

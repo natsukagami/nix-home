@@ -53,6 +53,9 @@
     nixos-m1.url = github:tpwrules/nixos-apple-silicon;
     nixos-m1.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Nixpkgs with new peertube, see #273769
+    nixpkgs-peertube.url = "github:Izorkin/nixpkgs/update-peertube";
+
     # ---
     # DEPLOYMENT ONLY! secrets
     secrets.url = "git+ssh://git@github.com/natsukagami/nix-deploy-secrets";

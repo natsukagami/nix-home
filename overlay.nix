@@ -3,6 +3,7 @@ let
   overlay-unstable = final: prev: {
     unstable = import nixpkgs-unstable { config.allowUnfree = true; system = prev.system; };
     x86 = import nixpkgs-unstable { system = prev.system; config.allowUnsupportedSystem = true; };
+    nixpkgs-peertube = import inputs.nixpkgs-peertube { system = prev.system; };
   };
   overlay-needs-unstable = final: prev: {
     # override some packages that needs unstable that cannot be changed in the setup.
@@ -11,6 +12,8 @@ let
     # Typst updates really quickly.
     typst = final.unstable.typst;
     typst-lsp = final.unstable.typst-lsp;
+
+    peertube = final.nixpkgs-peertube.peertube;
   };
   overlay-imported = final: prev: {
     sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
