@@ -397,7 +397,7 @@ in
     enable = true;
     timeouts = [
       # Lock after 15 minutes of idle
-      { timeout = 15 * 60; command = cfg.lockCmd; }
+      # { timeout = 15 * 60; command = cfg.lockCmd; }
     ];
     events = [
       { event = "lock"; command = cfg.lockCmd; }
