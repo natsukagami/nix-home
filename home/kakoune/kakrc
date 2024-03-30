@@ -10,6 +10,11 @@ set global kts_sky "rgb:6aa622"
 colorscheme catppuccin-latte
 set global background default
 
+# Set indentation guides
+add-highlighter global/indent-guides show-whitespaces -tab " " -spc " " -lf " " -nbsp " "
+set-face global Whitespace default,default
+set-face global WhitespaceIndent +d@comment
+
 # Assistant
 set global ui_options terminal_assistant=cat
 
