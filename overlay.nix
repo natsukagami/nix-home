@@ -11,6 +11,8 @@ let
     # Typst updates really quickly.
     typst = final.unstable.typst;
     typst-lsp = final.unstable.typst-lsp;
+
+    peertube = final.unstable.peertube;
   };
   overlay-imported = final: prev: {
     sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
