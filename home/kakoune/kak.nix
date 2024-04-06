@@ -11,14 +11,17 @@ let
   kak-lsp-frontend = { pkgs, lib, ... }:
     let
       langserver = name: {
-        args = [ "--stdio" ];
-        command = "${pkgs.nodePackages.vscode-langservers-extracted}/bin/vscode-${name}-language-server";
-        filetypes = [ name ];
-        roots = [ "package.json" ".git" ];
+        name = "vscode-${name}-language-server";
+        value = {
+          args = [ "--stdio" ];
+          command = "${pkgs.nodePackages.vscode-langservers-extracted}/bin/vscode-${name}-language-server";
+          filetypes = [ name ];
+          roots = [ "package.json" ".git" ];
+        };
       };
     in
     {
-      programs.kak-lsp.languages = lib.attrsets.genAttrs [ "html" "css" "json" ] langserver;
+      programs.kak-lsp.languageServers = builtins.listToAttrs (map langserver [ "html" "css" "json" ]);
     };
 
 in
@@ -54,13 +57,13 @@ in
     { face = "ts_markup_italic"; token = "text"; modifiers = [ "emph" ]; }
   ];
 
-  programs.kak-lsp.languages.typescript = {
+  programs.kak-lsp.languageServers.typescript-language-server = {
     args = [ "--stdio" ];
     command = "typescript-language-server";
     filetypes = [ "typescript" ];
     roots = [ "package.json" ];
   };
-  programs.kak-lsp.languages.fsharp = {
+  programs.kak-lsp.languageServers.fsautocomplete = {
     args = [ "--adaptive-lsp-server-enabled" "--project-graph-enabled" "--source-text-factory" "RoslynSourceText" ];
     command = "fsautocomplete";
     filetypes = [ "fsharp" ];
@@ -70,7 +73,7 @@ in
       AutomaticWorkspaceInit = true;
     };
   };
-  programs.kak-lsp.languages.scala = {
+  programs.kak-lsp.languageServers.metals = {
     command = "metals";
     filetypes = [ "scala" ];
     roots = [ "build.sbt" "build.sc" ];
@@ -80,9 +83,14 @@ in
       showInferredType = true;
       decorationProvider = true;
       inlineDecorationProvider = true;
+      # From kakoune-lsp's own options
+      icons = "unicode";
+      isHttpEnabled = true;
+      statusBarProvider = "log-message";
+      compilerOptions = { overrideDefFormat = "unicode"; };
     };
   };
-  programs.kak-lsp.languages.latex = {
+  programs.kak-lsp.languageServers.texlab = {
     command = "texlab";
     filetypes = [ "latex" ];
     roots = [ "main.tex" "all.tex" ".git" ];
@@ -105,7 +113,7 @@ in
           });
     };
   };
-  programs.kak-lsp.languages.typst = {
+  programs.kak-lsp.languageServers.typst-lsp = {
     command = "typst-lsp";
     filetypes = [ "typst" ];
     roots = [ "main.typ" ".git" ];
@@ -114,7 +122,7 @@ in
       experimentalFormatterMode = "on";
     };
   };
-  programs.kak-lsp.languages.markdown = {
+  programs.kak-lsp.languageServers.marksman = {
     command = "marksman";
     filetypes = [ "markdown" ];
     roots = [ ".marksman.toml" ".git" ];

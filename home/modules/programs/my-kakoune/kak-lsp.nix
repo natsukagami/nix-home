@@ -4,52 +4,23 @@ with lib;
 let
   lspConfig =
     {
-      languages = {
-        bash = {
-          args = [ "start" ];
-          command = "bash-language-server";
-          filetypes = [ "sh" ];
-          roots = [ ".git" ".hg" ];
-        };
-        c_cpp = {
+      language_ids = {
+        c = "c_cpp";
+        cpp = "c_cpp";
+        javascript = "javascriptreact";
+        typescript = "typescriptreact";
+        protobuf = "proto";
+        sh = "shellscript";
+      };
+
+      language_servers = {
+        ccls = {
           args = [ "-v=2" "-log-file=/tmp/ccls.log" ];
           command = "ccls";
           filetypes = [ "c" "cpp" ];
           roots = [ "compile_commands.json" ".cquery" ".git" ];
         };
-        crystal = {
-          command = "scry";
-          filetypes = [ "crystal" ];
-          roots = [ "shard.yml" ];
-        };
-        css = {
-          args = [ "--stdio" ];
-          command = "css-languageserver";
-          filetypes = [ "css" ];
-          roots = [ "package.json" ];
-        };
-        d = {
-          command = "dls";
-          filetypes = [ "d" "di" ];
-          roots = [ ".git" "dub.sdl" "dub.json" ];
-        };
-        dart = {
-          command = "dart_language_server";
-          filetypes = [ "dart" ];
-          roots = [ "pubspec.yaml" ".git" ];
-        };
-        elm = {
-          args = [ "--stdio" ];
-          command = "elm-language-server";
-          filetypes = [ "elm" ];
-          roots = [ "elm.json" ];
-        };
-        fsharp = {
-          command = "FSharpLanguageServer";
-          filetypes = [ "fsharp" ];
-          roots = [ ".git" "*.fsx" ];
-        };
-        go = {
+        gopls = {
           command = "gopls";
           filetypes = [ "go" ];
           offset_encoding = "utf-8";
@@ -57,32 +28,14 @@ let
           settings = { gopls = { hoverKind = "SynopsisDocumentation"; semanticTokens = true; }; };
           settings_section = "gopls";
         };
-        haskell = {
+        haskell-language-server = {
           args = [ "--lsp" ];
           command = "haskell-language-server-wrapper";
           filetypes = [ "haskell" ];
           roots = [ "Setup.hs" "stack.yaml" "*.cabal" "package.yaml" ];
           settings_section = "haskell";
         };
-        html = {
-          args = [ "--stdio" ];
-          command = "html-languageserver";
-          filetypes = [ "html" ];
-          roots = [ "package.json" ];
-        };
-        javascript = {
-          args = [ "lsp" ];
-          command = "flow";
-          filetypes = [ "javascript" ];
-          roots = [ ".flowconfig" ];
-        };
-        json = {
-          args = [ "--stdio" ];
-          command = "json-languageserver";
-          filetypes = [ "json" ];
-          roots = [ "package.json" ];
-        };
-        latex = {
+        texlab = {
           command = "texlab";
           filetypes = [ "latex" ];
           roots = [ ".git" "main.tex" "all.tex" ];
@@ -100,12 +53,7 @@ let
             };
           };
         };
-        nim = {
-          command = "nimlsp";
-          filetypes = [ "nim" ];
-          roots = [ "*.nimble" ".git" ];
-        };
-        nix = {
+        nil = {
           command = "${pkgs.nil}/bin/nil";
           filetypes = [ "nix" ];
           roots = [ "flake.nix" "shell.nix" ".git" ];
@@ -113,43 +61,13 @@ let
             formatting.command = [ "${getExe pkgs.nixpkgs-fmt}" ];
           };
         };
-        ocaml = {
-          args = [ ];
-          command = "ocamllsp";
-          filetypes = [ "ocaml" ];
-          roots = [ "Makefile" "opam" "*.opam" "dune" ".merlin" ".ocamlformat" ];
-        };
-        php = {
-          args = [ "--stdio" ];
-          command = "intelephense";
-          filetypes = [ "php" ];
-          roots = [ ".htaccess" "composer.json" ];
-        };
-        python = {
+        pyls = {
           command = "pyls";
           filetypes = [ "python" ];
           offset_encoding = "utf-8";
           roots = [ "requirements.txt" "setup.py" ".git" ".hg" ];
         };
-        racket = {
-          args = [ "-l" "racket-langserver" ];
-          command = "racket";
-          filetypes = [ "racket" ];
-          roots = [ ".git" ];
-        };
-        reason = {
-          args = [ "--stdio" ];
-          command = "ocaml-language-server";
-          filetypes = [ "reason" ];
-          roots = [ "package.json" "Makefile" ".git" ".hg" ];
-        };
-        ruby = {
-          args = [ "stdio" ];
-          command = "solargraph";
-          filetypes = [ "ruby" ];
-          roots = [ "Gemfile" ];
-        };
-        rust = {
+        rust-analyzer = {
           args = [ ];
           command = "rust-analyzer";
           filetypes = [ "rust" ];
@@ -191,7 +109,7 @@ let
       verbosity = 255;
     };
 
-  languageOption = types.submodule {
+  languageServerOption = types.submodule {
     options = {
       filetypes = mkOption {
         type = types.listOf types.str;
@@ -262,10 +180,16 @@ in
       description = "Server timeout";
     };
 
-    languages = mkOption {
-      type = types.attrsOf languageOption;
+    languageServers = mkOption {
+      type = types.attrsOf languageServerOption;
       default = { };
       description = "The language options";
+    };
+
+    languageIds = mkOption {
+      type = types.attrsOf types.str;
+      default = { };
+      description = "Language IDs to be sent to the LSP";
     };
   };
 
@@ -286,7 +210,8 @@ in
               server.timeout = cfg.serverTimeout;
               snippet_support = cfg.enableSnippets;
               verbosity = 255;
-              language = lspConfig.languages // cfg.languages;
+              language_server = lspConfig.language_servers // cfg.languageServers;
+              language_ids = lspConfig.language_ids // cfg.languageIds;
             })
           } \
           > $out
