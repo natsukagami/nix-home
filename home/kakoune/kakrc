@@ -90,7 +90,7 @@ hook global InsertCompletionHide .* %{
 try %{
     eval %sh{test -z "$WE_STARTED_KAK" && kak-lsp --kakoune -s $kak_session}
 }
-hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala|typst|html|css|json|markdown) %{
+hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala|typst|html|css|json|markdown|templ) %{
     lsp-enable-window
     map window lsp N -docstring "Display the next message request" ": lsp-show-message-request-next<ret>"
     map window normal <c-l> ": enter-user-mode lsp<ret>"
@@ -98,9 +98,16 @@ hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c
     map window normal <c-s-h> ": lsp-hover-buffer<ret>"
     # lsp-auto-hover-insert-mode-enable
     set window lsp_hover_anchor true
+    map global insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring 'Select next snippet placeholder'
+    map global object a '<a-semicolon>lsp-object<ret>' -docstring 'LSP any symbol'
+    map global object <a-a> '<a-semicolon>lsp-object<ret>' -docstring 'LSP any symbol'
+    map global object f '<a-semicolon>lsp-object Function Method<ret>' -docstring 'LSP function or method'
+    map global object t '<a-semicolon>lsp-object Class Interface Struct<ret>' -docstring 'LSP class interface or struct'
+    map global object d '<a-semicolon>lsp-diagnostic-object --include-warnings<ret>' -docstring 'LSP errors and warnings'
+    map global object D '<a-semicolon>lsp-diagnostic-object<ret>' -docstring 'LSP errors'
 }
 
-hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix|fsharp) %{
+hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix|fsharp|templ) %{
     # Format the document if possible
     hook window BufWritePre .* %{ lsp-formatting-sync }
 }
@@ -204,6 +211,11 @@ hook global BufCreate .*[.](sc|sbt) %{
 hook global BufCreate .*[.]typ %{
   set-option buffer filetype typst
   add-highlighter buffer/ wrap
+}
+
+hook global BufCreate .*[.]templ %{
+  set-option buffer filetype templ
+  set-option window comment_line "//"
 }
 
 hook global BufOpenFile .* %{

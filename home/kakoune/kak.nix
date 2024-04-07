@@ -19,10 +19,46 @@ let
           roots = [ "package.json" ".git" ];
         };
       };
+
+      tailwind = {
+        command = "tailwindcss-language-server";
+        args = [ "--stdio" ];
+        filetypes = [ "html" "css" "javascript" "typescript" "templ" ];
+        roots = [ "tailwind.config.{js,cjs,mjs,ts}" "package.json" ".git" ];
+        settings_section = "tailwindCSS";
+        settings.tailwindCSS = {
+          validate = "warning";
+          userLanguages.templ = "html";
+        };
+      };
+
+      templModule = { pkgs, lib, ... }: {
+        programs.kak-lsp.languageServers."vscode-html-language-server".filetypes = [ "templ" ];
+        programs.kak-lsp.languageServers."tailwindcss-language-server".filetypes = [ "templ" ];
+        programs.kak-lsp.languageServers.templ = {
+          command = "templ";
+          args = [ "lsp" ];
+          filetypes = [ "templ" ];
+          roots = [ "go.mod" ".git" ];
+        };
+
+        home.packages = [ pkgs.unstable.templ ];
+      };
+
     in
     {
-      programs.kak-lsp.languageServers = builtins.listToAttrs (map langserver [ "html" "css" "json" ]);
+      imports = [ templModule ];
+
+      programs.kak-lsp.languageServers = (builtins.listToAttrs (map langserver [ "html" "css" "json" ])) // {
+        tailwindcss-language-server = tailwind;
+      };
+
+      home.packages = with pkgs; [
+        nodePackages.vscode-langservers-extracted
+        tailwindcss-language-server
+      ];
     };
+
 
 in
 {
@@ -144,66 +180,115 @@ in
     conditional = "keyword_conditional";
     include = "keyword_control_import";
   };
-  programs.my-kakoune.tree-sitter.languages = {
-    scala =
-      let
-        src = pkgs.fetchFromGitHub {
-          owner = "tree-sitter";
-          repo = "tree-sitter-scala";
-          rev = "70afdd5632d57dd63a960972ab25945e353a52f6";
-          hash =
-            if pkgs.stdenv.isDarwin
-            then lib.fakeHash
-            else "sha256-Q8KSI8H7+d/sUdSlcNAiOPn2THKk7SFqC3U7rLqSqtE=";
-          leaveDotGit = true;
-        };
-      in
-      {
-        grammar.src = src;
-        queries.src = src;
-        queries.path = "queries/scala";
+  programs.my-kakoune.tree-sitter.languages =
+    let
+      tree-sitter-go = pkgs.fetchFromGitHub {
+        owner = "tree-sitter";
+        repo = "tree-sitter-go";
+        rev = "v0.20.0";
+        hash = "sha256-XUSXOTqUySShJ7gebnhObwaFllfIxEYIHN70/wpiJdw=";
+        leaveDotGit = true;
       };
-    haskell =
-      let
-        src = pkgs.fetchFromGitHub {
-          owner = "tree-sitter";
-          repo = "tree-sitter-haskell";
-          rev = "ba0bfb0e5d8e9e31c160d287878c6f26add3ec08";
-          sha256 =
-            if pkgs.stdenv.isDarwin
-            then "sha256-lW3E4gSZV/m2RfofUqeiCu8KDz06YEvXbYKs8smXFi4="
-            else "sha256-H5Z4vPTZCFxDCWguOB8oVSGPJyQonrD8FWAQZTYPG2U=";
+    in
+    {
+      scala =
+        let
+          src = pkgs.fetchFromGitHub {
+            owner = "tree-sitter";
+            repo = "tree-sitter-scala";
+            rev = "70afdd5632d57dd63a960972ab25945e353a52f6";
+            hash =
+              if pkgs.stdenv.isDarwin
+              then lib.fakeHash
+              else "sha256-Q8KSI8H7+d/sUdSlcNAiOPn2THKk7SFqC3U7rLqSqtE=";
+            leaveDotGit = true;
+          };
+        in
+        {
+          grammar.src = src;
+          queries.src = src;
+          queries.path = "queries/scala";
+        };
+      haskell =
+        let
+          src = pkgs.fetchFromGitHub {
+            owner = "tree-sitter";
+            repo = "tree-sitter-haskell";
+            rev = "ba0bfb0e5d8e9e31c160d287878c6f26add3ec08";
+            sha256 =
+              if pkgs.stdenv.isDarwin
+              then "sha256-lW3E4gSZV/m2RfofUqeiCu8KDz06YEvXbYKs8smXFi4="
+              else "sha256-H5Z4vPTZCFxDCWguOB8oVSGPJyQonrD8FWAQZTYPG2U=";
+            leaveDotGit = true;
+          };
+        in
+        {
+          grammar.src = src;
+          grammar.compile.args = [ "-c" "-fpic" "../parser.c" "../scanner.c" "../unicode.h" "-I" ".." ];
+          queries.src = src;
+          queries.path = "queries";
+        };
+      yaml = {
+        grammar.src = pkgs.fetchFromGitHub {
+          owner = "ikatyang";
+          repo = "tree-sitter-yaml";
+          rev = "0e36bed171768908f331ff7dff9d956bae016efb";
+          hash = "sha256-rN/a8dYffDQNuvnhNp/nfu0AzhYrR1ESACQbQWb/n5w=";
           leaveDotGit = true;
         };
-      in
-      {
-        grammar.src = src;
-        grammar.compile.args = [ "-c" "-fpic" "../parser.c" "../scanner.c" "../unicode.h" "-I" ".." ];
-        queries.src = src;
+        grammar.compile.args = [ "-c" "-fpic" "../scanner.cc" "../parser.c" "-I" ".." ];
+        grammar.link.args = [ "-shared" "-fpic" "scanner.o" "parser.o" ];
+        grammar.link.flags = [ "-O3" "-lstdc++" ];
+
+        queries.src = pkgs.fetchFromGitHub {
+          owner = "helix-editor";
+          repo = "helix";
+          rev = "dbd248fdfa680373d94fbc10094a160aafa0f7a7";
+          hash = "sha256-dv/T8ROXmwEdjM71gza1RzF2HoINA7Zl2jmz63kCZyQ=";
+          leaveDotGit = true;
+        };
+        queries.path = "runtime/queries/yaml";
+      };
+
+      templ =
+        let
+          src = pkgs.fetchFromGitHub {
+            owner = "vrischmann";
+            repo = "tree-sitter-templ";
+            rev = "044ad200092170727650fa6d368df66a8da98f9d";
+            hash = "sha256-umhemFnz/nLzkJk75wMoMAHT+Zs9MYOqWPoYQwoFu74=";
+            leaveDotGit = true;
+          };
+        in
+        {
+          grammar.src = src;
+          queries.src = pkgs.runCommandLocal "templ-tree-sitter-queries" { } ''
+            mkdir -p queries
+            # copy most stuff from tree-sitter-templ
+            install -m644 ${src}/queries/templ/* queries
+            # override inherited files
+            cat ${tree-sitter-go}/queries/highlights.scm ${src}/queries/templ/highlights.scm > queries/highlights.scm
+
+            mkdir -p $out/queries
+            cp -r queries $out/queries/templ
+            cd $out
+            ${lib.getExe pkgs.git} init
+            ${lib.getExe pkgs.git} config user.email "a@b.com"
+            ${lib.getExe pkgs.git} config user.name "a"
+            ${lib.getExe pkgs.git} add .
+            ${lib.getExe pkgs.git} commit -m "Just making a git commit"
+          '';
+          queries.path = "queries/templ";
+        };
+
+      go = {
+        grammar.src = tree-sitter-go;
+        grammar.compile.args = [ "-c" "-fpic" "../parser.c" "-I" ".." ];
+        grammar.link.args = [ "-shared" "-fpic" "parser.o" ];
+        queries.src = tree-sitter-go;
         queries.path = "queries";
       };
-    yaml = {
-      grammar.src = pkgs.fetchFromGitHub {
-        owner = "ikatyang";
-        repo = "tree-sitter-yaml";
-        rev = "0e36bed171768908f331ff7dff9d956bae016efb";
-        hash = "sha256-rN/a8dYffDQNuvnhNp/nfu0AzhYrR1ESACQbQWb/n5w=";
-        leaveDotGit = true;
-      };
-      grammar.compile.args = [ "-c" "-fpic" "../scanner.cc" "../parser.c" "-I" ".." ];
-      grammar.link.args = [ "-shared" "-fpic" "scanner.o" "parser.o" ];
-      grammar.link.flags = [ "-O3" "-lstdc++" ];
-
-      queries.src = pkgs.fetchFromGitHub {
-        owner = "helix-editor";
-        repo = "helix";
-        rev = "dbd248fdfa680373d94fbc10094a160aafa0f7a7";
-        hash = "sha256-dv/T8ROXmwEdjM71gza1RzF2HoINA7Zl2jmz63kCZyQ=";
-        leaveDotGit = true;
-      };
-      queries.path = "runtime/queries/yaml";
     };
-  };
 
   programs.my-kakoune.package = pkgs.kakoune;
   programs.my-kakoune.rc =
