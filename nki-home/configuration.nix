@@ -18,6 +18,7 @@ with lib;
       ../modules/services/edns
       # Other services
       ../modules/personal/u2f.nix
+      ./peertube-runner.nix
     ];
 
   # Kernel
