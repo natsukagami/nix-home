@@ -101,6 +101,7 @@ with lib;
       "/mnt/Data" = ntfsMount "/dev/disk/by-uuid/A90680F8BBE62FE3";
       "/mnt/Stuff" = ntfsMount "/dev/disk/by-uuid/717BF2EE20BB8A62";
       "/mnt/Shared" = ntfsMount "/dev/disk/by-uuid/76AC086BAC0827E7";
+      "/mnt/osu" = ntfsMount "/dev/disk/by-uuid/530D3E1648CD1C26";
     };
 
   # PAM
