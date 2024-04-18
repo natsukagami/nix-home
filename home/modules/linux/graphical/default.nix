@@ -167,6 +167,7 @@ in
     qt.style.package = pkgs.adwaita-qt;
     qt.style.name = "adwaita";
 
+
     xdg.configFile =
       let
         f = pkg: {
@@ -184,8 +185,15 @@ in
               "${srcFile}/${pkg.name}.desktop";
           };
         };
+        autoStartup = listToAttrs (map f (cfg.startup ++ alwaysStartup));
       in
-      listToAttrs (map f (cfg.startup ++ alwaysStartup));
+      autoStartup // {
+        ## Polkit UI
+        "autostart/polkit.desktop".text = ''
+          ${builtins.readFile "${pkgs.pantheon.pantheon-agent-polkit}/etc/xdg/autostart/io.elementary.desktop.agent-polkit.desktop"}
+          OnlyShowIn=sway;
+        '';
+      };
     # IBus configuration
     # dconf.settings."desktop/ibus/general" = {
     #   engines-order = hm.gvariant.mkArray hm.gvariant.type.string [ "xkb:jp::jpn" "mozc-jp" "Bamboo" ];
