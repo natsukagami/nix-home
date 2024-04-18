@@ -7,8 +7,8 @@ let
   port = 19878;
 in
 {
-  sops.secrets."peertube" = { owner = cfg.user; };
-  sops.secrets."peertube-env" = { owner = cfg.user; };
+  sops.secrets."peertube" = { owner = cfg.user; restartUnits = [ "peertube.service" ]; };
+  sops.secrets."peertube-env" = { owner = cfg.user; restartUnits = [ "peertube.service" ]; };
   # database
   cloud.postgresql.databases = [ "peertube" ];
   # traefik
