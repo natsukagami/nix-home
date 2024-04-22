@@ -105,13 +105,33 @@ in
     xdg.mimeApps.enable = true;
 
     xdg.mimeApps.associations.added = {
-      "x-scheme-handler/mailto" = [ "org.gnome.Evolution.desktop" ];
+      "x-scheme-handler/mailto" = [ "thunderbird.desktop" "org.gnome.Evolution.desktop" ];
       "application/pdf" = [ "org.gnome.Evince.desktop" ];
       "text/plain" = [ "kakoune.desktop" ];
+
+      # Other Thunderbird stuff
+      "x-scheme-handler/mid" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/news" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/snews" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/nntp" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/feed" = [ "thunderbird.desktop" ];
+      "application/rss+xml" = [ "thunderbird.desktop" ];
+      "application/x-extension-rss" = [ "thunderbird.desktop" ];
     };
     xdg.mimeApps.defaultApplications = {
       # Email
-      "x-scheme-handler/mailto" = [ "org.gnome.Evolution.desktop" ];
+      "x-scheme-handler/mailto" = [ "thunderbird.desktop" "org.gnome.Evolution.desktop" ];
+      "x-scheme-handler/webcal" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/webcals" = [ "thunderbird.desktop" ];
+
+      # Other Thunderbird stuff
+      "x-scheme-handler/mid" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/news" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/snews" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/nntp" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/feed" = [ "thunderbird.desktop" ];
+      "application/rss+xml" = [ "thunderbird.desktop" ];
+      "application/x-extension-rss" = [ "thunderbird.desktop" ];
 
       # Default web browser stuff
       "text/html" = [ cfg.defaults.webBrowser ];

@@ -157,7 +157,7 @@ in
         { command = "systemctl --user restart waybar"; always = true; }
         # Startup programs
         { command = "${cfg.browser}"; }
-        { command = "evolution"; } # Rely on system package with plugins
+        { command = "thunderbird"; }
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
       ] ++ lib.lists.optional

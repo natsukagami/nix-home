@@ -31,10 +31,10 @@ let
       environment.systemPackages = with pkgs.gnome; [ pkgs.glib gnome-control-center ];
       services.accounts-daemon.enable = true;
       services.gnome.gnome-online-accounts.enable = true;
-      programs.evolution.enable = true;
-      programs.evolution.plugins = with pkgs; [ evolution-ews ];
-      services.gnome.evolution-data-server.enable = true;
-      services.gnome.evolution-data-server.plugins = with pkgs; [ evolution-ews ];
+      # programs.evolution.enable = true;
+      # programs.evolution.plugins = with pkgs; [ evolution-ews ];
+      # services.gnome.evolution-data-server.enable = true;
+      # services.gnome.evolution-data-server.plugins = with pkgs; [ evolution-ews ];
     };
 
     wlr = { ... }: mkIf config.common.linux.enable {
