@@ -43,6 +43,9 @@ with lib; {
 
     # Owncloud
     services.owncloud-client.enable = true;
+    services.owncloud-client.package = pkgs.owncloud-client.overrideAttrs (attrs: {
+      buildInputs = attrs.buildInputs ++ [ pkgs.qt6.qtwayland ];
+    });
 
     # UDisks automounter
     services.udiskie.enable = true;
