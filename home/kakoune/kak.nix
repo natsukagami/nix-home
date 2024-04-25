@@ -69,6 +69,8 @@ in
     universal-ctags
     # tree-sitter for kak
     kak-tree-sitter
+    # LSPs
+    metals
   ];
 
   # xdg.configFile."kak-tree-sitter/config.toml".source = ./kak-tree-sitter.toml;

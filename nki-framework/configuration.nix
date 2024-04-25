@@ -72,6 +72,9 @@
   security.pam.services.swaylock.fprintAuth = true;
   security.pam.services.login.fprintAuth = true;
 
+  # Override Timezone (hi Canada)
+  time.timeZone = lib.mkForce "America/Toronto";
+
   # Secrets
   # sops.defaultSopsFile = ./secrets.yaml;
   # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
