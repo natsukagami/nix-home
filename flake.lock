@@ -57,11 +57,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1710281192,
-        "narHash": "sha256-jc+4BaSa3x9EZnH85HV7RqT6OsumDOapSyaFJq/hZyk=",
+        "lastModified": 1714032154,
+        "narHash": "sha256-BBBLL5bS0GE6xB20nXW8cjhB5VVXX51SkZ8WRJcBuUQ=",
         "owner": "famedly",
         "repo": "conduit",
-        "rev": "ab98b52b21216fd849f57c9343c04d75a952fb61",
+        "rev": "c6a7563126e33407b7745ff4abd046f0dd042510",
         "type": "gitlab"
       },
       "original": {
@@ -101,17 +101,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1707685877,
-        "narHash": "sha256-XoXRS+5whotelr1rHiZle5t5hDg9kpguS5yk8c8qzOc=",
+        "lastModified": 1713721181,
+        "narHash": "sha256-Vz1KRVTzU3ClBfyhOj8gOehZk21q58T1YsXC30V23PU=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "2c653e4478476a52c6aa3ac0495e4dea7449ea0e",
+        "rev": "55f4939ac59ff8f89c6a4029730a2d49ea09105f",
         "type": "github"
       },
       "original": {
         "owner": "ipetkov",
+        "ref": "master",
         "repo": "crane",
-        "rev": "2c653e4478476a52c6aa3ac0495e4dea7449ea0e",
         "type": "github"
       }
     },

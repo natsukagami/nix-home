@@ -103,7 +103,7 @@ with lib;
                 "@system-service"
                 "~@privileged"
               ];
-              StateDirectory = "/mnt/data/${srvName}";
+              # StateDirectory = "/mnt/data/${srvName}";
               BindPaths = [ "/mnt/data/${srvName}" ];
               ExecStart = "${cfg.package}/bin/conduit";
               Restart = "on-failure";
