@@ -74,6 +74,10 @@
 
   # Override Timezone (hi Canada)
   time.timeZone = lib.mkForce "America/Toronto";
+  home-manager.users.nki.services.wlsunset = {
+    latitude = lib.mkForce "43.4";
+    longitude = lib.mkForce "-80.5";
+  };
 
   # Secrets
   # sops.defaultSopsFile = ./secrets.yaml;
