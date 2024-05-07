@@ -72,13 +72,6 @@
   security.pam.services.swaylock.fprintAuth = true;
   security.pam.services.login.fprintAuth = true;
 
-  # Override Timezone (hi Canada)
-  time.timeZone = lib.mkForce "America/Toronto";
-  home-manager.users.nki.services.wlsunset = {
-    latitude = lib.mkForce "43.4";
-    longitude = lib.mkForce "-80.5";
-  };
-
   # Secrets
   # sops.defaultSopsFile = ./secrets.yaml;
   # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
