@@ -13,6 +13,11 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.kernelParams = [
+    # Hibernation
+    "resume=UUID=b32d27bf-9df6-43c1-8b93-c0693811bf5b"
+    "resume_offset=9731998" # btrfs inspect-internal map-swapfile -r /var/swapfile
+  ];
 
   fileSystems."/" =
     {
