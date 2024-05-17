@@ -817,17 +817,16 @@
     "kak-lsp": {
       "flake": false,
       "locked": {
-        "lastModified": 1712331733,
-        "narHash": "sha256-sfyAjIHQKo82QQgX4iXsduqIZ7fkHr3J3NxJYtFGzqI=",
-        "owner": "natsukagami",
-        "repo": "kak-lsp",
-        "rev": "c857b561b7a4d9e3acda5b8acc95f6d5829b614c",
+        "lastModified": 1715590100,
+        "narHash": "sha256-3XG95QGV7/GPc22sNZs98eIbZeY9lVP/GSuC/W2HHps=",
+        "owner": "kakoune-lsp",
+        "repo": "kakoune-lsp",
+        "rev": "22aab43e04e62ef991ebc26f4159f1dd5271dac1",
         "type": "github"
       },
       "original": {
-        "owner": "natsukagami",
-        "ref": "metals-support",
-        "repo": "kak-lsp",
+        "owner": "kakoune-lsp",
+        "repo": "kakoune-lsp",
         "type": "github"
       }
     },
