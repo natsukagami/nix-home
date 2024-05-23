@@ -226,7 +226,7 @@ in
 
         onChange =
           let
-            buildCmd = lang: "ktsctl -fci ${lang}";
+            buildCmd = lang: "${cfg.package}/bin/ktsctl -fci ${lang}";
             buildAll = strings.concatMapStringsSep "\n" buildCmd (builtins.attrNames cfg.languages);
           in
           ''
