@@ -59,7 +59,7 @@ let
 
       virtualisation.oci-containers.backend = "podman";
 
-      virtualisation.virtualbox.host.enable = !pkgs.stdenv.isAarch64;
+      virtualisation.virtualbox.host.enable = false;
       users.extraGroups.vboxusers.members = [ cfg.username ];
     };
   };
