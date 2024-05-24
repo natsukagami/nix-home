@@ -19,7 +19,9 @@ set-face global WhitespaceIndent +d@comment
 set global ui_options terminal_assistant=cat
 
 # Enable line numbers
-addhl global/ number-lines
+hook global WinCreate .* %{
+  addhl window/number-lines number-lines
+}
 
 set global grepcmd "rg --line-number --no-column --no-heading --color=never "
 
