@@ -12,7 +12,7 @@ with lib; {
       file # Query file type
       nix-output-monitor
 
-      pinentry-gnome
+      pinentry-gnome3
 
       # Java stuff
       jdk21

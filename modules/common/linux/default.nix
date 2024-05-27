@@ -65,13 +65,13 @@ let
   };
 
   rt-audio = { pkgs, ... }: mkIf cfg.enable {
-    services.pipewire.lowLatency = {
-      # enable this module
-      enable = true;
-      # defaults (no need to be set unless modified)
-      quantum = 32;
-      rate = 48000;
-    };
+    # services.pipewire.lowLatency = {
+    #   # enable this module
+    #   enable = true;
+    #   # defaults (no need to be set unless modified)
+    #   quantum = 32;
+    #   rate = 48000;
+    # };
     security.rtkit.enable = true;
 
     # Real time configurations
@@ -305,11 +305,11 @@ in
     xdg.portal = {
       enable = true;
       wlr.enable = true;
+      xdgOpenUsePortal = true;
       # gtk portal needed to make gtk apps happy
       extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
-      config.common.default = [ "gtk" ];
-      config.common."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
+      config.sway."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
       config.sway.default = [ "wlr" "gtk" ];
     };
     # D-Bus

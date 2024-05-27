@@ -125,6 +125,7 @@ in
     enable = true;
     systemd.enable = true;
 
+    checkConfig = false; # Not working atm
     config = {
       ### Inputs
       #
@@ -349,8 +350,10 @@ in
 
     '' + (if config.services.gnome-keyring.enable then ''
       # gnome-keyring
-      eval `gnome-keyring-daemon`
-      export SSH_AUTH_SOCK
+      if type gnome-keyring-daemon >/dev/null; then
+        eval `gnome-keyring-daemon`
+        export SSH_AUTH_SOCK
+      fi
     '' else "");
     # Extra
     wrapperFeatures.base = true;
@@ -459,8 +462,9 @@ in
             spacing = 10;
           };
           "clock" = {
-            format = "{:📅 %Y-%m-%d | 🕰️ %H:%M [%Z]}";
-            tooltip-format = "\n<span size='9pt' font='Noto Sans Mono CJK JP'>{calendar}</span>";
+            # format = "{:📅 %Y-%m-%d | 🕰️ %H:%M [%Z]}";
+            format = "📅 {0:%Y-%m-%d} |️ 🕰️ {0:%H:%M [%Z]}";
+            tooltip-format = "\n<span size='9pt' font_family='Noto Sans Mono CJK JP'>{calendar}</span>";
             timezones = [
               "Europe/Zurich"
               "America/Toronto"
@@ -477,7 +481,7 @@ in
                 months = "<span color='#ffead3'><b>{}</b></span>";
                 days = "<span color='#ecc6d9'><b>{}</b></span>";
                 weeks = "<span color='#99ffdd'><b>W{}</b></span>";
-                weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+                weekdays = "<span color='#ffcc66'><b>日 月 火 水 木 金 土</b></span>"; # See https://github.com/Alexays/Waybar/issues/3132
                 today = "<span color='#ff6699'><b><u>{}</u></b></span>";
               };
             };

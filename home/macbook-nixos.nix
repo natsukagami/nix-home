@@ -97,7 +97,7 @@ in
 
   home.file.".gnupg/gpg-agent.conf" = {
     text = ''
-      pinentry-program ${pkgs.pinentry-gnome}/bin/pinentry-gnome3
+      pinentry-program ${pkgs.pinentry-gnome3}/bin/pinentry-gnome3
     '';
     onChange = ''
       echo "Reloading gpg-agent"
