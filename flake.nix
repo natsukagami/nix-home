@@ -41,8 +41,6 @@
       url = gitlab:famedly/conduit/next;
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    eza.url = github:eza-community/eza/v0.12.0;
-    eza.inputs.nixpkgs.follows = "nixpkgs";
     nix-gaming.url = github:fufexan/nix-gaming;
 
     # --- Sources
