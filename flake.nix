@@ -43,7 +43,7 @@
     };
     eza.url = github:eza-community/eza/v0.12.0;
     eza.inputs.nixpkgs.follows = "nixpkgs";
-    nix-gaming.url = github:fufexan/nix-gaming/22586cc4910284c9c7306f19dcd63ac0adbcbcc9; # until we jump to 24.05
+    nix-gaming.url = github:fufexan/nix-gaming;
 
     # --- Sources
     kakoune.url = github:mawww/kakoune;

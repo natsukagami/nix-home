@@ -917,17 +917,16 @@
         "nixpkgs": "nixpkgs_10"
       },
       "locked": {
-        "lastModified": 1709168939,
-        "narHash": "sha256-btWt7NRsA8Hysgin5su77nIdmZZbxsKW5qqyj/bBlF0=",
+        "lastModified": 1716686274,
+        "narHash": "sha256-4JiRUWtoEMrfq38jG4O+NP6rcQIhKxEclnSkHvywnf0=",
         "owner": "fufexan",
         "repo": "nix-gaming",
-        "rev": "22586cc4910284c9c7306f19dcd63ac0adbcbcc9",
+        "rev": "83a47c12d3493f7eb876250d0298d1566a965ce4",
         "type": "github"
       },
       "original": {
         "owner": "fufexan",
         "repo": "nix-gaming",
-        "rev": "22586cc4910284c9c7306f19dcd63ac0adbcbcc9",
         "type": "github"
       }
     },

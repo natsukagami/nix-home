@@ -65,13 +65,13 @@ let
   };
 
   rt-audio = { pkgs, ... }: mkIf cfg.enable {
-    # services.pipewire.lowLatency = {
-    #   # enable this module
-    #   enable = true;
-    #   # defaults (no need to be set unless modified)
-    #   quantum = 32;
-    #   rate = 48000;
-    # };
+    services.pipewire.lowLatency = {
+      # enable this module
+      enable = true;
+      # defaults (no need to be set unless modified)
+      quantum = 32;
+      rate = 48000;
+    };
     security.rtkit.enable = true;
 
     # Real time configurations
