@@ -1,6 +1,33 @@
 { config, options, pkgs, lib, ... }:
 
 with lib;
+let
+  bootDesktop = pkgs.writeScript "boot-desktop" ''
+    #!/usr/bin/env fish
+
+    set -a PATH ${pkgs.gum}/bin
+
+    set -x GUM_CHOOSE_HEADER "Select the Desktop to boot into:"
+    set CHOICES
+
+    if which sway >/dev/null
+      set -a CHOICES "sway"
+    end
+    if which startplasma-wayland >/dev/null
+      set -a CHOICES "KDE Plasma"
+    end
+    set -a CHOICES "None: continue to shell"
+
+    switch (gum choose $CHOICES)
+      case "sway"
+        exec sway
+      case "KDE Plasma"
+        exec dbus-run-session startplasma-wayland
+      case '*'
+        exit 255
+    end
+  '';
+in
 {
   imports = [
     ./tide
@@ -122,8 +149,11 @@ with lib;
 
     interactiveShellInit = ''
       # Sway!
-      if status --is-login; and which sway >/dev/null; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
-        read -P "Press enter to start sway..."; and exec sway
+      if status --is-login; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
+        ${bootDesktop}
+        if test $status -ne 255
+          exit $status
+        end
       end
 
       function fish_greeting
