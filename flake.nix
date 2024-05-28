@@ -195,6 +195,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
             home-manager.users.nki = import ./home/nki-framework.nix;
           }
         ];
