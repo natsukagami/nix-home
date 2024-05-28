@@ -181,9 +181,15 @@ in
       package = pkgs.numix-gtk-theme;
       name = "Numix";
     };
+    gtk.gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
+    gtk.gtk2.extraConfig = ''
+      gtk-im-module="fcitx"
+    '';
+    gtk.gtk3.extraConfig.gtk-im-module = "fcitx";
+    gtk.gtk4.extraConfig.gtk-im-module = "fcitx";
     ## Qt
     qt.enable = true;
-    qt.platformTheme = "gnome";
+    qt.platformTheme.name = "adwaita";
     qt.style.package = pkgs.adwaita-qt;
     qt.style.name = "adwaita";
 
