@@ -5,25 +5,13 @@ let
       swaync = pkgs.swaynotificationcenter;
     in
     with lib; mkIf (config.linux.graphical.type == "wayland") {
-      home.packages = [ swaync ];
-      wayland.windowManager.sway.config = {
-        startup = [
-          { command = "swaync"; }
-        ];
+      services.swaync = {
+        enable = true;
+        settings.widgets = [ "inhibitors" "title" "dnd" "mpris" "notifications" ];
+        style = ./swaync.css;
       };
-      xdg.configFile = {
-        "swaync/config.json" = {
-          text = builtins.toJSON {
-            widgets = [ "inhibitors" "title" "dnd" "mpris" "notifications" ];
-            scripts = { };
-          };
-          onChange = "swaync-client -R";
-        };
-        "swaync/style.css" = {
-          source = ./swaync.css;
-          onChange = "swaync-client -rs";
-        };
-      };
+      systemd.user.services.swaync.Install.WantedBy = lib.mkForce [ "sway-session.target" ];
+      systemd.user.services.swaync.Unit.PartOf = lib.mkForce [ "sway-session.target" ];
 
       programs.my-sway.waybar = {
         extraSettings = {
