@@ -249,6 +249,7 @@ in
     # Input methods (only fcitx5 works reliably on Wayland)
     i18n.inputMethod = {
       enabled = "fcitx5";
+      fcitx5.waylandFrontend = true;
       fcitx5.addons = with pkgs; [
         fcitx5-mozc
         fcitx5-unikey

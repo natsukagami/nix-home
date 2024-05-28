@@ -159,6 +159,8 @@ in
         # Startup programs
         { command = "${cfg.browser}"; }
         { command = "thunderbird"; }
+        # IME
+        { command = "fcitx5"; }
       ] ++ (if cfg.discord != null then [
         { command = "${cfg.discord}"; }
       ] ++ lib.lists.optional
@@ -346,6 +348,7 @@ in
       export SDL_VIDEODRIVER=wayland
       export QT_QPA_PLATFORM=wayland
       export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+      export QT_IM_MODULE=fcitx
       # export NIXOS_OZONE_WL=1 # Yeah this fucks up IMEs
 
     '' + (if config.services.gnome-keyring.enable then ''
