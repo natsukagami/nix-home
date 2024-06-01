@@ -156,7 +156,7 @@ in
       loader.timeout = 60;
       loader.systemd-boot.enable = true;
       loader.efi.canTouchEfiVariables = true;
-      supportedFilesystems = [ "ntfs" ];
+      supportedFilesystems.ntfs = true;
     };
     boot.initrd.systemd.enable = builtins.length (builtins.attrNames (cfg.luksDevices)) > 0;
     # LUKS devices
