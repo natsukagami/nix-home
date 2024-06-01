@@ -68,23 +68,13 @@
       nixpkgsAsRegistry_ = stable: { lib, ... }: {
         imports = [ applyOverlays ];
         nix.registry.current-system.flake = self;
-        nix.registry.nixpkgs.flake = stable;
         nix.registry.nixpkgs-unstable.flake = nixpkgs-unstable;
         nixpkgs.config.allowUnfree = true;
         nix.nixPath = [
-          "nixpkgs=${nixpkgs}"
           "nixpkgs-unstable=${nixpkgs-unstable}"
           "/nix/var/nix/profiles/per-user/root/channels"
         ];
-        # Binary Cache for Haskell.nix  
-        nix.settings.trusted-public-keys = [
-          # "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
-        ];
-        nix.settings.substituters = [
-          # "https://cache.iog.io"
-        ];
       };
-      nixpkgsAsRegistry = nixpkgsAsRegistry_ nixpkgs;
 
       osuStable = { pkgs, ... }: {
         nix.settings = {
