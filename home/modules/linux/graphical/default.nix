@@ -43,7 +43,6 @@ in
       deluge # Torrent client
       pavucontrol # PulseAudio control panel
       firefox
-      librewolf
       cinnamon.nemo # File manager
       thunderbird # Email
       sublime-music # For navidrome
@@ -64,6 +63,10 @@ in
       tdesktop
       whatsapp-for-linux
       obs-studio
+
+      (librewolf.override {
+        nativeMessagingHosts = with pkgs; [ kdePackages.plasma-browser-integration ];
+      })
 
       ## CLI stuff
       dex # .desktop file management, startup
