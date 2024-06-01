@@ -13,6 +13,9 @@ let
     typst-lsp = final.unstable.typst-lsp;
 
     peertube = final.unstable.peertube;
+
+    # Until 0.35 is in
+    kitty = final.unstable.kitty;
   };
   overlay-imported = final: prev: {
     sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
