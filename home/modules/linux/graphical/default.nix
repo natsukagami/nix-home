@@ -4,8 +4,6 @@ let
   cfg = config.linux.graphical;
 
   vscode = with pkgs; if stdenv.isAarch64 then unstable.vscode else unstable.vscode-fhs;
-
-  alwaysStartup = with pkgs; [ ];
 in
 {
   imports = [ ./x11.nix ./wayland.nix ./alacritty.nix ];
@@ -46,19 +44,19 @@ in
       cinnamon.nemo # File manager
       thunderbird # Email
       sublime-music # For navidrome
-      pkgs.unstable.cinny-desktop
-      pkgs.unstable.gajim
+      cinny-desktop
+      gajim
       vivaldi
       # Note taking
-      pkgs.unstable.logseq
+      logseq
       # Audio
       qpwgraph # Pipewire graph
 
-      # (if stdenv.isAarch64 then zotero else pkgs.unstable.zotero) // kinda fucked for now from CVE
+      zotero_7
       libreoffice
 
       mpv # for anki
-      pkgs.unstable.anki-bin
+      anki-bin
 
       tdesktop
       whatsapp-for-linux
@@ -75,11 +73,11 @@ in
     ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
       gnome.cheese # Webcam check, expensive
       # Chat stuff
-      unstable.slack
+      slack
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
-    nki.programs.discord.package = (pkgs.callPackage pkgs.unstable.vesktop.override { stdenv = pkgs.gcc13Stdenv; }).overrideAttrs (attrs: {
+    nki.programs.discord.package = pkgs.vesktop.overrideAttrs (attrs: {
       nativeBuildInputs = attrs.nativeBuildInputs ++ [ pkgs.nss_latest pkgs.makeWrapper ];
       postInstall = ''
         makeWrapper $out/bin/vesktop $out/bin/discord
@@ -214,7 +212,7 @@ in
               "${srcFile}/${pkg.name}.desktop";
           };
         };
-        autoStartup = listToAttrs (map f (cfg.startup ++ alwaysStartup));
+        autoStartup = listToAttrs (map f cfg.startup);
       in
       autoStartup // {
         ## Polkit UI

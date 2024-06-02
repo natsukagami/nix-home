@@ -5,14 +5,9 @@ let
     x86 = import nixpkgs-unstable { system = prev.system; config.allowUnsupportedSystem = true; };
   };
   overlay-needs-unstable = final: prev: {
-    # override some packages that needs unstable that cannot be changed in the setup.
-    nix-direnv = prev.unstable.nix-direnv;
-
     # Typst updates really quickly.
     typst = final.unstable.typst;
     typst-lsp = final.unstable.typst-lsp;
-
-    peertube = final.unstable.peertube;
 
     # Until 0.35 is in
     kitty = final.unstable.kitty;

@@ -28,7 +28,6 @@ in
   cloud.traefik.hosts.invidious = { host = "invi.dtth.ch"; port = 61191; };
   services.invidious = {
     enable = true;
-    package = pkgs.unstable.invidious;
     domain = "invi.dtth.ch";
     port = 61191;
     extraSettingsFile = config.sops.secrets.invidious.path;

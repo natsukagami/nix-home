@@ -166,7 +166,7 @@ in
       ] ++ lib.lists.optional
         (!pkgs.stdenv.isAarch64)
         (
-          { command = "${pkgs.unstable.premid}/bin/premid"; }
+          { command = "${pkgs.premid}/bin/premid"; }
         ) else [ ]);
 
       ### Keybindings
