@@ -393,6 +393,7 @@ in
 
   config.services.swayidle = mkIf cfg.enable {
     enable = true;
+    systemdTarget = "sway-session.target";
     timeouts = [
       # Lock after 15 minutes of idle
       # { timeout = 15 * 60; command = cfg.lockCmd; }
@@ -601,6 +602,7 @@ in
     mkIf cfg.enable {
       enable = true;
       systemd.enable = true;
+      systemd.target = "sway-session.target";
       settings = cfg.waybar.makeBars barWith;
       style = ''
         * {
