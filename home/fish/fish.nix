@@ -151,8 +151,8 @@ in
       # Sway!
       if status --is-login; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
         ${bootDesktop}
-        if test $status -ne 255
-          exit $status
+        if test $status -eq 0
+          exit 0
         end
       end
 

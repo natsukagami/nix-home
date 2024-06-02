@@ -1,5 +1,16 @@
 { pkgs, config, lib, ... }:
-with lib; {
+with lib;
+let
+  kwallet = { pkgs, lib, ... }: {
+    home.packages = with pkgs; [ kdePackages.kwallet kdePackages.ksshaskpass ];
+    home.sessionVariables = {
+      # https://wiki.archlinux.org/title/KDE_Wallet#Using_the_KDE_Wallet_to_store_ssh_key_passphrases
+      SSH_ASKPASS = lib.getExe pkgs.kdePackages.ksshaskpass;
+      SSH_ASKPASS_REQUIRE = "prefer";
+    };
+  };
+in
+{
   imports = [
     ./modules/monitors.nix
     ./modules/linux/graphical
@@ -12,21 +23,12 @@ with lib; {
       file # Query file type
       nix-output-monitor
 
-      pinentry-gnome3
+      pinentry-qt
 
       # Java stuff
       jdk21
       sbt
     ];
-
-    ## Gnome-keyring
-    services.gnome-keyring = {
-      enable = true;
-      components = [ "pkcs11" "secrets" "ssh" ];
-    };
-    # services.gpg-agent.enable = true;
-    # services.gpg-agent.pinentryFlavor = "curses";
-    # services.gpg-agent.enableSshSupport = true;
 
     # Git "safe-directory"
     programs.git.extraConfig.safe.directory = [
