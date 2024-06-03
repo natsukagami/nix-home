@@ -175,12 +175,12 @@ in
     gtk.font.name = "IBM Plex Sans JP";
     gtk.font.size = 10;
     gtk.iconTheme = {
-      package = pkgs.numix-icon-theme;
-      name = "Numix";
+      package = pkgs.kdePackages.breeze-icons;
+      name = "Breeze";
     };
     gtk.theme = {
-      package = pkgs.numix-gtk-theme;
-      name = "Numix";
+      package = pkgs.kdePackages.breeze-gtk;
+      name = "Breeze";
     };
     gtk.gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
     gtk.gtk2.extraConfig = ''
@@ -199,7 +199,9 @@ in
     ## Qt
     qt.enable = true;
     qt.platformTheme.name = "kde";
-    qt.style.name = "breeze";
+    qt.platformTheme.package = with pkgs.kdePackages; [ plasma-integration systemsettings ];
+    qt.style.package = [ pkgs.kdePackages.breeze ];
+    qt.style.name = "Breeze";
 
 
     xdg.configFile =
