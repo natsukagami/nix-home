@@ -24,6 +24,9 @@ with lib;
   # Kernel
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
 
+  # Plasma!
+  services.desktopManager.plasma6.enable = true;
+
 
   ## Encryption
   # Kernel modules needed for mounting USB VFAT devices in initrd stage
