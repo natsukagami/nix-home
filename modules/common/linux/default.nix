@@ -272,7 +272,7 @@ in
       libsForQt5.qtkeychain
 
       ## Wayland
-      qt5.qtwayland
+      kdePackages.qtwayland
     ];
     # Add a reliable terminal
     programs.fish.enable = true;

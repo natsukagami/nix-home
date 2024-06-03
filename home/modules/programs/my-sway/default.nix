@@ -769,7 +769,7 @@ in
     };
   config.home.packages = mkIf cfg.enable (with pkgs; [
     # Needed for QT_QPA_PLATFORM
-    qt5.qtwayland
+    kdePackages.qtwayland
     # For waybar
     font-awesome
   ]);
