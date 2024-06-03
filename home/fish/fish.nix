@@ -10,10 +10,10 @@ let
     set -x GUM_CHOOSE_HEADER "Select the Desktop to boot into:"
     set CHOICES
 
-    if which sway >/dev/null
+    if which sway &>/dev/null
       set -a CHOICES "sway"
     end
-    if which startplasma-wayland >/dev/null
+    if which startplasma-wayland &>/dev/null
       set -a CHOICES "KDE Plasma"
     end
     set -a CHOICES "None: continue to shell"
@@ -24,7 +24,7 @@ let
       case "KDE Plasma"
         exec dbus-run-session startplasma-wayland
       case '*'
-        exit 255
+        exec fish -i
     end
   '';
 in
@@ -150,10 +150,7 @@ in
     interactiveShellInit = ''
       # Sway!
       if status --is-login; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
-        ${bootDesktop}
-        if test $status -eq 0
-          exit 0
-        end
+        exec ${bootDesktop}
       end
 
       function fish_greeting
