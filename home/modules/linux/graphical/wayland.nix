@@ -45,10 +45,26 @@ let
         '';
       };
     };
+
+  plasmaModule = { pkgs, ... }: {
+    home.packages = with pkgs.kdePackages; [
+      discover
+      kmail
+      akonadi
+      kdepim-runtime
+      kmail-account-wizard
+      akonadi-import-wizard
+    ];
+    # Not working yet, see #316784
+    xdg.configFile."plasma-workspace/env/wayland.sh".source = pkgs.writeScript "plasma-wayland-env.sh" ''
+      export NIXOS_OZONE_WL=1
+    '';
+    xdg.dataFile."dbus-1/services/org.freedesktop.Notifications.service".source = "${pkgs.kdePackages.plasma-workspace}/share/dbus-1/services/org.kde.plasma.Notifications.service";
+  };
 in
 with lib;
 {
-  imports = [ notificationModule ];
+  imports = [ notificationModule plasmaModule ];
   config = mkIf (config.linux.graphical.type == "wayland") {
     # Additional packages
     home.packages = with pkgs; [

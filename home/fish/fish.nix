@@ -22,6 +22,7 @@ let
       case "sway"
         exec sway
       case "KDE Plasma"
+        export NIXOS_OZONE_WL=1
         exec dbus-run-session startplasma-wayland
       case '*'
         exec fish -i
