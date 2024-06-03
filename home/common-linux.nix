@@ -34,7 +34,7 @@ in
       file # Query file type
       nix-output-monitor
 
-      pinentry-qt
+      pinentry-gnome3 # until pinentry-qt introduces caching
 
       # Java stuff
       jdk21
