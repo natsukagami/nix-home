@@ -290,15 +290,11 @@ in
     hardware.opengl.driSupport32Bit = !pkgs.stdenv.isAarch64; # For 32 bit applications
 
     ## Services
-    # gnome-keyring for storing keys
-    services.gnome.gnome-keyring.enable = true;
     # OpenSSH so you can SSH to me
     services.openssh.enable = true;
     # PAM
     security.pam.services.login.enableKwallet = true;
-    security.pam.services.login.enableGnomeKeyring = true;
     security.pam.services.lightdm.enableKwallet = true;
-    security.pam.services.lightdm.enableGnomeKeyring = true;
     security.pam.services.swaylock = { };
     # Printers
     services.printing.enable = true;
@@ -308,10 +304,9 @@ in
       wlr.enable = true;
       xdgOpenUsePortal = true;
       # gtk portal needed to make gtk apps happy
-      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
 
-      config.sway."org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ];
-      config.sway.default = [ "wlr" "gtk" ];
+      config.sway.default = [ "wlr" "kde" ];
     };
     # D-Bus
     services.dbus.packages = with pkgs; [ gcr ];

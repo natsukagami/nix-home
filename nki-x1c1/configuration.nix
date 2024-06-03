@@ -12,7 +12,6 @@
       # Fonts
       ../modules/personal/fonts
       # Some PAM stuff
-      ../modules/services/pam/gnome-keyring.nix
       ../modules/services/swaylock.nix
     ];
   # Use the latest kernel
@@ -116,9 +115,6 @@
     pciutils
   ];
 
-  # Gnome-keyring is useful
-  services.gnome.gnome-keyring.enable = true;
-
   ## Environment variables
   environment.variables = {
     # Input method overrides
@@ -145,7 +141,6 @@
   # };
 
   # List services that you want to enable:
-  nki.services.pam.enableGnomeKeyring = true;
   services.input-remapper.enable = true;
   services.swaylock.enable = true;
 

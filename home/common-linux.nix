@@ -8,6 +8,16 @@ let
       SSH_ASKPASS = lib.getExe pkgs.kdePackages.ksshaskpass;
       SSH_ASKPASS_REQUIRE = "prefer";
     };
+    # Enable this for sway
+    wayland.windowManager.sway.config.startup = [
+      { command = "${pkgs.kdePackages.kwallet-pam}/libexec/pam_kwallet_init"; }
+    ];
+    # Automatic dbus activation
+    xdg.dataFile."dbus-1/services/org.freedesktop.secrets.service".text = ''
+      [D-BUS Service]
+      Name=org.freedesktop.secrets
+      Exec=${pkgs.kdePackages.kwallet}/bin/kwalletd6
+    '';
   };
 in
 {
@@ -16,6 +26,7 @@ in
     ./modules/linux/graphical
     ./modules/X11/xfce4-notifyd.nix
     ./modules/programs/discord.nix
+    kwallet
   ];
   config = (mkIf pkgs.stdenv.isLinux {
     home.packages = with pkgs; [
