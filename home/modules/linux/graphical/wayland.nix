@@ -50,6 +50,7 @@ let
     home.packages = with pkgs.kdePackages; [
       discover
       kmail
+      kontact
       akonadi
       kdepim-runtime
       kmail-account-wizard
