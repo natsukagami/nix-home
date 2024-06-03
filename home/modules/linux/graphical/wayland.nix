@@ -80,6 +80,10 @@ with lib;
       '')
     ];
 
+    home.sessionVariables = {
+      ANKI_WAYLAND = "1";
+    };
+
     # Notification system
     # services.dunst = {
     #   enable = true;
