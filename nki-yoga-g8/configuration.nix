@@ -15,7 +15,7 @@
       ../modules/services/edns
     ];
 
-  services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver.desktopManager.plasma6.enable = true;
 
   # Power Management
   services.upower = {
