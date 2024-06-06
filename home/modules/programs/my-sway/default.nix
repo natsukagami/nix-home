@@ -315,6 +315,7 @@ in
         let
           criterias = [
             { app_id = ".*float.*"; }
+            { app_id = "org\\.freedesktop\\.impl\\.portal\\.desktop\\..*"; }
             { class = ".*float.*"; }
             { title = "Extension: .*Bitwarden.*"; }
           ];
