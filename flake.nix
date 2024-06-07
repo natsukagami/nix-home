@@ -70,9 +70,8 @@
         nix.registry.current-system.flake = self;
         nix.registry.nixpkgs-unstable.flake = nixpkgs-unstable;
         nixpkgs.config.allowUnfree = true;
-        nix.nixPath = [
+        nix.nixPath = lib.mkDefault [
           "nixpkgs-unstable=${nixpkgs-unstable}"
-          "/nix/var/nix/profiles/per-user/root/channels"
         ];
       };
 
