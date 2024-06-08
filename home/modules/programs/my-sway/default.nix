@@ -348,6 +348,7 @@ in
       export QT_QPA_PLATFORM=wayland
       export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
       export QT_IM_MODULE=fcitx
+      export GTK_IM_MODULE=fcitx # Til text-input is merged
       # export NIXOS_OZONE_WL=1 # Until text-input is merged
 
     '' + (if config.services.gnome-keyring.enable then ''
