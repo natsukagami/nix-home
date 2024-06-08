@@ -17,6 +17,7 @@ index d218dbc1f..24c0505e3 100644
    /**
     * The product name
     */
+   @Public
 -  public APP_NAME = "Outline";
 +  public APP_NAME = "DTTH Wiki";
  
