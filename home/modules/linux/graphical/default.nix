@@ -4,6 +4,18 @@ let
   cfg = config.linux.graphical;
 
   vscode = with pkgs; if stdenv.isAarch64 then unstable.vscode else unstable.vscode-fhs;
+
+  wifi-indicator = pkgs.writeScriptBin "wifi-indicator" ''
+    #!/usr/bin/env fish
+
+    set wifi_output (${lib.getExe pkgs.iw} wlan0 link | rg "SSID: (.+)" --replace '🛜 $1' | string trim)
+
+    if test -z $wifi_output
+      echo "❌ not connected"
+    else
+      echo $wifi_output
+    end
+  '';
 in
 {
   imports = [ ./x11.nix ./wayland.nix ./alacritty.nix ];
@@ -70,6 +82,7 @@ in
       dex # .desktop file management, startup
       # sct # Display color temperature
       xdg-utils # Open stuff
+      wifi-indicator
     ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
       gnome.cheese # Webcam check, expensive
       # Chat stuff
