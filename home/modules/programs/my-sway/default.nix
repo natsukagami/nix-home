@@ -124,6 +124,12 @@ in
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
     systemd.enable = true;
+    systemd.variables = [
+      "PATH" # for portals
+    ];
+    systemd.extraCommands = [
+      "systemctl --user restart xdg-desktop-portals.service"
+    ];
 
     checkConfig = false; # Not working atm
     config = {
