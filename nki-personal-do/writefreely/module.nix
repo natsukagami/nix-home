@@ -15,8 +15,7 @@ let
             if value == true then "true" else "false"
           else
             toString value);
-      in
-      "${key} = ${value'}";
+      in "${key} = ${value'}";
   };
 
   cfg = config.nki.services.writefreely;
@@ -32,20 +31,19 @@ let
       host = cfg.settings.app.host or "${hostProtocol}://${cfg.host}";
     };
 
-    database =
-      if cfg.database.type == "sqlite3" then {
-        type = "sqlite3";
-        filename = cfg.settings.database.filename or "writefreely.db";
-        database = cfg.database.name;
-      } else {
-        type = "mysql";
-        username = cfg.database.user;
-        password = "#dbpass#";
-        database = cfg.database.name;
-        host = cfg.database.host;
-        port = cfg.database.port;
-        tls = cfg.database.tls;
-      };
+    database = if cfg.database.type == "sqlite3" then {
+      type = "sqlite3";
+      filename = cfg.settings.database.filename or "writefreely.db";
+      database = cfg.database.name;
+    } else {
+      type = "mysql";
+      username = cfg.database.user;
+      password = "#dbpass#";
+      database = cfg.database.name;
+      host = cfg.database.host;
+      port = cfg.database.port;
+      tls = cfg.database.tls;
+    };
 
     server = cfg.settings.server or { } // {
       bind = cfg.settings.server.bind or "localhost";
@@ -58,6 +56,24 @@ let
         cfg.settings.server.pages_parent_dir or cfg.package.src;
       keys_parent_dir = cfg.settings.server.keys_parent_dir or cfg.stateDir;
     };
+
+    "oauth.generic" = cfg.settings."oauth.generic" or { } // (if cfg.oauth.enable then {
+      client_id = cfg.oauth.clientId;
+      client_secret = "#oauth_client_secret#";
+      host = cfg.oauth.host;
+      display_name = cfg.oauth.displayName;
+      callback_proxy = cfg.oauth.callbackProxy;
+      callback_proxy_api = cfg.oauth.callbackProxyApi;
+      token_endpoint = cfg.oauth.tokenEndpoint;
+      inspect_endpoint = cfg.oauth.inspectEndpoint;
+      auth_endpoint = cfg.oauth.authEndpoint;
+      scope = lib.concatStringsSep " " cfg.oauth.scopes;
+      allow_disconnect = cfg.oauth.allowDisconnect;
+      map_user_id = cfg.oauth.mapUserId;
+      map_username = cfg.oauth.mapUsername;
+      map_display_name = cfg.oauth.mapDisplayName;
+      map_email = cfg.oauth.mapEmail;
+    } else { });
   };
 
   configFile = format.generate "config.ini" settings;
@@ -91,10 +107,14 @@ let
       optionalString (cfg.database.passwordFile != null)
       "$(head -n1 ${cfg.database.passwordFile})"
     }
+    oauth_client_secret=${
+      optionalString cfg.oauth.enable
+      "$(head -n1 ${cfg.oauth.clientSecretFile})"
+    }
 
-    install -m 0660 ${configFile} '${cfg.stateDir}/config.ini'
+    cp -f ${configFile} '${cfg.stateDir}/config.ini'
     sed -e "s,#dbpass#,$db_pass,g" -i '${cfg.stateDir}/config.ini'
-    ${if cfg.extraSettingsFile != null then "cat ${cfg.extraSettingsFile} >> ${cfg.stateDir}/config.ini" else ""}
+    sed -e "s,#oauth_client_secret#,$oauth_client_secret,g" -i '${cfg.stateDir}/config.ini'
     chmod 440 '${cfg.stateDir}/config.ini'
 
     ${text}
@@ -123,7 +143,7 @@ let
     withConfigFile ''
       query () {
         local result=$(${sqlite}/bin/sqlite3 \
-          '${cfg.stateDir}/${settings.database.filename}'
+          '${cfg.stateDir}/${settings.database.filename}' \
           "$1" \
         )
 
@@ -132,53 +152,46 @@ let
 
       ${text}
     '';
-in
-{
+in {
   options.nki.services.writefreely = {
     enable =
-      lib.mkEnableOption (lib.mdDoc "Writefreely, build a digital writing community");
+      lib.mkEnableOption "Writefreely, build a digital writing community";
 
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.writefreely;
       defaultText = lib.literalExpression "pkgs.writefreely";
-      description = lib.mdDoc "Writefreely package to use.";
+      description = "Writefreely package to use.";
     };
 
     stateDir = mkOption {
       type = types.path;
       default = "/var/lib/writefreely";
-      description = lib.mdDoc "The state directory where keys and data are stored.";
+      description = "The state directory where keys and data are stored.";
     };
 
     user = mkOption {
       type = types.str;
       default = "writefreely";
-      description = lib.mdDoc "User under which Writefreely is ran.";
+      description = "User under which Writefreely is ran.";
     };
 
     group = mkOption {
       type = types.str;
       default = "writefreely";
-      description = lib.mdDoc "Group under which Writefreely is ran.";
+      description = "Group under which Writefreely is ran.";
     };
 
     host = mkOption {
       type = types.str;
       default = "";
-      description = lib.mdDoc "The public host name to serve.";
+      description = "The public host name to serve.";
       example = "example.com";
-    };
-
-    extraSettingsFile = mkOption {
-      type = types.nullOr types.path;
-      default = null;
-      description = lib.mdDoc "Additional configs to be appended to the config file";
     };
 
     settings = mkOption {
       default = { };
-      description = lib.mdDoc ''
+      description = ''
         Writefreely configuration ({file}`config.ini`). Refer to
         <https://writefreely.org/docs/latest/admin/config>
         for details.
@@ -192,7 +205,7 @@ in
             theme = mkOption {
               type = types.str;
               default = "write";
-              description = lib.mdDoc "The theme to apply.";
+              description = "The theme to apply.";
             };
           };
 
@@ -201,7 +214,7 @@ in
               type = types.port;
               default = if cfg.nginx.enable then 18080 else 80;
               defaultText = "80";
-              description = lib.mdDoc "The port WriteFreely should listen on.";
+              description = "The port WriteFreely should listen on.";
             };
           };
         };
@@ -212,74 +225,158 @@ in
       type = mkOption {
         type = types.enum [ "sqlite3" "mysql" ];
         default = "sqlite3";
-        description = lib.mdDoc "The database provider to use.";
+        description = "The database provider to use.";
       };
 
       name = mkOption {
         type = types.str;
         default = "writefreely";
-        description = lib.mdDoc "The name of the database to store data in.";
+        description = "The name of the database to store data in.";
       };
 
       user = mkOption {
         type = types.nullOr types.str;
         default = if cfg.database.type == "mysql" then "writefreely" else null;
         defaultText = "writefreely";
-        description = lib.mdDoc "The database user to connect as.";
+        description = "The database user to connect as.";
       };
 
       passwordFile = mkOption {
         type = types.nullOr types.path;
         default = null;
-        description = lib.mdDoc "The file to load the database password from.";
+        description = "The file to load the database password from.";
       };
 
       host = mkOption {
         type = types.str;
         default = "localhost";
-        description = lib.mdDoc "The database host to connect to.";
+        description = "The database host to connect to.";
       };
 
       port = mkOption {
         type = types.port;
         default = 3306;
-        description = lib.mdDoc "The port used when connecting to the database host.";
+        description = "The port used when connecting to the database host.";
       };
 
       tls = mkOption {
         type = types.bool;
         default = false;
-        description =
-          lib.mdDoc "Whether or not TLS should be used for the database connection.";
+        description = "Whether or not TLS should be used for the database connection.";
       };
 
       migrate = mkOption {
         type = types.bool;
         default = true;
-        description =
-          lib.mdDoc "Whether or not to automatically run migrations on startup.";
+        description = "Whether or not to automatically run migrations on startup.";
       };
 
       createLocally = mkOption {
         type = types.bool;
         default = false;
-        description = lib.mdDoc ''
+        description = ''
           When {option}`services.writefreely.database.type` is set to
           `"mysql"`, this option will enable the MySQL service locally.
         '';
       };
     };
 
+    oauth = {
+      enable = lib.mkEnableOption "Enable generic OAuth authentication";
+      clientId = mkOption {
+        type = types.str;
+        description = "The client ID associated with WriteFreely in the OAuth provider application.";
+      };
+      clientSecretFile = mkOption {
+        type = types.str;
+        description = "The file to load the OAuth client secret from.";
+      };
+      host = mkOption {
+        type = types.str;
+        description = "The base url of the OAuth provider application, including the protocol.";
+        example = "https://example.com";
+      };
+      displayName = mkOption {
+        type = types.str;
+        description = "The human-readable name of the OAuth service that appears on the login button, will appear as `Log in with [display_name]`.";
+      };
+
+      callbackProxy = mkOption {
+        type = types.str;
+        default = "";
+        description = "The url of an inbound proxy that sits in front of the default `/oauth/callback/generic` endpoint. Use if you want the OAuth callback to be somewhere other than that generic location. Default is blank.";
+        example = "https://example.com/whatever/path";
+      };
+      callbackProxyApi = mkOption {
+        type = types.str;
+        default = "";
+        description = "The url of an outbound proxy to send your OAuth requests through. Default is blank.";
+        example = "https://my-proxy.example.com";
+      };
+
+      tokenEndpoint = mkOption {
+        type = types.str;
+        description = "The API endpoint of the OAuth provider implementation to obtain an access token by presenting an authorization grant or refresh token. This is a fragment of a url, appended to host as described above.";
+        example = "/oauth/token";
+      };
+      inspectEndpoint = mkOption {
+        type = types.str;
+        description = "The API endpoint of the OAuth provider that returns basic user info given their authentication information. This is a fragment of a url, appended to host as described above.";
+        example = "/oauth/userinfo";
+      };
+      authEndpoint = mkOption {
+        type = types.str;
+        description = "The API endpoint of the OAuth provider that returns an authorization grant. This is a fragment of a url, appended to host as described above.";
+        example = "public";
+      };
+
+      scopes = mkOption {
+        type = types.listOf types.str;
+        default = [ "read_user" ];
+        description = "A scope or set of scopes required by some OAuth providers. This will usually be blank in this config file, and is set to `read_user` by default.";
+      };
+      allowDisconnect = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether or not an individual user is allowed to disconnect this OAuth provider from their account.";
+      };
+
+      mapUserId = mkOption {
+        type = types.str;
+        default = "";
+        defaultText = "<none>";
+        description = "Use this User ID key in the provider's user info, instead of the default key (user_id).";
+      };
+      mapUsername = mkOption {
+        type = types.str;
+        default = "";
+        defaultText = "<none>";
+        description = "Use this Username key in the provider's user info, instead of the default key (username)";
+      };
+      mapDisplayName = mkOption {
+        type = types.str;
+        default = "";
+        defaultText = "<none>";
+        description = "Use this Display Name key in the provider's user info, instead of the default key (*none*)";
+      };
+      mapEmail = mkOption {
+        type = types.str;
+        default = "";
+        defaultText = "<none>";
+        description = "Use this Email key in the provider's user info, instead of the default key (email)";
+      };
+    };
+
     admin = {
       name = mkOption {
         type = types.nullOr types.str;
-        description = lib.mdDoc "The name of the first admin user.";
+        description = "The name of the first admin user.";
         default = null;
       };
 
       initialPasswordFile = mkOption {
         type = types.path;
-        description = lib.mdDoc ''
+        description = ''
           Path to a file containing the initial password for the admin user.
           If not provided, the default password will be set to `nixos`.
         '';
@@ -292,14 +389,13 @@ in
       enable = mkOption {
         type = types.bool;
         default = false;
-        description =
-          lib.mdDoc "Whether or not to enable and configure nginx as a proxy for WriteFreely.";
+        description = "Whether or not to enable and configure nginx as a proxy for WriteFreely.";
       };
 
       forceSSL = mkOption {
         type = types.bool;
         default = false;
-        description = lib.mdDoc "Whether or not to force the use of SSL.";
+        description = "Whether or not to force the use of SSL.";
       };
     };
 
@@ -307,8 +403,7 @@ in
       enable = mkOption {
         type = types.bool;
         default = false;
-        description =
-          lib.mdDoc "Whether or not to automatically fetch and configure SSL certs.";
+        description = "Whether or not to automatically fetch and configure SSL certs.";
       };
     };
   };
@@ -344,11 +439,12 @@ in
         optionalAttrs (cfg.group == "writefreely") { writefreely = { }; };
     };
 
-    systemd.tmpfiles.rules =
-      [ "d '${cfg.stateDir}' 0750 ${cfg.user} ${cfg.group} - -" ];
+    systemd.tmpfiles.settings."10-writefreely".${cfg.stateDir}.d = {
+      inherit (cfg) user group;
+      mode = "0750";
+    };
 
     systemd.services.writefreely = {
-      path = with pkgs; [ openssl ];
       after = [ "network.target" ]
         ++ optional isSqlite "writefreely-sqlite-init.service"
         ++ optional isMysql "writefreely-mysql-init.service"
@@ -393,29 +489,27 @@ in
           cfg.admin.initialPasswordFile;
       };
 
-      script =
-        let
-          migrateDatabase = optionalString cfg.database.migrate ''
-            ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' db migrate
-          '';
-
-          createAdmin = optionalString (cfg.admin.name != null) ''
-            if [[ $(query "SELECT COUNT(*) FROM users") == 0 ]]; then
-              admin_pass=$(head -n1 ${cfg.admin.initialPasswordFile})
-
-              ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' --create-admin ${cfg.admin.name}:$admin_pass
-            fi
-          '';
-        in
-        withSqlite ''
-          if ! test -f '${settings.database.filename}'; then
-            ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' db init
-          fi
-
-          ${migrateDatabase}
-
-          ${createAdmin}
+      script = let
+        migrateDatabase = optionalString cfg.database.migrate ''
+          ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' db migrate
         '';
+
+        createAdmin = optionalString (cfg.admin.name != null) ''
+          if [[ $(query "SELECT COUNT(*) FROM users") == 0 ]]; then
+            admin_pass=$(head -n1 ${cfg.admin.initialPasswordFile})
+
+            ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' --create-admin ${cfg.admin.name}:$admin_pass
+          fi
+        '';
+      in withSqlite ''
+        if ! test -f '${settings.database.filename}'; then
+          ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' db init
+        fi
+
+        ${migrateDatabase}
+
+        ${createAdmin}
+      '';
     };
 
     systemd.services.writefreely-mysql-init = mkIf isMysql {
@@ -432,38 +526,36 @@ in
           cfg.admin.initialPasswordFile;
       };
 
-      script =
-        let
-          updateUser = optionalString isMysqlLocal ''
-            # WriteFreely currently *requires* a password for authentication, so we
-            # need to update the user in MySQL accordingly. By default MySQL users
-            # authenticate with auth_socket or unix_socket.
-            # See: https://github.com/writefreely/writefreely/issues/568
-            ${config.services.mysql.package}/bin/mysql --skip-column-names --execute "ALTER USER '${cfg.database.user}'@'localhost' IDENTIFIED VIA unix_socket OR mysql_native_password USING PASSWORD('$db_pass'); FLUSH PRIVILEGES;"
-          '';
-
-          migrateDatabase = optionalString cfg.database.migrate ''
-            ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' db migrate
-          '';
-
-          createAdmin = optionalString (cfg.admin.name != null) ''
-            if [[ $(query 'SELECT COUNT(*) FROM users') == 0 ]]; then
-              admin_pass=$(head -n1 ${cfg.admin.initialPasswordFile})
-              ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' --create-admin ${cfg.admin.name}:$admin_pass
-            fi
-          '';
-        in
-        withMysql ''
-          ${updateUser}
-
-          if [[ $(query "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '${cfg.database.name}'") == 0 ]]; then
-            ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' db init
-          fi
-
-          ${migrateDatabase}
-
-          ${createAdmin}
+      script = let
+        updateUser = optionalString isMysqlLocal ''
+          # WriteFreely currently *requires* a password for authentication, so we
+          # need to update the user in MySQL accordingly. By default MySQL users
+          # authenticate with auth_socket or unix_socket.
+          # See: https://github.com/writefreely/writefreely/issues/568
+          ${config.services.mysql.package}/bin/mysql --skip-column-names --execute "ALTER USER '${cfg.database.user}'@'localhost' IDENTIFIED VIA unix_socket OR mysql_native_password USING PASSWORD('$db_pass'); FLUSH PRIVILEGES;"
         '';
+
+        migrateDatabase = optionalString cfg.database.migrate ''
+          ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' db migrate
+        '';
+
+        createAdmin = optionalString (cfg.admin.name != null) ''
+          if [[ $(query 'SELECT COUNT(*) FROM users') == 0 ]]; then
+            admin_pass=$(head -n1 ${cfg.admin.initialPasswordFile})
+            ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' --create-admin ${cfg.admin.name}:$admin_pass
+          fi
+        '';
+      in withMysql ''
+        ${updateUser}
+
+        if [[ $(query "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '${cfg.database.name}'") == 0 ]]; then
+          ${cfg.package}/bin/writefreely -c '${cfg.stateDir}/config.ini' db init
+        fi
+
+        ${migrateDatabase}
+
+        ${createAdmin}
+      '';
     };
 
     services.mysql = mkIf isMysqlLocal {
@@ -497,4 +589,3 @@ in
     };
   };
 }
-

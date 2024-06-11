@@ -11,7 +11,7 @@ in
   # traefik
   cloud.traefik.hosts.writefreely-dtth = { inherit host port; };
 
-  sops.secrets."writefreely-dtth" = { owner = user; };
+  sops.secrets."writefreely-oauth-secret" = { owner = user; };
 
   users.users.${user} = {
     isSystemUser = true;
@@ -53,22 +53,24 @@ in
         monetization = false;
       };
 
-      "oauth.generic" = {
-        client_id = "rpoTTr2Wz0h4EgOSCHe0G85O8DCQDMup7JW9U9fV";
-        host = "https://auth.dtth.ch";
-        display_name = "DTTH";
-        token_endpoint = "/application/o/token/";
-        inspect_endpoint = "/application/o/userinfo/";
-        auth_endpoint = "/application/o/authorize/";
-        scope = "email openid profile";
-        map_user_id = "nickname";
-        map_username = "preferred_username";
-        map_display_name = "name";
-        allow_registration = true;
-      };
+      "oauth.generic" = { };
     };
 
-    extraSettingsFile = config.sops.secrets."writefreely-dtth".path;
+    oauth = {
+      enable = true;
+      clientId = "rpoTTr2Wz0h4EgOSCHe0G85O8DCQDMup7JW9U9fV";
+      clientSecretFile = config.sops.secrets."writefreely-oauth-secret".path;
+      host = "https://auth.dtth.ch";
+      displayName = "DTTH";
+      tokenEndpoint = "/application/o/token/";
+      inspectEndpoint = "/application/o/userinfo/";
+      authEndpoint = "/application/o/authorize/";
+      scopes = [ "email" "openid" "profile" ];
+      mapUserId = "nickname";
+      mapUsername = "preferred_username";
+      mapDisplayName = "name";
+    };
+
 
     database.type = "sqlite3";
 
