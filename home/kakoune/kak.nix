@@ -95,6 +95,12 @@ in
     { face = "ts_markup_italic"; token = "text"; modifiers = [ "emph" ]; }
   ];
 
+  programs.kak-lsp.languageServers.elixir-ls = {
+    args = [ ];
+    command = "elixir-ls";
+    filetypes = [ "elixir" ];
+    roots = [ "mix.exs" ];
+  };
   programs.kak-lsp.languageServers.typescript-language-server = {
     args = [ "--stdio" ];
     command = "typescript-language-server";

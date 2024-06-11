@@ -92,7 +92,7 @@ hook global InsertCompletionHide .* %{
 try %{
     eval %sh{test -z "$WE_STARTED_KAK" && kak-lsp --kakoune -s $kak_session}
 }
-hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala|typst|html|css|json|markdown|templ) %{
+hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala|typst|html|css|json|markdown|templ|elixir) %{
     lsp-enable-window
     map window lsp N -docstring "Display the next message request" ": lsp-show-message-request-next<ret>"
     map window normal <c-l> ": enter-user-mode lsp<ret>"
