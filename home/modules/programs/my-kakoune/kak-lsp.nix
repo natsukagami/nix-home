@@ -193,29 +193,27 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    home.packages = [ cfg.package ];
+  config = mkIf cfg.enable
+    {
+      home.packages = [ cfg.package ];
 
-    # Configurations
-    xdg.configFile."kak-lsp/kak-lsp.toml" = {
-      source = pkgs.runCommand "config.toml"
+      # Configurations
+      xdg.configFile."kak-lsp/kak-lsp.toml" =
+        let
+          toml = pkgs.formats.toml { };
+          stripNulls = lib.filterAttrsRecursive (n: v: v != null);
+        in
         {
-          buildInputs = [ pkgs.yj ];
-          preferLocalBuild = true;
-        } ''
-        yj -jt -i \
-          < ${
-            pkgs.writeText "config.json" (builtins.toJSON {
+          source = toml.generate "config.toml"
+            {
               semantic_tokens.faces = cfg.semanticTokens.faces ++ cfg.semanticTokens.additionalFaces;
               server.timeout = cfg.serverTimeout;
               snippet_support = cfg.enableSnippets;
               verbosity = 255;
-              language_server = lspConfig.language_servers // cfg.languageServers;
+              language_server = stripNulls (lspConfig.language_servers // cfg.languageServers);
               language_ids = lspConfig.language_ids // cfg.languageIds;
-            })
-          } \
-          > $out
-      '';
+            };
+        };
     };
-  };
 }
+
