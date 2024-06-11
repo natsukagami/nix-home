@@ -126,6 +126,8 @@ in
     systemd.enable = true;
     systemd.variables = [
       "PATH" # for portals
+      "XDG_DATA_DIRS" # For extra icons
+      "XDG_DATA_HOME" # For extra icons
     ];
     systemd.extraCommands = [
       "systemctl --user restart xdg-desktop-portals.service"
