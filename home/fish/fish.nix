@@ -23,7 +23,6 @@ let
         systemctl --user unset-environment NIXOS_OZONE_WL
         exec sway
       case "KDE Plasma"
-        systemctl --user set-environment NIXOS_OZONE_WL=1
         exec ${pkgs.kdePackages.plasma-workspace}/libexec/plasma-dbus-run-session-if-needed startplasma-wayland
       case '*'
         exec fish -i

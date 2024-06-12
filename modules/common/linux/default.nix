@@ -304,7 +304,7 @@ in
       wlr.enable = true;
       xdgOpenUsePortal = true;
       # gtk portal needed to make gtk apps happy
-      extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+      extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-gtk ];
 
       config.sway.default = [ "wlr" "kde" ];
     };

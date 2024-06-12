@@ -56,7 +56,6 @@ let
       kmail-account-wizard
       akonadi-import-wizard
     ];
-    # Not working yet, see #316784
     xdg.configFile."plasma-workspace/env/wayland.sh".source = pkgs.writeScript "plasma-wayland-env.sh" ''
       export NIXOS_OZONE_WL=1
     '';
