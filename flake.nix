@@ -37,10 +37,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki/phanpy?branch=dtth-fork";
-    conduit = {
-      url = gitlab:famedly/conduit/next;
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    conduit.url = "gitlab:famedly/conduit/v0.8.0";
     nix-gaming.url = github:fufexan/nix-gaming;
 
     # --- Sources
