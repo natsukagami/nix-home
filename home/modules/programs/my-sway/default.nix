@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, options, config, ... }:
 with lib;
 let
   cfg = config.programs.my-sway;
@@ -124,7 +124,7 @@ in
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
     systemd.enable = true;
-    systemd.variables = [
+    systemd.variables = options.wayland.windowManager.sway.systemd.variables.default ++ [
       "PATH" # for portals
       "XDG_DATA_DIRS" # For extra icons
       "XDG_DATA_HOME" # For extra icons
