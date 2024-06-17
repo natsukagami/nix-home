@@ -189,7 +189,7 @@ in
     gtk.font.size = 10;
     gtk.iconTheme = {
       package = pkgs.kdePackages.breeze-icons;
-      name = "Breeze";
+      name = "breeze";
     };
     gtk.theme = {
       package = pkgs.kdePackages.breeze-gtk;
