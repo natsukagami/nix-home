@@ -129,8 +129,8 @@ in
       "XDG_DATA_DIRS" # For extra icons
       "XDG_DATA_HOME" # For extra icons
     ];
-    systemd.extraCommands = [
-      "systemctl --user restart xdg-desktop-portals.service"
+    systemd.extraCommands = options.wayland.windowManager.sway.systemd.extraCommands.default ++ [
+      "systemctl --user restart xdg-desktop-portal.service"
     ];
 
     checkConfig = false; # Not working atm
