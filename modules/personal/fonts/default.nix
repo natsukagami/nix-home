@@ -5,7 +5,7 @@ with lib;
   imports = [ ./mounting.nix ];
   # Fonts
   config.fonts = {
-    packages = with pkgs; [
+    packages = with pkgs; mkForce [
       noto-fonts-emoji-blob-bin
       ibm-plex
       (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
@@ -22,7 +22,7 @@ with lib;
         emoji = lib.mkBefore [ "Blobmoji" ];
         serif = lib.mkBefore [ "IBM Plex Serif" "IBM Plex Sans JP" "IBM Plex Sans KR" "Blobmoji" ];
         sansSerif = lib.mkBefore [ "IBM Plex Sans" "IBM Plex Sans JP" "IBM Plex Sans KR" "Blobmoji" ];
-        monospace = lib.mkBefore [ "IBM Plex Mono" "Font Awesome 6 Free" "Blobmoji" "IBM Plex Sans JP" ];
+        monospace = lib.mkBefore [ "IBM Plex Mono" "Font Awesome 6 Free" "Symbols Nerd Font" "Blobmoji" "IBM Plex Sans JP" ];
       };
       localConf = ''
         <?xml version="1.0"?>

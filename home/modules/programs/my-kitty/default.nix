@@ -93,6 +93,18 @@ with lib;
       ## Hints
       "${cfg.cmd}+shift+p>n" = "kitten hints --type=linenum --linenum-action=tab kak {path} +{line}";
     };
+
+    extraConfig =
+      let
+        # Nerd Fonts glyph map
+        glyphMap = pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/Sharparam/dotfiles/main/kitty/.config/kitty/font-nerd-symbols.conf";
+          hash = "sha256-1OaDWLC3y8ASD2ttRWWgPEpRnfKXu6H6vS3cFVpzT0o=";
+        };
+      in
+      ''
+        include ${glyphMap}
+      '';
   };
 }
 
