@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixos-hardware.url = "github:nixos/nixos-hardware";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
@@ -168,6 +169,7 @@
         modules = [
           (common-nixos nixpkgs)
           inputs.lanzaboote.nixosModules.lanzaboote
+          inputs.nixos-hardware.nixosModules.framework-13-7040-amd
           ({ ... }: {
             # Sets up secure boot
             boot.loader.systemd-boot.enable = lib.mkForce false;

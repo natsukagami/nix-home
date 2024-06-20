@@ -852,6 +852,21 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1718806950,
+        "narHash": "sha256-E+W/kbedZAiOuPtT+KQRposLaXGDLd7lyK7oL3IH/5U=",
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "rev": "acb4f0e9bfa8ca2d6fca5e692307b5c994e7dbda",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixos-m1": {
       "inputs": {
         "flake-compat": "flake-compat_6",
@@ -1195,6 +1210,7 @@
         "lanzaboote": "lanzaboote",
         "mpd-mpris": "mpd-mpris",
         "nix-gaming": "nix-gaming",
+        "nixos-hardware": "nixos-hardware",
         "nixos-m1": "nixos-m1",
         "nixpkgs": "nixpkgs_9",
         "nixpkgs-unstable": "nixpkgs-unstable",
