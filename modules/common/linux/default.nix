@@ -286,7 +286,6 @@ in
     # Gaming! (not for ARM64)
     programs.steam.enable = !pkgs.stdenv.isAarch64;
     hardware.opengl.enable = true;
-    hardware.opengl.driSupport = true;
     hardware.opengl.driSupport32Bit = !pkgs.stdenv.isAarch64; # For 32 bit applications
 
     ## Services

@@ -59,8 +59,6 @@ in
       cinny-desktop
       gajim
       vivaldi
-      # Note taking
-      logseq
       # Audio
       qpwgraph # Pipewire graph
 
@@ -92,8 +90,8 @@ in
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
     nki.programs.discord.package = pkgs.vesktop.overrideAttrs (attrs: {
       nativeBuildInputs = attrs.nativeBuildInputs ++ [ pkgs.nss_latest pkgs.makeWrapper ];
-      postInstall = ''
-        makeWrapper $out/bin/vesktop $out/bin/discord
+      postFixup = (attrs.postFixup or "") + ''
+        ln -s $out/bin/vesktop $out/bin/discord
       '';
     });
 

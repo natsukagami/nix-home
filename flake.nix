@@ -9,6 +9,8 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager-unstable.url = "github:nix-community/home-manager";
+    home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
@@ -58,6 +60,8 @@
     let
       overlays = import ./overlay.nix inputs;
       lib = nixpkgs.lib;
+
+      hmOf = nixpkgs: if nixpkgs == inputs.nixpkgs then home-manager else inputs.home-manager-unstable;
 
       applyOverlays = { ... }: {
         nixpkgs.overlays = lib.mkBefore overlays;
@@ -164,10 +168,10 @@
         ];
       };
       # framework configuration
-      nixosConfigurations."nki-framework" = nixpkgs.lib.nixosSystem rec {
+      nixosConfigurations."nki-framework" = nixpkgs-unstable.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
-          (common-nixos nixpkgs)
+          (common-nixos nixpkgs-unstable)
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.nixos-hardware.nixosModules.framework-13-7040-amd
           ({ ... }: {
@@ -179,7 +183,7 @@
             };
           })
           ./nki-framework/configuration.nix
-          home-manager.nixosModules.home-manager
+          (hmOf nixpkgs-unstable).nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
