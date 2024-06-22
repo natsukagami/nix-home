@@ -59,6 +59,15 @@ let
           # patches in the original package was already applied
         ];
       });
+
+    swayfx-unwrapped = prev.swayfx-unwrapped.overrideAttrs (attrs: {
+      patches = (attrs.patches or [ ]) ++ [
+        (final.fetchurl {
+          url = "https://patch-diff.githubusercontent.com/raw/WillPower3309/swayfx/pull/315.patch";
+          hash = "sha256-zamOLHUjlzRs8PytPTAzEsdzgVtK+HVziHgrhwPcB+E=";
+        })
+      ];
+    });
   };
 
   overlay-libs = final: prev: {
@@ -100,6 +109,10 @@ let
   overlay-asahi = inputs.nixos-m1.overlays.default;
 in
 [
+  inputs.swayfx.overlays.default
+  inputs.mpd-mpris.overlays.default
+  inputs.youmubot.overlays.default
+
   (import ./overlays/openrazer)
   overlay-unstable
   overlay-needs-unstable
@@ -112,10 +125,6 @@ in
   nur.overlay
 
   (import ./packages/common)
-
-  inputs.mpd-mpris.overlays.default
-  inputs.swayfx.overlays.default
-  inputs.youmubot.overlays.default
 
   # Bug fixes
 ] # we assign the overlay created before to the overlays of nixpkgs.
