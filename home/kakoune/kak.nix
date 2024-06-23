@@ -153,7 +153,7 @@ in
         } else
           {
             executable = "${pkgs.zathura}/bin/zathura";
-            args = [ "--synctex-forward" "%l:1:%f" "%p" "-x" "/home/nki/.bin/kaktex jump %{input} %{line}" ];
+            args = [ "--synctex-forward" "%l:1:%f" "%p" "-x" "${./kaktex} jump %%{input} %%{line} %%{column}" ];
           });
     };
   };

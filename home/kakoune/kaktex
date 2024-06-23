@@ -3,11 +3,11 @@
 function usage
     echo "Usage: "
     echo "  kaktex set [client] [session]"
-    echo "  kaktex jump [file] [line]"
+    echo "  kaktex jump [file] [line] [column]"
     exit 1
 end
 
-if test (count $argv) -ne 3
+if test (count $argv) -lt 3
     usage
 end
 
@@ -19,7 +19,7 @@ switch $argv[1]
         echo "
                  evaluate-commands -client $_kaktex_client %{
                      evaluate-commands -try-client $_kaktex_client %{
-                         edit -- $argv[2] $argv[3]
+                         edit -existing -- $argv[2] $(math $argv[3] + 1) $(math $argv[4] + 1)
                      }
                  }
              " | kak -p $_kaktex_session
