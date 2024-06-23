@@ -161,10 +161,10 @@ in
 
       # Text
       "text/plain" = [ "kakoune.desktop" ];
-      "application/pdf" = [ "org.gnome.Evince.desktop" ];
+      "application/pdf" = [ "okularApplication_pdf.desktop" ];
 
       # Files
-      "inode/directory" = [ "nemo.desktop" ];
+      "inode/directory" = [ "dolphin.desktop" ];
     };
 
     # Add one for kakoune
