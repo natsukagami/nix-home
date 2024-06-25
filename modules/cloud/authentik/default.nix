@@ -12,8 +12,8 @@ let
   images = {
     postgresql = mkImage {
       imageName = "postgres";
-      finalImageTag = "12-alpine";
-      imageDigest = "sha256:f52ffee699232c84d820c35c28656363f4fda6a3e3e934b83f4e5e1898e2bdfa";
+      finalImageTag = "16-alpine";
+      imageDigest = "sha256:b40547ea0c7bcb401d8f11c6a233ebe65e2067e5966e54ccf9b03c5f01c2957c";
     };
     redis = mkImage {
       imageName = "redis";
