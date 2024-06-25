@@ -214,6 +214,7 @@ in
       ];
       shell = pkgs.fish;
     };
+    nix.settings.trusted-users = [ "root" cfg.username ];
 
     ## Network configuration
     systemd.network.enable = true;
