@@ -37,6 +37,7 @@
   # Enable X11 configuration
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/pixiv_18776904.png;
+  linux.graphical.defaults.webBrowser = "librewolf.desktop";
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 15.0;
   programs.my-sway.enableLaptopBars = false;

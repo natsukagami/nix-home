@@ -33,11 +33,16 @@ in
     startup = mkOption {
       type = types.listOf types.package;
       description = "List of packages to include in ~/.config/autostart";
-      default = [ ];
+      default = with pkgs; [
+        librewolf
+        thunderbird
+        vesktop
+        premid
+      ];
     };
     defaults.webBrowser = mkOption {
       type = types.str;
-      default = "firefox.desktop";
+      default = "librewolf.desktop";
       description = "Desktop file of the default web browser";
     };
   };
@@ -52,7 +57,6 @@ in
       feh # For images?
       deluge # Torrent client
       pavucontrol # PulseAudio control panel
-      firefox
       cinnamon.nemo # File manager
       thunderbird # Email
       sublime-music # For navidrome
@@ -72,9 +76,7 @@ in
       whatsapp-for-linux
       obs-studio
 
-      (librewolf.override {
-        nativeMessagingHosts = with pkgs; [ kdePackages.plasma-browser-integration ];
-      })
+      librewolf
 
       ## CLI stuff
       dex # .desktop file management, startup
@@ -88,12 +90,7 @@ in
     ]));
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
-    nki.programs.discord.package = pkgs.vesktop.overrideAttrs (attrs: {
-      nativeBuildInputs = attrs.nativeBuildInputs ++ [ pkgs.nss_latest pkgs.makeWrapper ];
-      postFixup = (attrs.postFixup or "") + ''
-        ln -s $out/bin/vesktop $out/bin/discord
-      '';
-    });
+    nki.programs.discord.package = pkgs.vesktop;
 
     # Yellow light!
     services.wlsunset = {
@@ -223,10 +220,8 @@ in
             source =
               let
                 srcFile = pkgs.runCommand "${pkg.name}-startup" { } ''
-                  mkdir - p $out
-                  cp $
-                  (ls - d ${
-                  pkg}/share/applications/*.desktop | head -n 1) $out/${pkg.name}.desktop
+                  mkdir -p $out
+                  cp $(ls -d ${pkg}/share/applications/*.desktop | head -n 1) $out/${pkg.name}.desktop
                 '';
               in
               "${srcFile}/${pkg.name}.desktop";

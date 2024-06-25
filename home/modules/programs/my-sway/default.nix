@@ -78,11 +78,6 @@ in
       description = "The command for the browser";
       default = "${pkgs.firefox-wayland}/bin/firefox";
     };
-    discord = mkOption {
-      type = types.nullOr types.str;
-      description = "The command for discord";
-      default = "${config.nki.programs.discord.package}/bin/discord";
-    };
 
     lockCmd = mkOption {
       type = types.str;
@@ -164,18 +159,9 @@ in
         { command = "${pkgs.dex}/bin/dex -ae sway"; }
         # Waybar
         { command = "systemctl --user restart waybar"; always = true; }
-        # Startup programs
-        { command = "${cfg.browser}"; }
-        { command = "thunderbird"; }
         # IME
         { command = "fcitx5"; }
-      ] ++ (if cfg.discord != null then [
-        { command = "${cfg.discord}"; }
-      ] ++ lib.lists.optional
-        (!pkgs.stdenv.isAarch64)
-        (
-          { command = "${pkgs.premid}/bin/premid"; }
-        ) else [ ]);
+      ];
 
       ### Keybindings
       #

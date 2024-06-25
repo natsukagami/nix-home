@@ -68,10 +68,28 @@ let
         })
       ];
     });
+
+    librewolf = (prev.librewolf.override {
+      nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
+    });
+
+    # Add desktop file to premid
+    premid = final.symlinkJoin {
+      name = prev.premid.name;
+      paths = [
+        prev.premid
+        (final.makeDesktopItem {
+          name = prev.premid.name;
+          desktopName = "PreMID";
+          exec = final.lib.getExe prev.premid;
+          icon = "premid";
+        })
+      ];
+    };
   };
 
   overlay-libs = final: prev: {
-    libs.crane = inputs.crane.lib.${prev.system};
+    libs.crane = inputs.crane.mkLib final;
   };
 
   overlay-packages = final: prev: {
