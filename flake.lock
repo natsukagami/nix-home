@@ -235,11 +235,11 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1716076912,
-        "narHash": "sha256-QyHUMRe+VACVzNJF+LTqUoDoKyjWz7NVr+55swFQVL4=",
+        "lastModified": 1719154855,
+        "narHash": "sha256-uLV3PAVG+eZVnfVkRmHABGi7vRW/q8qvDafw3VzmFgk=",
         "ref": "refs/heads/dtth-fork",
-        "rev": "7fa08d4b6d1cd7f988fcac367a73947e31bdb714",
-        "revCount": 2710,
+        "rev": "97978f4a6556e69b826e15f7d2c3c4079a1c1c47",
+        "revCount": 2662,
         "type": "git",
         "url": "ssh://gitea@git.dtth.ch/nki/phanpy?branch=dtth-fork"
       },
@@ -521,11 +521,11 @@
         "systems": "systems_4"
       },
       "locked": {
-        "lastModified": 1694529238,
-        "narHash": "sha256-zsNZZGTGnMOf9YpHKJqMSsa0dXbfmxeoJ7xHlrt+xmY=",
+        "lastModified": 1710146030,
+        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "ff7b65b44d01cf9ba6a71320833626af21126384",
+        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
         "type": "github"
       },
       "original": {
@@ -1123,11 +1123,11 @@
     },
     "nixpkgs_7": {
       "locked": {
-        "lastModified": 1711703276,
-        "narHash": "sha256-iMUFArF0WCatKK6RzfUJknjem0H9m4KgorO/p3Dopkk=",
+        "lastModified": 1719075281,
+        "narHash": "sha256-CyyxvOwFf12I91PBWz43iGT1kjsf5oi6ax7CrvaMyAo=",
         "owner": "nixOS",
         "repo": "nixpkgs",
-        "rev": "d8fe5e6c92d0d190646fb9f1056741a229980089",
+        "rev": "a71e967ef3694799d0c418c98332f7ff4cc5f6af",
         "type": "github"
       },
       "original": {
