@@ -81,7 +81,7 @@ let
         (final.makeDesktopItem {
           name = prev.premid.name;
           desktopName = "PreMID";
-          exec = final.lib.getExe prev.premid;
+          exec = "${final.lib.getExe prev.premid} --no-sandbox %U";
           icon = "premid";
         })
       ];
