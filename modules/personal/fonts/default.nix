@@ -14,6 +14,7 @@ with lib;
       merriweather
       corefonts
       font-awesome
+      hack-font # for Plasma
     ];
   } // (if pkgs.stdenv.isLinux then {
     enableDefaultPackages = false;
