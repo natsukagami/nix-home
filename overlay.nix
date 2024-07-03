@@ -94,6 +94,19 @@ let
 
   overlay-packages = final: prev: {
     kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter.nix { rustPlatform = final.unstable.rustPlatform; };
+
+
+    kak-lsp =
+      let
+        src = inputs.kak-lsp;
+        cargoArtifacts = final.libs.crane.buildDepsOnly { inherit src; };
+      in
+      final.libs.crane.buildPackage {
+        inherit src cargoArtifacts;
+        buildInputs = (with final;
+          lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
+        ) ++ (with final; [ libiconv ]);
+      };
   };
 
   overlay-aarch64-linux = final: prev:

@@ -1,13 +1,6 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 let
-  kak-lsp = pkgs.libs.crane.buildPackage {
-    src = pkgs.sources.kak-lsp;
-    buildInputs = (with pkgs;
-      lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
-    ) ++ (with pkgs; [ libiconv ]);
-  };
-
   kak-lsp-frontend = { pkgs, lib, ... }:
     let
       langserver = name: {
@@ -59,10 +52,20 @@ let
       ];
     };
 
+  ltexLsp = { pkgs, lib, ... }: {
+    programs.kak-lsp.languageServers.ltex-ls = {
+      command = "ltex-ls";
+      args = [ "--log-file=/tmp" ];
+      filetypes = [ "latex" "typst" ];
+      roots = [ "main.tex" "main.typ" ".git" ];
+    };
+
+    home.packages = [ pkgs.ltex-ls ];
+  };
 
 in
 {
-  imports = [ ../modules/programs/my-kakoune ./kaktex.nix kak-lsp-frontend ];
+  imports = [ ../modules/programs/my-kakoune ./kaktex.nix kak-lsp-frontend ltexLsp ];
 
   home.packages = with pkgs; [
     # ctags for peneira
@@ -79,7 +82,6 @@ in
   programs.my-kakoune.enable = true;
   programs.my-kakoune.enable-fish-session = true;
   programs.kak-lsp.enable = true;
-  programs.kak-lsp.package = kak-lsp;
   programs.kak-lsp.semanticTokens.additionalFaces = [
     # Typst
     { face = "header"; token = "heading"; }
