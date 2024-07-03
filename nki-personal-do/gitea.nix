@@ -9,11 +9,28 @@ let
 
   signingKey = "0x3681E15E5C14A241";
 
-  catppuccinThemes = builtins.fetchurl {
-    url = "https://github.com/catppuccin/gitea/releases/download/v0.2.1/catppuccin-gitea.tar.gz";
-    sha256 = "sha256:18l67whffayrgylsf5j6g7sj95anjcjl0cy7fzqn1wrm0gg2xns0";
+  catppuccinThemes = pkgs.fetchurl {
+    url = "https://github.com/catppuccin/gitea/releases/download/v0.4.1/catppuccin-gitea.tar.gz";
+    hash = "sha256-/P4fLvswitlfeaKaUykrEKvjbNpw5Q/nzGQ/GZaLyUI=";
   };
-  themes = strings.concatStringsSep "," [
+  staticDir = pkgs.runCommandLocal "forgejo-static" { } ''
+    mkdir -p $out
+    tmp=$(mktemp -d)
+    cp -r ${config.services.forgejo.package.data}/* $tmp
+    chmod -R +w $tmp
+
+    # Copy icons
+    install -m 0644 ${./gitea/img}/* $tmp/public/assets/img
+
+    # Copy the themes
+    env PATH=${pkgs.gzip}/bin:${pkgs.gnutar}/bin:$PATH \
+      tar -xvf ${catppuccinThemes} -C $tmp/public/assets/css
+
+    cp -r $tmp/* $out
+  '';
+
+  default-themes = "forgejo-auto, forgejo-light, forgejo-dark, gitea-auto, gitea-light, gitea-dark, forgejo-auto-deuteranopia-protanopia, forgejo-light-deuteranopia-protanopia, forgejo-dark-deuteranopia-protanopia, forgejo-auto-tritanopia, forgejo-light-tritanopia, forgejo-dark-tritanopia";
+  themes = strings.concatStringsSep ", " [
     "catppuccin-macchiato-green"
     "catppuccin-mocha-teal"
     "catppuccin-macchiato-sky"
@@ -73,6 +90,13 @@ let
   ];
 in
 {
+  users.users.${user} = {
+    home = config.services.forgejo.stateDir;
+    useDefaultShell = true;
+    isSystemUser = true;
+    group = user;
+  };
+  users.groups.${user} = { };
   sops.secrets."gitea/signing-key".owner = user;
   sops.secrets."gitea/mailer-password".owner = user;
   # database
@@ -83,9 +107,9 @@ in
     noCloudflare = true;
   };
 
-  systemd.services.gitea.requires = [ "postgresql.service" ];
+  systemd.services.forgejo.requires = [ "postgresql.service" ];
 
-  services.gitea = {
+  services.forgejo = {
     enable = true;
 
     inherit user;
@@ -98,6 +122,7 @@ in
         ROOT_URL = "https://${host}/";
         HTTP_ADDRESS = "127.0.0.1";
         HTTP_PORT = port;
+        STATIC_ROOT_PATH = staticDir;
       };
       repository = {
         DEFAULT_PRIVATE = "private";
@@ -114,7 +139,7 @@ in
         SIGNING_NAME = "DTTHGit";
         SIGNING_EMAIL = "dtth-gitea@nkagami.me";
       };
-      ui.THEMES = "auto,gitea,arc-green," + themes;
+      ui.THEMES = default-themes + "," + themes;
       "ui.meta" = {
         AUTHOR = "DTTHgit - Gitea instance for GTTH";
         DESCRIPTION = "DTTHGit is a custom Gitea instance hosted for DTTH members only.";
@@ -175,7 +200,7 @@ in
   };
 
   # Set up gpg signing key
-  systemd.services.gitea = {
+  systemd.services.forgejo = {
     path = with pkgs; [ gnupg ];
     environment.GNUPGHOME = "${config.services.gitea.stateDir}/.gnupg";
     # https://github.com/NixOS/nixpkgs/commit/93c1d370db28ad4573fb9890c90164ba55391ce7
@@ -191,15 +216,6 @@ in
         echo "trusted-key ${signingKey}" >> ${config.services.gitea.stateDir}/.gnupg/gpg.conf
         exit 1
       fi
-
-      # Copy icons
-      mkdir -p ${config.services.gitea.stateDir}/custom/public/img
-      install -m 0644 ${./gitea/img}/* ${config.services.gitea.stateDir}/custom/public/img
-
-      # Copy the themes
-      mkdir -p ${config.services.gitea.stateDir}/custom/public/css
-      env PATH=${pkgs.gzip}/bin:${pkgs.gnutar}/bin:$PATH \
-        tar -xvf ${catppuccinThemes} -C ${config.services.gitea.stateDir}/custom/public/css/
     '';
   };
 }
