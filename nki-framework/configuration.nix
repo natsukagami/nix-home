@@ -13,6 +13,8 @@
       ../modules/personal/fonts
       # Encrypted DNS
       ../modules/services/edns
+      # Wireless card
+      ./wireless.nix
     ];
 
   # services.xserver.enable = true;
