@@ -1,7 +1,5 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
-let
-in
 {
   imports = [
     ./kakoune/kak.nix
@@ -28,45 +26,14 @@ in
 
   # Packages that are not in programs section
   home.packages = with pkgs; [
-    # Build Tools
-    ## C++
-    autoconf
-    automake
-    ## SQL
-    flyway
-    ## Go
-    go # to be configured later
-    ## Rust
-    rust-analyzer
-    ## JavaScript
-    yarn
-    ## Nix
-    cachix
-    ## Latex
-    tectonic
-    texlab
-    ## Typst
-    typst
-    ## Python
-    python3
-    ## Scala
-    scala-cli
-
-    # Fonts
-    fantasque-sans-mono
-    ## Get the nerd font symbols
-    (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
-
     # CLI tools
     fd
+    sd
     ripgrep
-    fossil
     openssh
     tea # gitea CLI (gh-like)
     fx # JSON viewer
     glow # Markdown viewer
-    ## File Manager
-    nnn
     ## PDF Processors
     poppler_utils
     ## htop replacement
@@ -78,13 +45,6 @@ in
     unzip
     zstd
     atool
-
-    ## To do tunneling with cloudflare
-    pkgs.cloudflared
-
-    # Databases
-    postgresql
-    mariadb
   ];
 
   home.sessionVariables = {
