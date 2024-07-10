@@ -119,7 +119,7 @@ in
       dnsServers = mkOption {
         type = types.listOf types.str;
         description = "DNS server list";
-        default = [ "8.8.8.8" "8.8.4.4" ];
+        default = [ "1.1.1.1" "2606:4700:4700:1111" ];
       };
       networks = mkOption {
         type = types.attrsOf (types.submodule {
