@@ -61,12 +61,8 @@ map global normal D ": delete-current-brackets<ret>"
 
 # Tab sizes
 hook global InsertChar \t %{ exec -draft -itersel h@ }
-set global tabstop 4
-set global indentwidth 4 
-hook global WinSetOption filetype=(c|cpp|haskell|nix|yaml) %{
-    set global tabstop 2
-    set global indentwidth 2
-}
+set global tabstop 2
+set global indentwidth 2 
 
 # Ctrl + a in insert mode = esc
 map global insert <c-a> '<esc>'
@@ -91,6 +87,7 @@ hook global InsertCompletionHide .* %{
 # Enable LSP
 try %{
     eval %sh{test -z "$WE_STARTED_KAK" && kak-lsp --kakoune -s $kak_session}
+    set-option global lsp_cmd "kak-lsp -s %val{session}"
 }
 hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala|typst|html|css|json|markdown|templ|elixir) %{
     lsp-enable-window

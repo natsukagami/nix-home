@@ -143,10 +143,28 @@ let
         default = null;
         description = "Additional settings to be passed to the LSP server.";
       };
+      package = mkOption {
+        type = types.nullOr types.package;
+        default = null;
+        description = "The default package of the language server. Will be appended as the ending segments of the PATH to kak-lsp";
+      };
     };
   };
 
   cfg = config.programs.kak-lsp;
+
+  serverPackages =
+    filter (v: v != null)
+      (lib.mapAttrsToList (_: serv: serv.package) cfg.languageServers);
+
+  wrappedPackage = pkgs.symlinkJoin {
+    name = "kak-lsp-wrapped";
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    paths = [ cfg.package ];
+    postBuild = ''
+      wrapProgram $out/bin/kak-lsp --suffix PATH ":" ${lib.makeBinPath serverPackages}
+    '';
+  };
 in
 {
   options.programs.kak-lsp = {
@@ -195,13 +213,13 @@ in
 
   config = mkIf cfg.enable
     {
-      home.packages = [ cfg.package ];
+      home.packages = [ wrappedPackage ];
 
       # Configurations
       xdg.configFile."kak-lsp/kak-lsp.toml" =
         let
           toml = pkgs.formats.toml { };
-          stripNulls = lib.filterAttrsRecursive (n: v: v != null);
+          toLspConfig = lib.filterAttrsRecursive (n: v: n != "package" && v != null);
         in
         {
           source = toml.generate "config.toml"
@@ -210,7 +228,7 @@ in
               server.timeout = cfg.serverTimeout;
               snippet_support = cfg.enableSnippets;
               verbosity = 255;
-              language_server = stripNulls (lspConfig.language_servers // cfg.languageServers);
+              language_server = toLspConfig (lspConfig.language_servers // cfg.languageServers);
               language_ids = lspConfig.language_ids // cfg.languageIds;
             };
         };

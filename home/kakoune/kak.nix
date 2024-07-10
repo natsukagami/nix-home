@@ -7,10 +7,11 @@ let
         name = "vscode-${name}-language-server";
         value = {
           args = [ "--stdio" ];
-          command = "${pkgs.nodePackages.vscode-langservers-extracted}/bin/vscode-${name}-language-server";
+          command = "vscode-${name}-language-server";
           filetypes = [ name ];
           roots = [ "package.json" ".git" ];
         };
+        package = pkgs.nodePackages.vscode-langservers-extracted;
       };
 
       tailwind = {
@@ -23,6 +24,7 @@ let
           validate = "warning";
           userLanguages.templ = "html";
         };
+        package = pkgs.tailwindcss-language-server;
       };
 
       templModule = { pkgs, lib, ... }: {
@@ -33,9 +35,9 @@ let
           args = [ "lsp" ];
           filetypes = [ "templ" ];
           roots = [ "go.mod" ".git" ];
+          package = pkgs.unstable.templ;
         };
 
-        home.packages = [ pkgs.unstable.templ ];
       };
 
     in
@@ -45,11 +47,6 @@ let
       programs.kak-lsp.languageServers = (builtins.listToAttrs (map langserver [ "html" "css" "json" ])) // {
         tailwindcss-language-server = tailwind;
       };
-
-      home.packages = with pkgs; [
-        nodePackages.vscode-langservers-extracted
-        tailwindcss-language-server
-      ];
     };
 
   ltexLsp = { pkgs, lib, ... }: {
@@ -58,9 +55,8 @@ let
       args = [ "--log-file=/tmp" ];
       filetypes = [ "latex" "typst" ];
       roots = [ "main.tex" "main.typ" ".git" ];
+      package = pkgs.ltex-ls;
     };
-
-    home.packages = [ pkgs.ltex-ls ];
   };
 
 in
@@ -72,8 +68,6 @@ in
     universal-ctags
     # tree-sitter for kak
     kak-tree-sitter
-    # LSPs
-    metals
   ];
 
   # xdg.configFile."kak-tree-sitter/config.toml".source = ./kak-tree-sitter.toml;
@@ -106,8 +100,9 @@ in
   programs.kak-lsp.languageServers.typescript-language-server = {
     args = [ "--stdio" ];
     command = "typescript-language-server";
-    filetypes = [ "typescript" ];
+    filetypes = [ "typescript" "javascript" ];
     roots = [ "package.json" ];
+    package = pkgs.nodePackages.typescript-language-server;
   };
   programs.kak-lsp.languageServers.fsautocomplete = {
     args = [ "--adaptive-lsp-server-enabled" "--project-graph-enabled" "--source-text-factory" "RoslynSourceText" ];
@@ -135,6 +130,7 @@ in
       statusBarProvider = "log-message";
       compilerOptions = { overrideDefFormat = "unicode"; };
     };
+    package = pkgs.metals;
   };
   programs.kak-lsp.languageServers.texlab = {
     command = "texlab";
