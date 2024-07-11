@@ -27,6 +27,10 @@
     flake-utils.url = github:numtide/flake-utils;
     crane.url = github:ipetkov/crane;
     arion.url = github:hercules-ci/arion;
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # ---
     # Imported apps
@@ -89,6 +93,7 @@
           (nixpkgsAsRegistry_ stable)
           ./common.nix
           sops-nix.nixosModules.sops
+          inputs.lix-module.nixosModules.default
         ];
       };
       common-nixos = stable: { ... }: {
