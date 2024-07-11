@@ -50,6 +50,14 @@ let
       environment.systemPackages = with pkgs; [ piper ];
     };
 
+    kwallet = { pkgs, lib, ... }: mkIf cfg.enable {
+      environment.systemPackages = [ pkgs.kdePackages.kwallet ];
+      services.dbus.packages = [ pkgs.kdePackages.kwallet ];
+      xdg.portal = {
+        extraPortals = [ pkgs.kdePackages.kwallet ];
+      };
+    };
+
     virtualisation = { pkgs, ... }: mkIf cfg.enable {
       virtualisation.podman = {
         enable = true;
@@ -96,7 +104,7 @@ let
   };
 in
 {
-  imports = with modules; [ adb ios wlr logitech virtualisation accounts rt-audio ];
+  imports = with modules; [ adb ios wlr logitech kwallet virtualisation accounts rt-audio ];
 
   options.common.linux = {
     enable = mkOption {
@@ -306,7 +314,7 @@ in
       # gtk portal needed to make gtk apps happy
       extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-gtk ];
 
-      config.sway.default = [ "wlr" "kde" ];
+      config.sway.default = [ "wlr" "kde" "kwallet" ];
     };
     # D-Bus
     services.dbus.packages = with pkgs; [ gcr ];
