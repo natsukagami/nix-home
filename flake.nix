@@ -61,8 +61,6 @@
       overlays = import ./overlay.nix inputs;
       lib = nixpkgs.lib;
 
-      hmOf = nixpkgs: if nixpkgs == inputs.nixpkgs then home-manager else inputs.home-manager-unstable;
-
       applyOverlays = { ... }: {
         nixpkgs.overlays = lib.mkBefore overlays;
       };
@@ -103,6 +101,35 @@
         ];
       };
 
+      mkPersonalSystem = nixpkgs-module: system: { configuration
+                                                 , homeManagerUsers ? { }
+                                                 , extraModules ? [ ]
+                                                 , includeCommonModules ? true
+                                                 ,
+                                                 }:
+        let
+          home-manager-module =
+            if nixpkgs-module == inputs.nixpkgs then inputs.home-manager
+            else if nixpkgs-module == inputs.nixpkgs-unstable then inputs.home-manager-unstable
+            else builtins.abort "Unknown nixpkgs module, use `nixpkgs` or `nixpkgs-unstable`";
+        in
+        nixpkgs-module.lib.nixosSystem {
+          inherit system;
+          modules =
+            (if includeCommonModules then [
+              (common-nixos nixpkgs-module)
+            ] else [ ]) ++ [
+              configuration
+              # Home Manager
+              home-manager-module.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users = homeManagerUsers;
+              }
+            ] ++ extraModules;
+        };
+
     in
     {
       overlays.default = lib.composeManyExtensions overlays;
@@ -126,29 +153,16 @@
       };
 
       # Home configuration
-      nixosConfigurations."kagamiPC" = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        modules = [
-          (common-nixos nixpkgs)
-          ./nki-home/configuration.nix
-          osuStable
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.nki = { ... }: {
-              imports = [
-                ./home/kagami-pc-home.nix
-              ];
-            };
-          }
-        ];
+      nixosConfigurations."kagamiPC" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
+        configuration = ./nki-home/configuration.nix;
+        homeManagerUsers.nki = import ./home/kagami-pc-home.nix;
+        extraModules = [ osuStable ];
       };
       # yoga g8 configuration
-      nixosConfigurations."nki-yoga-g8" = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        modules = [
-          (common-nixos nixpkgs)
+      nixosConfigurations."nki-yoga-g8" = mkPersonalSystem nixpkgs "x86_64-linux" {
+        configuration = ./nki-yoga-g8/configuration.nix;
+        homeManagerUsers.nki = import ./home/nki-x1c1.nix;
+        extraModules = [
           inputs.lanzaboote.nixosModules.lanzaboote
           ({ ... }: {
             # Sets up secure boot
@@ -158,20 +172,13 @@
               pkiBundle = "/etc/secureboot";
             };
           })
-          ./nki-yoga-g8/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.nki = import ./home/nki-x1c1.nix;
-          }
         ];
       };
       # framework configuration
-      nixosConfigurations."nki-framework" = nixpkgs-unstable.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        modules = [
-          (common-nixos nixpkgs-unstable)
+      nixosConfigurations."nki-framework" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
+        configuration = ./nki-framework/configuration.nix;
+        homeManagerUsers.nki = import ./home/nki-framework.nix;
+        extraModules = [
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.nixos-hardware.nixosModules.framework-13-7040-amd
           ({ ... }: {
@@ -182,41 +189,21 @@
               pkiBundle = "/etc/secureboot";
             };
           })
-          ./nki-framework/configuration.nix
-          (hmOf nixpkgs-unstable).nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup";
-            home-manager.users.nki = import ./home/nki-framework.nix;
-          }
         ];
       };
       # macbook nixos
-      nixosConfigurations."kagami-air-m1" = inputs.nixpkgs.lib.nixosSystem rec {
-        system = "aarch64-linux";
-        modules = [
-          (common-nixos inputs.nixpkgs)
-          inputs.nixos-m1.nixosModules.apple-silicon-support
-          ./kagami-air-m1/configuration.nix
-          inputs.home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.nki = import ./home/macbook-nixos.nix;
-          }
-        ];
+      nixosConfigurations."kagami-air-m1" = mkPersonalSystem nixpkgs "aarch64-linux" {
+        configuration = ./kagami-air-m1/configuration.nix;
+        homeManagerUsers.nki = import ./home/macbook-nixos.nix;
+        extraModules = [ inputs.nixos-m1.nixosModules.apple-silicon-support ];
       };
 
       # DigitalOcean node
-      nixosConfigurations."nki-personal-do" = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
+      nixosConfigurations."nki-personal-do" = mkPersonalSystem nixpkgs "x86_64-linux" {
+        configuration = ./nki-personal-do/configuration.nix;
         modules = [
-          (common-nixos nixpkgs)
           inputs.arion.nixosModules.arion
-          ./modules/my-tinc
           inputs.youmubot.nixosModules.default
-          ./nki-personal-do/configuration.nix
           inputs.secrets.nixosModules.nki-personal-do
         ];
       };
@@ -231,8 +218,8 @@
 
       # This is highly advised, and will prevent many possible mistakes
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
-
     } // (inputs.flake-utils.lib.eachDefaultSystem (system: {
       formatter = nixpkgs.legacyPackages.${system}.nixpkgs-fmt;
     }));
 }
+
