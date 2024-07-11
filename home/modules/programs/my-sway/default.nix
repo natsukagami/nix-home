@@ -45,6 +45,12 @@ let
     ${pkgs.grim}/bin/grim -g (${pkgs.slurp}/bin/slurp) - | ${pkgs.swappy}/bin/swappy -f -
   '';
 
+  rofi-rbw-script = pkgs.writeShellApplication {
+    name = "rofi-rbw-script";
+    runtimeInputs = with pkgs; [ rofi wtype rofi-rbw ];
+    text = "rofi-rbw";
+  };
+
   ignored-devices = [ "Surface_Headphones" ];
   playerctl = "${pkgs.playerctl}/bin/playerctl --ignore-player=${strings.concatStringsSep "," ignored-devices}";
 
@@ -214,6 +220,7 @@ in
         # Launcher
         "${mod}+space" = "exec rofi -show drun";
         "${mod}+tab" = "exec ${./rofi-window.py}";
+        "${mod}+shift+p" = "exec ${lib.getExe rofi-rbw-script}";
       } // {
         ## Splits
         "${mod}+v" = "split v";
