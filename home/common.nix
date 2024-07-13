@@ -34,6 +34,7 @@
     tea # gitea CLI (gh-like)
     fx # JSON viewer
     glow # Markdown viewer
+    nix-output-monitor # Nice nix output formatting
     ## PDF Processors
     poppler_utils
     ## htop replacement
