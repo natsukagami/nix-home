@@ -27,6 +27,7 @@ let
 in
 {
   home.packages = [ osu-pkg ];
+  xdg.mimeApps.defaultApplications."x-scheme-handler/osu" = "osu!.desktop";
   # home.packages = [ pkgs.osu-lazer ];
 }
 
