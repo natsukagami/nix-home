@@ -206,7 +206,7 @@
       # DigitalOcean node
       nixosConfigurations."nki-personal-do" = mkPersonalSystem nixpkgs "x86_64-linux" {
         configuration = ./nki-personal-do/configuration.nix;
-        modules = [
+        extraModules = [
           inputs.arion.nixosModules.arion
           inputs.youmubot.nixosModules.default
           inputs.secrets.nixosModules.nki-personal-do
