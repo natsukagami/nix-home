@@ -74,7 +74,6 @@ in
 
       tdesktop
       whatsapp-for-linux
-      obs-studio
 
       librewolf
 
@@ -91,6 +90,16 @@ in
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
     nki.programs.discord.package = pkgs.vesktop;
+
+    # OBS
+    programs.obs-studio = {
+      enable = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        wlrobs
+        input-overlay
+        obs-pipewire-audio-capture
+      ];
+    };
 
     # Yellow light!
     services.wlsunset = {
