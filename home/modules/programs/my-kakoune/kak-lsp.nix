@@ -35,24 +35,6 @@ let
           roots = [ "Setup.hs" "stack.yaml" "*.cabal" "package.yaml" ];
           settings_section = "haskell";
         };
-        texlab = {
-          command = "texlab";
-          filetypes = [ "latex" ];
-          roots = [ ".git" "main.tex" "all.tex" ];
-          settings_section = "texlab";
-          settings.texlab = {
-            build.executable = "latexmk";
-            build.args = [ "-pdf" "-shell-escape" "-interaction=nonstopmode" "-synctex=1" "%f" ];
-
-            build.forwardSearchAfter = true;
-            build.onSave = true;
-
-            forwardSearch = {
-              executable = "/Applications/Skim.app/Contents/SharedSupport/displayline";
-              args = [ "-r" "-g" "%l" "%p" "%f" ];
-            };
-          };
-        };
         nil = {
           command = "${pkgs.nil}/bin/nil";
           filetypes = [ "nix" ];
@@ -66,12 +48,6 @@ let
           filetypes = [ "python" ];
           offset_encoding = "utf-8";
           roots = [ "requirements.txt" "setup.py" ".git" ".hg" ];
-        };
-        rust-analyzer = {
-          args = [ ];
-          command = "rust-analyzer";
-          filetypes = [ "rust" ];
-          roots = [ "Cargo.toml" ];
         };
       };
       semantic_tokens.faces = [

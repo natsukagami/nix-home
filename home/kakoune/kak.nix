@@ -154,6 +154,7 @@ in
             args = [ "--synctex-forward" "%l:1:%f" "%p" "-x" "${./kaktex} jump %%{input} %%{line} %%{column}" ];
           });
     };
+    package = pkgs.texlab;
   };
   programs.kak-lsp.languageServers.typst-lsp = {
     command = "typst-lsp";
@@ -168,6 +169,14 @@ in
     command = "marksman";
     filetypes = [ "markdown" ];
     roots = [ ".marksman.toml" ".git" ];
+    package = pkgs.marksman;
+  };
+  programs.kak-lsp.languageServers.rust-analyzer = {
+    args = [ ];
+    command = "rust-analyzer";
+    filetypes = [ "rust" ];
+    roots = [ "Cargo.toml" ];
+    package = pkgs.rust-analyzer;
   };
 
   programs.my-kakoune.tree-sitter.extraAliases = {
