@@ -86,17 +86,6 @@ let
         })
       ];
     };
-
-    # rbw: https://github.com/doy/rbw/pull/189
-    rbw = prev.rbw.overrideAttrs (attrs: {
-      patches = (attrs.patches or [ ]) ++ [
-        (final.fetchurl
-          {
-            url = "https://github.com/doy/rbw/pull/189.patch";
-            hash = "sha256-617nYL9Jmu+inpAzDu/+iYXhajckzpsxW+jlhcRwseM=";
-          })
-      ];
-    });
   };
 
   overlay-libs = final: prev: {
