@@ -43,83 +43,96 @@ in
     };
     package = mkPackageOption pkgs "kak-tree-sitter" { };
 
+    features = {
+      highlighting = mkOption {
+        type = types.bool;
+        description = "Enable highlighting";
+        default = true;
+      };
+      text_objects = mkOption {
+        type = types.bool;
+        description = "Enable text objects";
+        default = true;
+      };
+    };
+
     highlighterGroups = mkOption {
       type = types.attrsOf types.str;
       default = {
         attribute = "@attribute";
         comment = "@comment";
-        conceal = "%opt{kts_mauve}+i";
-        constant = "%opt{kts_peach}";
-        constant_builtin_boolean = "%opt{kts_sky}";
-        constant_character = "%opt{kts_yellow}";
-        constant_macro = "%opt{kts_mauve}";
-        constant_numeric = "%opt{kts_peach}";
-        constructor = "%opt{kts_sapphire}";
-        diff_plus = "%opt{kts_green}";
-        diff_minus = "%opt{kts_red}";
-        diff_delta = "%opt{kts_blue}";
-        diff_delta_moved = "%opt{kts_mauve}";
-        error = "%opt{kts_red}+b";
+        conceal = "%opt{mauve}+i";
+        constant = "%opt{peach}";
+        constant_builtin_boolean = "%opt{sky}";
+        constant_character = "%opt{yellow}";
+        constant_macro = "%opt{mauve}";
+        constant_numeric = "%opt{peach}";
+        constructor = "%opt{sapphire}";
+        diff_plus = "%opt{green}";
+        diff_minus = "%opt{red}";
+        diff_delta = "%opt{blue}";
+        diff_delta_moved = "%opt{mauve}";
+        error = "%opt{red}+b";
         function = "@function";
         function_builtin = "@builtin";
         function_macro = "+i@ts_function";
-        hint = "%opt{kts_blue}+b";
-        info = "%opt{kts_green}+b";
+        hint = "%opt{blue}+b";
+        info = "%opt{green}+b";
         keyword = "keyword";
         keyword_conditional = "+i@ts_keyword";
         keyword_control_conditional = "+i@ts_keyword";
         keyword_control_directive = "+i@ts_keyword";
         keyword_control_import = "+i@ts_keyword";
         keyword_directive = "+i@ts_keyword";
-        label = "%opt{kts_sapphire}+i";
-        markup_bold = "%opt{kts_peach}+b";
-        markup_heading = "%opt{kts_red}";
-        markup_heading_1 = "%opt{kts_red}";
-        markup_heading_2 = "%opt{kts_mauve}";
-        markup_heading_3 = "%opt{kts_green}";
-        markup_heading_4 = "%opt{kts_yellow}";
-        markup_heading_5 = "%opt{kts_pink}";
-        markup_heading_6 = "%opt{kts_teal}";
-        markup_heading_marker = "%opt{kts_peach}+b";
-        markup_italic = "%opt{kts_pink}+i";
-        markup_list_checked = "%opt{kts_green}";
-        markup_list_numbered = "%opt{kts_blue}+i";
-        markup_list_unchecked = "%opt{kts_teal}";
-        markup_list_unnumbered = "%opt{kts_mauve}";
-        markup_link_label = "%opt{kts_blue}";
-        markup_link_url = "%opt{kts_teal}+u";
-        markup_link_uri = "%opt{kts_teal}+u";
-        markup_link_text = "%opt{kts_blue}";
-        markup_quote = "%opt{kts_gray1}";
-        markup_raw = "%opt{kts_sky}";
-        markup_raw_block = "%opt{kts_sky}";
-        markup_raw_inline = "%opt{kts_green}";
-        markup_strikethrough = "%opt{kts_gray1}+s";
+        label = "%opt{sapphire}+i";
+        markup_bold = "%opt{peach}+b";
+        markup_heading = "%opt{red}";
+        markup_heading_1 = "%opt{red}";
+        markup_heading_2 = "%opt{mauve}";
+        markup_heading_3 = "%opt{green}";
+        markup_heading_4 = "%opt{yellow}";
+        markup_heading_5 = "%opt{pink}";
+        markup_heading_6 = "%opt{teal}";
+        markup_heading_marker = "%opt{peach}+b";
+        markup_italic = "%opt{pink}+i";
+        markup_list_checked = "%opt{green}";
+        markup_list_numbered = "%opt{blue}+i";
+        markup_list_unchecked = "%opt{teal}";
+        markup_list_unnumbered = "%opt{mauve}";
+        markup_link_label = "%opt{blue}";
+        markup_link_url = "%opt{teal}+u";
+        markup_link_uri = "%opt{teal}+u";
+        markup_link_text = "%opt{blue}";
+        markup_quote = "%opt{crust}";
+        markup_raw = "%opt{sky}";
+        markup_raw_block = "%opt{sky}";
+        markup_raw_inline = "%opt{green}";
+        markup_strikethrough = "%opt{crust}+s";
         namespace = "@module";
         operator = "@operator";
-        property = "%opt{kts_sky}";
-        punctuation = "%opt{kts_overlay2}";
-        punctuation_special = "%opt{kts_sky}";
-        special = "%opt{kts_blue}";
-        spell = "%opt{kts_mauve}";
-        string = "%opt{kts_green}";
-        string_regex = "%opt{kts_peach}";
-        string_regexp = "%opt{kts_peach}";
-        string_escape = "%opt{kts_mauve}";
-        string_special = "%opt{kts_blue}";
-        string_special_path = "%opt{kts_green}";
-        string_special_symbol = "%opt{kts_mauve}";
-        string_symbol = "%opt{kts_red}";
-        tag = "%opt{kts_teal}";
-        tag_error = "%opt{kts_red}";
-        text_title = "%opt{kts_mauve}";
-        type = "%opt{kts_yellow}";
-        type_enum_variant = "%opt{kts_flamingo}";
+        property = "%opt{sky}";
+        punctuation = "%opt{overlay2}";
+        punctuation_special = "%opt{sky}";
+        special = "%opt{blue}";
+        spell = "%opt{mauve}";
+        string = "%opt{green}";
+        string_regex = "%opt{peach}";
+        string_regexp = "%opt{peach}";
+        string_escape = "%opt{mauve}";
+        string_special = "%opt{blue}";
+        string_special_path = "%opt{green}";
+        string_special_symbol = "%opt{mauve}";
+        string_symbol = "%opt{red}";
+        tag = "%opt{teal}";
+        tag_error = "%opt{red}";
+        text_title = "%opt{mauve}";
+        type = "@type";
+        type_enum_variant = "+i@ts_type";
         variable = "@variable";
         variable_builtin = "@builtin";
-        variable_other_member = "%opt{kts_teal}";
-        variable_parameter = "%opt{kts_maroon}+i";
-        warning = "%opt{kts_peach}+b";
+        variable_other_member = "%opt{teal}";
+        variable_parameter = "+i@variable";
+        warning = "%opt{peach}+b";
       };
     };
 
@@ -174,8 +187,6 @@ in
 
   config =
     let
-      aliasedOnce = name: values: if asserts.assertMsg (builtins.length values 1) "face ${name} was aliased more than once: ${toString values}" then (builtins.head values) else [ ];
-
       allGroups = attrsets.recursiveUpdate cfg.highlighterGroups cfg.extraHighlighterGroups;
 
       aliases = attrsets.recursiveUpdate cfg.aliases cfg.extraAliases;
@@ -189,10 +200,24 @@ in
 
       toml = pkgs.formats.toml { };
 
+      srcName = src: lib.removePrefix "/nix/store/" src.outPath;
+      mkGitRepo = src: pkgs.runCommandLocal "${src.name}-git" { } ''
+        cp -r --no-preserve=all ${src} $out
+        cd $out
+        if ! test -d $out/.git; then
+          ${lib.getExe pkgs.git} init -b ${srcName src}
+          ${lib.getExe pkgs.git} config user.email "a@b.com"
+          ${lib.getExe pkgs.git} config user.name "a"
+          ${lib.getExe pkgs.git} add .
+          ${lib.getExe pkgs.git} commit -m "Just making a git commit"
+        fi
+      '';
+
       toLanguageConf = name: lang: with lang; {
         grammar = {
           inherit (grammar) path;
-          url = "${grammar.src}";
+          source.git.url = "${mkGitRepo grammar.src}";
+          source.git.pin = "${srcName grammar.src}";
           compile = grammar.compile.command;
           compile_args = grammar.compile.args;
           compile_flags = grammar.compile.flags;
@@ -201,7 +226,8 @@ in
           link_flags = grammar.link.flags;
         };
         queries = {
-          url = "${queries.src}";
+          source.git.url = "${mkGitRepo queries.src}";
+          source.git.pin = "${srcName queries.src}";
           path = if queries.path == null then "runtime/queries/${name}" else queries.path;
         };
       };
@@ -220,19 +246,14 @@ in
       xdg.configFile."kak-tree-sitter/config.toml" = {
         source = toml.generate "config.toml" {
           highlight.groups = builtins.map toScm (builtins.attrNames allGroups ++ builtins.attrNames aliases);
-
+          features = cfg.features;
           language = builtins.mapAttrs toLanguageConf cfg.languages;
         };
 
-        onChange =
-          let
-            buildCmd = lang: "${cfg.package}/bin/ktsctl -fci ${lang}";
-            buildAll = strings.concatMapStringsSep "\n" buildCmd (builtins.attrNames cfg.languages);
-          in
-          ''
-            # Rebuild languages
-            ${buildAll}
-          '';
+        onChange = ''
+          export PATH=$PATH:${lib.getBin pkgs.gcc}
+          ${cfg.package}/bin/ktsctl sync -a
+        '';
       };
 
       programs.my-kakoune.extraFaces = faces;

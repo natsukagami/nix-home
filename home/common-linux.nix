@@ -36,11 +36,6 @@ in
       pinentry-gnome3 # until pinentry-qt introduces caching
     ];
 
-    # Git "safe-directory"
-    programs.git.extraConfig.safe.directory = [
-      "${config.home.homeDirectory}/.config/nixpkgs"
-    ];
-
     systemd.user.startServices = "sd-switch";
 
     # Audio stuff!

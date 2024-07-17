@@ -1,20 +1,41 @@
-{ lib, rustPlatform, fetchFromGitHub, symlinkJoin, clang, git, ... }:
+{ lib, rustPlatform, fetchFromSourcehut, symlinkJoin, clang, git, writeText, ... }:
 let
-  src = fetchFromGitHub {
-    owner = "phaazon";
+  src = fetchFromSourcehut {
+    owner = "~hadronized";
     repo = "kak-tree-sitter";
-    rev = "61cce127ca03e3c969df1ff46f41074a3c69be31";
-    hash = "sha256-wcgc1L6Y6obLTIonWLJzNK72fWW8oJ0yMEfGotCg5b8=";
+    rev = "kak-tree-sitter-v1.1.2";
+    hash = "sha256-wBWfSyR8LGtug/mCD0bJ4lbdN3trIA/03AnCxZoEOSA=";
   };
 
-  kak-tree-sitter = rustPlatform.buildRustPackage rec {
+  kak-tree-sitter = rustPlatform.buildRustPackage {
     inherit src;
     pname = "kak-tree-sitter";
-    version = "0.5.5-${lib.substring 0 6 src.rev}";
-    cargoHash = "sha256-Ozzcn4k+1Q+50zxCy9Flvv8vZKNcAesrHT/izVAgn54=";
+    version = "1.1.2";
+    cargoHash = "sha256-OQPUWqJAts8DbFNSsC/CmMCbuZ9TVxRTR05O7oiodKI=";
     cargoBuildOptions = [ "--package" "kak-tree-sitter" "--package" "ktsctl" ];
 
     nativeBuildInputs = [ clang git ];
+
+    patches = [
+      # Allow absolute-path style repos
+      (writeText "resources.patch" ''
+        diff --git a/ktsctl/src/resources.rs b/ktsctl/src/resources.rs
+        index f1da3ff..ac89345 100644
+        --- a/ktsctl/src/resources.rs
+        +++ b/ktsctl/src/resources.rs
+        @@ -48,7 +48,8 @@ impl Resources {
+               url
+                 .trim_start_matches("http")
+                 .trim_start_matches('s')
+        -        .trim_start_matches("://"),
+        +        .trim_start_matches(":/")
+        +        .trim_start_matches("/"),
+             );
+ 
+             self.runtime_dir.join("sources").join(url_dir)
+      '')
+    ];
   };
 in
 kak-tree-sitter
+

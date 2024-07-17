@@ -109,6 +109,7 @@
           .envrc
           .kakrc
         ''}";
+        safe.directory = "*";
         merge.conflictstyle = "diff3";
       };
     };

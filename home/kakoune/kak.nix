@@ -201,8 +201,7 @@ in
         owner = "tree-sitter";
         repo = "tree-sitter-go";
         rev = "v0.20.0";
-        hash = "sha256-XUSXOTqUySShJ7gebnhObwaFllfIxEYIHN70/wpiJdw=";
-        leaveDotGit = true;
+        hash = "sha256-G7d8CHCyKDAb9j6ijRfHk/HlgPqSI+uvkuRIRRvjkHI=";
       };
     in
     {
@@ -212,11 +211,7 @@ in
             owner = "tree-sitter";
             repo = "tree-sitter-scala";
             rev = "70afdd5632d57dd63a960972ab25945e353a52f6";
-            hash =
-              if pkgs.stdenv.isDarwin
-              then lib.fakeHash
-              else "sha256-Q8KSI8H7+d/sUdSlcNAiOPn2THKk7SFqC3U7rLqSqtE=";
-            leaveDotGit = true;
+            hash = "sha256-bi0Lqo/Zs2Uaz1efuKAARpEDg5Hm59oUe7eSXgL1Wow=";
           };
         in
         {
@@ -230,11 +225,7 @@ in
             owner = "tree-sitter";
             repo = "tree-sitter-haskell";
             rev = "ba0bfb0e5d8e9e31c160d287878c6f26add3ec08";
-            sha256 =
-              if pkgs.stdenv.isDarwin
-              then "sha256-lW3E4gSZV/m2RfofUqeiCu8KDz06YEvXbYKs8smXFi4="
-              else "sha256-H5Z4vPTZCFxDCWguOB8oVSGPJyQonrD8FWAQZTYPG2U=";
-            leaveDotGit = true;
+            hash = "sha256-ZSOF0CLOn82GwU3xgvFefmh/AD2j5zz8I0t5YPwfan0=";
           };
         in
         {
@@ -248,8 +239,7 @@ in
           owner = "ikatyang";
           repo = "tree-sitter-yaml";
           rev = "0e36bed171768908f331ff7dff9d956bae016efb";
-          hash = "sha256-rN/a8dYffDQNuvnhNp/nfu0AzhYrR1ESACQbQWb/n5w=";
-          leaveDotGit = true;
+          hash = "sha256-bpiT3FraOZhJaoiFWAoVJX1O+plnIi8aXOW2LwyU23M=";
         };
         grammar.compile.args = [ "-c" "-fpic" "../scanner.cc" "../parser.c" "-I" ".." ];
         grammar.link.args = [ "-shared" "-fpic" "scanner.o" "parser.o" ];
@@ -259,8 +249,7 @@ in
           owner = "helix-editor";
           repo = "helix";
           rev = "dbd248fdfa680373d94fbc10094a160aafa0f7a7";
-          hash = "sha256-dv/T8ROXmwEdjM71gza1RzF2HoINA7Zl2jmz63kCZyQ=";
-          leaveDotGit = true;
+          hash = "sha256-wk8qVUDFXhAOi1Ibc6iBMzDCXb6t+YiWZcTd0IJybqc=";
         };
         queries.path = "runtime/queries/yaml";
       };
@@ -271,27 +260,17 @@ in
             owner = "vrischmann";
             repo = "tree-sitter-templ";
             rev = "044ad200092170727650fa6d368df66a8da98f9d";
-            hash = "sha256-umhemFnz/nLzkJk75wMoMAHT+Zs9MYOqWPoYQwoFu74=";
-            leaveDotGit = true;
+            hash = "sha256-hJuB3h5pp+LLfP0/7bAYH0uLVo+OQk5jpzJb3J9BNkY=";
           };
         in
         {
           grammar.src = src;
           queries.src = pkgs.runCommandLocal "templ-tree-sitter-queries" { } ''
-            mkdir -p queries
-            # copy most stuff from tree-sitter-templ
-            install -m644 ${src}/queries/templ/* queries
-            # override inherited files
-            cat ${tree-sitter-go}/queries/highlights.scm ${src}/queries/templ/highlights.scm > queries/highlights.scm
-
             mkdir -p $out/queries
-            cp -r queries $out/queries/templ
-            cd $out
-            ${lib.getExe pkgs.git} init
-            ${lib.getExe pkgs.git} config user.email "a@b.com"
-            ${lib.getExe pkgs.git} config user.name "a"
-            ${lib.getExe pkgs.git} add .
-            ${lib.getExe pkgs.git} commit -m "Just making a git commit"
+            # copy most stuff from tree-sitter-templ
+            install -m644 ${src}/queries/templ/* $out/queries
+            # override inherited files
+            cat ${tree-sitter-go}/queries/highlights.scm ${src}/queries/templ/highlights.scm > $out/queries/highlights.scm
           '';
           queries.path = "queries/templ";
         };
@@ -317,11 +296,11 @@ in
     '';
 
   programs.my-kakoune.extraFaces = {
-    Default = "%opt{white},%opt{background}";
-    BufferPadding = "%opt{background},%opt{background}";
-    MenuForeground = "blue,white+bF";
-    MenuBackground = "bright-blue,white+F";
-    Information = "bright-blue,white";
+    Default = "%opt{text},%opt{base}";
+    BufferPadding = "%opt{base},%opt{base}";
+    MenuForeground = "%opt{blue},white+bF";
+    MenuBackground = "%opt{sky},white+F";
+    Information = "%opt{sky},white";
     # Markdown help color scheme
     InfoDefault = "Information";
     InfoBlock = "@block";
@@ -513,10 +492,7 @@ in
     }
   ];
   programs.my-kakoune.themes = {
-    catppuccin-latte = builtins.fetchurl {
-      url = "https://raw.githubusercontent.com/catppuccin/kakoune/f6d43770609433c45046632f1bb68d1395305dbb/colors/catppuccin_latte.kak";
-      sha256 = "sha256:0ycvxs8hmsvd0zrpxiby16wzmapvmz6p34b6j343pc1girw6fi4i";
-    };
+    catppuccin-latte = ./catppuccin-latte.kak;
   };
 }
 
