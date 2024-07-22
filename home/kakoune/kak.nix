@@ -272,7 +272,7 @@ in
             # override inherited files
             cat ${tree-sitter-go}/queries/highlights.scm ${src}/queries/templ/highlights.scm > $out/queries/highlights.scm
           '';
-          queries.path = "queries/templ";
+          queries.path = "queries";
         };
 
       go = {
@@ -282,6 +282,23 @@ in
         queries.src = tree-sitter-go;
         queries.path = "queries";
       };
+
+      hylo =
+        let
+          src = pkgs.fetchFromGitHub {
+            owner = "natsukagami";
+            repo = "tree-sitter-hylo";
+            rev = "494cbdff0d13cbc67348316af2efa0286dbddf6f";
+            hash = "sha256-R5UeoglCTl0do3VDJ/liCTeqbxU9slvmVKNRA/el2VY=";
+          };
+        in
+        {
+          grammar.src = src;
+          grammar.compile.args = [ "-c" "-fpic" "../parser.c" "-I" ".." ];
+          grammar.link.args = [ "-shared" "-fpic" "parser.o" ];
+          queries.src = src;
+          queries.path = "queries";
+        };
     };
 
   programs.my-kakoune.package = pkgs.kakoune;

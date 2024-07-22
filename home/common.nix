@@ -9,13 +9,6 @@
     ./modules/programs/my-kitty
     ./modules/programs/openconnect-epfl.nix
     ./common-linux.nix
-
-    # PATH Overrides
-    ({ config, lib, ... }: {
-      home.sessionPath = lib.mkBefore [
-        "${config.home.homeDirectory}/.bin/overrides"
-      ];
-    })
   ];
 
   # Let Home Manager install and manage itself.
