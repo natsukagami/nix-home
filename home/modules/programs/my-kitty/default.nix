@@ -2,11 +2,10 @@
 
 let
   cfg = config.nki.programs.kitty;
-  cmd = if pkgs.stdenv.isDarwin then "cmd" else "ctrl";
 in
 with lib;
 {
-  imports = [ ./darwin.nix ./linux.nix ./tabs.nix ];
+  imports = [ ./linux.nix ./tabs.nix ];
 
   options.nki.programs.kitty = {
     enable = mkEnableOption "Enable kitty";

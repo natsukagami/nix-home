@@ -5,8 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    darwin.url = "github:lnl7/nix-darwin/master";
-    darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager-unstable.url = "github:nix-community/home-manager";
@@ -52,15 +50,13 @@
     kakoune.flake = false;
     kak-lsp.url = github:kakoune-lsp/kakoune-lsp;
     kak-lsp.flake = false;
-    nixos-m1.url = github:tpwrules/nixos-apple-silicon;
-    nixos-m1.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---
     # DEPLOYMENT ONLY! secrets
     secrets.url = "git+ssh://git@github.com/natsukagami/nix-deploy-secrets";
   };
 
-  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, nur, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, nur, ... }@inputs:
     let
       overlays = import ./overlay.nix inputs;
       lib = nixpkgs.lib;
@@ -142,21 +138,6 @@
       packages.x86_64-linux.deploy-rs = deploy-rs.packages.x86_64-linux.default;
       apps.x86_64-linux.deploy-rs = deploy-rs.apps.x86_64-linux.default;
 
-      # MacBook configuration: nix-darwin + home-manager
-      darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem rec {
-        system = "aarch64-darwin";
-        modules = [
-          (common-nix nixpkgs-unstable)
-          ./darwin/configuration.nix
-          inputs.home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.nki = import ./home/macbook-home.nix;
-          }
-        ];
-      };
-
       # Home configuration
       nixosConfigurations."kagamiPC" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
         configuration = ./nki-home/configuration.nix;
@@ -195,12 +176,6 @@
             };
           })
         ];
-      };
-      # macbook nixos
-      nixosConfigurations."kagami-air-m1" = mkPersonalSystem nixpkgs "aarch64-linux" {
-        configuration = ./kagami-air-m1/configuration.nix;
-        homeManagerUsers.nki = import ./home/macbook-nixos.nix;
-        extraModules = [ inputs.nixos-m1.nixosModules.apple-silicon-support ];
       };
 
       # DigitalOcean node
