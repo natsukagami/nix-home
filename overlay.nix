@@ -133,8 +133,6 @@ let
         (builtins.abort "no support for non-aarch64-linux")
         (final.callPackage ./packages/aarch64-linux/typora.nix { });
     };
-
-  overlay-asahi = inputs.nixos-m1.overlays.default;
 in
 [
   inputs.swayfx.overlays.default
@@ -148,7 +146,6 @@ in
   overlay-imported
   overlay-versioning
   overlay-libs
-  overlay-asahi
   overlay-aarch64-linux
   nur.overlay
 
