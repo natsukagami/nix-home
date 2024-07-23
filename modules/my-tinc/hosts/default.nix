@@ -22,4 +22,9 @@
     subnetAddr = "11.0.0.4";
     ed25519PublicKey = "6MN5LVE4juavv8qJW2dTN4t/haKCADWquAQj/ADF7iN";
   };
+
+  yoga = {
+    subnetAddr = "11.0.0.5";
+    ed25519PublicKey = "n+gIZjuuTPxi0OBqw2oOcmXd3loOHG+GQHBMXNlgyqI";
+  };
 }

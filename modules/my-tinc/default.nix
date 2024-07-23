@@ -34,11 +34,6 @@ in
       default = 655;
       description = "The port to listen on";
     };
-
-    meshIp = mkOption {
-      type = types.str;
-      description = "The mesh ip to be assigned by hostname";
-    };
   };
 
   config = mkIf cfg.enable (builtins.seq
@@ -51,7 +46,6 @@ in
         myMeshIp = myHost.subnetAddr;
       in
       {
-        services.my-tinc.meshIp = myMeshIp;
         # Scripts that set up the tinc services
         environment.etc = {
           "tinc/${networkName}/tinc-up".source = pkgs.writeScript "tinc-up-${networkName}" ''

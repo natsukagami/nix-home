@@ -15,6 +15,18 @@
       ../modules/services/edns
     ];
 
+  # Secrets
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+
+  ## tinc
+  sops.secrets."tinc-private-key" = { };
+  services.my-tinc = {
+    enable = true;
+    hostName = "yoga";
+    ed25519PrivateKey = config.sops.secrets."tinc-private-key".path;
+  };
+
   services.xserver.desktopManager.plasma6.enable = true;
 
   # Power Management

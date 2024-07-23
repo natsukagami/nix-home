@@ -4,6 +4,7 @@ keys:
   - &nki_pc age1tt0peqg8zdfh74m5sdgwsczcqh036nhgmwvkqnvywll88uvmm9xs433rhm
   - &nkagami_main age1n8tnmmgredzltzwkspag7aufhrn6034ny8ysjeulhkwdnf7vqqaqec4mg5
   - &nkagami_do age1z2h24mjt80fryqupajkh3kg5r4sjgw65uqy489xeqxhqj8u2a9fsm3ff36
+  - &nki_yoga age1vhjhmxura35apu5zdwg5ur5r40xay45ld9szh07dy0ph9chgsu7shfm4h9
 creation_rules:
   - path_regex: kagami-air-m1/secrets\.yaml$
     key_groups:
@@ -22,3 +23,8 @@ creation_rules:
         - *nki_pc
         - *nkagami_main
         - *nkagami_do
+  - path_regex: nki-yoga-g8/secrets\.yaml$
+    key_groups:
+    - age:
+        - *nki_yoga
+        - age1axvjllyv2gutngwmp3pvp4xtq2gqneldaq2c4nrzmaye0uwmk9lqsealdv # The machine itself
