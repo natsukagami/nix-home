@@ -62,7 +62,13 @@ map global normal D ": delete-current-brackets<ret>"
 # Tab sizes
 hook global InsertChar \t %{ exec -draft -itersel h@ }
 set global tabstop 2
-set global indentwidth 2 
+set global indentwidth 2
+
+# Language-specific tabstop with override
+hook global WinSetOption filetype=(rust) %{
+  set window tabstop 4
+  set window indentwidth 4
+}
 
 # Ctrl + a in insert mode = esc
 map global insert <c-a> '<esc>'
@@ -152,9 +158,6 @@ hook global WinSetOption filetype=(rust) %{
 hook global WinSetOption filetype=(scala) %{
     # Format the document if possible
     hook -group scala-fmt window BufWritePre .* %{ lsp-formatting-sync }
-
-    set window tabstop 2
-    set window indentwidth 2
 }
 
 hook global WinSetOption filetype=(typst) %{
