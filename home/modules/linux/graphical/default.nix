@@ -3,6 +3,7 @@ with lib;
 let
   cfg = config.linux.graphical;
 
+  thunderbird = pkgs.thunderbird-128;
   vscode = with pkgs; if stdenv.isAarch64 then unstable.vscode else unstable.vscode-fhs;
 
   wifi-indicator = pkgs.writeScriptBin "wifi-indicator" ''
