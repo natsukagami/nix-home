@@ -1079,22 +1079,6 @@
     },
     "nixpkgs_10": {
       "locked": {
-        "lastModified": 1713128889,
-        "narHash": "sha256-aB90ZqzosyRDpBh+rILIcyP5lao8SKz8Sr2PSWvZrzk=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "2748d22b45a99fb2deafa5f11c7531c212b2cefa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixpkgs-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_11": {
-      "locked": {
         "lastModified": 1718530797,
         "narHash": "sha256-pup6cYwtgvzDpvpSCFh1TEUjw2zkNpk8iolbKnyFmmU=",
         "owner": "nixos",
@@ -1307,7 +1291,6 @@
         "nur": "nur",
         "secrets": "secrets",
         "sops-nix": "sops-nix",
-        "swayfx": "swayfx",
         "youmubot": "youmubot"
       }
     },
@@ -1394,24 +1377,6 @@
         "type": "github"
       }
     },
-    "scenefx": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_10"
-      },
-      "locked": {
-        "lastModified": 1715160751,
-        "narHash": "sha256-S8m7phTU7QYgAq4B0hjH5WdtTjHDcNVhYfPFdhbty+A=",
-        "owner": "wlrfx",
-        "repo": "scenefx",
-        "rev": "2ec3505248e819191c37cb831197629f373326fb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "wlrfx",
-        "repo": "scenefx",
-        "type": "github"
-      }
-    },
     "secrets": {
       "inputs": {
         "flake-utils": "flake-utils_9"
@@ -1450,27 +1415,6 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
-        "type": "github"
-      }
-    },
-    "swayfx": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "scenefx": "scenefx"
-      },
-      "locked": {
-        "lastModified": 1715273144,
-        "narHash": "sha256-x8z/sjtJPojvaXiOUDvADiSU/QmSo8cqKQ1X4g+5dw4=",
-        "owner": "WillPower3309",
-        "repo": "swayfx",
-        "rev": "3c621dec7d653231f960d377fcb3ceeed55953e2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "WillPower3309",
-        "repo": "swayfx",
         "type": "github"
       }
     },
@@ -1631,7 +1575,7 @@
       "inputs": {
         "crane": "crane_5",
         "flake-utils": "flake-utils_10",
-        "nixpkgs": "nixpkgs_11"
+        "nixpkgs": "nixpkgs_10"
       },
       "locked": {
         "lastModified": 1722866694,

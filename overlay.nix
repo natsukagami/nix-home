@@ -139,7 +139,8 @@ let
   overlay-asahi = inputs.nixos-m1.overlays.default;
 in
 [
-  inputs.swayfx.overlays.default
+  # inputs.swayfx.inputs.scenefx.overlays.override
+  # inputs.swayfx.overlays.override
   inputs.mpd-mpris.overlays.default
   inputs.youmubot.overlays.default
 
