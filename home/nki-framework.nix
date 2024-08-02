@@ -48,6 +48,21 @@
       tap = "enabled";
     };
   };
+  programs.my-sway.waybar.extraSettings =
+    let
+      change-mode = pkgs.writeScript "change-mode" ''
+        #!/usr/bin/env ${lib.getExe pkgs.fish}
+        set -ax PATH ${lib.getBin pkgs.power-profiles-daemon} ${lib.getBin pkgs.rofi} ${lib.getBin pkgs.ripgrep}
+
+        set profiles (powerprofilesctl list | rg "^[ *] (\S+):" -r '$1')
+        set selected_index (math (contains -i (powerprofilesctl get) $profiles) - 1)
+        set new_profile (printf "%s\n" $profiles | rofi -dmenu -p "Switch to power profile" -a $selected_index)
+        powerprofilesctl set $new_profile
+      '';
+    in
+    [{
+      modules."battery"."on-click" = change-mode;
+    }];
 
   # input-remapping
   xdg.configFile."autostart/input-remapper-autoload.desktop".source =

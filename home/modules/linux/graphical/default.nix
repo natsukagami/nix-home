@@ -57,7 +57,6 @@ in
       feh # For images?
       deluge # Torrent client
       pavucontrol # PulseAudio control panel
-      cinnamon.nemo # File manager
       thunderbird # Email
       sublime-music # For navidrome
       cinny-desktop

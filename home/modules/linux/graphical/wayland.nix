@@ -14,7 +14,7 @@ let
       systemd.user.services.swaync.Unit.PartOf = lib.mkForce [ "sway-session.target" ];
 
       programs.my-sway.waybar = {
-        extraSettings = {
+        extraSettings = [{
           modules-right = mkAfter [ "custom/swaync" ];
           modules."custom/swaync" = {
             tooltip = false;
@@ -36,7 +36,7 @@ let
             on-click-right = "${swaync}/bin/swaync-client -d -sw";
             escape = true;
           };
-        };
+        }];
         extraStyle = mkAfter ''
           #custom-swaync {
               background: #F0FFFF;

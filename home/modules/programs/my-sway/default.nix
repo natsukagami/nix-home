@@ -110,12 +110,12 @@ in
         default = barWith: [ (barWith { }) ];
       };
       extraSettings = mkOption {
-        type = types.raw;
+        type = types.listOf types.raw;
         description = "Extra settings to be included with every default bar";
-        default = { };
+        default = [ ];
       };
       extraStyle = mkOption {
-        type = types.str;
+        type = types.lines;
         description = "Additional style for the default waybar";
         default = "";
       };
@@ -409,7 +409,7 @@ in
 
   config.programs.waybar =
     let
-      barWith = { showMedia ? true, showConnectivity ? true, extraSettings ? { }, ... }: (mkMerge [{
+      barWith = { showMedia ? true, showConnectivity ? true, extraSettings ? { }, ... }: mkMerge ([{
         position = "top";
         modules-left = [
           "sway/workspaces"
@@ -420,7 +420,7 @@ in
         ];
         modules-right =
           lib.optional showMedia (if cfg.enableMpd then "mpd" else "custom/media")
-          ++ [
+            ++ [
             "tray"
             "pulseaudio"
           ] ++ lib.optionals showConnectivity [
@@ -431,7 +431,7 @@ in
             "memory"
             "temperature"
           ] ++ lib.optionals cfg.enableLaptopBars [ "battery" "battery#bat2" ]
-          ++ [
+            ++ [
             "clock"
           ];
 
@@ -598,9 +598,9 @@ in
             "on-click" = "${playerctl} play-pause";
           };
         };
-      }
-        cfg.waybar.extraSettings
-        extraSettings]);
+      }] ++
+      cfg.waybar.extraSettings
+      ++ [ extraSettings ]);
     in
     mkIf cfg.enable {
       enable = true;
