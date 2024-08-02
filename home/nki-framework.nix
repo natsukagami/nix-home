@@ -76,16 +76,32 @@
   # Multiple screen setup
   services.kanshi = with config.common.monitors; {
     enable = true;
-    profiles.undocked.outputs = [{
-      criteria = "eDP-1";
-    }];
-    profiles.work-both.outputs = [
-      { criteria = "eDP-1"; position = "0,${toString (builtins.floor ((2160 / work.scale - 1200) + 1200 / 3))}"; status = "enable"; }
-      { criteria = work.name; position = "1920,0"; }
-    ];
-    profiles.work-one.outputs = [
-      { criteria = "eDP-1"; status = "disable"; }
-      { criteria = config.common.monitors.work.name; }
+    settings = [
+      {
+        profile.name = "undocked";
+        profile.outputs = [{ criteria = "eDP-1"; }];
+      }
+      {
+        profile.name = "work-both";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            position = "0,${toString (builtins.floor ((2160 / work.scale - 1200) + 1200 / 3))}";
+            status = "enable";
+          }
+          { criteria = work.name; position = "1920,0"; }
+        ];
+      }
+      {
+        profile.name = "work-one";
+        profile.outputs = [
+          {
+            criteria = "eDP-1";
+            status = "disable";
+          }
+        ];
+      }
+      { output.criteria = config.common.monitors.work.name; }
     ];
   };
 
