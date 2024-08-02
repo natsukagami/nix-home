@@ -71,8 +71,10 @@ in
       mpv # for anki
       anki-bin
 
+      # Chat stuff
       tdesktop
       whatsapp-for-linux
+      slack
 
       librewolf
 
@@ -81,11 +83,7 @@ in
       # sct # Display color temperature
       xdg-utils # Open stuff
       wifi-indicator
-    ] ++ (if pkgs.stdenv.isAarch64 then [ ] else [
-      gnome.cheese # Webcam check, expensive
-      # Chat stuff
-      slack
-    ]));
+    ]);
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
     nki.programs.discord.package = pkgs.vesktop;

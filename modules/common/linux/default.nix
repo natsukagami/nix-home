@@ -27,6 +27,17 @@ let
       };
     };
 
+    graphics = { config, ... }: {
+      hardware =
+        if config.system.nixos.release == "24.05" then {
+          opengl.enable = true;
+          opengl.driSupport32Bit = true;
+        } else {
+          graphics.enable = true;
+          graphics.enable32Bit = true;
+        };
+    };
+
     accounts = { pkgs, ... }: mkIf (config.common.linux.enable && !pkgs.stdenv.isAarch64) {
       environment.systemPackages = with pkgs.gnome; [ pkgs.glib gnome-control-center ];
       services.accounts-daemon.enable = true;
@@ -104,7 +115,7 @@ let
   };
 in
 {
-  imports = with modules; [ adb ios wlr logitech kwallet virtualisation accounts rt-audio ];
+  imports = with modules; [ adb ios graphics wlr logitech kwallet virtualisation accounts rt-audio ];
 
   options.common.linux = {
     enable = mkOption {
@@ -256,14 +267,18 @@ in
     i18n.defaultLocale = "ja_JP.UTF-8";
     # Input methods (only fcitx5 works reliably on Wayland)
     i18n.inputMethod = {
-      enabled = "fcitx5";
       fcitx5.waylandFrontend = true;
       fcitx5.addons = with pkgs; [
         fcitx5-mozc
         fcitx5-unikey
         fcitx5-gtk
       ];
-    };
+    } // (if config.system.nixos.release == "24.05" then {
+      enabled = "fcitx5";
+    } else {
+      enable = true;
+      type = "fcitx5";
+    });
 
     # Default packages
     environment.systemPackages = with pkgs; [
@@ -293,8 +308,6 @@ in
     programs.dconf.enable = true;
     # Gaming! (not for ARM64)
     programs.steam.enable = !pkgs.stdenv.isAarch64;
-    hardware.opengl.enable = true;
-    hardware.opengl.driSupport32Bit = !pkgs.stdenv.isAarch64; # For 32 bit applications
 
     ## Services
     # OpenSSH so you can SSH to me

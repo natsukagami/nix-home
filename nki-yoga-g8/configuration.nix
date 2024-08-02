@@ -27,7 +27,7 @@
     ed25519PrivateKey = config.sops.secrets."tinc-private-key".path;
   };
 
-  services.xserver.desktopManager.plasma6.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   # Power Management
   services.upower = {
