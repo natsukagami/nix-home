@@ -114,8 +114,6 @@ in
 
     inherit user;
 
-    appName = "DTTHgit";
-
     settings = {
       server = {
         DOMAIN = host;
@@ -136,7 +134,7 @@ in
       };
       "repository.signing" = {
         SIGNING_KEY = signingKey;
-        SIGNING_NAME = "DTTHGit";
+        SIGNING_NAME = "DTTHgit";
         SIGNING_EMAIL = "dtth-gitea@nkagami.me";
       };
       ui.THEMES = default-themes + "," + themes;
@@ -177,7 +175,7 @@ in
       };
 
       federation.ENABLED = true;
-
+      DEFAULT.APP_NAME = "DTTHGit";
     };
 
     stateDir = "/mnt/data/gitea";
