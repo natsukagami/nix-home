@@ -16,7 +16,7 @@ in
     security.pam = mkIf pkgs.stdenv.isLinux {
       u2f = {
         enable = true;
-        cue = true;
+        settings.cue = true;
       };
 
       # Services

@@ -61,13 +61,11 @@ with lib;
       PrivateKeyFile = config.sops.secrets."dtth-wg/private-key".path;
     };
     wireguardPeers = [{
-      wireguardPeerConfig = {
-        PublicKey = "+7iI4jwmM1Qr+/DKB1Hv8JgFkGu7lSV0PAoo+O5d3yQ=";
-        PresharedKeyFile = config.sops.secrets."dtth-wg/preshared-key".path;
-        AllowedIPs = [ "100.64.0.0/10" "fd00::/106" ];
-        Endpoint = "vpn.dtth.ch:51820";
-        PersistentKeepalive = 25;
-      };
+      PublicKey = "+7iI4jwmM1Qr+/DKB1Hv8JgFkGu7lSV0PAoo+O5d3yQ=";
+      PresharedKeyFile = config.sops.secrets."dtth-wg/preshared-key".path;
+      AllowedIPs = [ "100.64.0.0/10" "fd00::/106" ];
+      Endpoint = "vpn.dtth.ch:51820";
+      PersistentKeepalive = 25;
     }];
   };
   systemd.network.networks."dtth-wg" = {
@@ -75,8 +73,8 @@ with lib;
     address = [ "100.73.146.80/32" "fd00::33:105b/128" ];
     DHCP = "no";
     routes = [
-      { routeConfig = { Destination = "100.64.0.0/10"; Scope = "link"; }; }
-      { routeConfig.Destination = "fd00::/106"; }
+      { Destination = "100.64.0.0/10"; Scope = "link"; }
+      { Destination = "fd00::/106"; }
     ];
   };
 

@@ -36,6 +36,4 @@
     [{ device = "/dev/disk/by-uuid/2694d189-2ff6-4719-a449-367c52ed3ad6"; }];
 
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  hardware.opengl.enable = true;
 }

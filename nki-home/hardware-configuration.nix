@@ -36,10 +36,6 @@
   swapDevices =
     [{ device = "/dev/disk/by-uuid/561f6441-1915-4059-a5e1-76a449b0c9bf"; }];
 
-  # GPU options
-  services.xserver.videoDrivers = [ "amdgpu" ];
-  hardware.opengl.enable = true;
-
   # bluetooth usb
   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 }
