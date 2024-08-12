@@ -31,6 +31,13 @@ in
     ensureDatabases = cfg.databases;
 
     ensureUsers = (map userFromDatabase cfg.databases);
+
+    dataDir = "/mnt/data/postgresql/${config.services.postgresql.package.psqlSchema}";
+  };
+
+  config.systemd.services.postgresql.serviceConfig = {
+    StateDirectory = "postgresql postgresql ${config.services.postgresql.dataDir}";
+    StateDirectoryMode = "0750";
   };
 
   # Backup settings
