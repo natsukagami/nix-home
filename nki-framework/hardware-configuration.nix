@@ -12,7 +12,7 @@
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
+  boot.kernelPackages = pkgs.linuxPackages; # until mesa fixed
   boot.kernelParams = [
     # Hibernation
     "resume=UUID=fa8aaf51-b99f-4fb4-9230-8c0957d8af3f"
