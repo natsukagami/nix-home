@@ -27,10 +27,11 @@ with lib;
   # Plasma!
   services.desktopManager.plasma6.enable = true;
 
-
   ## Encryption
   # Kernel modules needed for mounting USB VFAT devices in initrd stage
   common.linux.luksDevices.root = "/dev/disk/by-uuid/7c6e40a8-900b-4f85-9712-2b872caf1892";
+  common.linux.sops.enable = true;
+  common.linux.sops.file = ./secrets.yaml;
 
   # Networking
   common.linux.networking =

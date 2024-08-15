@@ -237,15 +237,16 @@
       "locked": {
         "lastModified": 1723470164,
         "narHash": "sha256-ZWcDD4HTmFtEJgEA2Ydg2mA+yu0FVcfEHbCGVXDatfw=",
-        "ref": "refs/heads/dtth-fork",
+        "ref": "dtth-fork",
         "rev": "c72bd47bbd18523b951b3fa73c789629504d0eb3",
         "revCount": 2721,
         "type": "git",
-        "url": "ssh://gitea@git.dtth.ch/nki/phanpy?branch=dtth-fork"
+        "url": "ssh://gitea@git.dtth.ch/nki/phanpy"
       },
       "original": {
+        "ref": "dtth-fork",
         "type": "git",
-        "url": "ssh://gitea@git.dtth.ch/nki/phanpy?branch=dtth-fork"
+        "url": "ssh://gitea@git.dtth.ch/nki/phanpy"
       }
     },
     "fenix": {

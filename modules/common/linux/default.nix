@@ -115,7 +115,19 @@ let
   };
 in
 {
-  imports = with modules; [ adb ios graphics wlr logitech kwallet virtualisation accounts rt-audio ];
+  imports = with modules; [
+    ./sops.nix
+
+    adb
+    ios
+    graphics
+    wlr
+    logitech
+    kwallet
+    virtualisation
+    accounts
+    rt-audio
+  ];
 
   options.common.linux = {
     enable = mkOption {

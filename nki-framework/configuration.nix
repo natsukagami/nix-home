@@ -17,6 +17,10 @@
       ./wireless.nix
     ];
 
+  # Sops
+  common.linux.sops.enable = true;
+  common.linux.sops.file = ./secrets.yaml;
+
   # services.xserver.enable = true;
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.displayManager.sddm.wayland.enable = true;
@@ -76,6 +80,16 @@
   security.pam.services.sudo.fprintAuth = true;
   security.pam.services.swaylock.fprintAuth = true;
   security.pam.services.login.fprintAuth = true;
+
+  # tinc network
+  sops.secrets."tinc-private-key" = { };
+  services.my-tinc = {
+    enable = true;
+    hostName = "framework";
+    ed25519PrivateKey = config.sops.secrets."tinc-private-key".path;
+    bindPort = 6565;
+  };
+
 
   # Secrets
   # sops.defaultSopsFile = ./secrets.yaml;
