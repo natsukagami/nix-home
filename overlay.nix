@@ -1,6 +1,7 @@
 { nixpkgs, nixpkgs-unstable, nur, ... }@inputs:
 let
   overlay-unstable = final: prev: {
+    stable = import nixpkgs { config.allowUnfree = true; system = prev.system; };
     unstable = import nixpkgs-unstable { config.allowUnfree = true; system = prev.system; };
     x86 = import nixpkgs-unstable { system = prev.system; config.allowUnsupportedSystem = true; };
   };
@@ -86,6 +87,13 @@ let
         })
       ];
     };
+
+    # https://github.com/NixOS/nixpkgs/issues/334822
+    vulkan-validation-layers = prev.vulkan-validation-layers.overrideAttrs (attrs: {
+      buildInputs = attrs.buildInputs ++ [
+        final.spirv-tools
+      ];
+    });
   };
 
   overlay-libs = final: prev: {
@@ -108,35 +116,11 @@ let
       };
   };
 
-  overlay-aarch64-linux = final: prev:
-    let
-      optionalOverride = pkg: alt:
-        if prev.stdenv.isLinux && prev.stdenv.isAarch64 then alt else pkg;
-    in
-    {
-      # See https://github.com/sharkdp/fd/issues/1085
-      fd = optionalOverride prev.fd (prev.fd.overrideAttrs (attrs: {
-        preBuild = ''
-          export JEMALLOC_SYS_WITH_LG_PAGE=16
-        '';
-      }));
-      # See https://www.reddit.com/r/AsahiLinux/comments/zqejue/kitty_not_working_with_mesaasahiedge/
-      kitty = optionalOverride prev.kitty (final.writeShellApplication {
-        name = "kitty";
-        runtimeInputs = [ ];
-        text = ''
-          MESA_GL_VERSION_OVERRIDE=3.3 MESA_GLSL_VERSION_OVERRIDE=330 ${prev.kitty}/bin/kitty "$@"
-        '';
-      });
-      # Zotero does not have their own aarch64-linux build
-      zotero = optionalOverride prev.zotero (final.callPackage ./packages/aarch64-linux/zotero.nix { });
-      # Typora for aarch64-linux only
-      typora = optionalOverride
-        (builtins.abort "no support for non-aarch64-linux")
-        (final.callPackage ./packages/aarch64-linux/typora.nix { });
-    };
-
-  overlay-asahi = inputs.nixos-m1.overlays.default;
+  overlay-rust-is-dumb = final: prev: {
+    # Use stable delta compiled with old Rust version
+    delta = final.stable.delta;
+    deepfilternet = final.stable.deepfilternet;
+  };
 in
 [
   # inputs.swayfx.inputs.scenefx.overlays.override
@@ -151,8 +135,7 @@ in
   overlay-imported
   overlay-versioning
   overlay-libs
-  overlay-asahi
-  overlay-aarch64-linux
+  overlay-rust-is-dumb
   nur.overlay
 
   (import ./packages/common)

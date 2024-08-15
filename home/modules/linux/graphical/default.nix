@@ -60,7 +60,7 @@ in
       pavucontrol # PulseAudio control panel
       thunderbird # Email
       sublime-music # For navidrome
-      cinny-desktop
+      # cinny-desktop
       gajim
       vivaldi
       # Audio
