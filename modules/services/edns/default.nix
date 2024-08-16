@@ -8,6 +8,11 @@ in
   options.nki.services.edns = {
     enable = mkEnableOption "Enable encrypted DNS";
     ipv6 = mkEnableOption "Enable ipv6";
+    cloaking-rules = mkOption {
+      type = types.attrsOf types.str;
+      default = { };
+      description = "A set of domain -> ip mapping for cloaking_rules";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -42,6 +47,11 @@ in
           { server_name = "*"; via = [ "anon-plan9-dns" "anon-v.dnscrypt.up-ipv4" ]; }
         ];
         anonymized_dns.skip_incompatible = true;
+
+        # Cloaking rules
+        cloaking_rules = pkgs.writeText "cloaking_rules.txt" (lib.strings.concatStringsSep
+          "\n"
+          (lib.attrsets.mapAttrsToList (name: ip: "${name} ${ip}") cfg.cloaking-rules));
       };
     };
   };

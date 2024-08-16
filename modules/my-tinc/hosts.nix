@@ -23,10 +23,13 @@ in
       hosts;
 
     # Add all of them to host
-    networking.extraHosts = lib.strings.concatStringsSep
-      "\n"
-      (lib.attrsets.mapAttrsToList
-        (name: host: "${host.subnetAddr} ${name}.tinc")
-        hosts);
+    nki.services.edns = {
+      enable = true;
+      cloaking-rules =
+        (lib.attrsets.mapAttrs'
+          (name: host: { name = "${name}.tinc"; value = host.subnetAddr; })
+          hosts)
+      ;
+    };
   };
 }
