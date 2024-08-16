@@ -51,6 +51,8 @@ in
         };
         groups.${build-user} = { };
       };
+
+      nix.settings.trusted-users = mkIf (isBuilder host) [ build-user ];
     }
   );
 }
