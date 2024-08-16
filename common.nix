@@ -14,6 +14,7 @@ with lib; {
   imports = [
     # defaultShell
     ./modules/services/nix-cache
+    ./modules/services/nix-build-farm
   ];
 
   ## Packages

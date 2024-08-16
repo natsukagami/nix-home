@@ -38,6 +38,10 @@ with lib;
     privateKeyFile = config.sops.secrets."nix-cache/private-key".path;
   };
 
+  sops.secrets."nix-build-farm/private-key" = { mode = "0400"; };
+  services.nix-build-farm.hostname = "home";
+  services.nix-build-farm.privateKeyFile = config.sops.secrets."nix-build-farm/private-key".path;
+
   # Networking
   common.linux.networking =
     {
