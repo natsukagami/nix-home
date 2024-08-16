@@ -10,8 +10,6 @@ with lib;
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      # secret management
-      ./secrets
       # Fonts
       ../modules/personal/fonts
       # Encrypted DNS
