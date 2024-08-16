@@ -19,7 +19,7 @@ creation_rules:
         - *nkagami_main
         - *nkagami_do
         - *nki_framework
-  - path_regex: nki-home/secrets/secrets\.yaml$
+  - path_regex: nki-home/secrets\.yaml$
     key_groups:
     - age:
         - *nki_pc

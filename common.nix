@@ -13,6 +13,7 @@ in
 with lib; {
   imports = [
     # defaultShell
+    ./modules/services/nix-cache
   ];
 
   ## Packages

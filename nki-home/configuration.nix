@@ -31,6 +31,13 @@ with lib;
   common.linux.sops.enable = true;
   common.linux.sops.file = ./secrets.yaml;
 
+  # Nix cache server
+  sops.secrets."nix-cache/private-key" = { owner = "nix-serve"; group = "nix-serve"; mode = "0600"; };
+  nki.services.nix-cache = {
+    enableServer = true;
+    privateKeyFile = config.sops.secrets."nix-cache/private-key".path;
+  };
+
   # Networking
   common.linux.networking =
     {
