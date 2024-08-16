@@ -21,6 +21,8 @@
   common.linux.sops.enable = true;
   common.linux.sops.file = ./secrets.yaml;
 
+  services.nix-build-farm.enable = false;
+
   # services.xserver.enable = true;
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.displayManager.sddm.wayland.enable = true;
