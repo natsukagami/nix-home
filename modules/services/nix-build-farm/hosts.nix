@@ -4,7 +4,7 @@
     pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK6N1uTxnbo73tyzD9X7d7OgPeoOpY7JmQaHASjSWFPI nki@kagamiPC";
 
     builder = {
-      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUN5UUc3YWUrZEY3SWN0dVU3T3FnR3hqRlJydGpPaGpxSmF6UW5RUVlqbUQgcm9vdEBua2kteW9nYS1nOAo=";
+      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUhiVTh2NlNBa0kyOTBCc1QzVG1IRVVJQWdXcVFyNm9jRmpjakRRczRoT2ggcm9vdEBrYWdhbWlQQwo=";
       systems = [ "x86_64-linux" "aarch64-linux" ];
       maxJobs = 16;
       speedFactor = 2;

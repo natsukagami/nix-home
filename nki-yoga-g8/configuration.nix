@@ -19,6 +19,11 @@
   common.linux.sops.enable = true;
   common.linux.sops.file = ./secrets.yaml;
 
+  # Build farm
+  sops.secrets."nix-build-farm/private-key" = { mode = "0400"; };
+  services.nix-build-farm.hostname = "yoga";
+  services.nix-build-farm.privateKeyFile = config.sops.secrets."nix-build-farm/private-key".path;
+
   ## tinc
   sops.secrets."tinc-private-key" = { };
   services.my-tinc = {

@@ -38,18 +38,9 @@ in
         (name: host: {
           hostName = host.host;
           sshUser = build-user;
+          sshKey = cfg.privateKeyFile;
         } // host.builder)
         otherBuilders;
-
-      programs.ssh.extraConfig = (lib.concatStringsSep "\n" (lib.mapAttrsToList
-        (name: host: ''
-          Host ${name}
-            HostName ${host.host}
-            User ${build-user}
-            IdentitiesOnly yes
-            IdentityFile ${cfg.privateKeyFile}
-        '')
-        otherBuilders));
 
       users = mkIf (isBuilder host) {
         users.${build-user} = {
