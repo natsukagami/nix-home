@@ -31,7 +31,7 @@ in
 
   config = {
     nix.settings = mkIf cfg.enableClient {
-      substituters = [ cfg.host ];
+      substituters = [ "http://${cfg.host}" ];
       trusted-public-keys = [ cfg.publicKey ];
     };
 

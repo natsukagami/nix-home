@@ -78,6 +78,11 @@ in
         # firewall
         networking.firewall.allowedUDPPorts = [ 655 ];
         networking.firewall.allowedTCPPorts = [ 655 ];
+        networking.firewall.interfaces."tinc.${networkName}" = {
+          allowedUDPPortRanges = [{ from = 0; to = 65535; }];
+          allowedTCPPortRanges = [{ from = 0; to = 65535; }];
+        };
+
 
         # configure tinc service
         # ----------------------
