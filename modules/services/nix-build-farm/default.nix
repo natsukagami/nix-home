@@ -47,7 +47,7 @@ in
           description = "Nix build farm user";
           group = build-user;
           isNormalUser = true;
-          openssh.authorizedKeys.keys = lib.mapAttrsToList (_: host: host.pubKey) otherHosts;
+          openssh.authorizedKeys.keys = lib.mapAttrsToList (_: host: ''from="${host.host}" ${host.pubKey}'') otherHosts;
         };
         groups.${build-user} = { };
       };
