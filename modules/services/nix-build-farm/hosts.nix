@@ -1,4 +1,9 @@
 {
+  cloud = {
+    host = "cloud.tinc";
+    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE87ddj0fTH0NuvJz0dT5ln7v7zbafXqDVdM2A4ddOb0 root@nki-personal-do";
+  };
+
   home = {
     host = "home.tinc";
     pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK6N1uTxnbo73tyzD9X7d7OgPeoOpY7JmQaHASjSWFPI nki@kagamiPC";
