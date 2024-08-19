@@ -24,6 +24,12 @@ in
       type = types.path;
       description = "The path to the private SSH key file";
     };
+
+    ipAddrs = mkOption {
+      type = types.str;
+      description = "The ip addresses to limit access to";
+      default = "11.0.0.*";
+    };
   };
 
   config = mkIf cfg.enable (
@@ -47,7 +53,7 @@ in
           description = "Nix build farm user";
           group = build-user;
           isNormalUser = true;
-          openssh.authorizedKeys.keys = lib.mapAttrsToList (_: host: ''from="${host.host}" ${host.pubKey}'') otherHosts;
+          openssh.authorizedKeys.keys = lib.mapAttrsToList (_: host: ''from="${cfg.ipAddrs}" ${host.pubKey}'') otherHosts;
         };
         groups.${build-user} = { };
       };
