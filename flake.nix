@@ -15,7 +15,6 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
     sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
     deploy-rs.url = "github:Serokell/deploy-rs";
-    nur.url = "github:nix-community/NUR";
 
     # --- Secure boot
     lanzaboote = {
@@ -60,7 +59,7 @@
     secrets.url = "git+ssh://git@github.com/natsukagami/nix-deploy-secrets";
   };
 
-  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, nur, ... }@inputs:
+  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, ... }@inputs:
     let
       overlays = import ./overlay.nix inputs;
       lib = nixpkgs.lib;

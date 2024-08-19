@@ -1,4 +1,4 @@
-{ nixpkgs, nixpkgs-unstable, nur, ... }@inputs:
+{ nixpkgs, nixpkgs-unstable, ... }@inputs:
 let
   overlay-unstable = final: prev: {
     stable = import nixpkgs { config.allowUnfree = true; system = prev.system; };
@@ -143,7 +143,6 @@ in
   overlay-versioning
   overlay-libs
   overlay-rust-is-dumb
-  nur.overlay
 
   (import ./packages/common)
 
