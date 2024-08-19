@@ -32,11 +32,15 @@ with lib;
   common.linux.sops.file = ./secrets.yaml;
 
   # Nix cache server
-  sops.secrets."nix-cache/private-key" = { owner = "nix-serve"; group = "nix-serve"; mode = "0600"; };
+  sops.secrets."nix-cache/private-key" = { owner = "harmonia"; group = "harmonia"; mode = "0600"; };
   nki.services.nix-cache = {
     enableServer = true;
     privateKeyFile = config.sops.secrets."nix-cache/private-key".path;
   };
+
+  sops.secrets."nix-build-farm/private-key" = { mode = "0400"; };
+  services.nix-build-farm.hostname = "home";
+  services.nix-build-farm.privateKeyFile = config.sops.secrets."nix-build-farm/private-key".path;
 
   # Networking
   common.linux.networking =

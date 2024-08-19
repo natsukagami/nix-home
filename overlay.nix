@@ -120,6 +120,13 @@ let
     # Use stable delta compiled with old Rust version
     delta = final.stable.delta;
     deepfilternet = final.stable.deepfilternet;
+    harmonia = final.callPackage
+      (import
+        (builtins.fetchurl {
+          url = "https://raw.githubusercontent.com/Mic92/nixpkgs/63f91202f5cd071187ede5e5ffc56003cb442876/pkgs/by-name/ha/harmonia/package.nix";
+          sha256 = "1mz211c0bxn116ix0j5xx4wlglpbkfg7d3npw1z8hg9gc0vbj2xb";
+        }))
+      { };
   };
 in
 [

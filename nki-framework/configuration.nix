@@ -21,6 +21,10 @@
   common.linux.sops.enable = true;
   common.linux.sops.file = ./secrets.yaml;
 
+  sops.secrets."nix-build-farm/private-key" = { mode = "0400"; };
+  services.nix-build-farm.hostname = "framework";
+  services.nix-build-farm.privateKeyFile = config.sops.secrets."nix-build-farm/private-key".path;
+
   # services.xserver.enable = true;
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.displayManager.sddm.wayland.enable = true;

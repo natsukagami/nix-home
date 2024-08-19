@@ -3,6 +3,8 @@
 with { inherit (lib) mkEnableOption mkOption types mkIf; };
 let
   cfg = config.nki.services.nix-cache;
+
+  bindAddr = "127.0.0.1:5000";
 in
 {
   options.nki.services.nix-cache = {
@@ -31,18 +33,17 @@ in
 
   config = {
     nix.settings = mkIf cfg.enableClient {
-      substituters = [ "http://${cfg.host}" ];
+      substituters = lib.mkAfter [ "http://${cfg.host}" ];
       trusted-public-keys = [ cfg.publicKey ];
     };
 
-    services.nix-serve = mkIf cfg.enableServer {
+    services.harmonia = mkIf cfg.enableServer {
       enable = true;
-      secretKeyFile = cfg.privateKeyFile;
-    };
-
-    users = mkIf cfg.enableServer {
-      users.nix-serve = { group = "nix-serve"; isSystemUser = true; };
-      groups.nix-serve = { };
+      signKeyPath = cfg.privateKeyFile;
+      settings = {
+        bind = bindAddr;
+        priority = 45;
+      };
     };
 
     services.nginx = mkIf cfg.enableServer {
@@ -51,7 +52,7 @@ in
       virtualHosts = {
         # ... existing hosts config etc. ...
         "${cfg.host}" = {
-          locations."/".proxyPass = "http://${config.services.nix-serve.bindAddress}:${toString config.services.nix-serve.port}";
+          locations."/".proxyPass = "http://${bindAddr}";
         };
       };
     };

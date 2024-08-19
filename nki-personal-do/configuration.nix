@@ -12,6 +12,9 @@
     ../modules/cloud/conduit
     ../modules/cloud/gotosocial
 
+    # Encrypted DNS
+    ../modules/services/edns
+
     ./headscale.nix
     ./gitea.nix
     ./miniflux.nix
@@ -57,17 +60,14 @@
 
   services.do-agent.enable = true;
 
-  system.autoUpgrade = {
-    enable = true;
-    allowReboot = true;
-    flake = "github:natsukagami/nix-home#nki-personal-do";
-  };
-
   nix = {
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
   };
+
+  nki.services.edns.enable = true;
+  nki.services.edns.ipv6 = true;
 
   # Secret management
   sops.defaultSopsFile = ./secrets/secrets.yaml;
@@ -80,6 +80,10 @@
   sops.secrets."tinc/ed25519-private-key" = { };
   services.my-tinc.rsaPrivateKey = config.sops.secrets."tinc/rsa-private-key".path;
   services.my-tinc.ed25519PrivateKey = config.sops.secrets."tinc/ed25519-private-key".path;
+
+  sops.secrets."nix-build-farm/private-key" = { mode = "0400"; };
+  services.nix-build-farm.hostname = "home";
+  services.nix-build-farm.privateKeyFile = config.sops.secrets."nix-build-farm/private-key".path;
 
   # Set up traefik
   sops.secrets.cloudflare-dns-api-token = { owner = "traefik"; };
