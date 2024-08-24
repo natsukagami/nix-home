@@ -25,6 +25,10 @@
     # --- Build tools
     flake-utils.url = github:numtide/flake-utils;
     crane.url = github:ipetkov/crane;
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     arion.url = github:hercules-ci/arion;
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";

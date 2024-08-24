@@ -133,6 +133,7 @@ in
   # inputs.swayfx.inputs.scenefx.overlays.override
   # inputs.swayfx.overlays.override
   inputs.mpd-mpris.overlays.default
+  inputs.rust-overlay.overlays.default
   inputs.youmubot.overlays.default
 
   (import ./overlays/openrazer)
