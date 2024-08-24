@@ -84,6 +84,20 @@
           trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
         };
         environment.systemPackages = [ inputs.nix-gaming.packages.${pkgs.hostPlatform.system}.osu-stable ];
+        programs.gamemode = {
+          enable = true;
+          enableRenice = true;
+          settings = {
+            general = {
+              renice = 10;
+            };
+
+            custom = {
+              start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
+              end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+            };
+          };
+        };
       };
 
       # Common Nix modules
