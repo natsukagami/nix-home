@@ -273,7 +273,7 @@ in
     services.tailscale.enable = true;
 
     ## Time and Region
-    time.timeZone = "Europe/Zurich";
+    time.timeZone = lib.mkDefault "Europe/Zurich";
     # Select internationalisation properties.
     console.keyMap = "jp106"; # Console key layout
     i18n.defaultLocale = "ja_JP.UTF-8";
