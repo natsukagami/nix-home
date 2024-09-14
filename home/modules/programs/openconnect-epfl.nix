@@ -4,13 +4,15 @@ let
     name = "openconnect-epfl";
     runtimeInputs = with pkgs; [ openconnect rbw ];
     text = ''
-      GASPAR_PASSWORD=$(rbw get gaspar)
-      GASPAR_TOKEN=$(rbw code gaspar)
+      METHOD="Microsoft Entra ID"
+      RBW_ENTRY="EPFL Microsoft Auth"
+      GASPAR_PASSWORD=$(rbw get "$RBW_ENTRY")
+      GASPAR_TOKEN=$(rbw code "$RBW_ENTRY")
 
-      printf "%s\n%s\n" "$GASPAR_PASSWORD" "$GASPAR_TOKEN" | sudo openconnect \
+      printf "\n%s\n%s\n%s\n" "$METHOD" "$GASPAR_PASSWORD" "$GASPAR_TOKEN" | command sudo openconnect \
           --passwd-on-stdin \
-          -u pham \
-           --useragent='AnyConnect' \
+          -u "pham" \
+          --useragent='AnyConnect' \
           "https://vpn.epfl.ch"
     '';
   };
