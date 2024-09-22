@@ -53,8 +53,7 @@ in
     functions = {
       rebuild = {
         body = ''
-          command sudo -v && \
-          command sudo nixos-rebuild --flake ~/.config/nixpkgs -L --log-format internal-json -v $argv \
+          pls nixos-rebuild --flake ~/.config/nixpkgs -L --log-format internal-json -v $argv \
             &| ${pkgs.nix-output-monitor}/bin/nom --json
         '';
         wraps = "nixos-rebuild";
@@ -149,6 +148,26 @@ in
 
       # Override PATH
       set --export --prepend PATH ~/.bin/overrides ~/.local/bin
+
+      function pls --wraps "sudo"
+          set -l cmd "`"(string join " " -- $argv)"`"
+          echo "I-It's not like I'm gonna run "$cmd" for you or a-anything! Baka >:C" >&2
+          # Send a notification on password prompt
+          if command sudo -vn 2>/dev/null
+              # nothing to do, user already authenticated
+          else
+              # throw a notification
+              set notif_id (kitten notify -P \
+                -p ${./haruka.png} \
+                -a "pls" \
+                -u critical \
+                "A-a command requires your p-password" \
+                (printf "I-I need your p-password to r-run the following c-command: %s" $cmd))
+              command sudo -v -p "P-password please: "
+              kitten notify -i $notif_id ""
+          end        
+          command sudo $argv
+      end
     '';
 
     interactiveShellInit = ''
@@ -253,8 +272,8 @@ in
       target = ".config/fish/conf.d/change_cmd.fish";
     };
     "fish/pls.fish" = {
-      source = ./. + "/pls.fish";
-      target = ".config/fish/conf.d/pls.fish";
+      source = ./pls_extra.fish;
+      target = ".config/fish/conf.d/pls_extra.fish";
     };
   };
 }
