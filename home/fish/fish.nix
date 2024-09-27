@@ -117,6 +117,30 @@ in
       };
       echo-today = "date +%F";
       newfile = "mkdir -p (dirname $argv[-1]) && touch $argv";
+
+      # pls
+      pls = {
+        wraps = "sudo";
+        body = ''
+          set -l cmd "`"(string join " " -- $argv)"`"
+          echo "I-It's not like I'm gonna run "$cmd" for you or a-anything! Baka >:C" >&2
+          # Send a notification on password prompt
+          if command sudo -vn 2>/dev/null
+              # nothing to do, user already authenticated
+          else
+              # throw a notification
+              set notif_id (kitten notify -P \
+                -p ${./haruka.png} \
+                -a "pls" \
+                -u critical \
+                "A-a command requires your p-password" \
+                (printf "I-I need your p-password to r-run the following c-command:\n\n%s" $cmd))
+              command sudo -v -p "P-password please: "
+              kitten notify -i $notif_id ""
+          end
+          command sudo $argv
+        '';
+      };
     };
 
 
@@ -148,26 +172,6 @@ in
 
       # Override PATH
       set --export --prepend PATH ~/.bin/overrides ~/.local/bin
-
-      function pls --wraps "sudo"
-          set -l cmd "`"(string join " " -- $argv)"`"
-          echo "I-It's not like I'm gonna run "$cmd" for you or a-anything! Baka >:C" >&2
-          # Send a notification on password prompt
-          if command sudo -vn 2>/dev/null
-              # nothing to do, user already authenticated
-          else
-              # throw a notification
-              set notif_id (kitten notify -P \
-                -p ${./haruka.png} \
-                -a "pls" \
-                -u critical \
-                "A-a command requires your p-password" \
-                (printf "I-I need your p-password to r-run the following c-command: %s" $cmd))
-              command sudo -v -p "P-password please: "
-              kitten notify -i $notif_id ""
-          end        
-          command sudo $argv
-      end
     '';
 
     interactiveShellInit = ''
