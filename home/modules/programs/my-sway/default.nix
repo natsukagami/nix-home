@@ -131,6 +131,7 @@ in
       "XDG_DATA_HOME" # For extra icons
     ];
     systemd.extraCommands = options.wayland.windowManager.sway.systemd.extraCommands.default ++ [
+      "systemctl --user set-environment XDG_MENU_PREFIX=plasma-"
       "systemctl --user restart xdg-desktop-portal.service"
     ];
 
