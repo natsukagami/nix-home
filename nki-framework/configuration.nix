@@ -42,7 +42,7 @@
   services.power-profiles-daemon.enable = true;
   # powerManagement.enable = true;
   # powerManagement.powertop.enable = true;
-  services.logind.lidSwitch = "suspend";
+  services.logind.lidSwitch = "suspend-then-hibernate";
 
   # Printing
   services.printing.drivers = with pkgs; [ epfl-cups-drivers ];
