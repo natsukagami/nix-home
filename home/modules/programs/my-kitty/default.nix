@@ -2,7 +2,6 @@
 
 let
   cfg = config.nki.programs.kitty;
-  cmd = if pkgs.stdenv.isDarwin then "cmd" else "ctrl";
 in
 with lib;
 {
@@ -51,7 +50,7 @@ with lib;
     font.name = "Fantasque Sans Mono";
     font.size = cfg.fontSize;
 
-    theme = "Ayu Light";
+    themeFile = "ayu_light";
 
     settings =
       let
