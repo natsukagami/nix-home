@@ -1,4 +1,4 @@
-{ pkgs, lib, options, config, ... }:
+{ pkgs, lib, options, config, osConfig, ... }:
 with lib;
 let
   cfg = config.programs.my-sway;
@@ -129,9 +129,11 @@ in
       "PATH" # for portals
       "XDG_DATA_DIRS" # For extra icons
       "XDG_DATA_HOME" # For extra icons
+    ] ++ lib.optionals osConfig.services.desktopManager.plasma6.enable [
+      "XDG_MENU_PREFIX"
     ];
-    systemd.extraCommands = options.wayland.windowManager.sway.systemd.extraCommands.default ++ [
-      "systemctl --user set-environment XDG_MENU_PREFIX=plasma-"
+    systemd.extraCommands = options.wayland.windowManager.sway.systemd.extraCommands.default
+      ++ [
       "systemctl --user restart xdg-desktop-portal.service"
     ];
 
@@ -359,7 +361,9 @@ in
         eval `gnome-keyring-daemon`
         export SSH_AUTH_SOCK
       fi
-    '' else "");
+    '' else "") + lib.optionalString osConfig.services.desktopManager.plasma6.enable ''
+      export XDG_MENU_PREFIX=plasma-
+    '';
     # Extra
     wrapperFeatures.base = true;
     wrapperFeatures.gtk = true;
