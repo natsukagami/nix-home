@@ -1,3 +1,5 @@
 { callPackage, kakoune, ... }: kakoune.override {
-  plugins = (callPackage ./plugins.nix { }).plugins;
+  plugins = (callPackage ./plugins.nix { }) ++ [
+    ./kaktex
+  ];
 }
