@@ -74,6 +74,8 @@ with lib;
               global.port = instance.port;
               global.allow_registration = instance.allow_registration;
               global.database_path = "/mnt/data/${srvName}/";
+              global.well_known_client = "https://${instance.host}";
+              global.well_known_server = "${instance.host}:443";
             });
           in
           {
@@ -114,60 +116,11 @@ with lib;
         ))
       cfg.instances);
 
-  # Serving .well-known files
-  # This is a single .well-known/matrix/server file that points to the server,
-  # which is NOT on port 8448 since Cloudflare doesn't allow us to route HTTPS
-  # through that port.
-  config.services.nginx = mkIf cfg.enable
-    {
-      enable = true;
-      virtualHosts = lib.attrsets.mapAttrs'
-        (name: instance: lib.attrsets.nameValuePair "conduit-${name}-well-known" {
-          listen = [{ addr = "127.0.0.1"; port = instance.well-known_port; }];
-          # Check https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-well-known.md
-          # for the file structure.
-          root = pkgs.symlinkJoin
-            {
-              name = "well-known-files-for-conduit-${name}";
-              paths = [
-                (pkgs.writeTextDir ".well-known/matrix/client" (builtins.toJSON {
-                  "m.homeserver".base_url = "https://${instance.host}";
-                  "org.matrix.msc3575.proxy".url = "https://${instance.host}";
-                }))
-                (pkgs.writeTextDir ".well-known/matrix/server" (builtins.toJSON {
-                  "m.server" = "${instance.host}:443";
-                }))
-              ];
-            };
-          extraConfig =
-            # Enable CORS from anywhere since we want all clients to find us out
-            ''
-              add_header 'Access-Control-Allow-Origin' "*";
-            '' +
-            # Force returning values to be JSON data
-            ''
-              default_type application/json;
-            '';
-        })
-        cfg.instances;
-    };
-
   config.cloud.traefik.hosts = mkIf cfg.enable (
     (lib.attrsets.mapAttrs'
       (name: instance: lib.attrsets.nameValuePair "conduit-${name}" ({
         inherit (instance) host port noCloudflare;
       }))
-      cfg.instances)
-    // (lib.attrsets.mapAttrs'
-      (name: instance: lib.attrsets.nameValuePair "conduit-${name}-well-known" (
-        let
-          server_name = if instance.server_name == "" then instance.host else instance.server_name;
-        in
-        {
-          port = instance.well-known_port;
-          filter = "Host(`${server_name}`) && PathPrefix(`/.well-known`)";
-        }
-      ))
       cfg.instances)
   );
 }
