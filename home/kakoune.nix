@@ -3,7 +3,7 @@ let
 
 in
 {
-  imports = [ ../modules/programs/my-kakoune ./kaktex.nix ];
+  imports = [ ./modules/programs/my-kakoune ];
 
   home.packages = with pkgs; [
     # ctags for peneira
