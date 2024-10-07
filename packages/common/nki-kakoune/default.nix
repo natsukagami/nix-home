@@ -1,9 +1,7 @@
 { callPackage, kakoune, kakoune-unwrapped, ... }:
 let
   lsp = callPackage ./lsp.nix { };
-  rc = (callPackage ./rc.nix {
-    # prependRc = tree-sitter.rc;
-  });
+  rc = (callPackage ./rc.nix { });
 in
 (kakoune.override {
   plugins = callPackage ./plugins.nix { }
@@ -12,7 +10,6 @@ in
     (callPackage ./kaktex { })
     (callPackage ./faces.nix { })
     rc
-    # tree-sitter.plugin
     lsp.plugin
   ];
 }).overrideAttrs (attrs: {
