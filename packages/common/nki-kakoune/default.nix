@@ -1,9 +1,8 @@
 { callPackage, kakoune, kakoune-unwrapped, ... }:
 let
   lsp = callPackage ./lsp.nix { };
-  tree-sitter = callPackage ./tree-sitter { };
   rc = (callPackage ./rc.nix {
-    prependRc = tree-sitter.rc;
+    # prependRc = tree-sitter.rc;
   });
 in
 (kakoune.override {
@@ -13,7 +12,7 @@ in
     (callPackage ./kaktex { })
     (callPackage ./faces.nix { })
     rc
-    tree-sitter.plugin
+    # tree-sitter.plugin
     lsp.plugin
   ];
 }).overrideAttrs (attrs: {
@@ -24,7 +23,6 @@ in
     rm "$out/bin/kak"
     makeWrapper "${kakoune-unwrapped}/bin/kak" "$out/bin/kak" \
       --set KAKOUNE_RUNTIME "$out/share/kak" \
-      --suffix PATH ":" "${lsp.extraPaths}" \
-      --suffix PATH ":" "${tree-sitter.extraPaths}"
+      --suffix PATH ":" "${lsp.extraPaths}"
   '';
 })
