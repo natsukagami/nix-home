@@ -1,4 +1,11 @@
-{ lib, fish, writeScript, writeTextDir, ... }:
+{ lib
+, fish
+, writeScript
+, writeTextDir
+, prependRc ? ""
+, appendRc ? ""
+, ...
+}:
 
 let
   source-pwd = writeScript "source-pwd" ''
@@ -8,7 +15,9 @@ let
   '';
 in
 writeTextDir "share/kak/kakrc.local" ''
+  ${prependRc}
   ${builtins.readFile ./kakrc}
+  ${appendRc}
 
   # Source any settings in the current working directory,
   # recursive upwards
