@@ -33,6 +33,27 @@ let
       };
     };
   };
+  mkGrammarPackage =
+    { name
+    , src
+    , grammarPath ? "src"
+    , grammarCompileArgs ? [ "-O3" "-c" "-fpic" "../parser.c" "../scanner.c" "-I" ".." ]
+    , grammarLinkArgs ? [ "-shared" "-fpic" "parser.o" "scanner.o" ]
+    }: pkgs.stdenv.mkDerivation {
+      inherit src;
+      name = "kak-tree-sitter-grammar-${name}.so";
+      version = "latest";
+      buildPhase = ''
+        mkdir ${grammarPath}/build
+        cd ${grammarPath}/build
+        $CC ${lib.concatStringsSep " " grammarCompileArgs}
+        $CC ${lib.concatStringsSep " " grammarLinkArgs} -o ${name}.so
+      '';
+      installPhase = ''
+        cp ${name}.so $out
+      '';
+    };
+
 in
 {
   options.programs.my-kakoune.tree-sitter = {
@@ -200,24 +221,15 @@ in
 
       toml = pkgs.formats.toml { };
 
-      srcName = src: lib.removePrefix "/nix/store/" src.outPath;
-      mkGitRepo = src: pkgs.runCommandLocal "${src.name}-git" { } ''
-        cp -r --no-preserve=all ${src} $out
-        cd $out
-        if ! test -d $out/.git; then
-          ${lib.getExe pkgs.git} init -b ${srcName src}
-          ${lib.getExe pkgs.git} config user.email "a@b.com"
-          ${lib.getExe pkgs.git} config user.name "a"
-          ${lib.getExe pkgs.git} add .
-          ${lib.getExe pkgs.git} commit -m "Just making a git commit"
-        fi
-      '';
-
       toLanguageConf = name: lang: with lang; {
         grammar = {
-          inherit (grammar) path;
-          source.git.url = "${mkGitRepo grammar.src}";
-          source.git.pin = "${srcName grammar.src}";
+          source.local.path = mkGrammarPackage {
+            inherit name;
+            src = grammar.src;
+            grammarPath = grammar.path;
+            grammarCompileArgs = grammar.compile.flags ++ grammar.compile.args;
+            grammarLinkArgs = grammar.link.flags ++ grammar.link.args;
+          };
           compile = grammar.compile.command;
           compile_args = grammar.compile.args;
           compile_flags = grammar.compile.flags;
@@ -225,10 +237,9 @@ in
           link_args = grammar.link.args ++ [ "-o" "${name}.so" ];
           link_flags = grammar.link.flags;
         };
-        queries = {
-          source.git.url = "${mkGitRepo queries.src}";
-          source.git.pin = "${srcName queries.src}";
+        queries = rec {
           path = if queries.path == null then "runtime/queries/${name}" else queries.path;
+          source.local.path = "${queries.src}/${path}";
         };
       };
     in
@@ -249,14 +260,14 @@ in
           features = cfg.features;
           language = builtins.mapAttrs toLanguageConf cfg.languages;
         };
-
-        onChange = ''
-          export PATH=$PATH:${lib.getBin pkgs.gcc}
-          ${cfg.package}/bin/ktsctl sync -a
-        '';
       };
 
       programs.my-kakoune.extraFaces = faces;
+      programs.my-kakoune.autoloadFile."kak-tree-sitter.kak".text = ''
+        # Enable kak-tree-sitter
+        eval %sh{kak-tree-sitter --kakoune -d --server --init $kak_session}
+        map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
+      '';
     };
 
 }

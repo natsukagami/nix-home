@@ -5,6 +5,7 @@
 # set global kts_sky "rgb:6aa622"
 # Color scheme
 colorscheme catppuccin-latte
+set-face global module "%opt{sapphire}"
 set global base "default"
 
 # Set indentation guides
