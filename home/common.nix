@@ -42,6 +42,7 @@
     unzip
     zstd
     atool
+    nki-kakoune
   ];
 
   home.sessionVariables = {
