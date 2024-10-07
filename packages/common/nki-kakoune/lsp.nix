@@ -248,7 +248,7 @@ let
   kak-lsp-config =
     let
       toml = formats.toml { };
-      toLspConfig = attrs: builtins.removeAttrs attrs [ "package" ];
+      toLspConfig = builtins.mapAttrs (_: attrs: builtins.removeAttrs attrs [ "package" ]);
     in
     toml.generate "kak-lsp.toml" ({
       semantic_tokens.faces = config.faces;
@@ -265,16 +265,16 @@ in
   plugin = writeTextDir "share/kak/autoload/kak-lsp.kak" ''
     hook global KakBegin .* %{
       try %{
-        eval %sh{${lib.getExe kak-lsp} --config ${kak-lsp-config} -s $kak_session}
+        eval %sh{${lib.getExe kak-lsp} --kakoune --config ${kak-lsp-config} -s $kak_session}
       }
 
       lsp-enable
-      map window lsp N -docstring "Display the next message request" ": lsp-show-message-request-next<ret>"
-      map window normal <c-l> ": enter-user-mode lsp<ret>"
-      map window normal <c-h> ": lsp-hover<ret>"
-      map window normal <c-s-h> ": lsp-hover-buffer<ret>"
+      map global lsp N -docstring "Display the next message request" ": lsp-show-message-request-next<ret>"
+      map global normal <c-l> ": enter-user-mode lsp<ret>"
+      map global normal <c-h> ": lsp-hover<ret>"
+      map global normal <c-s-h> ": lsp-hover-buffer<ret>"
       # lsp-auto-hover-insert-mode-enable
-      set window lsp_hover_anchor true
+      set global lsp_hover_anchor true
       map global insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring 'Select next snippet placeholder'
       map global object a '<a-semicolon>lsp-object<ret>' -docstring 'LSP any symbol'
       map global object <a-a> '<a-semicolon>lsp-object<ret>' -docstring 'LSP any symbol'

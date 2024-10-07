@@ -129,25 +129,19 @@ let
     include = "keyword_control_import";
   };
 
-  configDir =
+  configFile =
     let
       toScm = name: lib.concatStringsSep "." (lib.splitString "_" name);
-
       toml = formats.toml { };
-      file =
-        toml.generate "config.toml" {
-          highlight.groups = builtins.map toScm (builtins.attrNames highlighterGroups ++ builtins.attrNames aliases);
-          features = {
-            highlighting = true;
-            text_objects = true;
-          };
-          language = grammars;
-        };
     in
-    runCommandLocal "kak-tree-sitter-config" { } ''
-      mkdir -p $out/kak-tree-sitter
-      ln -s ${file} $out/kak-tree-sitter/config.toml
-    '';
+    toml.generate "config.toml" {
+      highlight.groups = builtins.map toScm (builtins.attrNames highlighterGroups ++ builtins.attrNames aliases);
+      features = {
+        highlighting = true;
+        text_objects = true;
+      };
+      language = grammars;
+    };
 
   extraFaces =
     let
@@ -162,9 +156,11 @@ in
 {
   rc = ''
     # Enable kak-tree-sitter
-    eval %sh{env XDG_CONFIG_DIR=${configDir} ${lib.getExe' kak-tree-sitter "kak-tree-sitter"} --kakoune -d --server --init $kak_session}
+    eval %sh{kak-tree-sitter --kakoune -d --server --init $kak_session --user-config ${configFile}}
     map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
   '';
+
+  extraPaths = "${kak-tree-sitter}/bin";
 
   plugin = utils.mkFacesScript "kak-tree-sitter" extraFaces;
 }

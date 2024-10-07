@@ -11,6 +11,7 @@ in
     ++ callPackage ./themes.nix { }
     ++ [
     (callPackage ./kaktex { })
+    (callPackage ./faces.nix { })
     rc
     tree-sitter.plugin
     lsp.plugin
@@ -23,6 +24,7 @@ in
     rm "$out/bin/kak"
     makeWrapper "${kakoune-unwrapped}/bin/kak" "$out/bin/kak" \
       --set KAKOUNE_RUNTIME "$out/share/kak" \
-      --suffix PATH ":" "${lsp.extraPaths}"
+      --suffix PATH ":" "${lsp.extraPaths}" \
+      --suffix PATH ":" "${tree-sitter.extraPaths}"
   '';
 })
