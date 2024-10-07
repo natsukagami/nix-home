@@ -113,6 +113,8 @@ let
         buildInputs = (with final;
           lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
         ) ++ (with final; [ libiconv ]);
+
+        meta.mainProgram = "kak-lsp";
       };
 
     zen-browser-bin = final.callPackage ./packages/x86_64-linux/zen-browser-bin.nix {
