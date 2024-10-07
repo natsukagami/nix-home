@@ -90,7 +90,7 @@ let
   };
 
   overlay-packages = final: prev: {
-    kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter.nix { rustPlatform = final.unstable.rustPlatform; };
+    kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter { rustPlatform = final.unstable.rustPlatform; };
 
     kak-lsp =
       let

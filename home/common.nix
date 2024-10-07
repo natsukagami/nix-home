@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./kakoune/kak.nix
+    # ./kakoune/kak.nix
     ./fish/fish.nix
     ./modules/programs/my-broot.nix
     ./modules/programs/my-sway
