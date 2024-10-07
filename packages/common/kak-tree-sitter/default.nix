@@ -34,7 +34,6 @@ let
  
              self.runtime_dir.join("sources").join(url_dir)
       '')
-      ./user_config.patch
     ];
 
     meta.mainProgram = "kak-tree-sitter";
