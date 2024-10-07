@@ -33,6 +33,7 @@ let
     ,
     }: {
       grammar.source.local.path = "${mkGrammarPackage args}";
+      grammar.link_args = grammarLinkArgs ++ [ "-o" "${name}.so" ];
       queries.source.local.path = querySrc;
       queries.path = queryPath;
     };

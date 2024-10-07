@@ -1,0 +1,129 @@
+diff --git a/kak-tree-sitter-config/src/lib.rs b/kak-tree-sitter-config/src/lib.rs
+index e4edc42..a9c92cb 100644
+--- a/kak-tree-sitter-config/src/lib.rs
++++ b/kak-tree-sitter-config/src/lib.rs
+@@ -52,9 +52,13 @@ impl Config {
+   }
+ 
+   /// Load the default configuration, the user configuration, and merge both.
+-  pub fn load_default_user() -> Result<Self, ConfigError> {
++  pub fn load_default_user(path: Option<impl AsRef<Path>>) -> Result<Self, ConfigError> {
+     let mut config = Self::load_default_config()?;
+-    match UserConfig::load_from_xdg() {
++    let user_config = match path {
++        Some(p) => UserConfig::load(p),
++        None => UserConfig::load_from_xdg(),
++    };
++    match user_config {
+       Ok(user_config) => {
+         config.merge_user_config(user_config)?;
+       }
+@@ -448,7 +452,7 @@ impl UserConfig {
+   }
+ 
+   /// Load the configuration from a given path.
+-  fn load(path: impl AsRef<Path>) -> Result<Self, ConfigError> {
++  pub fn load(path: impl AsRef<Path>) -> Result<Self, ConfigError> {
+     let path = path.as_ref();
+ 
+     log::debug!("loading configuration at {path}", path = path.display());
+diff --git a/kak-tree-sitter/src/cli.rs b/kak-tree-sitter/src/cli.rs
+index b8102cd..923312c 100644
+--- a/kak-tree-sitter/src/cli.rs
++++ b/kak-tree-sitter/src/cli.rs
+@@ -22,6 +22,10 @@ pub struct Cli {
+   #[clap(short, long)]
+   pub server: bool,
+ 
++  /// Specify a custom path for the user config.
++  #[clap(short, long)]
++  pub user_config: Option<String>,
++
+   /// Try to daemonize, if not already done.
+   #[clap(short, long)]
+   pub daemonize: bool,
+diff --git a/kak-tree-sitter/src/main.rs b/kak-tree-sitter/src/main.rs
+index bee9698..cbd7b39 100644
+--- a/kak-tree-sitter/src/main.rs
++++ b/kak-tree-sitter/src/main.rs
+@@ -43,7 +43,7 @@ fn start() -> Result<(), OhNo> {
+     }
+   }
+ 
+-  let config = Config::load_default_user()?;
++  let config = Config::load_default_user(cli.user_config.as_ref())?;
+ 
+   // inject rc if we start from Kakoune
+   if cli.kakoune && cli.init.is_some() {
+diff --git a/kak-tree-sitter/src/server.rs b/kak-tree-sitter/src/server.rs
+index f3b7723..000c81d 100644
+--- a/kak-tree-sitter/src/server.rs
++++ b/kak-tree-sitter/src/server.rs
+@@ -73,6 +73,7 @@ impl Server {
+     log::debug!("creating IO handler");
+     let io_handler = IOHandler::new(
+       config,
++      cli.user_config.clone(),
+       cli.is_standalone(),
+       cli.with_highlighting || config.features.highlighting,
+       resources,
+@@ -165,6 +166,7 @@ struct IOHandler {
+   connections: HashMap<Token, BufferedClient>,
+   enqueue_response: EnqueueResponse,
+   handler: Handler,
++  user_config_path: Option<String>,
+ }
+ 
+ impl IOHandler {
+@@ -173,6 +175,7 @@ impl IOHandler {
+ 
+   fn new(
+     config: &Config,
++    user_config_path: Option<String>,
+     is_standalone: bool,
+     with_highlighting: bool,
+     resources: ServerResources,
+@@ -203,6 +206,7 @@ impl IOHandler {
+       connections,
+       enqueue_response,
+       handler,
++      user_config_path,
+     })
+   }
+ 
+@@ -450,7 +454,7 @@ impl IOHandler {
+   }
+ 
+   fn reload(&mut self) {
+-    let config = match Config::load_default_user() {
++    let config = match Config::load_default_user(self.user_config_path.as_ref()) {
+       Ok(config) => config,
+       Err(err) => {
+         log::error!("reloading config failed: {err}");
+diff --git a/ktsctl/src/cli.rs b/ktsctl/src/cli.rs
+index dfac5c3..09f86f3 100644
+--- a/ktsctl/src/cli.rs
++++ b/ktsctl/src/cli.rs
+@@ -11,6 +11,9 @@ pub struct Cli {
+   #[clap(long)]
+   pub verbose: bool,
+ 
++  #[clap(short, long)]
++  pub user_config: Option<String>,
++
+   #[clap(subcommand)]
+   pub cmd: Cmd,
+ }
+diff --git a/ktsctl/src/main.rs b/ktsctl/src/main.rs
+index f9a3499..f823633 100644
+--- a/ktsctl/src/main.rs
++++ b/ktsctl/src/main.rs
+@@ -37,7 +37,7 @@ fn start() -> Result<(), HellNo> {
+     simple_logger::init_with_level(log::Level::Debug)?;
+   }
+ 
+-  let config = Config::load_default_user()?;
++  let config = Config::load_default_user(cli.user_config.as_ref())?;
+   log::debug!("ktsctl configuration:\n{config:#?}");
+ 
+   match cli.cmd {
