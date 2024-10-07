@@ -35,6 +35,8 @@ let
              self.runtime_dir.join("sources").join(url_dir)
       '')
     ];
+
+    meta.mainProgram = "kak-tree-sitter";
   };
 in
 kak-tree-sitter
