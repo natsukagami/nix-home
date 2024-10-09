@@ -2,10 +2,20 @@
 
 let
   cfg = config.nki.programs.kitty;
+
+  theme = { lib, options, config, ... }: {
+    programs.kitty = lib.mkIf config.nki.programs.kitty.enable (
+      if builtins.hasAttr "themeFile" options.programs.kitty then {
+        themeFile = "ayu_light";
+      } else {
+        theme = "Ayu Light";
+      }
+    );
+  };
 in
 with lib;
 {
-  imports = [ ./darwin.nix ./linux.nix ./tabs.nix ];
+  imports = [ theme ./darwin.nix ./linux.nix ./tabs.nix ];
 
   options.nki.programs.kitty = {
     enable = mkEnableOption "Enable kitty";
@@ -49,8 +59,6 @@ with lib;
     font.package = pkgs.fantasque-sans-mono;
     font.name = "Fantasque Sans Mono";
     font.size = cfg.fontSize;
-
-    themeFile = "ayu_light";
 
     settings =
       let

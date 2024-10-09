@@ -38,7 +38,7 @@ let
     };
 
     accounts = { pkgs, ... }: mkIf (config.common.linux.enable && !pkgs.stdenv.isAarch64) {
-      environment.systemPackages = with pkgs; [ glib gnome-control-center ];
+      environment.systemPackages = [ pkgs.glib (pkgs.gnome-control-center or pkgs.gnome.gnome-control-center) ];
       services.accounts-daemon.enable = true;
       services.gnome.gnome-online-accounts.enable = true;
       # programs.evolution.enable = true;
