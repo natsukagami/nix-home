@@ -61,19 +61,18 @@ in
       # Simplify nix usage!
       nx = {
         body = ''
-          set impure
-          if test $argv[1] = "--impure"
-            set impure "--impure"
-            set argv $argv[2..]
-          end
-          if test (count $argv) -gt 0
-            nix run $impure nixpkgs#$argv[1] -- $argv[2..]
-          else
-            echo "nx [--impure] {package} [args...]"
+          argparse -s 'h/help' 'impure' 'u/unstable' 'g/git' -- $argv
+          if set -q _flag_help || test (count $argv) -eq 0
+            echo "nx [--impure] [-u/--unstable/-g/--git] {package} [args...]"
             return 1
+          else
+            set -q _flag_impure && set impure "--impure"
+            set nixpkgs "nixpkgs"
+            set -q _flag_unstable && set nixpkgs "nixpkgs-unstable"
+            set -q _flag_git && set nixpkgs "github:nixOS/nixpkgs/nixpkgs-unstable"
+            nix run $impure $nixpkgs"#"$argv[1] -- $argv[2..]
           end
         '';
-        wraps = "nix run";
         description = "Runs an app from the nixpkgs store.";
       };
 
@@ -81,25 +80,35 @@ in
         description = "Spawns a shell from the given nixpkgs packages";
         wraps = "nix shell";
         body = ''
-          set impure
-          if test $argv[1] = "--impure"
-            set impure "--impure"
-            set argv $argv[2..]
+          function help
+            echo "nsh [--impure] [--impure] [-u/--unstable/-g/--git] {package}* [-c command args...]"
           end
-          if test (count $argv) -gt 0
-            set minusc (contains -i -- "-c" $argv)
-            if test -z $minusc
-              nix shell $impure nixpkgs#$argv -c fish
-            else if test $minusc -eq (count $argv)
-              echo "nsh [--impure] {packages} [-c command args...]"
+          argparse -s 'h/help' 'impure' 'u/unstable' 'g/git' -- $argv
+          if set -q _flag_help || test (count $argv) -eq 0
+            help
+            return 0
+          end
+          set packages $argv
+          set minusc (contains -i -- "-c" $argv)
+          if test -n "$minusc"
+            if test $minusc -eq 1
+              help
               return 1
-            else
-              nix shell $impure nixpkgs#$argv[..(math $minusc - 1)] $argv[$minusc..]
             end
+            set packages $argv[..(math $minusc - 1)]
+            set argv $argv[(math $minusc + 1)..]
           else
-            echo "nsh [--impure] {packages} [-c command args...]"
+            set argv "fish" "-i"
+          end
+          if test (count $packages) -eq 0
+            help
             return 1
           end
+          set -q _flag_impure && set impure "--impure"
+          set nixpkgs "nixpkgs"
+          set -q _flag_unstable && set nixpkgs "nixpkgs-unstable"
+          set -q _flag_git && set nixpkgs "github:nixOS/nixpkgs/nixpkgs-unstable"
+          nix shell $impure $nixpkgs"#"$packages --command $argv
         '';
       };
       # Grep stuff
