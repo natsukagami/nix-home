@@ -25,7 +25,7 @@ let
 
   overlay-versioning = final: prev: {
     gotosocial = prev.gotosocial.overrideAttrs (attrs: rec {
-      version = "0.17.0-rc3";
+      version = "0.17.0";
       ldflags = [
         "-s"
         "-w"
@@ -35,13 +35,13 @@ let
 
       web-assets = final.fetchurl {
         url = "https://github.com/superseriousbusiness/gotosocial/releases/download/v${version}/gotosocial_${version}_web-assets.tar.gz";
-        hash = "sha256-Uwltr5syOnDZOgMc2L/iedxiMMKXmULzm0SAs3W0SXQ=";
+        hash = "sha256-ASqPIf98qdnkh3j72ifQN3mWnzNCTRcUegmrStvQ08Q=";
       };
       src = final.fetchFromGitHub {
         owner = "superseriousbusiness";
         repo = "gotosocial";
         rev = "v${version}";
-        hash = "sha256-c7CJFQWTMCBZuzI/Mf5PJuCWY1NKW4LLMAJem3TTJvM=";
+        hash = "sha256-uyqP3zhjcXKejGFAwZoTn2kY8IpX0QAAXNzb1VG6ve8=";
       };
       postInstall = ''
         tar xf ${web-assets}
