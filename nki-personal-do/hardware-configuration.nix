@@ -10,7 +10,7 @@
   zramSwap.enable = true;
   # volumes
   services.btrfs.autoScrub.enable = true;
-  fileSystems.nki-data = {
+  fileSystems.data = {
     device = "/dev/disk/by-id/scsi-0HC_Volume_101470796";
     fsType = "btrfs";
     mountPoint = "/mnt/data";
