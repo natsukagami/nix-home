@@ -33,7 +33,7 @@ with lib; {
     {
       systemd.services.heisenbridge = {
         description = "Matrix<->IRC bridge";
-        requires = [ "matrix-synapse.service" ]; # So the registration file can be used by Synapse
+        requires = [ "matrix-conduit-nkagami.service" "matrix-synapse.service" ]; # So the registration file can be used by Synapse
         wantedBy = [ "multi-user.target" ];
 
         serviceConfig = rec {
