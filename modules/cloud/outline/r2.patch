@@ -1,0 +1,183 @@
+commit 8c7f8c28fabc174a71499a4737579b24b5c4b244
+Author: Natsu Kagami <nki@nkagami.me>
+Date:   Mon Oct 21 02:17:36 2024 +0200
+
+    Support R2
+
+diff --git a/.env.sample b/.env.sample
+index eb57ad85c..94ffcee07 100644
+--- a/.env.sample
++++ b/.env.sample
+@@ -66,6 +66,8 @@ AWS_S3_UPLOAD_BUCKET_URL=http://s3:4569
+ AWS_S3_UPLOAD_BUCKET_NAME=bucket_name_here
+ AWS_S3_FORCE_PATH_STYLE=true
+ AWS_S3_ACL=private
++AWS_S3_R2=true
++AWS_S3_R2_PUBLIC_URL=http://s3:4569
+ 
+ # –––––––––––––– AUTHENTICATION ––––––––––––––
+ 
+diff --git a/app/utils/files.ts b/app/utils/files.ts
+index 6607a6b12..5138f68ad 100644
+--- a/app/utils/files.ts
++++ b/app/utils/files.ts
+@@ -63,8 +63,13 @@ export const uploadFile = async (
+     xhr.addEventListener("loadend", () => {
+       resolve(xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 400);
+     });
+-    xhr.open("POST", data.uploadUrl, true);
+-    xhr.send(formData);
++    xhr.open(data.method, data.uploadUrl, true);
++    xhr.setRequestHeader("Content-Type", file.type);
++    if (data.method === "POST") {
++      xhr.send(formData);
++    } else {
++      xhr.send(file);
++    }
+   });
+ 
+   if (!success) {
+diff --git a/server/env.ts b/server/env.ts
+index 5b420f2e1..4ea1e8d3c 100644
+--- a/server/env.ts
++++ b/server/env.ts
+@@ -519,6 +519,14 @@ export class Environment {
+     environment.AWS_S3_UPLOAD_BUCKET_NAME
+   );
+ 
++  @IsOptional()
++  public AWS_S3_R2 = this.toBoolean(environment.AWS_S3_R2 ?? "false");
++
++  @IsOptional()
++  public AWS_S3_R2_PUBLIC_URL = this.toOptionalString(
++    environment.AWS_S3_R2_PUBLIC_URL
++  );
++
+   /**
+    * Whether to force path style URLs for S3 objects, this is required for some
+    * S3-compatible storage providers.
+diff --git a/server/routes/api/attachments/attachments.ts b/server/routes/api/attachments/attachments.ts
+index 5e6c27594..b7620f440 100644
+--- a/server/routes/api/attachments/attachments.ts
++++ b/server/routes/api/attachments/attachments.ts
+@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
+ import { AttachmentPreset } from "@shared/types";
+ import { bytesToHumanReadable } from "@shared/utils/files";
+ import { AttachmentValidation } from "@shared/validations";
++import env from "@server/env";
+ import { AuthorizationError, ValidationError } from "@server/errors";
+ import auth from "@server/middlewares/authentication";
+ import { rateLimiter } from "@server/middlewares/rateLimiter";
+@@ -90,16 +91,30 @@ router.post(
+       { transaction }
+     );
+ 
+-    const presignedPost = await FileStorage.getPresignedPost(
+-      key,
+-      acl,
+-      maxUploadSize,
+-      contentType
+-    );
++    let uploadUrl;
++    let method;
++    let presignedPost = {
++      fields: {},
++    };
++    if (env.AWS_S3_R2) {
++      uploadUrl = await FileStorage.getPresignedPut(key);
++      method = "PUT";
++    } else {
++      uploadUrl = FileStorage.getUploadUrl();
++      method = "POST";
++
++      presignedPost = await FileStorage.getPresignedPost(
++        key,
++        acl,
++        maxUploadSize,
++        contentType
++      );
++    }
+ 
+     ctx.body = {
+       data: {
+-        uploadUrl: FileStorage.getUploadUrl(),
++        uploadUrl,
++        method,
+         form: {
+           "Cache-Control": "max-age=31557600",
+           "Content-Type": contentType,
+diff --git a/server/storage/files/BaseStorage.ts b/server/storage/files/BaseStorage.ts
+index ce0287ebc..a1931c83d 100644
+--- a/server/storage/files/BaseStorage.ts
++++ b/server/storage/files/BaseStorage.ts
+@@ -26,6 +26,8 @@ export default abstract class BaseStorage {
+     contentType: string
+   ): Promise<Partial<PresignedPost>>;
+ 
++  public abstract getPresignedPut(key: string): Promise<string>;
++
+   /**
+    * Returns a promise that resolves with a stream for reading a file from the storage provider.
+    *
+diff --git a/server/storage/files/LocalStorage.ts b/server/storage/files/LocalStorage.ts
+index 83cf98c50..324e60dd9 100644
+--- a/server/storage/files/LocalStorage.ts
++++ b/server/storage/files/LocalStorage.ts
+@@ -30,6 +30,10 @@ export default class LocalStorage extends BaseStorage {
+     });
+   }
+ 
++  public async getPresignedPut(key: string) {
++    return this.getUrlForKey(key);
++  }
++
+   public getUploadUrl() {
+     return "/api/files.create";
+   }
+diff --git a/server/storage/files/S3Storage.ts b/server/storage/files/S3Storage.ts
+index a42442e0c..d55ef5472 100644
+--- a/server/storage/files/S3Storage.ts
++++ b/server/storage/files/S3Storage.ts
+@@ -4,6 +4,7 @@ import {
+   S3Client,
+   DeleteObjectCommand,
+   GetObjectCommand,
++  PutObjectCommand,
+   ObjectCannedACL,
+ } from "@aws-sdk/client-s3";
+ import { Upload } from "@aws-sdk/lib-storage";
+@@ -58,6 +59,16 @@ export default class S3Storage extends BaseStorage {
+     return createPresignedPost(this.client, params);
+   }
+ 
++  public async getPresignedPut(key: string) {
++    const params = {
++      Bucket: env.AWS_S3_UPLOAD_BUCKET_NAME,
++      Key: key,
++    };
++
++    const command = new PutObjectCommand(params);
++    return await getSignedUrl(this.client, command, { expiresIn: 3600 });
++  }
++
+   private getPublicEndpoint(isServerUpload?: boolean) {
+     if (env.AWS_S3_ACCELERATE_URL) {
+       return env.AWS_S3_ACCELERATE_URL;
+@@ -137,10 +148,17 @@ export default class S3Storage extends BaseStorage {
+     );
+   }
+ 
++  public getR2ObjectUrl = async (key: string) =>
++    env.AWS_S3_R2_PUBLIC_URL + "/" + key;
++
+   public getSignedUrl = async (
+     key: string,
+     expiresIn = S3Storage.defaultSignedUrlExpires
+   ) => {
++    if (env.AWS_S3_R2) {
++      return this.getR2ObjectUrl(key);
++    }
++
+     const isDocker = env.AWS_S3_UPLOAD_BUCKET_URL.match(/http:\/\/s3:/);
+     const params = {
+       Bucket: this.getBucket(),
