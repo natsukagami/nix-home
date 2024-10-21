@@ -85,7 +85,7 @@ in
         # instance-inject-mastodon-version = true;
       };
     };
-    systemd.services.gotosocial.requires = mkAfter [ "postgresql.service" ];
-    systemd.services.gotosocial.after = mkAfter [ "postgresql.service" ];
+    systemd.services.gotosocial.requires = mkAfter [ "postgresql.service" "arion-authentik.service" ];
+    systemd.services.gotosocial.after = mkAfter [ "postgresql.service" "arion-authentik.service" ];
   };
 }
