@@ -27,6 +27,8 @@
     ./outline.nix
   ];
 
+  system.stateVersion = "21.11";
+
   common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.
 
   # Personal user
@@ -196,18 +198,6 @@
     enable = true;
     envFile = config.sops.secrets.gts-env.path;
   };
-
-  # Minio
-  sops.secrets.minio-credentials = { };
-  services.minio = {
-    enable = true;
-    listenAddress = ":61929";
-    consoleAddress = ":62929";
-    rootCredentialsFile = config.sops.secrets.minio-credentials.path;
-    dataDir = lib.mkForce [ "/mnt/data/minio" ];
-  };
-  cloud.traefik.hosts.minio = { host = "s3.dtth.ch"; port = 61929; };
-  system.stateVersion = "21.11";
 
   # ntfy
   cloud.traefik.hosts.ntfy-sh = { host = "ntfy.nkagami.me"; port = 11161; noCloudflare = true; };
