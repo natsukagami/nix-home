@@ -69,6 +69,7 @@ let
     virtualisation = { pkgs, ... }: mkIf cfg.enable {
       virtualisation.podman = {
         enable = true;
+        extraPackages = [ pkgs.slirp4netns ];
         dockerCompat = true;
         defaultNetwork.settings.dns_enabled = true;
       };
