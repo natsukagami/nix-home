@@ -66,7 +66,7 @@ in
       # Audio
       qpwgraph # Pipewire graph
 
-      zotero_7
+      unstable.zotero
       libreoffice
 
       mpv # for anki
@@ -76,6 +76,7 @@ in
       tdesktop
       whatsapp-for-linux
       slack
+      zoom-us
 
       librewolf
 
