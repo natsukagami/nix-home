@@ -48,7 +48,14 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services.arion-authentik.serviceConfig.EnvironmentFile = cfg.envFile;
+    systemd.services.arion-authentik = {
+      serviceConfig.EnvironmentFile = cfg.envFile;
+      serviceConfig.Type = "notify";
+      serviceConfig.NotifyAccess = "all";
+      script = lib.mkBefore ''
+        ${lib.getExe pkgs.wait4x} http http://127.0.0.1:${toString cfg.port} --expect-status-code 200 -t 0 -q -- systemd-notify --ready &
+      '';
+    };
     virtualisation.arion.projects.authentik.settings = {
       services.postgresql.service = {
         image = images.postgresql;

@@ -98,6 +98,7 @@ in
   };
   users.groups.${user} = { };
   sops.secrets."gitea/signing-key".owner = user;
+  sops.secrets."gitea/minio-secret-key".owner = user;
   sops.secrets."gitea/mailer-password".owner = user;
   # database
   cloud.postgresql.databases = [ user ];
@@ -174,6 +175,17 @@ in
         PATH = "${pkgs.git}/bin/git";
       };
 
+      storage = {
+        STORAGE_TYPE = "minio";
+        MINIO_USE_SSL = "true";
+        MINIO_ENDPOINT = "60c0807121eb35ef52cdcd4a33735fa6.r2.cloudflarestorage.com";
+        MINIO_ACCESS_KEY_ID = "704c29ade7a8b438b77ab520da2799ca";
+        MINIO_SECRET_ACCESS_KEY = "#miniosecretkey#";
+        MINIO_BUCKET = "dtth-gitea";
+        MINIO_LOCATION = "auto";
+        MINIO_CHECKSUM_ALGORITHM = "md5"; # R2 moment
+      };
+
       federation.ENABLED = true;
       DEFAULT.APP_NAME = "DTTHGit";
     };
@@ -203,17 +215,25 @@ in
     environment.GNUPGHOME = "${config.services.gitea.stateDir}/.gnupg";
     # https://github.com/NixOS/nixpkgs/commit/93c1d370db28ad4573fb9890c90164ba55391ce7
     serviceConfig.SystemCallFilter = mkForce "~@clock @cpu-emulation @debug @keyring @module @mount @obsolete @raw-io @reboot @setuid @swap";
-    preStart = ''
-      # Import the signing subkey
-      if cat ${config.services.gitea.stateDir}/.gnupg/gpg.conf | grep -q ${signingKey}; then
-        echo "Keys already imported"
-        # imported
-      else
-        echo "Import your keys!"
-        ${pkgs.gnupg}/bin/gpg --quiet --import ${secrets."gitea/signing-key".path}
-        echo "trusted-key ${signingKey}" >> ${config.services.gitea.stateDir}/.gnupg/gpg.conf
-        exit 1
-      fi
-    '';
+    preStart =
+      let
+        configFile = "${config.services.forgejo.customDir}/conf/app.ini";
+      in
+      ''
+        # Update minio secret key
+        chmod u+w ${configFile} && \
+        ${lib.getExe pkgs.replace-secret} '#miniosecretkey#' '${config.sops.secrets."gitea/minio-secret-key".path}' '${configFile}' && \
+        chmod u-w ${configFile}
+        # Import the signing subkey
+        if cat ${config.services.forgejo.stateDir}/.gnupg/gpg.conf | grep -q ${signingKey}; then
+          echo "Keys already imported"
+          # imported
+        else
+          echo "Import your keys!"
+          ${pkgs.gnupg}/bin/gpg --quiet --import ${secrets."gitea/signing-key".path}
+          echo "trusted-key ${signingKey}" >> ${config.services.forgejo.stateDir}/.gnupg/gpg.conf
+          exit 1
+        fi
+      '';
   };
 }

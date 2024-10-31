@@ -9,9 +9,11 @@
   swapDevices = [{ device = "/var/swapfile"; size = 4 * 1024; priority = 1024; }];
   zramSwap.enable = true;
   # volumes
+  services.btrfs.autoScrub.enable = true;
   fileSystems.data = {
-    device = "/dev/disk/by-id/scsi-0HC_Volume_31812942";
-    fsType = "ext4";
+    device = "/dev/disk/by-id/scsi-0HC_Volume_101470796";
+    fsType = "btrfs";
     mountPoint = "/mnt/data";
+    options = [ "compress=zstd" ];
   };
 }

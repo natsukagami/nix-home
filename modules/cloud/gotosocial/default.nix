@@ -4,6 +4,7 @@ let
   cfg = config.cloud.gotosocial;
 
   dbUser = "gotosocial";
+  storageLocation = "/mnt/data/gotosocial";
 in
 {
   options.cloud.gotosocial = {
@@ -74,6 +75,9 @@ in
         # Media
         media-emoji-remote-max-size = 256 * 1024 /* bytes */;
         media-emoji-local-max-size = 256 * 1024 /* bytes */;
+        media-remote-cache-days = 7;
+        media-cleanup-from = "00:00";
+        media-cleanup-every = "24h";
         # OIDC
         oidc-enabled = true;
         oidc-idp-name = "DTTH";
@@ -82,10 +86,22 @@ in
         http-client.block-ips = [ "11.0.0.0/24" ];
         # Advanced
         advanced-rate-limit-requests = 0;
+        # Storage
+        storage-backend = "local";
+        storage-local-base-path = "${storageLocation}/storage";
         # instance-inject-mastodon-version = true;
       };
     };
-    systemd.services.gotosocial.requires = mkAfter [ "minio.service" "postgresql.service" ];
-    systemd.services.gotosocial.after = mkAfter [ "minio.service" "postgresql.service" ];
+    systemd.services.gotosocial.requires = mkAfter [ "postgresql.service" "arion-authentik.service" ];
+    systemd.services.gotosocial.after = mkAfter [ "postgresql.service" "arion-authentik.service" ];
+    systemd.services.gotosocial.unitConfig = {
+      RequiresMountsFor = [ storageLocation ];
+      ReadWritePaths = [ storageLocation ];
+    };
+    systemd.tmpfiles.settings."10-gotosocial".${storageLocation}.d = {
+      user = dbUser;
+      group = dbUser;
+      mode = "0700";
+    };
   };
 }

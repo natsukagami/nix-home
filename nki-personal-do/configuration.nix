@@ -24,7 +24,10 @@
     ./invidious.nix
     ./owncast.nix
     ./peertube.nix
+    ./outline.nix
   ];
+
+  system.stateVersion = "21.11";
 
   common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.
 
@@ -189,73 +192,12 @@
     protocol = "udp";
   };
 
-
-  # Outline
-  sops.secrets.minio-secret-key = { owner = "root"; mode = "0444"; };
-  sops.secrets.authentik-oidc-client-secret = { owner = "outline"; };
-  sops.secrets."outline/smtp-password" = { owner = "outline"; };
-  services.outline = {
-    enable = true;
-    package = pkgs.outline.overrideAttrs (attrs: {
-      patches = if builtins.hasAttr "patches" attrs then attrs.patches else [ ] ++ [ ../modules/cloud/outline/dtth-wiki.patch ];
-    });
-    databaseUrl = "postgres://outline:outline@localhost/outline?sslmode=disable";
-    redisUrl = "local";
-    publicUrl = "https://wiki.dtth.ch";
-    port = 18729;
-    storage = {
-      accessKey = "minio";
-      secretKeyFile = config.sops.secrets.minio-secret-key.path;
-      region = config.services.minio.region;
-      uploadBucketUrl = "https://s3.dtth.ch";
-      uploadBucketName = "dtth-outline";
-      uploadMaxSize = 50 * 1024 * 1000;
-    };
-    maximumImportSize = 50 * 1024 * 1000;
-
-    oidcAuthentication = {
-      clientId = "3a0c10e00cdcb4a1194315577fa208a747c1a5f7";
-      clientSecretFile = config.sops.secrets.authentik-oidc-client-secret.path;
-      authUrl = "https://auth.dtth.ch/application/o/authorize/";
-      tokenUrl = "https://auth.dtth.ch/application/o/token/";
-      userinfoUrl = "https://auth.dtth.ch/application/o/userinfo/";
-      displayName = "DTTH Account";
-    };
-
-    smtp = {
-      fromEmail = "DTTH Wiki <dtth.wiki@nkagami.me>";
-      replyEmail = "";
-      host = "mx1.nkagami.me";
-      username = "dtth.wiki@nkagami.me";
-      passwordFile = config.sops.secrets."outline/smtp-password".path;
-      port = 465;
-      secure = true;
-    };
-
-    forceHttps = false;
-  };
-  cloud.postgresql.databases = [ "outline" ];
-  systemd.services.outline.requires = [ "postgresql.service" ];
-  cloud.traefik.hosts.outline = { host = "wiki.dtth.ch"; port = 18729; };
-
   # GoToSocial
-  sops.secrets.gts-env = { };
+  sops.secrets.gts-env = { restartUnits = [ "gotosocial.service" ]; };
   cloud.gotosocial = {
     enable = true;
     envFile = config.sops.secrets.gts-env.path;
   };
-
-  # Minio
-  sops.secrets.minio-credentials = { };
-  services.minio = {
-    enable = true;
-    listenAddress = ":61929";
-    consoleAddress = ":62929";
-    rootCredentialsFile = config.sops.secrets.minio-credentials.path;
-    dataDir = lib.mkForce [ "/mnt/data/minio" ];
-  };
-  cloud.traefik.hosts.minio = { host = "s3.dtth.ch"; port = 61929; };
-  system.stateVersion = "21.11";
 
   # ntfy
   cloud.traefik.hosts.ntfy-sh = { host = "ntfy.nkagami.me"; port = 11161; noCloudflare = true; };
