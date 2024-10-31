@@ -193,7 +193,7 @@
   };
 
   # GoToSocial
-  sops.secrets.gts-env = { };
+  sops.secrets.gts-env = { restartUnits = [ "gotosocial.service" ]; };
   cloud.gotosocial = {
     enable = true;
     envFile = config.sops.secrets.gts-env.path;
