@@ -39,8 +39,8 @@ let
             command = "vscode-${name}-language-server";
             filetypes = [ name "templ" ];
             roots = [ "package.json" ".git" ];
+            package = nodePackages.vscode-langservers-extracted;
           };
-          package = nodePackages.vscode-langservers-extracted;
         };
       in
       {
