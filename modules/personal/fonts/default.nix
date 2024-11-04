@@ -10,7 +10,7 @@ with lib;
       ibm-plex
       (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
       noto-fonts
-      noto-fonts-cjk
+      (pkgs.noto-fonts-cjk-sans or pkgs.noto-fonts-cjk)
       merriweather
       corefonts
       font-awesome
