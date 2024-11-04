@@ -97,8 +97,8 @@ in
           src = pkgs.fetchFromGitHub {
             owner = "vrischmann";
             repo = "tree-sitter-templ";
-            rev = "044ad200092170727650fa6d368df66a8da98f9d";
-            hash = "sha256-hJuB3h5pp+LLfP0/7bAYH0uLVo+OQk5jpzJb3J9BNkY=";
+            rev = "4519e3ec9ca92754ca25659bb1fd410d5e0f8d88";
+            hash = "sha256-ic5SlqDEZoYakrJFe0H9GdzravqovlL5sTaHjyhe74M=";
           };
         in
         {
