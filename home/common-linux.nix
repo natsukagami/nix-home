@@ -39,7 +39,7 @@ in
     systemd.user.startServices = "sd-switch";
 
     # Audio stuff!
-    services.easyeffects.enable = true;
+    # services.easyeffects.enable = true;
 
     # Bluetooth controls
     # services.mpris-proxy.enable = true;
