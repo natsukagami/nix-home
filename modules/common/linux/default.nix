@@ -315,6 +315,11 @@ in
     programs.kdeconnect.enable = true;
     # Flatpaks are useful... sometimes...
     services.flatpak.enable = true;
+    # AppImages should run
+    programs.appimage = {
+      enable = true;
+      binfmt = true;
+    };
     # DConf for GNOME configurations
     programs.dconf.enable = true;
     # Gaming! (not for ARM64)
