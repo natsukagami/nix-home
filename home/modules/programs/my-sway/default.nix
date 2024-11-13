@@ -45,12 +45,6 @@ let
     ${pkgs.grim}/bin/grim -g (${pkgs.slurp}/bin/slurp) - | ${pkgs.swappy}/bin/swappy -f -
   '';
 
-  rofi-rbw-script = pkgs.writeShellApplication {
-    name = "rofi-rbw-script";
-    runtimeInputs = with pkgs; [ rofi wtype rofi-rbw ];
-    text = "rofi-rbw";
-  };
-
   ignored-devices = [ "Surface_Headphones" ];
   playerctl = "${pkgs.playerctl}/bin/playerctl --ignore-player=${strings.concatStringsSep "," ignored-devices}";
 
@@ -223,7 +217,7 @@ in
         # Launcher
         "${mod}+space" = "exec rofi -show drun";
         "${mod}+tab" = "exec ${./rofi-window.py}";
-        "${mod}+shift+p" = "exec ${lib.getExe rofi-rbw-script}";
+        "${mod}+shift+p" = "exec rofi-rbw-script";
       } // {
         ## Splits
         "${mod}+v" = "split v";
@@ -781,14 +775,9 @@ in
     # For waybar
     font-awesome
   ]);
+
   config.programs.rofi = mkIf cfg.enable {
-    enable = true;
-    package = pkgs.rofi-wayland;
-    cycle = true;
-    font = "monospace ${toString cfg.fontSize}";
-    terminal = cfg.terminal;
-    theme = "Paper";
-    plugins = with pkgs; [ rofi-bluetooth rofi-calc rofi-rbw rofi-power-menu ];
+    font = lib.mkForce "monospace ${toString cfg.fontSize}";
   };
 }
 

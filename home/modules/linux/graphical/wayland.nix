@@ -61,6 +61,12 @@ let
     '';
     xdg.dataFile."dbus-1/services/org.freedesktop.Notifications.service".source = "${pkgs.kdePackages.plasma-workspace}/share/dbus-1/services/org.kde.plasma.Notifications.service";
   };
+
+  rofi-rbw-script = pkgs.writeShellApplication {
+    name = "rofi-rbw-script";
+    runtimeInputs = with pkgs; [ rofi wtype rofi-rbw ];
+    text = "rofi-rbw";
+  };
 in
 with lib;
 {
@@ -69,6 +75,7 @@ with lib;
     # Additional packages
     home.packages = with pkgs; [
       wl-clipboard # Clipboard management
+      rofi-rbw-script
 
       # Mimic the clipboard stuff in MacOS
       (pkgs.writeShellScriptBin "pbcopy" ''
@@ -78,6 +85,16 @@ with lib;
         exec ${pkgs.wl-clipboard}/bin/wl-paste "$@"
       '')
     ];
+
+    programs.rofi = {
+      enable = true;
+      package = pkgs.rofi-wayland;
+      cycle = true;
+      font = "monospace";
+      terminal = "${lib.getExe config.programs.kitty.package}";
+      theme = "Paper";
+      plugins = with pkgs; [ rofi-bluetooth rofi-calc rofi-rbw rofi-power-menu ];
+    };
 
     home.sessionVariables = {
       ANKI_WAYLAND = "1";
