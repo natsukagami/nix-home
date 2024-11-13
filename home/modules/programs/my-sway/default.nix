@@ -291,7 +291,8 @@ in
       # Assigning windows to workspaces
       assigns = {
         "${builtins.elemAt workspaces 0}" = [
-          { class = "^firefox$"; }
+          { app_id = "^firefox$"; }
+          { app_id = "^librewolf$"; }
         ];
         "${builtins.elemAt workspaces 1}" = [
           { class = "^((d|D)iscord|((A|a)rm(c|C)ord))$"; }
@@ -299,6 +300,8 @@ in
           { app_id = "VencordDesktop"; }
           { class = "vesktop"; }
           { app_id = "vesktop"; }
+
+          { class = "Slack"; }
         ];
         ${extraWorkspaces.mail} = [
           { app_id = "thunderbird"; }

@@ -1,4 +1,4 @@
-{ appimageTools, fetchurl, nativeMessagingHosts, ... }:
+{ appimageTools, fetchurl, nativeMessagingHosts ? [ ], ... }:
 let
   pname = "zen-browser-bin";
   version = "1.0.1-a.19";

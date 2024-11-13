@@ -38,7 +38,6 @@ in
         librewolf
         thunderbird
         vesktop
-        premid
       ];
     };
     defaults.webBrowser = mkOption {
@@ -58,7 +57,6 @@ in
       feh # For images?
       deluge # Torrent client
       pavucontrol # PulseAudio control panel
-      thunderbird # Email
       sublime-music # For navidrome
       # cinny-desktop
       gajim
@@ -78,14 +76,13 @@ in
       slack
       zoom-us
 
-      librewolf
 
       ## CLI stuff
       dex # .desktop file management, startup
       # sct # Display color temperature
       xdg-utils # Open stuff
       wifi-indicator
-    ]);
+    ] ++ cfg.startup);
 
     nki.programs.discord.enable = pkgs.stdenv.isx86_64;
     nki.programs.discord.package = pkgs.vesktop;
