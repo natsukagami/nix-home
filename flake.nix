@@ -46,7 +46,7 @@
       url = github:natsukagami/mpd-mpris;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki/phanpy?ref=dtth-fork";
+    dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki-dtth/phanpy?ref=dtth-fork";
     conduit.url = "gitlab:famedly/conduit/v0.9.0";
     nix-gaming.url = github:fufexan/nix-gaming;
 

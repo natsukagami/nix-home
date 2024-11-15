@@ -232,18 +232,18 @@
         "nixpkgs": "nixpkgs_7"
       },
       "locked": {
-        "lastModified": 1728598146,
-        "narHash": "sha256-8zAvVSR3chBSJ7YKW+MYC1mrDxtZDFBPVobfO4KPXzg=",
+        "lastModified": 1731494335,
+        "narHash": "sha256-G1G2WRGgIOFNmlJglfqEupSg0VWHgODbBJzp5xo+cYY=",
         "ref": "dtth-fork",
-        "rev": "fc6bd96aef92d7796d9c7663ac23e3fa837f8ddb",
-        "revCount": 3218,
+        "rev": "c414bb78f27b20df4463c36a5851c94cfe9c79b0",
+        "revCount": 3367,
         "type": "git",
-        "url": "ssh://gitea@git.dtth.ch/nki/phanpy"
+        "url": "ssh://gitea@git.dtth.ch/nki-dtth/phanpy"
       },
       "original": {
         "ref": "dtth-fork",
         "type": "git",
-        "url": "ssh://gitea@git.dtth.ch/nki/phanpy"
+        "url": "ssh://gitea@git.dtth.ch/nki-dtth/phanpy"
       }
     },
     "fenix": {
