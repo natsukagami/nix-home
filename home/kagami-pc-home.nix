@@ -37,7 +37,7 @@
   # Enable X11 configuration
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/pixiv_18776904.png;
-  linux.graphical.defaults.startup = with pkgs; [
+  linux.graphical.startup = with pkgs; [
     zen-browser-bin
     thunderbird
     vesktop
