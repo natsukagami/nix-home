@@ -87,13 +87,6 @@ let
         })
       ];
     };
-
-    # https://github.com/NixOS/nixpkgs/issues/334822
-    vulkan-validation-layers = prev.vulkan-validation-layers.overrideAttrs (attrs: {
-      buildInputs = attrs.buildInputs ++ [
-        final.spirv-tools
-      ];
-    });
   };
 
   overlay-libs = final: prev: {
