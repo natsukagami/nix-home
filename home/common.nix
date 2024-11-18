@@ -14,8 +14,9 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  # Enable the manual so we don't have to load it
-  manual.html.enable = true;
+  # Temporarily disable the manuals
+  manual.html.enable = false;
+  # manual.manpage.enable = false;
 
   # Packages that are not in programs section
   home.packages = with pkgs; [
