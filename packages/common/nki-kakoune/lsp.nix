@@ -130,7 +130,7 @@ let
         metals = {
           command = "metals";
           filetypes = [ "scala" ];
-          roots = [ "build.sbt" "build.sc" ];
+          roots = [ "build.sbt" "build.sc" "build.mill" ];
           settings_section = "metals";
           settings.metals = {
             enableSemanticHighlighting = true;

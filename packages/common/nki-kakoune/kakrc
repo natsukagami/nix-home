@@ -162,7 +162,7 @@ hook global BufCreate .*[.]md %{
   add-highlighter buffer/ wrap
 }
 
-hook global BufCreate .*[.](sc|sbt) %{
+hook global BufCreate .*[.](sc|sbt|mill) %{
   set-option buffer filetype scala
 }
 
