@@ -5,6 +5,16 @@
 { lib, config, pkgs, ... }:
 
 with lib;
+let
+  openrazer = { pkgs, ... }: {
+    # Razer stuff
+    hardware.openrazer = {
+      enable = true;
+      users = [ "nki" ];
+    };
+    environment.systemPackages = with pkgs; [ polychromatic ];
+  };
+in
 {
   imports =
     [
@@ -17,6 +27,7 @@ with lib;
       # Other services
       ../modules/personal/u2f.nix
       ./peertube-runner.nix
+      openrazer
     ];
 
   # Kernel
@@ -181,5 +192,6 @@ with lib;
       passwordFile = config.sops.secrets."scrobble/listenbrainz".path;
     };
   };
+
 }
 

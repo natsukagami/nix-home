@@ -140,7 +140,6 @@ in
   inputs.rust-overlay.overlays.default
   inputs.youmubot.overlays.default
 
-  (import ./overlays/openrazer)
   overlay-unstable
   overlay-needs-unstable
   overlay-packages
