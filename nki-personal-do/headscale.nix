@@ -35,23 +35,25 @@ rec {
     settings = {
       server_url = "https://hs.dtth.ch";
 
-      db_type = "postgres";
-      db_host = "/var/run/postgresql"; # find out yourself
-      db_user = "headscale";
-      db_name = "headscale";
+      database.type = "postgres";
+      database.postgres = {
+        host = "/var/run/postgresql"; # find out yourself
+        user = "headscale";
+        name = "headscale";
+      };
 
-      dns_config = {
-        base_domain = host;
+      dns = {
+        base_domain = "dtth.ts";
       };
 
       noise = {
         private_key_path = "/var/lib/headscale/noise_private.key";
       };
 
-      ip_prefixes = [
-        "fd7a:115c:a1e0::/48"
-        "100.64.0.0/10"
-      ];
+      prefixes = {
+        v6 = "fd7a:115c:a1e0::/48";
+        v4 = "100.64.0.0/10";
+      };
 
       derp.paths = [
         secrets."headscale/derp-servers/vnm".path
