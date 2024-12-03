@@ -26,6 +26,7 @@
     ripgrep
     openssh
     tea # gitea CLI (gh-like)
+    glab # gitlab CLI
     fx # JSON viewer
     glow # Markdown viewer
     nix-output-monitor # Nice nix output formatting
