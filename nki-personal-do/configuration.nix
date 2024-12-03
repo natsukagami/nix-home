@@ -25,6 +25,7 @@
     ./owncast.nix
     ./peertube.nix
     ./outline.nix
+    ./vikunja.nix
   ];
 
   system.stateVersion = "21.11";
