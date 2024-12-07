@@ -8,7 +8,7 @@ with lib;
     packages = with pkgs; mkForce [
       noto-fonts-emoji-blob-bin
       ibm-plex
-      (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+      nerd-fonts.symbols-only
       noto-fonts
       (pkgs.noto-fonts-cjk-sans or pkgs.noto-fonts-cjk)
       merriweather

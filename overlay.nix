@@ -9,9 +9,6 @@ let
     # Typst updates really quickly.
     typst = final.unstable.typst;
     typst-lsp = final.unstable.typst-lsp;
-
-    # Until 0.35 is in
-    kitty = final.unstable.kitty;
   };
   overlay-imported = final: prev: {
     sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
@@ -103,19 +100,6 @@ let
       nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
     };
   };
-
-  overlay-rust-is-dumb = final: prev: {
-    # Use stable delta compiled with old Rust version
-    delta = final.stable.delta;
-    deepfilternet = final.stable.deepfilternet;
-    harmonia = final.callPackage
-      (import
-        (builtins.fetchurl {
-          url = "https://raw.githubusercontent.com/Mic92/nixpkgs/63f91202f5cd071187ede5e5ffc56003cb442876/pkgs/by-name/ha/harmonia/package.nix";
-          sha256 = "1mz211c0bxn116ix0j5xx4wlglpbkfg7d3npw1z8hg9gc0vbj2xb";
-        }))
-      { };
-  };
 in
 [
   # inputs.swayfx.inputs.scenefx.overlays.override
@@ -130,7 +114,6 @@ in
   overlay-imported
   overlay-versioning
   overlay-libs
-  overlay-rust-is-dumb
 
   (import ./packages/common)
 

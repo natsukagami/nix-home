@@ -39,7 +39,7 @@ in
 
     services.harmonia = mkIf cfg.enableServer {
       enable = true;
-      signKeyPath = cfg.privateKeyFile;
+      signKeyPaths = [ cfg.privateKeyFile ];
       settings = {
         bind = bindAddr;
         priority = 45;
