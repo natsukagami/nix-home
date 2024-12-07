@@ -27,24 +27,6 @@ in
   services.vikunja = {
     inherit port;
     enable = true;
-    package =
-      builtins.seq
-        (lib.assertMsg (pkgs.vikunja.version == "0.24.5") "Vikunja probably doesn't need custom versions anymore")
-        (pkgs.vikunja.overrideAttrs
-          (attrs: {
-            src = pkgs.fetchFromGitHub {
-              owner = "go-vikunja";
-              repo = "vikunja";
-              rev = "e57f04ec23e9ff8aa9877d2ea7d571c2a44790b0";
-              hash = "sha256-W6o1h6XBPvT1lH1zO5N7HcodksKill5eqSuaFl2kfuY=";
-            };
-
-            passthru = attrs.passthru // {
-              overrideModAttrs = attrs: {
-                outputHash = "sha256-UWjlivF9ySXCAr84A1trCJ/n9pB98ZhEyG11qz3PL7g=";
-              };
-            };
-          }));
 
     frontendScheme = "https";
     frontendHostname = host;
@@ -75,6 +57,7 @@ in
         todoist.enable = true;
         trello.enable = true;
       };
+      backgrounds.providers.unsplash.enabled = true;
       auth = {
         local.enabled = false;
         openid = {

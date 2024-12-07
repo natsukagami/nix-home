@@ -74,26 +74,10 @@ let
       nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
     });
 
-    # Add desktop file to premid
-    premid = final.symlinkJoin {
-      name = prev.premid.name;
-      paths = [
-        prev.premid
-        (final.makeDesktopItem {
-          name = prev.premid.name;
-          desktopName = "PreMID";
-          exec = "${final.lib.getExe prev.premid} --no-sandbox %U";
-          icon = "premid";
-        })
-      ];
-    };
-
-    # https://github.com/NixOS/nixpkgs/issues/334822
-    vulkan-validation-layers = prev.vulkan-validation-layers.overrideAttrs (attrs: {
-      buildInputs = attrs.buildInputs ++ [
-        final.spirv-tools
-      ];
-    });
+    vikunja =
+      builtins.seq
+        (final.lib.assertMsg (prev.vikunja.version == "0.24.5") "Vikunja probably doesn't need custom versions anymore")
+        (final.callPackage ./packages/common/vikunja.nix { });
   };
 
   overlay-libs = final: prev: {
