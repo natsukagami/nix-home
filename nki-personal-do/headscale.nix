@@ -27,7 +27,8 @@ rec {
     noCloudflare = true;
   };
 
-  systemd.services.headscale.requires = [ "postgresql.service" ];
+  systemd.services.headscale.requires = [ "postgresql.service" "arion-authentik.service" ];
+  systemd.services.headscale.after = [ "postgresql.service" "arion-authentik.service" ];
   services.headscale = {
     enable = true;
     inherit port;
