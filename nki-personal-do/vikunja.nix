@@ -9,8 +9,8 @@ let
   storageMount = "/mnt/data/vikunja";
 in
 {
-  sops.secrets."vikunja/env" = { };
-  sops.secrets."vikunja/provider-clientsecret" = { };
+  sops.secrets."vikunja/env" = { restartUnits = [ "vikunja.service" ]; };
+  sops.secrets."vikunja/provider-clientsecret" = { restartUnits = [ "vikunja.service" ]; };
   cloud.postgresql.databases = [ user ];
   cloud.traefik.hosts.vikunja = {
     inherit port host;
@@ -71,6 +71,10 @@ in
         forcessl = true;
       };
       files.basepath = lib.mkForce storageMount;
+      migration = {
+        todoist.enable = true;
+        trello.enable = true;
+      };
       auth = {
         local.enabled = false;
         openid = {
@@ -97,10 +101,10 @@ in
     serviceConfig.User = user;
     serviceConfig.LoadCredential = [ "VIKUNJA_AUTH_OPENID_PROVIDERS_AUTHENTIK_CLIENTSECRET_FILE:${secrets."vikunja/provider-clientsecret".path}" ];
     serviceConfig.DynamicUser = lib.mkForce false;
+    serviceConfig.ReadWritePaths = [ storageMount ];
     environment.VIKUNJA_AUTH_OPENID_PROVIDERS_AUTHENTIK_CLIENTSECRET_FILE = "%d/VIKUNJA_AUTH_OPENID_PROVIDERS_AUTHENTIK_CLIENTSECRET_FILE";
     unitConfig = {
       RequiresMountsFor = [ storageMount ];
-      ReadWritePaths = [ storageMount ];
     };
   };
   systemd.tmpfiles.settings."10-vikunja".${storageMount}.d = {
