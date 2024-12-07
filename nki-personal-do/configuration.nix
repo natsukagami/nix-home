@@ -61,6 +61,7 @@
   ];
 
   virtualisation.docker.enable = true;
+  virtualisation.docker.extraOptions = "--data-root /mnt/data/docker";
 
   services.do-agent.enable = true;
 
