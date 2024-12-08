@@ -76,5 +76,10 @@ in
 
     dataDirs = [ "/var/lib/peertube" "/mnt/data/peertube" ];
   };
+
+  systemd.services.peertube = {
+    requires = [ "arion-authentik.service" ];
+    after = [ "arion-authentik.service" ];
+  };
 }
 

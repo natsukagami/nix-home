@@ -105,6 +105,7 @@ in
         ports = [
           "127.0.0.1:${toString cfg.port}:9000"
         ];
+
       };
       services.worker.service = {
         image = images.authentik;
@@ -123,6 +124,7 @@ in
           AUTHENTIK_POSTGRESQL__NAME = "authentik";
         };
         env_file = [ cfg.envFile "${authentikEnv}" ];
+        user = "root";
       };
       docker-compose.volumes = {
         database.driver = "local";
