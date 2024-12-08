@@ -81,8 +81,8 @@ in
   };
 
   systemd.services.vikunja = {
-    serviceConfig.User = user;
     serviceConfig.LoadCredential = [ "VIKUNJA_AUTH_OPENID_PROVIDERS_AUTHENTIK_CLIENTSECRET_FILE:${secrets."vikunja/provider-clientsecret".path}" ];
+    serviceConfig.User = user;
     serviceConfig.DynamicUser = lib.mkForce false;
     serviceConfig.ReadWritePaths = [ storageMount ];
     environment.VIKUNJA_AUTH_OPENID_PROVIDERS_AUTHENTIK_CLIENTSECRET_FILE = "%d/VIKUNJA_AUTH_OPENID_PROVIDERS_AUTHENTIK_CLIENTSECRET_FILE";

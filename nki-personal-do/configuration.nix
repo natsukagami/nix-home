@@ -26,6 +26,7 @@
     ./peertube.nix
     ./outline.nix
     ./vikunja.nix
+    ./n8n.nix
   ];
 
   system.stateVersion = "21.11";
@@ -153,7 +154,7 @@
   };
 
   # Mail
-  sops.secrets.mail-users = { owner = "maddy"; };
+  sops.secrets.mail-users = { owner = "maddy"; reloadUnits = [ "maddy.service" ]; };
   cloud.mail = {
     enable = true;
     debug = true;
