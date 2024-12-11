@@ -49,6 +49,7 @@
     dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki-dtth/phanpy?ref=dtth-fork";
     conduit.url = "gitlab:famedly/conduit/v0.9.0";
     nix-gaming.url = github:fufexan/nix-gaming;
+    zen-browser.url = "github:youwen5/zen-browser-flake";
 
     # --- Sources
     kakoune.url = github:mawww/kakoune;

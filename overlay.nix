@@ -96,8 +96,13 @@ let
         ) ++ (with final; [ libiconv ]);
       };
 
-    zen-browser-bin = final.callPackage ./packages/x86_64-linux/zen-browser-bin.nix {
-      nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
+    zen-browser-bin = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
+      wrap-firefox = opts: final.wrapFirefox (opts // {
+        nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
+      });
+      zen-browser-unwrapped = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser-unwrapped.override {
+        sources = inputs.zen-browser.inputs;
+      };
     };
   };
 in
