@@ -1,6 +1,13 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, config, ... }:
 
 with lib;
+let
+  nerd-fonts =
+    if builtins.hasAttr "nerd-fonts" pkgs then
+      pkgs.nerd-fonts.symbols-only
+    else
+      pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; };
+in
 {
   imports = [ ./mounting.nix ];
   # Fonts
@@ -8,7 +15,7 @@ with lib;
     packages = with pkgs; mkForce [
       noto-fonts-emoji-blob-bin
       ibm-plex
-      nerd-fonts.symbols-only
+      nerd-fonts
       noto-fonts
       (pkgs.noto-fonts-cjk-sans or pkgs.noto-fonts-cjk)
       merriweather
