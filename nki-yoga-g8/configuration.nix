@@ -4,6 +4,14 @@
 
 { config, pkgs, lib, ... }:
 
+let
+  vmware = { pkgs, ... }: {
+    environment.systemPackages = [ pkgs.vmware-horizon-client ];
+    virtualisation.vmware.host = {
+      enable = true;
+    };
+  };
+in
 {
   imports =
     [
@@ -13,6 +21,8 @@
       ../modules/personal/fonts
       # Encrypted DNS
       ../modules/services/edns
+
+      vmware
     ];
 
   # Secrets
