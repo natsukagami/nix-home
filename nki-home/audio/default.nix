@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }: {
   environment.etc = {
-    "wireplumber/main.lua.d/51-sdac.lua".source = ./sdac.lua;
+    "wireplumber/wireplumber.conf.d/51-sdac.conf".source = ./sdac.conf.json;
   };
 }

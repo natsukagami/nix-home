@@ -26,15 +26,13 @@ let
       };
     };
 
-    graphics = { config, ... }: {
-      hardware =
-        if config.system.nixos.release == "24.05" then {
-          opengl.enable = true;
-          opengl.driSupport32Bit = true;
-        } else {
-          graphics.enable = true;
-          graphics.enable32Bit = true;
-        };
+    graphics = { config, pkgs, ... }: {
+      hardware.graphics.enable = true;
+      hardware.graphics.enable32Bit = true;
+      # Monitor backlight
+      hardware.i2c.enable = true;
+      services.ddccontrol.enable = true;
+      environment.systemPackages = [ pkgs.luminance pkgs.ddcutil ];
     };
 
     accounts = { pkgs, ... }: mkIf (config.common.linux.enable && !pkgs.stdenv.isAarch64) {
@@ -88,7 +86,7 @@ let
       enable = true;
       # defaults (no need to be set unless modified)
       quantum = 32;
-      rate = 48000;
+      rate = 44100;
     };
     security.rtkit.enable = true;
 
@@ -240,6 +238,8 @@ in
         "wheel" # Enable ‘sudo’ for the user.
         "plugdev" # Enable openrazer-daemon privileges
         "audio"
+        "video"
+        "input"
       ];
       shell = pkgs.fish;
     };

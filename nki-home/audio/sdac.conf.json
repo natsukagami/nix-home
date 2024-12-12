@@ -1,0 +1,19 @@
+monitor.alsa.rules = [
+  {
+    matches = [
+      {
+        device.name = "alsa_output.usb-Grace_Design_SDAC-00.*"
+      }
+    ]
+    actions = {
+      update-props = {
+        # audio.format = "S24_3LE"
+        audio.rate = 88200
+        api.alsa.period-size = 2
+        api.alsa.headroom = 0
+        api.alsa.disable-batch = true
+      }
+    }
+  }
+]
+

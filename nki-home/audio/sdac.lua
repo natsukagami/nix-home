@@ -6,7 +6,7 @@ rule = {
   },
   apply_properties = {
     ["audio.format"] = "S24_3LE",
-    ["audio.rate"] = 96000,
+    ["audio.rate"] = 44100,
     ["api.alsa.period-size"] = 2,
     ["api.alsa.headroom"] = 0,
     ["api.alsa.disable-batch"] = true

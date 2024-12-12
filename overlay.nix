@@ -75,6 +75,14 @@ let
       builtins.seq
         (final.lib.assertMsg (prev.vikunja.version == "0.24.5") "Vikunja probably doesn't need custom versions anymore")
         (final.callPackage ./packages/common/vikunja.nix { });
+
+    luminance = prev.luminance.overrideAttrs (attrs: {
+      nativeBuildInputs = attrs.nativeBuildInputs ++ [ final.wrapGAppsHook ];
+      buildInputs = attrs.buildInputs ++ [ final.glib ];
+      postInstall = attrs.postInstall + ''
+        glib-compile-schemas $out/share/glib-2.0/schemas
+      '';
+    });
   };
 
   overlay-libs = final: prev: {
@@ -124,4 +132,6 @@ in
 
   # Bug fixes
 ] # we assign the overlay created before to the overlays of nixpkgs.
+
+
 
