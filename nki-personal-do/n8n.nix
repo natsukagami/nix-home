@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 let
   secrets = config.sops.secrets;
 
@@ -8,6 +8,8 @@ let
   port = 23412;
 
   dataFolder = "/mnt/data/n8n";
+
+  plugins = pkgs.callPackage ./n8n/plugins/package.nix { };
 in
 {
   sops.secrets."n8n/env" = { reloadUnits = [ "n8n.service" ]; };
@@ -63,9 +65,14 @@ in
     };
     unitConfig.RequiresMountsFor = [ dataFolder ];
   };
-  systemd.tmpfiles.settings."10-n8n".${dataFolder}.d = {
-    user = user;
-    group = user;
-    mode = "0700";
+  systemd.tmpfiles.settings."10-n8n" = {
+    ${dataFolder}.d = {
+      user = user;
+      group = user;
+      mode = "0700";
+    };
+    "${dataFolder}/.n8n/nodes"."L+" = {
+      argument = "${plugins}";
+    };
   };
 }
