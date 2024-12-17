@@ -3,7 +3,9 @@ let
   secrets = config.sops.secrets;
   cfg = config.services.peertube;
 
+  user = "peertube";
   host = "peertube.dtth.ch";
+  dataFolder = "/mnt/data/peertube";
   port = 19878;
 in
 {
@@ -57,12 +59,6 @@ in
     settings.client.videos = {
       resumable_upload.max_chunk_size = "90MB";
     };
-    settings.storage = {
-      storyboards = "/var/lib/peertube/storage/storyboards/";
-      tmp = "/mnt/data/peertube/tmp/";
-      tmp_persistent = "/mnt/data/peertube/tmp_persistent/";
-      web_videos = "/mnt/data/peertube/web-videos/";
-    };
 
     # Trust proxy
     settings.trust_proxy = [ "loopback" ] ++ config.services.traefik.staticConfigOptions.entrypoints.https.forwardedHeaders.trustedIPs;
@@ -80,6 +76,18 @@ in
   systemd.services.peertube = {
     requires = [ "arion-authentik.service" ];
     after = [ "arion-authentik.service" ];
+    unitConfig.RequiresMountsFor = [ dataFolder ];
+  };
+  systemd.tmpfiles.settings."10-peertube" = {
+    # The service hard-codes a lot of paths here, so it's nicer if we just symlink
+    "/var/lib/peertube"."L+" = {
+      argument = dataFolder;
+    };
+    ${dataFolder}."d" = {
+      user = user;
+      group = user;
+      mode = "0700";
+    };
   };
 }
 
