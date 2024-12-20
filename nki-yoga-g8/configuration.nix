@@ -80,7 +80,7 @@ in
   services.printing.drivers = with pkgs; [ epfl-cups-drivers ];
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
   # Keyboard
   services.input-remapper.enable = true;
   services.input-remapper.serviceWantedBy = [ "multi-user.target" ];
