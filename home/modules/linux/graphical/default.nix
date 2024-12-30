@@ -131,6 +131,8 @@ in
       "x-scheme-handler/feed" = [ "thunderbird.desktop" ];
       "application/rss+xml" = [ "thunderbird.desktop" ];
       "application/x-extension-rss" = [ "thunderbird.desktop" ];
+      "x-scheme-handler/tg2" = [ "org.telegram.desktop.desktop" ];
+      "x-scheme-handler/tonsite2" = [ "org.telegram.desktop.desktop" ];
     };
     xdg.mimeApps.defaultApplications = {
       # Email
@@ -167,6 +169,10 @@ in
 
       # Files
       "inode/directory" = [ "dolphin.desktop" ];
+
+      # Telegram
+      "x-scheme-handler/tg2" = "org.telegram.desktop.desktop";
+      "x-scheme-handler/tonsite2" = "org.telegram.desktop.desktop";
     };
 
     # Add one for kakoune
