@@ -37,7 +37,7 @@
 
     # ---
     # Imported apps
-    youmubot.url = "github:natsukagami/youmubot";
+    youmubot.url = "github:natsukagami/youmubot/osu-commands";
     # swayfx = {
     #   url = github:WillPower3309/swayfx;
     #   inputs.nixpkgs.follows = "nixpkgs";
