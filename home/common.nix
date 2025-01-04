@@ -106,7 +106,7 @@
           .kakrc
         ''}";
         safe.directory = "*";
-        merge.conflictstyle = "diff3";
+        merge.conflictstyle = "zdiff3";
       };
     };
 
