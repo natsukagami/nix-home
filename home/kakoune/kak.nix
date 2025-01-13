@@ -156,13 +156,14 @@ in
     };
     package = pkgs.texlab;
   };
-  programs.kak-lsp.languageServers.typst-lsp = {
-    command = "typst-lsp";
+  programs.kak-lsp.languageServers.tinymist = {
+    command = "tinymist";
     filetypes = [ "typst" ];
     roots = [ "main.typ" ".git" ];
-    settings_section = "typst-lsp";
-    settings.typst-lsp = {
-      experimentalFormatterMode = "on";
+    settings_section = "tinymist";
+    settings.tinymist = {
+      exportPdf = "onSave";
+      formatterMode = "typstfmt";
     };
   };
   programs.kak-lsp.languageServers.marksman = {
