@@ -19,6 +19,11 @@ with lib;
 
   options.nki.programs.kitty = {
     enable = mkEnableOption "Enable kitty";
+    setDefault = mkOption {
+      type = types.bool;
+      description = "Set kitty as default terminal";
+      default = true;
+    };
 
     package = mkOption {
       type = types.package;
@@ -49,6 +54,10 @@ with lib;
       description = "Enable tabs";
       default = pkgs.stdenv.isDarwin;
     };
+  };
+
+  config.linux.graphical = mkIf (cfg.enable && cfg.setDefault) {
+    defaults.terminal.package = cfg.package;
   };
 
   config.programs.kitty = mkIf cfg.enable {

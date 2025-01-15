@@ -30,12 +30,11 @@
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_0.png;
   linux.graphical.startup = with pkgs; [ zen-browser-bin thunderbird vesktop slack ];
-  linux.graphical.defaults.webBrowser = "zen.desktop";
+  linux.graphical.defaults.webBrowser.package = pkgs.zen-browser-bin;
+  linux.graphical.defaults.webBrowser.desktopFile = "zen.desktop";
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 14.0;
-  programs.my-sway.terminal = "${config.programs.kitty.package}/bin/kitty";
-  programs.my-sway.browser = "librewolf";
   wayland.windowManager.sway.config = {
     # Keyboard support
     input."*".xkb_layout = "jp";

@@ -37,12 +37,8 @@
   # Enable X11 configuration
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/pixiv_18776904.png;
-  linux.graphical.startup = with pkgs; [
-    zen-browser-bin
-    thunderbird
-    vesktop
-  ];
-  linux.graphical.defaults.webBrowser = "zen.desktop";
+  linux.graphical.defaults.webBrowser.package = pkgs.zen-browser-bin;
+  linux.graphical.defaults.webBrowser.desktopFile = "zen.desktop";
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 15.0;
   programs.my-sway.enableLaptop = true;

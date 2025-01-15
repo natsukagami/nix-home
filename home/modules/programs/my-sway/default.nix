@@ -68,12 +68,12 @@ in
     terminal = mkOption {
       type = types.str;
       description = "The command to the terminal emulator to be used";
-      default = "${config.programs.kitty.package}/bin/kitty";
+      default = lib.getExe config.linux.graphical.defaults.terminal.package;
     };
     browser = mkOption {
       type = types.str;
       description = "The command for the browser";
-      default = "${pkgs.firefox-wayland}/bin/firefox";
+      default = lib.getExe config.linux.graphical.defaults.webBrowser.package;
     };
 
     enableLaptop = lib.mkOption {
@@ -276,6 +276,7 @@ in
         "${builtins.elemAt workspaces 0}" = [
           { app_id = "^firefox$"; }
           { app_id = "^librewolf$"; }
+          { app_id = "^zen$"; }
         ];
         "${builtins.elemAt workspaces 1}" = [
           { class = "^((d|D)iscord|((A|a)rm(c|C)ord))$"; }
