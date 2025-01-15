@@ -852,6 +852,62 @@
         "type": "github"
       }
     },
+    "niri": {
+      "inputs": {
+        "niri-stable": "niri-stable",
+        "niri-unstable": "niri-unstable",
+        "nixpkgs": "nixpkgs_8",
+        "nixpkgs-stable": "nixpkgs-stable_3",
+        "xwayland-satellite-stable": "xwayland-satellite-stable",
+        "xwayland-satellite-unstable": "xwayland-satellite-unstable"
+      },
+      "locked": {
+        "lastModified": 1736884105,
+        "narHash": "sha256-WHxMcVuEmJvToC5DEVnSLwUrpHgJyqUqd/O8gZuaQsU=",
+        "owner": "sodiboo",
+        "repo": "niri-flake",
+        "rev": "a4e712bccfbe0526327c10b67f765b49cbbd7701",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sodiboo",
+        "repo": "niri-flake",
+        "type": "github"
+      }
+    },
+    "niri-stable": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736614405,
+        "narHash": "sha256-AJ1rlgNOPb3/+DbS5hkhm21t6Oz8IgqLllwmZt0lyzk=",
+        "owner": "YaLTeR",
+        "repo": "niri",
+        "rev": "e05bc269e678ecf828b96ae79c991c13b00b38a5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "YaLTeR",
+        "ref": "v25.01",
+        "repo": "niri",
+        "type": "github"
+      }
+    },
+    "niri-unstable": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736879117,
+        "narHash": "sha256-elG0TiWNFwgfTLrTTZVZQp3dEN6F6Qds6UF6BVxCIHs=",
+        "owner": "YaLTeR",
+        "repo": "niri",
+        "rev": "a3cbe3514ba195bf74815008f75819944f888527",
+        "type": "github"
+      },
+      "original": {
+        "owner": "YaLTeR",
+        "repo": "niri",
+        "type": "github"
+      }
+    },
     "nix-filter": {
       "locked": {
         "lastModified": 1705332318,
@@ -870,7 +926,7 @@
     "nix-gaming": {
       "inputs": {
         "flake-parts": "flake-parts_5",
-        "nixpkgs": "nixpkgs_8",
+        "nixpkgs": "nixpkgs_9",
         "umu": "umu"
       },
       "locked": {
@@ -1002,6 +1058,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-stable_3": {
+      "locked": {
+        "lastModified": 1736754065,
+        "narHash": "sha256-hcETjfECLklW1ND8svDvN0Nw6H/1qtuoz3rbFNQ1Lrk=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "67e9c880898889470f153157a96b595e758167fc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1736755442,
@@ -1020,6 +1092,22 @@
     },
     "nixpkgs_10": {
       "locked": {
+        "lastModified": 1734083684,
+        "narHash": "sha256-5fNndbndxSx5d+C/D0p/VF32xDiJCJzyOqorOYW4JEo=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "314e12ba369ccdb9b352a4db26ff419f7c49fa84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_11": {
+      "locked": {
         "lastModified": 1734424634,
         "narHash": "sha256-cHar1vqHOOyC7f1+tVycPoWTfKIaqkoe1Q6TnKzuti4=",
         "owner": "nixos",
@@ -1034,7 +1122,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_11": {
+    "nixpkgs_12": {
       "locked": {
         "lastModified": 1734424634,
         "narHash": "sha256-cHar1vqHOOyC7f1+tVycPoWTfKIaqkoe1Q6TnKzuti4=",
@@ -1148,6 +1236,22 @@
     },
     "nixpkgs_8": {
       "locked": {
+        "lastModified": 1736798957,
+        "narHash": "sha256-qwpCtZhSsSNQtK4xYGzMiyEDhkNzOCz/Vfu4oL2ETsQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "9abb87b552b7f55ac8916b6fc9e5cb486656a2f3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_9": {
+      "locked": {
         "lastModified": 1723856861,
         "narHash": "sha256-OTDg91+Zzs2SpU3csK4xVdSQFoG8cK1lNUwKmTqERyE=",
         "owner": "NixOS",
@@ -1221,10 +1325,11 @@
         "lanzaboote": "lanzaboote",
         "lix-module": "lix-module",
         "mpd-mpris": "mpd-mpris",
+        "niri": "niri",
         "nix-gaming": "nix-gaming",
         "nixos-hardware": "nixos-hardware",
         "nixos-m1": "nixos-m1",
-        "nixpkgs": "nixpkgs_9",
+        "nixpkgs": "nixpkgs_10",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "rust-overlay": "rust-overlay_3",
         "secrets": "secrets",
@@ -1536,11 +1641,44 @@
         "type": "github"
       }
     },
+    "xwayland-satellite-stable": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1730166465,
+        "narHash": "sha256-nq7bouXQXaaPPo/E+Jbq+wNHnatD4dY8OxSrRqzvy6s=",
+        "owner": "Supreeeme",
+        "repo": "xwayland-satellite",
+        "rev": "a713cf46cb7db84a0d1b57c3a397c610cad3cf98",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Supreeeme",
+        "ref": "v0.5",
+        "repo": "xwayland-satellite",
+        "type": "github"
+      }
+    },
+    "xwayland-satellite-unstable": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736487362,
+        "narHash": "sha256-4kGoOA7FgK9N2mzS+TFEn41kUUNY6KwdiA/0rqlr868=",
+        "owner": "Supreeeme",
+        "repo": "xwayland-satellite",
+        "rev": "8f55e27f63a749881c4bbfbb6b1da028342a91d1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Supreeeme",
+        "repo": "xwayland-satellite",
+        "type": "github"
+      }
+    },
     "youmubot": {
       "inputs": {
         "crane": "crane_5",
         "flake-utils": "flake-utils_9",
-        "nixpkgs": "nixpkgs_10",
+        "nixpkgs": "nixpkgs_11",
         "rust-overlay": "rust-overlay_4"
       },
       "locked": {
@@ -1560,7 +1698,7 @@
     },
     "zen-browser": {
       "inputs": {
-        "nixpkgs": "nixpkgs_11",
+        "nixpkgs": "nixpkgs_12",
         "zen-browser-aarch64": "zen-browser-aarch64",
         "zen-browser-generic": "zen-browser-generic",
         "zen-browser-specific": "zen-browser-specific"
