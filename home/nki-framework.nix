@@ -48,7 +48,7 @@
       tap = "enabled";
     };
   };
-  programs.my-sway.waybar.extraSettings =
+  programs.my-waybar.extraSettings =
     let
       change-mode = pkgs.writeScript "change-mode" ''
         #!/usr/bin/env ${lib.getExe pkgs.fish}

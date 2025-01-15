@@ -5,6 +5,7 @@
     ./kakoune/kak.nix
     ./fish/fish.nix
     ./modules/programs/my-broot.nix
+    ./modules/programs/my-waybar.nix
     ./modules/programs/my-sway
     ./modules/programs/my-kitty
     ./modules/programs/openconnect-epfl.nix

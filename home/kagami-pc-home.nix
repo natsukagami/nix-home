@@ -45,8 +45,8 @@
   linux.graphical.defaults.webBrowser = "zen.desktop";
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 15.0;
-  programs.my-sway.enableLaptopBars = false;
-  programs.my-sway.enableMpd = true;
+  programs.my-sway.enableLaptop = true;
+  programs.my-waybar.enableMpd = true;
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
   wayland.windowManager.sway.config.input."type:pointer".accel_profile = "flat";
@@ -68,7 +68,7 @@
     };
   nki.programs.kitty.enable = true;
   nki.programs.kitty.fontSize = 14;
-  programs.my-sway.waybar.makeBars = with config.common.monitors; barWith: [
+  programs.my-waybar.makeBars = with config.common.monitors; barWith: [
     # For primary
     (barWith { extraSettings = { output = [ home_4k.name ]; }; })
     # For secondary, hide mpd

@@ -13,7 +13,7 @@ let
       systemd.user.services.swaync.Install.WantedBy = lib.mkForce [ "sway-session.target" ];
       systemd.user.services.swaync.Unit.PartOf = lib.mkForce [ "sway-session.target" ];
 
-      programs.my-sway.waybar = {
+      programs.my-waybar = {
         extraSettings = [{
           modules-right = mkAfter [ "custom/swaync" ];
           modules."custom/swaync" = {
