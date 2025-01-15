@@ -122,6 +122,7 @@
           (common-nix stable)
           inputs.secrets.nixosModules.common
           inputs.nix-gaming.nixosModules.pipewireLowLatency
+          inputs.niri.nixosModules.niri
         ];
       };
 
