@@ -63,7 +63,7 @@ in
     wallpaper = mkOption {
       type = types.oneOf [ types.path types.str ];
       description = "Path to the wallpaper to be used";
-      default = "";
+      default = config.linux.graphical.wallpaper;
     };
     terminal = mkOption {
       type = types.str;

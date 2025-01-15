@@ -119,9 +119,6 @@ with lib;
 
     #   settings.experimental.per_monitor_dpi = "true";
     # };
-
-    # Forward wallpaper settings to sway
-    programs.my-sway.wallpaper = config.linux.graphical.wallpaper;
   };
 }
 
