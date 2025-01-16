@@ -8,6 +8,12 @@ let
       meta.mode = { width = 2256; height = 1504; refresh = 60.0; };
       scale = 1.25;
     };
+    "yoga" = {
+      name = "AU Optronics 0xD291 Unknown";
+      meta.connection = "eDP-1";
+      meta.mode = { width = 1920; height = 1080; refresh = 60.026; };
+      scale = 1;
+    };
     # External
     ## Work @ EPFL
     "work" = {
