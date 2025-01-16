@@ -46,6 +46,10 @@
       tap = "enabled";
     };
   };
+  programs.my-niri.enable = true;
+  programs.niri.settings = {
+    input.keyboard.xkb.options = "ctrl:swapcaps";
+  };
   programs.my-waybar.extraSettings =
     let
       change-mode = pkgs.writeScript "change-mode" ''

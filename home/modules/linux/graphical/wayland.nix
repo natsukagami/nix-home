@@ -100,6 +100,16 @@ with lib;
       ANKI_WAYLAND = "1";
     };
 
+    # Yellow light!
+    services.wlsunset = {
+      enable = true;
+
+      # Lausanne
+      latitude = "46.31";
+      longitude = "6.38";
+    };
+
+
     # Notification system
     # services.dunst = {
     #   enable = true;

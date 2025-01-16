@@ -91,6 +91,10 @@ in
     };
   };
 
+  config.systemd.user.targets.sway-session = mkIf cfg.enable {
+    Unit.Before = [ "tray.target" "xwayland.target" ];
+  };
+
   # Enable waybar
   config.programs.my-waybar = mkIf cfg.enable {
     enable = true;

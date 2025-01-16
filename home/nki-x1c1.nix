@@ -68,6 +68,8 @@ in
     ];
   };
   programs.my-niri.enable = true;
+  # Assign some of the workspaces to big screen
+  programs.my-niri.workspaces = lib.genAttrs [ "06" "07" "08" "09" "10" ] (_: { monitor = config.common.monitors.work.name; });
   programs.niri.settings = {
     # input.keyboard.xkb.options = "ctrl:swapcaps";
     input.mouse = lib.mkForce {

@@ -117,15 +117,6 @@ in
       ];
     };
 
-    # Yellow light!
-    services.wlsunset = {
-      enable = true;
-
-      # Lausanne
-      latitude = "46.31";
-      longitude = "6.38";
-    };
-
     # Cursor
     home.pointerCursor = {
       package = pkgs.suwako-cursors;
@@ -242,7 +233,6 @@ in
     qt.style.package = [ pkgs.kdePackages.breeze ];
     qt.style.name = "Breeze";
 
-
     xdg.configFile =
       let
         f = pkg: {
@@ -275,6 +265,26 @@ in
     # dconf.settings."desktop/ibus/general/hotkey" = {
     #   triggers = hm.gvariant.mkArray hm.gvariant.type.string [ "<Super>z" ];
     # };
+
+    # Some graphical targets
+    systemd.user.targets = {
+      # For system trays, usually after graphical-session and graphical-session-pre
+      tray = {
+        Unit.Description = lib.mkDefault "System tray";
+        Unit.After = [ "graphical-session-pre.target" ];
+        Unit.Before = [ "graphical-session.target" ];
+        Unit.BindsTo = [ "graphical-session.target" ];
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
+      # XWayland target
+      xwayland = {
+        Unit.Description = "XWayland support";
+        Unit.After = [ "graphical-session-pre.target" ];
+        Unit.Before = [ "graphical-session.target" ];
+        Unit.BindsTo = [ "graphical-session.target" ];
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
+    };
   };
 }
 

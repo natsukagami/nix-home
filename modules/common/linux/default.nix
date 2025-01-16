@@ -56,18 +56,6 @@ let
       # https://github.com/sodiboo/niri-flake/blob/main/docs.md
       programs.niri.enable = true;
       programs.niri.package = pkgs.niri-stable;
-      systemd.user.services.niri = {
-        description = "A scrollable-tiling Wayland compositor";
-        bindsTo = [ "graphical-session.target" ];
-        before = [ "graphical-session.target" ];
-        wants = [ "graphical-session-pre.target" ];
-        after = [ "graphical-session-pre.target" ];
-
-        serviceConfig.Slice = "session.slice";
-        serviceConfig.Type = "notify";
-        serviceConfig.ExecStart = "${lib.getExe config.programs.niri.package} --session";
-        path = mkForce [ ];
-      };
       # Override gnome-keyring disabling
       services.gnome.gnome-keyring.enable = lib.mkForce false;
     };

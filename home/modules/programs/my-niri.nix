@@ -10,7 +10,7 @@ let
 
   wallpaper = config.linux.graphical.wallpaper;
 
-  xwayland-display = ":12";
+  xwayland-display = ":0";
 
 in
 {
@@ -41,6 +41,11 @@ in
               default = true;
               description = "whether workspace always exists";
             };
+            monitor = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = null;
+              description = "Default monitor to spawn workspace in";
+            };
           };
         });
       description = "A mapping of ordering to workspace names, for fixed workspaces";
@@ -54,14 +59,33 @@ in
       "02" = { name = "💬 chat"; };
       "03" = { name = "⚙️ code"; };
       "04" = { name = "🎶 music"; };
-      "05" = { name = "🔧 extra"; fixed = false; };
-      "06" = { name = "🧰 6"; fixed = false; };
-      "07" = { name = "🔩 7"; fixed = false; };
-      "08" = { name = "🛠️ 8"; fixed = false; };
-      "09" = { name = "🔨 9"; fixed = false; };
-      "10" = { name = "🎲 misc"; fixed = false; };
-      "99" = { name = "📧 Email"; fixed = false; };
+      "05" = { name = "🔧 extra"; };
+      "06" = { name = "🧰 6"; };
+      "07" = { name = "🔩 7"; };
+      "08" = { name = "🛠️ 8"; };
+      "09" = { name = "🔨 9"; };
+      "10" = { name = "🎲 misc"; };
+      "99" = { name = "📧 Email"; };
     };
+    systemd.user.services.swaync.Install.WantedBy = [ "niri.service" ];
+    systemd.user.services.swaync.Unit.After = [ "niri.service" ];
+    systemd.user.targets.tray.Unit.After = [ "niri.service" ];
+    systemd.user.targets.xwayland.Unit.After = [ "niri.service" ];
+
+    # xwayland-satellite
+    systemd.user.services.niri-xwayland-satellite = lib.mkIf cfg.enable {
+      Unit = {
+        Description = "XWayland Client for niri";
+        PartOf = [ "xwayland.target" ];
+        Before = [ "xwayland.target" "xdg-desktop-autostart.target" ];
+        After = [ "niri.service" ];
+      };
+      Install.UpheldBy = [ "niri.service" ];
+      Service.Slice = "session.slice";
+      Service.Type = "notify";
+      Service.ExecStart = "${lib.getExe pkgs.xwayland-satellite} ${xwayland-display}";
+    };
+
     programs.niri.settings = {
       environment = {
         QT_QPA_PLATFORM = "wayland";
@@ -106,16 +130,8 @@ in
       spawn-at-startup = [
         # Wallpaper
         { command = [ (lib.getExe pkgs.swaybg) "-i" "${wallpaper}" "-m" "fill" ]; }
-        # IME
-        { command = [ "fcitx5" ]; }
-        # XWayland
-        { command = [ (lib.getExe pkgs.xwayland-satellite) xwayland-display ]; }
         # Waybar
-        { command = [ "systemctl" "--user" "start" "swaync.service" ]; }
         { command = [ "systemctl" "--user" "start" "xdg-desktop-portal-gtk.service" "xdg-desktop-portal.service" ]; }
-        { command = [ "systemctl" "--user" "reset-failed" "waybar.service" "wlsunset.service" ]; }
-        # Startup
-        { command = [ (lib.getExe pkgs.dex) "-ae" "niri" ]; }
       ];
 
       layout = {
@@ -141,7 +157,11 @@ in
       workspaces =
         let
           fixedWorkspaces = lib.filterAttrs (_: w: w.fixed) cfg.workspaces;
-          workspaceConfig = lib.mapAttrs (_: w: { inherit (w) name; }) fixedWorkspaces;
+          workspaceConfig = lib.mapAttrs
+            (_: w: { inherit (w) name; } // (lib.optionalAttrs (w.monitor != null) {
+              open-on-output = w.monitor;
+            }))
+            fixedWorkspaces;
         in
         workspaceConfig;
 

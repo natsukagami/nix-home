@@ -256,7 +256,7 @@ in
     lib.mkIf cfg.enable {
       enable = true;
       systemd.enable = true;
-      systemd.target = "graphical-session.target";
+      systemd.target = "tray.target";
       settings = cfg.makeBars barWith;
       style = ''
         * {
