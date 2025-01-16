@@ -47,28 +47,13 @@
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";
   wayland.windowManager.sway.config.input."type:pointer".accel_profile = "flat";
   # 144hz adaptive refresh ON!
-  wayland.windowManager.sway.config.output =
-    let
-      scale = 1.5;
-      top_x = builtins.ceil (3840 / scale);
-      top_y = 0;
-    in
-    with config.common.monitors; {
-      ${home_4k.name} = {
-        scale = toString scale;
-        position = "0 0";
-      };
-      ${home_1440.name} = {
-        position = "${toString top_x} ${toString top_y}";
-      };
-    };
   nki.programs.kitty.enable = true;
   nki.programs.kitty.fontSize = 14;
   programs.my-waybar.makeBars = with config.common.monitors; barWith: [
     # For primary
-    (barWith { extraSettings = { output = [ home_4k.name ]; }; })
+    (barWith { extraSettings = { output = [ home_4k.meta.connection ]; }; })
     # For secondary, hide mpd
-    (barWith { showMedia = false; showConnectivity = false; extraSettings = { output = [ home_1440.name ]; }; })
+    (barWith { showMedia = false; showConnectivity = false; extraSettings = { output = [ home_1440.meta.connection ]; }; })
   ];
 
   # Yellow light!

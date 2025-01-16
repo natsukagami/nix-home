@@ -11,7 +11,7 @@ let
         style = ./swaync.css;
       };
       systemd.user.services.swaync.Install.WantedBy = lib.mkForce [ "sway-session.target" ];
-      systemd.user.services.swaync.Unit.PartOf = lib.mkForce [ "sway-session.target" ];
+      systemd.user.services.swaync.Unit.PartOf = lib.mkForce [ "graphical-session.target" ];
 
       programs.my-waybar = {
         extraSettings = [{

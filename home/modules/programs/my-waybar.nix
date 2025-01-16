@@ -240,7 +240,7 @@ in
     lib.mkIf cfg.enable {
       enable = true;
       systemd.enable = true;
-      systemd.target = "sway-session.target";
+      systemd.target = "graphical-session.target";
       settings = cfg.makeBars barWith;
       style = ''
         * {
