@@ -281,16 +281,16 @@ in
         "Mod+8".action = focus-workspace (workspaces."08".name);
         "Mod+9".action = focus-workspace (workspaces."09".name);
         "Mod+0".action = focus-workspace (workspaces."10".name);
-        "Mod+Ctrl+1".action = move-column-to-workspace (workspaces."01".name);
-        "Mod+Ctrl+2".action = move-column-to-workspace (workspaces."02".name);
-        "Mod+Ctrl+3".action = move-column-to-workspace (workspaces."03".name);
-        "Mod+Ctrl+4".action = move-column-to-workspace (workspaces."04".name);
-        "Mod+Ctrl+5".action = move-column-to-workspace (workspaces."05".name);
-        "Mod+Ctrl+6".action = move-column-to-workspace (workspaces."06".name);
-        "Mod+Ctrl+7".action = move-column-to-workspace (workspaces."07".name);
-        "Mod+Ctrl+8".action = move-column-to-workspace (workspaces."08".name);
-        "Mod+Ctrl+9".action = move-column-to-workspace (workspaces."09".name);
-        "Mod+Ctrl+0".action = move-column-to-workspace (workspaces."10".name);
+        "Mod+Shift+1".action = move-column-to-workspace (workspaces."01".name);
+        "Mod+Shift+2".action = move-column-to-workspace (workspaces."02".name);
+        "Mod+Shift+3".action = move-column-to-workspace (workspaces."03".name);
+        "Mod+Shift+4".action = move-column-to-workspace (workspaces."04".name);
+        "Mod+Shift+5".action = move-column-to-workspace (workspaces."05".name);
+        "Mod+Shift+6".action = move-column-to-workspace (workspaces."06".name);
+        "Mod+Shift+7".action = move-column-to-workspace (workspaces."07".name);
+        "Mod+Shift+8".action = move-column-to-workspace (workspaces."08".name);
+        "Mod+Shift+9".action = move-column-to-workspace (workspaces."09".name);
+        "Mod+Shift+0".action = move-column-to-workspace (workspaces."10".name);
 
         "Mod+asciicircum".action = focus-workspace (workspaces."99".name);
         "Mod+Shift+asciicircum".action = move-column-to-workspace (workspaces."99".name);
