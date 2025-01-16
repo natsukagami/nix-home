@@ -13,6 +13,9 @@ let
     if which sway &>/dev/null
       set -a CHOICES "sway"
     end
+    if which niri-session &>/dev/null
+      set -a CHOICES "Niri"
+    end
     if which startplasma-wayland &>/dev/null
       set -a CHOICES "KDE Plasma"
     end
@@ -22,6 +25,8 @@ let
       case "sway"
         systemctl --user unset-environment NIXOS_OZONE_WL
         exec sway
+      case "Niri"
+        exec niri-session
       case "KDE Plasma"
         exec ${pkgs.kdePackages.plasma-workspace}/libexec/plasma-dbus-run-session-if-needed startplasma-wayland
       case '*'

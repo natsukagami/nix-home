@@ -45,12 +45,31 @@ let
       # services.gnome.evolution-data-server.plugins = with pkgs; [ evolution-ews ];
     };
 
-    wlr = { ... }: mkIf config.common.linux.enable {
+    wlr = { lib, config, ... }: mkIf config.common.linux.enable {
       # swaync disable notifications on screencast
       xdg.portal.wlr.settings.screencast = {
         exec_before = ''which swaync-client && swaync-client --inhibitor-add "xdg-desktop-portal-wlr" || true'';
         exec_after = ''which swaync-client && swaync-client --inhibitor-remove "xdg-desktop-portal-wlr" || true'';
       };
+
+      # Niri stuff
+      # https://github.com/sodiboo/niri-flake/blob/main/docs.md
+      programs.niri.enable = true;
+      programs.niri.package = pkgs.niri-stable;
+      systemd.user.services.niri = {
+        description = "A scrollable-tiling Wayland compositor";
+        bindsTo = [ "graphical-session.target" ];
+        before = [ "graphical-session.target" ];
+        wants = [ "graphical-session-pre.target" ];
+        after = [ "graphical-session-pre.target" ];
+
+        serviceConfig.Slice = "session.slice";
+        serviceConfig.Type = "notify";
+        serviceConfig.ExecStart = "${lib.getExe config.programs.niri.package} --session";
+        path = mkForce [ ];
+      };
+      # Override gnome-keyring disabling
+      services.gnome.gnome-keyring.enable = lib.mkForce false;
     };
 
     logitech = { pkgs, ... }: mkIf cfg.enable {
@@ -343,6 +362,13 @@ in
       extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-gtk ];
 
       config.sway.default = [ "wlr" "kde" "kwallet" ];
+      config.niri = {
+        default = [ "gnome" "gtk" ];
+        "org.freedesktop.impl.portal.Access" = "gtk";
+        "org.freedesktop.impl.portal.Notification" = "gtk";
+        "org.freedesktop.impl.portal.Secret" = "kwallet";
+        "org.freedesktop.impl.portal.FileChooser" = "kde";
+      };
     };
     # D-Bus
     services.dbus.packages = with pkgs; [ gcr ];

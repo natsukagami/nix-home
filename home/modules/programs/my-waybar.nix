@@ -45,11 +45,14 @@ in
   config.programs.waybar =
     let
       barWith = { showMedia ? true, showConnectivity ? true, extraSettings ? { }, ... }: lib.mkMerge ([{
+        layer = "top";
         position = "top";
         modules-left = [
           "sway/workspaces"
           "sway/mode"
           "sway/window"
+          "niri/workspaces"
+          "niri/window"
         ];
         modules-center = [
         ];
@@ -79,6 +82,19 @@ in
           };
           "sway/window" = {
             max-length = 70;
+            format = "{title}";
+            "rewrite" = {
+              "(.*) — Mozilla Firefox" = "[🌎] $1";
+              "(.*) - Mozilla Thunderbird" = "[📧] $1";
+              "(.*) - Kakoune" = "[⌨️] $1";
+              "(.*) - fish" = "[>_] $1";
+              "(.*) - Discord" = "[🗨️] $1";
+              # ArmCord thing
+              "• Discord \\| (.*)" = "[🗨️] $1";
+              "\\((\\d+)\\) Discord \\| (.*)" = "[🗨️] {$1} $2";
+            };
+          };
+          "niri/window" = {
             format = "{title}";
             "rewrite" = {
               "(.*) — Mozilla Firefox" = "[🌎] $1";
