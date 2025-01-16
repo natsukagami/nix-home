@@ -10,20 +10,6 @@ let
 
   wallpaper = config.linux.graphical.wallpaper;
 
-  workspaces = {
-    "01" = { name = "🌏 web"; };
-    "02" = { name = "💬 chat"; };
-    "03" = { name = "⚙️ code"; };
-    "04" = { name = "🎶 music"; };
-    "05" = { name = "🔧 extra"; };
-    "06" = { name = "🧰 6"; };
-    "07" = { name = "🔩 7"; };
-    "08" = { name = "🛠️ 8"; };
-    "09" = { name = "🔨 9"; };
-    "10" = { name = "🎲 misc"; };
-    "99" = { name = "📧 Email"; };
-  };
-
   xwayland-display = ":12";
 
 in
@@ -44,9 +30,38 @@ in
         ++ (if wallpaper == "" then [ "" ] else [ "-i" "${wallpaper}" "-s" "fill" ])
         ++ [ "-l" "-k" ];
     };
+
+    workspaces = lib.mkOption {
+      type = lib.types.attrsOf
+        (lib.types.submodule {
+          options = {
+            name = lib.mkOption { type = lib.types.str; description = "workspace name"; };
+            fixed = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "whether workspace always exists";
+            };
+          };
+        });
+      description = "A mapping of ordering to workspace names, for fixed workspaces";
+    };
   };
 
   config = lib.mkIf cfg.enable {
+    programs.my-niri.workspaces = {
+      # Default workspaces, always there
+      "01" = { name = "🌏 web"; };
+      "02" = { name = "💬 chat"; };
+      "03" = { name = "⚙️ code"; };
+      "04" = { name = "🎶 music"; };
+      "05" = { name = "🔧 extra"; fixed = false; };
+      "06" = { name = "🧰 6"; fixed = false; };
+      "07" = { name = "🔩 7"; fixed = false; };
+      "08" = { name = "🛠️ 8"; fixed = false; };
+      "09" = { name = "🔨 9"; fixed = false; };
+      "10" = { name = "🎲 misc"; fixed = false; };
+      "99" = { name = "📧 Email"; fixed = false; };
+    };
     programs.niri.settings = {
       environment = {
         QT_QPA_PLATFORM = "wayland";
@@ -123,7 +138,12 @@ in
 
       prefer-no-csd = true;
 
-      inherit workspaces;
+      workspaces =
+        let
+          fixedWorkspaces = lib.filterAttrs (_: w: w.fixed) cfg.workspaces;
+          workspaceConfig = lib.mapAttrs (_: w: { inherit (w) name; }) fixedWorkspaces;
+        in
+        workspaceConfig;
 
       window-rules = [
         # Rounded Corners
@@ -133,7 +153,7 @@ in
         }
         # Workspace assignments
         {
-          open-on-workspace = workspaces."01".name;
+          open-on-workspace = cfg.workspaces."01".name;
           open-maximized = true;
           matches = [
             { at-startup = true; app-id = "^firefox$"; }
@@ -142,7 +162,7 @@ in
           ];
         }
         {
-          open-on-workspace = workspaces."02".name;
+          open-on-workspace = cfg.workspaces."02".name;
           open-maximized = true;
           matches = [
             { title = "^((d|D)iscord|((A|a)rm(c|C)ord))$"; }
@@ -155,7 +175,7 @@ in
           ];
         }
         {
-          open-on-workspace = workspaces."99".name;
+          open-on-workspace = cfg.workspaces."99".name;
           open-maximized = true;
           matches = [
             { app-id = "thunderbird"; }
@@ -271,29 +291,29 @@ in
         #
         # For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
         # will all refer to the 3rd workspace.
-        "Mod+1".action = focus-workspace (workspaces."01".name);
-        "Mod+2".action = focus-workspace (workspaces."02".name);
-        "Mod+3".action = focus-workspace (workspaces."03".name);
-        "Mod+4".action = focus-workspace (workspaces."04".name);
-        "Mod+5".action = focus-workspace (workspaces."05".name);
-        "Mod+6".action = focus-workspace (workspaces."06".name);
-        "Mod+7".action = focus-workspace (workspaces."07".name);
-        "Mod+8".action = focus-workspace (workspaces."08".name);
-        "Mod+9".action = focus-workspace (workspaces."09".name);
-        "Mod+0".action = focus-workspace (workspaces."10".name);
-        "Mod+Shift+1".action = move-column-to-workspace (workspaces."01".name);
-        "Mod+Shift+2".action = move-column-to-workspace (workspaces."02".name);
-        "Mod+Shift+3".action = move-column-to-workspace (workspaces."03".name);
-        "Mod+Shift+4".action = move-column-to-workspace (workspaces."04".name);
-        "Mod+Shift+5".action = move-column-to-workspace (workspaces."05".name);
-        "Mod+Shift+6".action = move-column-to-workspace (workspaces."06".name);
-        "Mod+Shift+7".action = move-column-to-workspace (workspaces."07".name);
-        "Mod+Shift+8".action = move-column-to-workspace (workspaces."08".name);
-        "Mod+Shift+9".action = move-column-to-workspace (workspaces."09".name);
-        "Mod+Shift+0".action = move-column-to-workspace (workspaces."10".name);
+        "Mod+1".action = focus-workspace (cfg.workspaces."01".name);
+        "Mod+2".action = focus-workspace (cfg.workspaces."02".name);
+        "Mod+3".action = focus-workspace (cfg.workspaces."03".name);
+        "Mod+4".action = focus-workspace (cfg.workspaces."04".name);
+        "Mod+5".action = focus-workspace (cfg.workspaces."05".name);
+        "Mod+6".action = focus-workspace (cfg.workspaces."06".name);
+        "Mod+7".action = focus-workspace (cfg.workspaces."07".name);
+        "Mod+8".action = focus-workspace (cfg.workspaces."08".name);
+        "Mod+9".action = focus-workspace (cfg.workspaces."09".name);
+        "Mod+0".action = focus-workspace (cfg.workspaces."10".name);
+        "Mod+Shift+1".action = move-column-to-workspace (cfg.workspaces."01".name);
+        "Mod+Shift+2".action = move-column-to-workspace (cfg.workspaces."02".name);
+        "Mod+Shift+3".action = move-column-to-workspace (cfg.workspaces."03".name);
+        "Mod+Shift+4".action = move-column-to-workspace (cfg.workspaces."04".name);
+        "Mod+Shift+5".action = move-column-to-workspace (cfg.workspaces."05".name);
+        "Mod+Shift+6".action = move-column-to-workspace (cfg.workspaces."06".name);
+        "Mod+Shift+7".action = move-column-to-workspace (cfg.workspaces."07".name);
+        "Mod+Shift+8".action = move-column-to-workspace (cfg.workspaces."08".name);
+        "Mod+Shift+9".action = move-column-to-workspace (cfg.workspaces."09".name);
+        "Mod+Shift+0".action = move-column-to-workspace (cfg.workspaces."10".name);
 
-        "Mod+asciicircum".action = focus-workspace (workspaces."99".name);
-        "Mod+Shift+asciicircum".action = move-column-to-workspace (workspaces."99".name);
+        "Mod+asciicircum".action = focus-workspace (cfg.workspaces."99".name);
+        "Mod+Shift+asciicircum".action = move-column-to-workspace (cfg.workspaces."99".name);
 
         "Mod+Tab".action = focus-workspace-previous;
 
