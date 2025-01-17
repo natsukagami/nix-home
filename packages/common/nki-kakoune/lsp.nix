@@ -14,6 +14,7 @@
 , fsautocomplete
 , metals
 , texlab
+, tinymist
 , marksman
 , rust-analyzer
 , ...
@@ -169,14 +170,16 @@ let
           };
           package = texlab;
         };
-        typst-lsp = {
-          command = "typst-lsp";
+        tinymist = {
+          command = "tinymist";
           filetypes = [ "typst" ];
           roots = [ "main.typ" ".git" ];
-          settings_section = "typst-lsp";
-          settings.typst-lsp = {
-            experimentalFormatterMode = "on";
+          settings_section = "tinymist";
+          settings.tinymist = {
+            exportPdf = "onSave";
+            formatterMode = "typstfmt";
           };
+          package = tinymist;
         };
         marksman = {
           command = "marksman";

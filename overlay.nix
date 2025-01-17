@@ -122,6 +122,7 @@ in
   inputs.mpd-mpris.overlays.default
   inputs.rust-overlay.overlays.default
   inputs.youmubot.overlays.default
+  inputs.niri.overlays.niri
 
   overlay-unstable
   overlay-needs-unstable

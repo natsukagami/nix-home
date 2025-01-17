@@ -19,6 +19,11 @@ with lib;
 
   options.nki.programs.kitty = {
     enable = mkEnableOption "Enable kitty";
+    setDefault = mkOption {
+      type = types.bool;
+      description = "Set kitty as default terminal";
+      default = true;
+    };
 
     package = mkOption {
       type = types.package;
@@ -51,6 +56,10 @@ with lib;
     };
   };
 
+  config.linux.graphical = mkIf (cfg.enable && cfg.setDefault) {
+    defaults.terminal.package = cfg.package;
+  };
+
   config.programs.kitty = mkIf cfg.enable {
     enable = true;
 
@@ -65,7 +74,7 @@ with lib;
         # Background color and transparency
         background =
           if isNull cfg.background then {
-            background_opacity = "0.85";
+            background_opacity = "0.93";
             dynamic_background_opacity = true;
           } else {
             background_image = "${cfg.background}";

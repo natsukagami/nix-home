@@ -37,7 +37,7 @@
 
     # ---
     # Imported apps
-    youmubot.url = "github:natsukagami/youmubot";
+    youmubot.url = "github:natsukagami/youmubot/osu-commands";
     # swayfx = {
     #   url = github:WillPower3309/swayfx;
     #   inputs.nixpkgs.follows = "nixpkgs";
@@ -50,6 +50,7 @@
     conduit.url = "gitlab:famedly/conduit/v0.9.0";
     nix-gaming.url = github:fufexan/nix-gaming;
     zen-browser.url = "github:youwen5/zen-browser-flake";
+    niri.url = "github:sodiboo/niri-flake";
 
     # --- Sources
     kakoune.url = github:mawww/kakoune;
@@ -121,6 +122,7 @@
           (common-nix stable)
           inputs.secrets.nixosModules.common
           inputs.nix-gaming.nixosModules.pipewireLowLatency
+          inputs.niri.nixosModules.niri
         ];
       };
 
