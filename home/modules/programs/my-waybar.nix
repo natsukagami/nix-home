@@ -42,6 +42,9 @@ in
       default = "";
     };
   };
+  config.systemd.user.services.waybar = lib.mkIf cfg.enable {
+    Unit.Before = [ "tray.target" ];
+  };
   config.programs.waybar =
     let
       barWith = { showMedia ? true, showConnectivity ? true, extraSettings ? { }, ... }: lib.mkMerge ([{
@@ -256,7 +259,7 @@ in
     lib.mkIf cfg.enable {
       enable = true;
       systemd.enable = true;
-      systemd.target = "tray.target";
+      systemd.target = "sway-session.target";
       settings = cfg.makeBars barWith;
       style = ''
         * {

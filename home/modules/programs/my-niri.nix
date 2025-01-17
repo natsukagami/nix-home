@@ -70,6 +70,8 @@ in
     systemd.user.services.swaync.Install.WantedBy = [ "niri.service" ];
     systemd.user.services.swaync.Unit.After = [ "niri.service" ];
     systemd.user.targets.tray.Unit.After = [ "niri.service" ];
+    systemd.user.services.waybar.Unit.After = [ "niri.service" ];
+    systemd.user.services.waybar.Install.WantedBy = [ "niri.service" ];
     systemd.user.targets.xwayland.Unit.After = [ "niri.service" ];
 
     # xwayland-satellite
@@ -212,6 +214,23 @@ in
             { title = "Extension: .*Bitwarden.*"; }
             { app-id = "Rofi"; }
           ];
+        }
+
+        # xwaylandvideobridge
+        {
+          matches = [{ app-id = "^xwaylandvideobridge$"; }];
+          open-floating = true;
+          focus-ring.enable = false;
+          opacity = 0.0;
+          default-floating-position = {
+            x = 0;
+            y = 0;
+            relative-to = "bottom-right";
+          };
+          min-width = 1;
+          max-width = 1;
+          min-height = 1;
+          max-height = 1;
         }
 
         # Kitty dimming

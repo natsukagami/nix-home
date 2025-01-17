@@ -92,7 +92,9 @@ in
   };
 
   config.systemd.user.targets.sway-session = mkIf cfg.enable {
-    Unit.Before = [ "tray.target" "xwayland.target" ];
+    Unit.Before = [ "tray.target" "xwayland.target" "xdg-desktop-portal.service" "xdg-desktop-autostart.target" ];
+    Unit.Upholds = [ "waybar.service" ];
+    Unit.Wants = [ "xdg-desktop-autostart.target" ];
   };
 
   # Enable waybar
@@ -113,10 +115,10 @@ in
     ] ++ lib.optionals osConfig.services.desktopManager.plasma6.enable [
       "XDG_MENU_PREFIX"
     ];
-    systemd.extraCommands = options.wayland.windowManager.sway.systemd.extraCommands.default
-      ++ [
-      "systemctl --user restart xdg-desktop-portal.service"
-    ];
+    # systemd.extraCommands = options.wayland.windowManager.sway.systemd.extraCommands.default
+    #   ++ [
+    #   "systemctl --user restart xdg-desktop-portal.service"
+    # ];
 
     checkConfig = false; # Not working atm
     config = {
@@ -145,10 +147,10 @@ in
       menu = "${pkgs.dmenu}/bin/dmenu_path | ${pkgs.bemenu}/bin/bemenu | ${pkgs.findutils}/bin/xargs swaymsg exec --";
       # Startup
       startup = [
-        # Dex for autostart
-        { command = "${pkgs.dex}/bin/dex -ae sway"; }
-        # Waybar
-        { command = "systemctl --user restart waybar"; always = true; }
+        # # Dex for autostart
+        # { command = "${pkgs.dex}/bin/dex -ae sway"; }
+        # # Waybar
+        # { command = "systemctl --user restart waybar"; always = true; }
         # IME
         { command = "fcitx5"; }
       ];
