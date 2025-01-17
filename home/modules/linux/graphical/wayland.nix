@@ -66,6 +66,7 @@ let
     name = "rofi-rbw-script";
     runtimeInputs = with pkgs; [ rofi wtype rofi-rbw ];
     text = "rofi-rbw";
+    meta.mainProgram = "rofi-rbw-script";
   };
 in
 with lib;

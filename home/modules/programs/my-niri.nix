@@ -258,6 +258,7 @@ in
         "Mod+Space".action = spawn (lib.getExe pkgs.rofi) "-show" "drun";
         "Mod+R".action = sh app-menu;
         "Mod+Semicolon".action = spawn cfg.lock-command;
+        "Mod+Shift+P".action = spawn "rofi-rbw-script";
 
         # Audio and Volume
         "XF86AudioPrev" = { action = spawn playerctl "previous"; allow-when-locked = true; };
