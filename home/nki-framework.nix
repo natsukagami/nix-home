@@ -29,12 +29,10 @@
   # Graphical set up
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_0.png;
-  linux.graphical.defaults.webBrowser = "librewolf.desktop";
+  linux.graphical.defaults.webBrowser.package = pkgs.librewolf;
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 14.0;
-  programs.my-sway.terminal = "${config.programs.kitty.package}/bin/kitty";
-  programs.my-sway.browser = "librewolf";
   wayland.windowManager.sway.config = {
     # Keyboard support
     input."*".xkb_layout = "jp";
@@ -48,7 +46,11 @@
       tap = "enabled";
     };
   };
-  programs.my-sway.waybar.extraSettings =
+  programs.my-niri.enable = true;
+  programs.niri.settings = {
+    input.keyboard.xkb.options = "ctrl:swapcaps";
+  };
+  programs.my-waybar.extraSettings =
     let
       change-mode = pkgs.writeScript "change-mode" ''
         #!/usr/bin/env ${lib.getExe pkgs.fish}

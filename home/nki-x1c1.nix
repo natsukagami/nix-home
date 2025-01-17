@@ -1,5 +1,20 @@
 { pkgs, config, lib, ... }:
 
+let
+  iio-sway = pkgs.stdenv.mkDerivation {
+    name = "iio-sway";
+    version = "0.0.1";
+    src = pkgs.fetchFromGitHub {
+      owner = "okeri";
+      repo = "iio-sway";
+      rev = "e07477d1b2478fede1446e97424a94c80767819d";
+      hash = "sha256-JGacKajslCOvd/BFfFSf7s1/hgF6rJqJ6H6xNnsuMb4=";
+    };
+    buildInputs = with pkgs; [ dbus ];
+    nativeBuildInputs = with pkgs; [ meson ninja pkg-config ];
+    meta.mainProgram = "iio-sway";
+  };
+in
 {
   imports = [
     # Common configuration
@@ -30,12 +45,11 @@
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_0.png;
   linux.graphical.startup = with pkgs; [ zen-browser-bin thunderbird vesktop slack ];
-  linux.graphical.defaults.webBrowser = "zen.desktop";
+  linux.graphical.defaults.webBrowser.package = pkgs.zen-browser-bin;
+  linux.graphical.defaults.webBrowser.desktopFile = "zen.desktop";
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 14.0;
-  programs.my-sway.terminal = "${config.programs.kitty.package}/bin/kitty";
-  programs.my-sway.browser = "librewolf";
   wayland.windowManager.sway.config = {
     # Keyboard support
     input."*".xkb_layout = "jp";
@@ -50,24 +64,24 @@
 
     startup = [
       # rotation
-      (
-        let
-          iio-sway = pkgs.stdenv.mkDerivation {
-            name = "iio-sway";
-            version = "0.0.1";
-            src = pkgs.fetchFromGitHub {
-              owner = "okeri";
-              repo = "iio-sway";
-              rev = "e07477d1b2478fede1446e97424a94c80767819d";
-              hash = "sha256-JGacKajslCOvd/BFfFSf7s1/hgF6rJqJ6H6xNnsuMb4=";
-            };
-            buildInputs = with pkgs; [ dbus ];
-            nativeBuildInputs = with pkgs; [ meson ninja pkg-config ];
-          };
-        in
-        { command = "${iio-sway}/bin/iio-sway"; }
-      )
+      { command = "${lib.getExe iio-sway}"; }
     ];
+  };
+  programs.my-niri.enable = true;
+  # Assign some of the workspaces to big screen
+  programs.my-niri.workspaces = lib.genAttrs [ "06" "07" "08" "09" "10" ] (_: { monitor = config.common.monitors.work.name; });
+  programs.niri.settings = {
+    # input.keyboard.xkb.options = "ctrl:swapcaps";
+    input.mouse = lib.mkForce {
+      # Make M575 fast for now
+      accel-profile = "adaptive";
+      accel-speed = 0.4;
+    };
+    input.touch.map-to-output = "eDP-1";
+    switch-events = with config.lib.niri.actions; {
+      tablet-mode-on.action = spawn "systemctl" "--user" "kill" "--signal" "SIGUSR2" "wvkbd";
+      tablet-mode-off.action = spawn "systemctl" "--user" "kill" "--signal" "SIGUSR1" "wvkbd";
+    };
   };
   ## Virtual keyboard
   systemd.user.services.wvkbd = {
@@ -100,7 +114,7 @@
     settings = [
       {
         profile.name = "undocked";
-        profile.outputs = [{ criteria = "LVDS-1"; }];
+        profile.outputs = [{ criteria = "eDP-1"; }];
       }
       {
         profile.name = "work-both";

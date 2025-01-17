@@ -11,9 +11,9 @@ let
         style = ./swaync.css;
       };
       systemd.user.services.swaync.Install.WantedBy = lib.mkForce [ "sway-session.target" ];
-      systemd.user.services.swaync.Unit.PartOf = lib.mkForce [ "sway-session.target" ];
+      systemd.user.services.swaync.Unit.PartOf = lib.mkForce [ "graphical-session.target" ];
 
-      programs.my-sway.waybar = {
+      programs.my-waybar = {
         extraSettings = [{
           modules-right = mkAfter [ "custom/swaync" ];
           modules."custom/swaync" = {
@@ -66,6 +66,7 @@ let
     name = "rofi-rbw-script";
     runtimeInputs = with pkgs; [ rofi wtype rofi-rbw ];
     text = "rofi-rbw";
+    meta.mainProgram = "rofi-rbw-script";
   };
 in
 with lib;
@@ -100,6 +101,16 @@ with lib;
       ANKI_WAYLAND = "1";
     };
 
+    # Yellow light!
+    services.wlsunset = {
+      enable = true;
+
+      # Lausanne
+      latitude = "46.31";
+      longitude = "6.38";
+    };
+
+
     # Notification system
     # services.dunst = {
     #   enable = true;
@@ -119,9 +130,6 @@ with lib;
 
     #   settings.experimental.per_monitor_dpi = "true";
     # };
-
-    # Forward wallpaper settings to sway
-    programs.my-sway.wallpaper = config.linux.graphical.wallpaper;
   };
 }
 

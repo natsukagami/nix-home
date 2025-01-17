@@ -50,8 +50,8 @@ in
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 14.0;
-  programs.my-sway.enableLaptopBars = true;
-  programs.my-sway.enableMpd = false;
+  programs.my-sway.enableLaptop = true;
+  programs.my-waybar.enableMpd = false;
   programs.my-sway.discord = "${discord}/bin/armcord";
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";

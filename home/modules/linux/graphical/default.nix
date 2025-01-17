@@ -17,6 +17,24 @@ let
       echo $wifi_output
     end
   '';
+
+  mkPackageWithDesktopOption = opts: mkOption ({
+    type = types.submodule {
+      options = {
+        package = mkOption {
+          type = types.package;
+          description = "The package for " + description;
+        };
+        desktopFile = mkOption {
+          type = types.nullOr types.str;
+          default = null;
+          description = "The desktop file name for " + description + ", defaults to [packagename].desktop";
+        };
+      };
+    };
+  } // opts);
+
+  desktopFileOf = cfg: if cfg.desktopFile == null then "${cfg.package}/share/applications/${cfg.package.pname}.desktop" else cfg.desktopFile;
 in
 {
   imports = [ ./x11.nix ./wayland.nix ./alacritty.nix ];
@@ -35,21 +53,23 @@ in
       type = types.listOf types.package;
       description = "List of packages to include in ~/.config/autostart";
       default = with pkgs; [
-        librewolf
+        cfg.defaults.webBrowser.package
         thunderbird
         vesktop
       ];
     };
-    defaults.webBrowser = mkOption {
-      type = types.str;
-      default = "librewolf.desktop";
-      description = "Desktop file of the default web browser";
+    defaults = {
+      webBrowser = mkPackageWithDesktopOption { description = "default web browser"; };
+      terminal = mkPackageWithDesktopOption { description = "default terminal"; default.package = pkgs.kitty; };
     };
   };
   config = mkIf (cfg.type != null) {
     # Packages
 
     home.packages = (with pkgs; [
+      cfg.defaults.webBrowser.package
+      cfg.defaults.terminal.package
+
       ## GUI stuff
       evince # PDF reader
       gparted
@@ -97,15 +117,6 @@ in
       ];
     };
 
-    # Yellow light!
-    services.wlsunset = {
-      enable = true;
-
-      # Lausanne
-      latitude = "46.31";
-      longitude = "6.38";
-    };
-
     # Cursor
     home.pointerCursor = {
       package = pkgs.suwako-cursors;
@@ -150,14 +161,14 @@ in
       "application/x-extension-rss" = [ "thunderbird.desktop" ];
 
       # Default web browser stuff
-      "text/html" = [ cfg.defaults.webBrowser ];
-      "x-scheme-handler/about" = [ cfg.defaults.webBrowser ];
-      "x-scheme-handler/unknown" = [ cfg.defaults.webBrowser ];
-      "x-scheme-handler/http" = [ cfg.defaults.webBrowser ];
-      "x-scheme-handler/https" = [ cfg.defaults.webBrowser ];
-      "x-scheme-handler/ftp" = [ cfg.defaults.webBrowser ];
-      "x-scheme-handler/ftps" = [ cfg.defaults.webBrowser ];
-      "x-scheme-handler/file" = [ cfg.defaults.webBrowser ];
+      "text/html" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "x-scheme-handler/about" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "x-scheme-handler/unknown" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "x-scheme-handler/http" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "x-scheme-handler/https" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "x-scheme-handler/ftp" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "x-scheme-handler/ftps" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "x-scheme-handler/file" = [ (desktopFileOf cfg.defaults.webBrowser) ];
 
       # Torrent
       "application/x-bittorrent" = [ "deluge.desktop" ];
@@ -222,7 +233,6 @@ in
     qt.style.package = [ pkgs.kdePackages.breeze ];
     qt.style.name = "Breeze";
 
-
     xdg.configFile =
       let
         f = pkg: {
@@ -255,6 +265,26 @@ in
     # dconf.settings."desktop/ibus/general/hotkey" = {
     #   triggers = hm.gvariant.mkArray hm.gvariant.type.string [ "<Super>z" ];
     # };
+
+    # Some graphical targets
+    systemd.user.targets = {
+      # For system trays, usually after graphical-session and graphical-session-pre
+      tray = {
+        Unit.Description = lib.mkDefault "System tray";
+        Unit.After = [ "graphical-session-pre.target" ];
+        Unit.Before = [ "graphical-session.target" ];
+        Unit.BindsTo = [ "graphical-session.target" ];
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
+      # XWayland target
+      xwayland = {
+        Unit.Description = "XWayland support";
+        Unit.After = [ "graphical-session-pre.target" ];
+        Unit.Before = [ "graphical-session.target" ];
+        Unit.BindsTo = [ "graphical-session.target" ];
+        Install.WantedBy = [ "graphical-session.target" ];
+      };
+    };
   };
 }
 
