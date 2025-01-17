@@ -331,26 +331,26 @@ in
         #
         # For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
         # will all refer to the 3rd workspace.
-        "Mod+1".action = focus-workspace (cfg.workspaces."01".name);
-        "Mod+2".action = focus-workspace (cfg.workspaces."02".name);
-        "Mod+3".action = focus-workspace (cfg.workspaces."03".name);
-        "Mod+4".action = focus-workspace (cfg.workspaces."04".name);
-        "Mod+5".action = focus-workspace (cfg.workspaces."05".name);
-        "Mod+6".action = focus-workspace (cfg.workspaces."06".name);
-        "Mod+7".action = focus-workspace (cfg.workspaces."07".name);
-        "Mod+8".action = focus-workspace (cfg.workspaces."08".name);
-        "Mod+9".action = focus-workspace (cfg.workspaces."09".name);
-        "Mod+0".action = focus-workspace (cfg.workspaces."10".name);
-        "Mod+Shift+1".action = move-column-to-workspace (cfg.workspaces."01".name);
-        "Mod+Shift+2".action = move-column-to-workspace (cfg.workspaces."02".name);
-        "Mod+Shift+3".action = move-column-to-workspace (cfg.workspaces."03".name);
-        "Mod+Shift+4".action = move-column-to-workspace (cfg.workspaces."04".name);
-        "Mod+Shift+5".action = move-column-to-workspace (cfg.workspaces."05".name);
-        "Mod+Shift+6".action = move-column-to-workspace (cfg.workspaces."06".name);
-        "Mod+Shift+7".action = move-column-to-workspace (cfg.workspaces."07".name);
-        "Mod+Shift+8".action = move-column-to-workspace (cfg.workspaces."08".name);
-        "Mod+Shift+9".action = move-column-to-workspace (cfg.workspaces."09".name);
-        "Mod+Shift+0".action = move-column-to-workspace (cfg.workspaces."10".name);
+        "Mod+1" = lib.mkIf cfg.workspaces."01".fixed { action = focus-workspace (cfg.workspaces."01".name); };
+        "Mod+2" = lib.mkIf cfg.workspaces."02".fixed { action = focus-workspace (cfg.workspaces."02".name); };
+        "Mod+3" = lib.mkIf cfg.workspaces."03".fixed { action = focus-workspace (cfg.workspaces."03".name); };
+        "Mod+4" = lib.mkIf cfg.workspaces."04".fixed { action = focus-workspace (cfg.workspaces."04".name); };
+        "Mod+5" = lib.mkIf cfg.workspaces."05".fixed { action = focus-workspace (cfg.workspaces."05".name); };
+        "Mod+6" = lib.mkIf cfg.workspaces."06".fixed { action = focus-workspace (cfg.workspaces."06".name); };
+        "Mod+7" = lib.mkIf cfg.workspaces."07".fixed { action = focus-workspace (cfg.workspaces."07".name); };
+        "Mod+8" = lib.mkIf cfg.workspaces."08".fixed { action = focus-workspace (cfg.workspaces."08".name); };
+        "Mod+9" = lib.mkIf cfg.workspaces."09".fixed { action = focus-workspace (cfg.workspaces."09".name); };
+        "Mod+0" = lib.mkIf cfg.workspaces."10".fixed { action = focus-workspace (cfg.workspaces."10".name); };
+        "Mod+Shift+1" = lib.mkIf cfg.workspaces."01".fixed { action = move-column-to-workspace (cfg.workspaces."01".name); };
+        "Mod+Shift+2" = lib.mkIf cfg.workspaces."02".fixed { action = move-column-to-workspace (cfg.workspaces."02".name); };
+        "Mod+Shift+3" = lib.mkIf cfg.workspaces."03".fixed { action = move-column-to-workspace (cfg.workspaces."03".name); };
+        "Mod+Shift+4" = lib.mkIf cfg.workspaces."04".fixed { action = move-column-to-workspace (cfg.workspaces."04".name); };
+        "Mod+Shift+5" = lib.mkIf cfg.workspaces."05".fixed { action = move-column-to-workspace (cfg.workspaces."05".name); };
+        "Mod+Shift+6" = lib.mkIf cfg.workspaces."06".fixed { action = move-column-to-workspace (cfg.workspaces."06".name); };
+        "Mod+Shift+7" = lib.mkIf cfg.workspaces."07".fixed { action = move-column-to-workspace (cfg.workspaces."07".name); };
+        "Mod+Shift+8" = lib.mkIf cfg.workspaces."08".fixed { action = move-column-to-workspace (cfg.workspaces."08".name); };
+        "Mod+Shift+9" = lib.mkIf cfg.workspaces."09".fixed { action = move-column-to-workspace (cfg.workspaces."09".name); };
+        "Mod+Shift+0" = lib.mkIf cfg.workspaces."10".fixed { action = move-column-to-workspace (cfg.workspaces."10".name); };
 
         "Mod+asciicircum".action = focus-workspace (cfg.workspaces."99".name);
         "Mod+Shift+asciicircum".action = move-column-to-workspace (cfg.workspaces."99".name);

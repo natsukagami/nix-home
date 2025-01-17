@@ -47,6 +47,9 @@
     };
   };
   programs.my-niri.enable = true;
+  programs.my-niri.workspaces = lib.genAttrs [ "04" "05" "06" "07" "08" "09" ] (_: {
+    fixed = false;
+  });
   programs.niri.settings = {
     input.keyboard.xkb.options = "ctrl:swapcaps";
   };
