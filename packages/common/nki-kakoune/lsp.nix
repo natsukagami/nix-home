@@ -264,11 +264,11 @@ let
       (lib.mapAttrsToList (_: serv: serv.package or null) config.languageServers);
 in
 {
-  extraPaths = lib.makeBinPath serverPackages;
+  extraPaths = lib.makeBinPath (serverPackages ++ [ kak-lsp ]);
   plugin = writeTextDir "share/kak/autoload/kak-lsp.kak" ''
     hook global KakBegin .* %{
       try %{
-        eval %sh{${lib.getExe kak-lsp} --kakoune --config ${kak-lsp-config} -s $kak_session}
+        eval %sh{kak-lsp --kakoune --config ${kak-lsp-config} -s $kak_session}
       }
 
       lsp-enable
