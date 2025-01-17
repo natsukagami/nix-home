@@ -10,8 +10,6 @@ let
         settings.widgets = [ "inhibitors" "title" "dnd" "mpris" "notifications" ];
         style = ./swaync.css;
       };
-      systemd.user.services.swaync.Install.WantedBy = lib.mkForce [ "sway-session.target" ];
-      systemd.user.services.swaync.Unit.PartOf = lib.mkForce [ "graphical-session.target" ];
 
       programs.my-waybar = {
         extraSettings = [{

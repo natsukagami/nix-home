@@ -104,6 +104,7 @@ in
     enableLaptopBars = mkDefault cfg.enableLaptop;
     terminal = mkDefault cfg.terminal;
   };
+  config.systemd.user.services.swaync.Install.WantedBy = mkIf cfg.enable [ "sway-session.target" ];
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
