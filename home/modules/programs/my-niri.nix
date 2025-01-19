@@ -86,6 +86,8 @@ in
       Service.Slice = "session.slice";
       Service.Type = "notify";
       Service.ExecStart = "${lib.getExe pkgs.xwayland-satellite} ${xwayland-display}";
+      Service.ExecStartPost = [ "systemctl --user set-environment DISPLAY=${xwayland-display}" ];
+      Service.ExecStopPre = [ "systemctl --user unset-environment" ];
     };
 
     programs.niri.settings = {

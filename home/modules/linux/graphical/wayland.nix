@@ -107,6 +107,7 @@ with lib;
       latitude = "46.31";
       longitude = "6.38";
     };
+    systemd.user.services.wlsunset.Unit.After = "graphical-session.target";
 
 
     # Notification system
