@@ -49,6 +49,7 @@ in
     services.owncloud-client.package = pkgs.owncloud-client.overrideAttrs (attrs: {
       buildInputs = attrs.buildInputs ++ [ pkgs.qt6.qtwayland ];
     });
+    systemd.user.services.owncloud-client.Unit.After = [ "graphical-session.target" ];
 
     # UDisks automounter
     services.udiskie.enable = true;
