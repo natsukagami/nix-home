@@ -82,12 +82,13 @@ in
         Before = [ "xwayland.target" "xdg-desktop-autostart.target" ];
         After = [ "niri.service" ];
       };
+      Install.WantedBy = [ "niri.service" ];
       Install.UpheldBy = [ "niri.service" ];
       Service.Slice = "session.slice";
       Service.Type = "notify";
       Service.ExecStart = "${lib.getExe pkgs.xwayland-satellite} ${xwayland-display}";
       Service.ExecStartPost = [ "systemctl --user set-environment DISPLAY=${xwayland-display}" ];
-      Service.ExecStopPre = [ "systemctl --user unset-environment" ];
+      Service.ExecStopPost = [ "systemctl --user unset-environment" ];
     };
 
     programs.niri.settings = {
