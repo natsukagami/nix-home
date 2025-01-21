@@ -72,9 +72,9 @@ let
     });
 
     vikunja =
-      builtins.seq
-        (final.lib.assertMsg (prev.vikunja.version == "0.24.5") "Vikunja probably doesn't need custom versions anymore")
-        (final.callPackage ./packages/common/vikunja.nix { });
+      # builtins.seq
+      # (final.lib.assertMsg (prev.vikunja.version == "0.24.5") "Vikunja probably doesn't need custom versions anymore")
+      (final.callPackage ./packages/common/vikunja.nix { });
 
     luminance = prev.luminance.overrideAttrs (attrs: {
       nativeBuildInputs = attrs.nativeBuildInputs ++ [ final.wrapGAppsHook ];
