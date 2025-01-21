@@ -83,6 +83,10 @@ let
         glib-compile-schemas $out/share/glib-2.0/schemas
       '';
     });
+
+    vesktop = prev.vesktop.overrideAttrs (attrs: {
+      postFixup = builtins.replaceStrings [ "NIXOS_OZONE_WL" "--enable-wayland-ime=true" ] [ "WAYLAND_DISPLAY" "--enable-wayland-ime=true --wayland-text-input-version=3" ] attrs.postFixup;
+    });
   };
 
   overlay-libs = final: prev: {
@@ -135,6 +139,3 @@ in
 
   # Bug fixes
 ] # we assign the overlay created before to the overlays of nixpkgs.
-
-
-
