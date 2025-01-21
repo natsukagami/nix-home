@@ -96,7 +96,6 @@ in
         QT_QPA_PLATFORM = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
         QT_IM_MODULE = "fcitx";
-        GTK_IM_MODULE = "fcitx"; # Til text-input is merged
         # export NIXOS_OZONE_WL=1 # Until text-input is merged
         DISPLAY = xwayland-display;
       } // lib.optionalAttrs osConfig.services.desktopManager.plasma6.enable {
