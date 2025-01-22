@@ -331,7 +331,12 @@ in
     # DConf for GNOME configurations
     programs.dconf.enable = true;
     # Gaming! (not for ARM64)
-    programs.steam.enable = !pkgs.stdenv.isAarch64;
+    programs.steam.enable = true;
+    programs.gamescope = {
+      enable = true;
+      # capSysNice = true; # https://github.com/NixOS/nixpkgs/issues/351516
+      args = [ "--adaptive-sync" "--rt" ];
+    };
 
     ## Services
     # OpenSSH so you can SSH to me
