@@ -110,13 +110,14 @@ let
         meta.mainProgram = "kak-lsp";
       };
 
-    zen-browser-bin = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
-      wrap-firefox = opts: final.wrapFirefox (opts // {
+    zen-browser-bin = inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
+      inherit (inputs.zen-browser.packages.${final.stdenv.system}) zen-browser-unwrapped;
+      wrapFirefox = opts: final.wrapFirefox (opts // {
         nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
       });
-      zen-browser-unwrapped = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser-unwrapped.override {
-        sources = inputs.zen-browser.inputs;
-      };
+      # zen-browser-unwrapped = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser-unwrapped.override {
+      #   sources = inputs.zen-browser.inputs;
+      # };
     };
   };
 in
