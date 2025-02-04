@@ -16,6 +16,7 @@
 , texlab
 , tinymist
 , marksman
+, templ
 , rust-analyzer
 , ...
 }:
@@ -33,12 +34,12 @@ let
 
     languageServers =
       let
-        vscodeServerOf = name: {
+        vscodeServerWith = { name, extraFileTypes ? [ ] }: {
           name = "vscode-${name}-language-server";
           value = {
             args = [ "--stdio" ];
             command = "vscode-${name}-language-server";
-            filetypes = [ name "templ" ];
+            filetypes = [ name ] ++ extraFileTypes;
             roots = [ "package.json" ".git" ];
             package = nodePackages.vscode-langservers-extracted;
           };
@@ -187,6 +188,13 @@ let
           roots = [ ".marksman.toml" ".git" ];
           package = marksman;
         };
+        templ = {
+          command = "templ";
+          args = [ "lsp" ];
+          filetypes = [ "templ" ];
+          roots = [ "go.mod" ".git" ];
+          package = templ;
+        };
         rust-analyzer = {
           args = [ ];
           command = "rust-analyzer";
@@ -195,7 +203,11 @@ let
           package = rust-analyzer;
         };
 
-      } // (builtins.listToAttrs (builtins.map vscodeServerOf [ "html" "css" "json" ]));
+      } // (builtins.listToAttrs (builtins.map
+        (ft: vscodeServerWith {
+          name = ft;
+          extraFileTypes = if ft == "json" then [ ] else [ "templ" ];
+        }) [ "html" "css" "json" ]));
 
     faces = [
       ## Items
