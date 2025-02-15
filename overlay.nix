@@ -100,19 +100,24 @@ let
   overlay-packages = final: prev: {
     kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter { rustPlatform = final.unstable.rustPlatform; };
 
-    kak-lsp =
-      let
-        src = inputs.kak-lsp;
-        cargoArtifacts = final.libs.crane.buildDepsOnly { inherit src; };
-      in
-      final.libs.crane.buildPackage {
-        inherit src cargoArtifacts;
-        buildInputs = (with final;
-          lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
-        ) ++ (with final; [ libiconv ]);
+    kak-lsp = final.rustPlatform.buildRustPackage {
+      name = "kak-lsp";
+      src = inputs.kak-lsp;
+      cargoHash = "sha256-U9KxTHzIDtdJ3A62rcdvWlxJfnhbFnS6KDRaV0HJOHE=";
+      buildInputs = [ final.libiconv ];
 
-        meta.mainProgram = "kak-lsp";
-      };
+      meta.mainProgram = "kak-lsp";
+    };
+    #   cargoArtifacts = final.libs.crane.buildDepsOnly { inherit src; };
+    # in
+    # final.libs.crane.buildPackage {
+    #   inherit src cargoArtifacts;
+    #   buildInputs = (with final;
+    #     lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
+    #   ) ++ (with final; [ libiconv ]);
+
+    #   meta.mainProgram = "kak-lsp";
+    # };
 
     zen-browser-bin = inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
       inherit (inputs.zen-browser.packages.${final.stdenv.system}) zen-browser-unwrapped;
