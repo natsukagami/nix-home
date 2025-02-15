@@ -52,6 +52,7 @@ in
       serviceConfig.EnvironmentFile = cfg.envFile;
       serviceConfig.Type = "notify";
       serviceConfig.NotifyAccess = "all";
+      serviceConfig.TimeoutSec = 300;
       script = lib.mkBefore ''
         ${lib.getExe pkgs.wait4x} http http://127.0.0.1:${toString cfg.port} --expect-status-code 200 -t 0 -q -- systemd-notify --ready &
       '';
