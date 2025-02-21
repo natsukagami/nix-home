@@ -11,7 +11,7 @@ let
     inherit src;
     pname = "kak-tree-sitter";
     version = "1.1.2";
-    cargoHash = "sha256-OQPUWqJAts8DbFNSsC/CmMCbuZ9TVxRTR05O7oiodKI=";
+    cargoHash = "sha256-ruHklps7NZzsI1ub1trRKyufrP9tufWWrQ+urvEsIdA=";
     cargoBuildOptions = [ "--package" "kak-tree-sitter" "--package" "ktsctl" ];
 
     nativeBuildInputs = [ clang git ];
