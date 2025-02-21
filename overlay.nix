@@ -85,7 +85,11 @@ let
     });
 
     vesktop = prev.vesktop.overrideAttrs (attrs: {
-      postFixup = builtins.replaceStrings [ "NIXOS_OZONE_WL" "--enable-wayland-ime=true" ] [ "WAYLAND_DISPLAY" "--enable-wayland-ime=true --wayland-text-input-version=3" ] attrs.postFixup;
+      postFixup =
+        let
+          flagToReplace = if final.lib.hasInfix "--enable-wayland-ime=true" attrs.postFixup then "--enable-wayland-ime=true" else "--enable-wayland-ime";
+        in
+        builtins.replaceStrings [ "NIXOS_OZONE_WL" flagToReplace ] [ "WAYLAND_DISPLAY" "${flagToReplace} --wayland-text-input-version=3" ] attrs.postFixup;
     });
   };
 
