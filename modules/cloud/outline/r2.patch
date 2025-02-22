@@ -1,11 +1,5 @@
-commit 8c7f8c28fabc174a71499a4737579b24b5c4b244
-Author: Natsu Kagami <nki@nkagami.me>
-Date:   Mon Oct 21 02:17:36 2024 +0200
-
-    Support R2
-
 diff --git a/.env.sample b/.env.sample
-index eb57ad85c..94ffcee07 100644
+index 51046501d..6daf60347 100644
 --- a/.env.sample
 +++ b/.env.sample
 @@ -66,6 +66,8 @@ AWS_S3_UPLOAD_BUCKET_URL=http://s3:4569
@@ -18,10 +12,10 @@ index eb57ad85c..94ffcee07 100644
  # –––––––––––––– AUTHENTICATION ––––––––––––––
  
 diff --git a/app/utils/files.ts b/app/utils/files.ts
-index 6607a6b12..5138f68ad 100644
+index 16b66a2c4..c56ffd2b2 100644
 --- a/app/utils/files.ts
 +++ b/app/utils/files.ts
-@@ -63,8 +63,13 @@ export const uploadFile = async (
+@@ -88,8 +88,13 @@ export const uploadFile = async (
      xhr.addEventListener("loadend", () => {
        resolve(xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 400);
      });
@@ -57,20 +51,20 @@ index 5b420f2e1..4ea1e8d3c 100644
     * Whether to force path style URLs for S3 objects, this is required for some
     * S3-compatible storage providers.
 diff --git a/server/routes/api/attachments/attachments.ts b/server/routes/api/attachments/attachments.ts
-index 5e6c27594..b7620f440 100644
+index d2288c215..72251962c 100644
 --- a/server/routes/api/attachments/attachments.ts
 +++ b/server/routes/api/attachments/attachments.ts
 @@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
  import { AttachmentPreset } from "@shared/types";
- import { bytesToHumanReadable } from "@shared/utils/files";
+ import { bytesToHumanReadable, getFileNameFromUrl } from "@shared/utils/files";
  import { AttachmentValidation } from "@shared/validations";
 +import env from "@server/env";
- import { AuthorizationError, ValidationError } from "@server/errors";
- import auth from "@server/middlewares/authentication";
- import { rateLimiter } from "@server/middlewares/rateLimiter";
-@@ -90,16 +91,30 @@ router.post(
-       { transaction }
-     );
+ import { createContext } from "@server/context";
+ import {
+   AuthorizationError,
+@@ -83,16 +84,30 @@ router.post(
+       userId: user.id,
+     });
  
 -    const presignedPost = await FileStorage.getPresignedPost(
 -      key,
@@ -107,7 +101,7 @@ index 5e6c27594..b7620f440 100644
            "Cache-Control": "max-age=31557600",
            "Content-Type": contentType,
 diff --git a/server/storage/files/BaseStorage.ts b/server/storage/files/BaseStorage.ts
-index ce0287ebc..a1931c83d 100644
+index 339262cc5..03f658271 100644
 --- a/server/storage/files/BaseStorage.ts
 +++ b/server/storage/files/BaseStorage.ts
 @@ -26,6 +26,8 @@ export default abstract class BaseStorage {
@@ -135,7 +129,7 @@ index 83cf98c50..324e60dd9 100644
      return "/api/files.create";
    }
 diff --git a/server/storage/files/S3Storage.ts b/server/storage/files/S3Storage.ts
-index a42442e0c..d55ef5472 100644
+index beba39ab2..4f0fe09a9 100644
 --- a/server/storage/files/S3Storage.ts
 +++ b/server/storage/files/S3Storage.ts
 @@ -4,6 +4,7 @@ import {
@@ -181,3 +175,4 @@ index a42442e0c..d55ef5472 100644
      const isDocker = env.AWS_S3_UPLOAD_BUCKET_URL.match(/http:\/\/s3:/);
      const params = {
        Bucket: this.getBucket(),
+
