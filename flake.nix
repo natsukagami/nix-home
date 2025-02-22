@@ -114,6 +114,7 @@
           sops-nix.nixosModules.sops
           inputs.lix-module.nixosModules.default
         ];
+        config.nix.settings.extra-deprecated-features = [ "url-literals" ]; # So lix won't complain
       };
       common-nixos = stable: { ... }: {
         imports = [
