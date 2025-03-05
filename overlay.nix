@@ -11,7 +11,7 @@ let
     typst-lsp = final.unstable.typst-lsp;
   };
   overlay-imported = final: prev: {
-    sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
+    # sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
     deploy-rs = inputs.deploy-rs.packages.default;
     dtth-phanpy = inputs.dtth-phanpy.packages.${final.system}.default;
     matrix-conduit = inputs.conduit.packages.${final.system}.default;
@@ -57,15 +57,6 @@ let
           # patches in the original package was already applied
         ];
       });
-
-    swayfx-unwrapped = prev.swayfx-unwrapped.overrideAttrs (attrs: {
-      patches = (attrs.patches or [ ]) ++ [
-        (final.fetchurl {
-          url = "https://patch-diff.githubusercontent.com/raw/WillPower3309/swayfx/pull/315.patch";
-          hash = "sha256-zamOLHUjlzRs8PytPTAzEsdzgVtK+HVziHgrhwPcB+E=";
-        })
-      ];
-    });
 
     librewolf = (prev.librewolf.override {
       nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
@@ -131,8 +122,6 @@ let
   };
 in
 [
-  # inputs.swayfx.inputs.scenefx.overlays.override
-  # inputs.swayfx.overlays.override
   inputs.mpd-mpris.overlays.default
   inputs.rust-overlay.overlays.default
   inputs.youmubot.overlays.default

@@ -38,10 +38,6 @@
     # ---
     # Imported apps
     youmubot.url = "github:natsukagami/youmubot";
-    # swayfx = {
-    #   url = github:WillPower3309/swayfx;
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     mpd-mpris = {
       url = "github:natsukagami/mpd-mpris";
       inputs.nixpkgs.follows = "nixpkgs";

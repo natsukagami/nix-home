@@ -12,7 +12,7 @@ in
     terminal = lib.mkOption {
       type = lib.types.str;
       description = "The command to the terminal emulator to be used";
-      default = "${config.programs.kitty.package}/bin/kitty";
+      default = "${lib.getExe config.linux.graphical.defaults.terminal.package}";
     };
 
     enableLaptopBars = lib.mkOption {
@@ -181,9 +181,10 @@ in
           "network" = {
             # interface = wlp2s0 # (Optional) To force the use of this interface
             format-wifi = "{essid} ({signalStrength}%) ";
-            format-ethernet = "{ifname}: {ipaddr}/{cidr} ";
+            format-ethernet = "{ifname} ";
             format-disconnected = "Disconnected ⚠";
             interval = 7;
+            on-click = "${cfg.terminal} ${lib.getExe' pkgs.iwd "iwctl"}";
           };
           "bluetooth" = {
             format = " {status}";
