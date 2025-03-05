@@ -91,7 +91,7 @@ let
   overlay-packages = final: prev: {
     kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter { rustPlatform = final.unstable.rustPlatform; };
 
-    kak-lsp = final.rustPlatform.buildRustPackage {
+    kak-lsp = final.unstable.rustPlatform.buildRustPackage {
       name = "kak-lsp";
       src = inputs.kak-lsp;
       cargoHash = "sha256-U9KxTHzIDtdJ3A62rcdvWlxJfnhbFnS6KDRaV0HJOHE=";
