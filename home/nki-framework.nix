@@ -48,6 +48,7 @@
     };
   };
   programs.my-niri.enable = true;
+  programs.my-niri.enableLaptop = true;
   programs.my-niri.workspaces = lib.genAttrs [ "04" "05" "06" "07" "08" "09" ] (_: {
     fixed = false;
   });
