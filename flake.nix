@@ -29,7 +29,7 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    arion.url = "github:hercules-ci/arion";
+    arion.url = "github:hercules-ci/arion/v0.2.2.0";
     lix-module = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
