@@ -83,6 +83,8 @@ in
       vivaldi
       # Audio
       qpwgraph # Pipewire graph
+      audacity
+      vlc
 
       unstable.zotero
       libreoffice
