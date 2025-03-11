@@ -27,6 +27,7 @@
     ./outline.nix
     ./vikunja.nix
     ./n8n.nix
+    ./grist.nix
   ];
 
   system.stateVersion = "21.11";
@@ -201,6 +202,16 @@
     enable = true;
     envFile = config.sops.secrets.gts-env.path;
   };
+
+  # Grist
+  sops.secrets."grist/env" = { restartUnits = [ "arion-grist.service" ]; };
+  cloud.grist = {
+    enable = true;
+    envFile = config.sops.secrets."grist/env".path;
+    host = "tables.dtth.ch";
+    dataDir = "/mnt/data/grist";
+  };
+
 
   # ntfy
   cloud.traefik.hosts.ntfy-sh = { host = "ntfy.nkagami.me"; port = 11161; noCloudflare = true; };
