@@ -357,9 +357,9 @@ in
 
       config.sway.default = [ "wlr" "kde" "kwallet" ];
       config.niri = {
-        default = [ "gnome" "gtk" ];
-        "org.freedesktop.impl.portal.Access" = "gtk";
-        "org.freedesktop.impl.portal.Notification" = "gtk";
+        default = [ "kde" "gnome" "gtk" ];
+        # "org.freedesktop.impl.portal.Access" = "gtk";
+        # "org.freedesktop.impl.portal.Notification" = "gtk";
         "org.freedesktop.impl.portal.Secret" = "kwallet";
         "org.freedesktop.impl.portal.FileChooser" = "kde";
       };
