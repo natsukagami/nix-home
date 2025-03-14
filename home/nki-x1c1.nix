@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, options, config, lib, ... }:
 
 let
   iio-sway = pkgs.stdenv.mkDerivation {
@@ -44,7 +44,7 @@ in
   # Graphical set up
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_0.png;
-  linux.graphical.startup = with pkgs; [ zen-browser-bin thunderbird vesktop slack ];
+  linux.graphical.startup = options.linux.graphical.startup.default ++ [ pkgs.slack ];
   linux.graphical.defaults.webBrowser.package = pkgs.zen-browser-bin;
   linux.graphical.defaults.webBrowser.desktopFile = "zen.desktop";
   # Enable sway

@@ -25,7 +25,6 @@ in
     ./modules/monitors.nix
     ./modules/linux/graphical
     ./modules/X11/xfce4-notifyd.nix
-    ./modules/programs/discord.nix
     kwallet
   ];
   config = (mkIf pkgs.stdenv.isLinux {
