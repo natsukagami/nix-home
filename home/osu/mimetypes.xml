@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+  <mime-type type="application/x-osu-beatmap-archive">
+    <icon name="osu"/>
+    <comment xml:lang="en">osu! Beatmap Archive</comment>
+    <glob pattern="*.osz"/>
+    <glob pattern="*.olz"/>
+  </mime-type>
+  <mime-type type="application/x-osu-skin-archive">
+    <icon name="osu"/>
+    <comment xml:lang="en">osu! Skin Archive</comment>
+    <glob pattern="*.osk"/>
+  </mime-type>
+  <mime-type type="application/x-osu-beatmap">
+    <icon name="osu"/>
+    <comment xml:lang="en">osu! Beatmap</comment>
+    <glob pattern="*.osu"/>
+  </mime-type>
+  <mime-type type="application/x-osu-storyboard">
+    <icon name="osu"/>
+    <comment xml:lang="en">osu! Storyboard</comment>
+    <glob pattern="*.osb"/>
+  </mime-type>
+  <mime-type type="application/x-osu-replay">
+    <icon name="osu"/>
+    <comment xml:lang="en">osu! Replay</comment>
+    <glob pattern="*.osr"/>
+  </mime-type>
+</mime-info>

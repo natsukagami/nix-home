@@ -5,7 +5,7 @@
     # Common configuration
     ./common.nix
     # osu!
-    ./osu.nix
+    ./osu
   ];
 
   # Home Manager needs a bit of information about you and the

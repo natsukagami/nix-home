@@ -18,6 +18,7 @@ let
         ''
           mv -v $out/bin/${pname} $out/bin/osu\!
           install -m 444 -D ${contents}/osu\!.desktop -t $out/share/applications
+          install -m 444 -D ${./mimetypes.xml} $out/share/mime/packages/${pname}.xml
           for i in 16 32 48 64 96 128 256 512 1024; do
             install -D ${contents}/osu.png $out/share/icons/hicolor/''${i}x$i/apps/osu.png
           done
