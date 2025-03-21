@@ -135,10 +135,9 @@ let
           roots = [ "build.sbt" "build.sc" "build.mill" ];
           settings_section = "metals";
           settings.metals = {
-            enableSemanticHighlighting = true;
-            showInferredType = true;
-            decorationProvider = true;
-            inlineDecorationProvider = true;
+            inlayHints.inferredTypes.enable = true;
+            inlayHints.typeParameters.enable = true;
+            inlayHints.hintsInPatternMatch.enable = true;
             # From kakoune-lsp's own options
             icons = "unicode";
             isHttpEnabled = true;
@@ -300,7 +299,7 @@ in
 
       hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix|fsharp|templ) %{
           # Format the document if possible
-          hook window BufWritePre .* %{ lsp-formatting-sync }
+          hook window -group lsp-formatting BufWritePre .* %{ lsp-formatting-sync }
       }
 
       hook global WinSetOption filetype=(rust|scala|fsharp) %{
@@ -315,6 +314,18 @@ in
         hook -once -always window WinSetOption filetype=.* %{
           remove-hooks window semantic-tokens
         }
+      }
+
+      define-command -params 0 -docstring "Set up build" scala-build-connect %{
+          lsp-execute-command 'build-connect' '[]'
+      }
+
+      define-command -params 0 -docstring "Change bsp build server" scala-bsp-switch %{
+          lsp-execute-command 'bsp-switch' '[]'
+      }
+
+      define-command -params 0 -docstring "Import build" scala-build-import %{
+          lsp-execute-command 'build-import' '[]'
       }
     }
   '';

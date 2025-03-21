@@ -131,14 +131,6 @@ hook global WinSetOption filetype=(typst) %{
   hook -once -always window WinSetOption filetype=.* %{ remove-hooks window markdown-.+ }
 }
 
-define-command -params 0 -docstring "Set up build" scala-build-connect %{
-    lsp-execute-command 'build-connect' '"[]"'
-}
-
-define-command -params 0 -docstring "Import build" scala-build-import %{
-    lsp-execute-command 'build-import' '"[]"'
-}
-
 def -hidden insert-c-n %{
  try %{
    lsp-snippets-select-next-placeholders
