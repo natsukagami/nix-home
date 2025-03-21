@@ -51,7 +51,7 @@
     # --- Sources
     kakoune.url = "github:mawww/kakoune";
     kakoune.flake = false;
-    kak-lsp.url = "github:kakoune-lsp/kakoune-lsp/v18.1.2";
+    kak-lsp.url = "github:kakoune-lsp/kakoune-lsp/v18.1.3";
     kak-lsp.flake = false;
     nixos-m1.url = "github:tpwrules/nixos-apple-silicon";
     nixos-m1.inputs.nixpkgs.follows = "nixpkgs";

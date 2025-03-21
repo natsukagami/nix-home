@@ -259,16 +259,64 @@ let
     };
   };
 
-  kak-lsp-config =
+  per-lang-config = lang:
     let
       toml = formats.toml { };
-      toLspConfig = builtins.mapAttrs (_: attrs: builtins.removeAttrs attrs [ "package" ]);
+      servers = lib.filterAttrs (_: server: builtins.elem lang server.filetypes) config.languageServers;
+      serverSettings = lib.mapAttrs
+        (name: server: builtins.removeAttrs
+          (server // {
+            root_globs = server.roots;
+          }) [ "package" "filetypes" "roots" ])
+        servers;
+      serversToml = toml.generate "kak-lsp-${lang}.toml" serverSettings;
+      lang-id =
+        if builtins.hasAttr lang config.languageIDs then ''
+          set-option buffer lsp_language_id ${config.languageIDs.${lang}}
+        '' else "# No lang-id remap needed";
     in
-    toml.generate "kak-lsp.toml" ({
-      semantic_tokens.faces = config.faces;
-      language_server = toLspConfig config.languageServers;
-      language_ids = config.languageIDs;
-    } // config.raw);
+    ''
+      # LSP Configuration for ${lang}
+      hook -group lsp-filetype-${lang} global BufSetOption filetype=(?:${lang}) %{
+        set-option buffer lsp_servers %{
+      ${builtins.readFile serversToml}
+        }
+        ${lang-id}
+      }
+    '';
+
+  lang-config =
+    let
+      langs = lib.unique (lib.flatten (lib.mapAttrsToList (_: server: server.filetypes) config.languageServers));
+    in
+    lib.concatMapStringsSep "\n" per-lang-config langs;
+  faces-config =
+    let
+      mapFace = face:
+        let
+          modifiers = if builtins.hasAttr "modifiers" face then ", modifiers=${builtins.toJSON face.modifiers}" else "";
+        in
+        "{face=${builtins.toJSON face.face}, token=${builtins.toJSON face.token}${modifiers}}";
+      faces = lib.concatMapStringsSep ",\n    " mapFace config.faces;
+    in
+    ''
+      set-option global lsp_semantic_tokens %{
+        [
+          ${faces}
+        ]
+      }
+    '';
+
+  # kak-lsp-config =
+  #   let
+  #     toml = formats.toml { };
+  #     toLspConfig = builtins.mapAttrs (_: attrs: builtins.removeAttrs attrs [ "package" ]);
+  #   in
+  #   toml.generate "kak-lsp.toml" ({
+  #     semantic_tokens.faces = config.faces;
+  #     language_server = toLspConfig config.languageServers;
+  #     language_ids = config.languageIDs;
+  #   } // config.raw);
 
   serverPackages =
     builtins.filter (v: v != null)
@@ -279,7 +327,7 @@ in
   plugin = writeTextDir "share/kak/autoload/kak-lsp.kak" ''
     hook global KakBegin .* %{
       try %{
-        eval %sh{kak-lsp --kakoune --config ${kak-lsp-config} -s $kak_session}
+        eval %sh{kak-lsp --kakoune -s $kak_session}
       }
 
       lsp-enable
@@ -327,6 +375,12 @@ in
       define-command -params 0 -docstring "Import build" scala-build-import %{
           lsp-execute-command 'build-import' '[]'
       }
+
+      ## Language settings
+      ${lang-config}
+
+      ## Faces
+      ${faces-config}
     }
   '';
 }

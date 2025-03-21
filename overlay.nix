@@ -94,7 +94,7 @@ let
     kak-lsp = final.unstable.rustPlatform.buildRustPackage {
       name = "kak-lsp";
       src = inputs.kak-lsp;
-      cargoHash = "sha256-U9KxTHzIDtdJ3A62rcdvWlxJfnhbFnS6KDRaV0HJOHE=";
+      cargoHash = "sha256-8Y+haxC7ssN07ODZcKoDdTv0vEnKqxYseLPoQSNmWI4=";
       buildInputs = [ final.libiconv ];
 
       meta.mainProgram = "kak-lsp";

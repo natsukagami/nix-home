@@ -59,6 +59,7 @@ in
           };
         })
         cfg.autoloadFile;
+    xdg.dataFile."kak".source = "${cfg.package}/share/kak";
   };
 }
 
