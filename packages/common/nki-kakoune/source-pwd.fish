@@ -1,5 +1,3 @@
-#!/usr/bin/env fish
-
 if test (pwd) = "/home/natsukagami/.config/kak"
     exit 0
 end

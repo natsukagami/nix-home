@@ -76,6 +76,7 @@ let
     virtualisation = { pkgs, ... }: mkIf cfg.enable {
       virtualisation.podman = {
         enable = true;
+        extraPackages = [ pkgs.slirp4netns ];
         dockerCompat = true;
         defaultNetwork.settings.dns_enabled = true;
       };
@@ -330,7 +331,12 @@ in
     # DConf for GNOME configurations
     programs.dconf.enable = true;
     # Gaming! (not for ARM64)
-    programs.steam.enable = !pkgs.stdenv.isAarch64;
+    programs.steam.enable = true;
+    programs.gamescope = {
+      enable = true;
+      # capSysNice = true; # https://github.com/NixOS/nixpkgs/issues/351516
+      args = [ "--adaptive-sync" "--rt" ];
+    };
 
     ## Services
     # OpenSSH so you can SSH to me
@@ -351,9 +357,9 @@ in
 
       config.sway.default = [ "wlr" "kde" "kwallet" ];
       config.niri = {
-        default = [ "gnome" "gtk" ];
-        "org.freedesktop.impl.portal.Access" = "gtk";
-        "org.freedesktop.impl.portal.Notification" = "gtk";
+        default = [ "kde" "gnome" "gtk" ];
+        # "org.freedesktop.impl.portal.Access" = "gtk";
+        # "org.freedesktop.impl.portal.Notification" = "gtk";
         "org.freedesktop.impl.portal.Secret" = "kwallet";
         "org.freedesktop.impl.portal.FileChooser" = "kde";
       };

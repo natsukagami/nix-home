@@ -25,7 +25,6 @@ in
     ./modules/monitors.nix
     ./modules/linux/graphical
     ./modules/X11/xfce4-notifyd.nix
-    ./modules/programs/discord.nix
     kwallet
   ];
   config = (mkIf pkgs.stdenv.isLinux {
@@ -49,6 +48,7 @@ in
     services.owncloud-client.package = pkgs.owncloud-client.overrideAttrs (attrs: {
       buildInputs = attrs.buildInputs ++ [ pkgs.qt6.qtwayland ];
     });
+    systemd.user.services.owncloud-client.Unit.After = [ "graphical-session.target" ];
 
     # UDisks automounter
     services.udiskie.enable = true;

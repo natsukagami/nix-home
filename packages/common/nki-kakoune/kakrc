@@ -1,6 +1,3 @@
-# Enable kak-tree-sitter
-eval %sh{test -z "$WE_STARTED_KAK" && kak-tree-sitter --kakoune -d --server --init $kak_session}
-map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
 # ## Set some color overrides
 # set global kts_yellow "rgb:e2b75e"
 # set global kts_teal "rgb:008080"
@@ -8,6 +5,7 @@ map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
 # set global kts_sky "rgb:6aa622"
 # Color scheme
 colorscheme catppuccin-latte
+set-face global module "%opt{sapphire}"
 set global base "default"
 
 # Set indentation guides
@@ -90,47 +88,6 @@ hook global InsertCompletionHide .* %{
     unmap window insert <s-tab> <c-p>
 }
 
-# Enable LSP
-try %{
-    eval %sh{test -z "$WE_STARTED_KAK" && kak-lsp --kakoune -s $kak_session}
-    set-option global lsp_cmd "kak-lsp -s %val{session}"
-}
-hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|fsharp|ocaml|haskell|nix|scala|typst|html|css|json|markdown|templ|elixir) %{
-    lsp-enable-window
-    map window lsp N -docstring "Display the next message request" ": lsp-show-message-request-next<ret>"
-    map window normal <c-l> ": enter-user-mode lsp<ret>"
-    map window normal <c-h> ": lsp-hover<ret>"
-    map window normal <c-s-h> ": lsp-hover-buffer<ret>"
-    # lsp-auto-hover-insert-mode-enable
-    set window lsp_hover_anchor true
-    map global insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring 'Select next snippet placeholder'
-    map global object a '<a-semicolon>lsp-object<ret>' -docstring 'LSP any symbol'
-    map global object <a-a> '<a-semicolon>lsp-object<ret>' -docstring 'LSP any symbol'
-    map global object f '<a-semicolon>lsp-object Function Method<ret>' -docstring 'LSP function or method'
-    map global object t '<a-semicolon>lsp-object Class Interface Struct<ret>' -docstring 'LSP class interface or struct'
-    map global object d '<a-semicolon>lsp-diagnostic-object --include-warnings<ret>' -docstring 'LSP errors and warnings'
-    map global object D '<a-semicolon>lsp-diagnostic-object<ret>' -docstring 'LSP errors'
-}
-
-hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix|fsharp|templ) %{
-    # Format the document if possible
-    hook window BufWritePre .* %{ lsp-formatting-sync }
-}
-
-hook global WinSetOption filetype=(rust|scala|fsharp) %{
-    # Enable inlay hints
-    lsp-inlay-hints-enable window
-}
-
-hook global WinSetOption filetype=(rust|go|fsharp|typst|scala) %{
-  hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
-  hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
-  hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
-  hook -once -always window WinSetOption filetype=.* %{
-    remove-hooks window semantic-tokens
-  }
-}
-
 # <a-a> in Insert mode moves to end of line.
 map global insert <a-a> '<esc>A'
 
@@ -155,11 +112,6 @@ hook global WinSetOption filetype=(rust) %{
     set-option buffer makecmd "cargo check"
 }
 
-hook global WinSetOption filetype=(scala) %{
-    # Format the document if possible
-    hook -group scala-fmt window BufWritePre .* %{ lsp-formatting-sync }
-}
-
 hook global WinSetOption filetype=(typst) %{
   set-option window comment_line "//"
   set-option window comment_block_begin "/*"
@@ -172,15 +124,6 @@ hook global WinSetOption filetype=(typst) %{
   hook window InsertChar \n -group markdown-insert markdown-insert-on-new-line
   hook window InsertChar \n -group markdown-indent markdown-indent-on-new-line
   hook -once -always window WinSetOption filetype=.* %{ remove-hooks window markdown-.+ }
-}
-
-
-define-command -params 0 -docstring "Set up build" scala-build-connect %{
-    lsp-execute-command 'build-connect' '"[]"'
-}
-
-define-command -params 0 -docstring "Import build" scala-build-import %{
-    lsp-execute-command 'build-import' '"[]"'
 }
 
 def -hidden insert-c-n %{

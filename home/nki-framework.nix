@@ -7,7 +7,7 @@
     # We use our own firefox
     # ./firefox.nix
     # osu!
-    ./osu.nix
+    ./osu
   ];
 
   # Home Manager needs a bit of information about you and the
@@ -29,7 +29,8 @@
   # Graphical set up
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_0.png;
-  linux.graphical.defaults.webBrowser.package = pkgs.librewolf;
+  linux.graphical.defaults.webBrowser.package = pkgs.zen-browser-bin;
+  linux.graphical.defaults.webBrowser.desktopFile = "zen.desktop";
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 14.0;
@@ -47,6 +48,10 @@
     };
   };
   programs.my-niri.enable = true;
+  programs.my-niri.enableLaptop = true;
+  programs.my-niri.workspaces = lib.genAttrs [ "04" "05" "06" "07" "08" "09" ] (_: {
+    fixed = false;
+  });
   programs.niri.settings = {
     input.keyboard.xkb.options = "ctrl:swapcaps";
   };

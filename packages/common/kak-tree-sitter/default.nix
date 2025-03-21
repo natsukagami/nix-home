@@ -3,15 +3,15 @@ let
   src = fetchFromSourcehut {
     owner = "~hadronized";
     repo = "kak-tree-sitter";
-    rev = "kak-tree-sitter-v1.1.2";
-    hash = "sha256-wBWfSyR8LGtug/mCD0bJ4lbdN3trIA/03AnCxZoEOSA=";
+    rev = "kak-tree-sitter-v1.1.3";
+    hash = "sha256-vQZ+zQgwIw5ZBdIuMDD37rIdhe+WpNBmq0TciXBNiSU=";
   };
 
   kak-tree-sitter = rustPlatform.buildRustPackage {
     inherit src;
     pname = "kak-tree-sitter";
-    version = "1.1.2";
-    cargoHash = "sha256-OQPUWqJAts8DbFNSsC/CmMCbuZ9TVxRTR05O7oiodKI=";
+    version = "1.1.3";
+    cargoHash = "sha256-1OwPfl1446SYt1556jwR9mvWOWEv+ab+wH7GZQeS4/E=";
     cargoBuildOptions = [ "--package" "kak-tree-sitter" "--package" "ktsctl" ];
 
     nativeBuildInputs = [ clang git ];
@@ -35,6 +35,8 @@ let
              self.runtime_dir.join("sources").join(url_dir)
       '')
     ];
+
+    meta.mainProgram = "kak-tree-sitter";
   };
 in
 kak-tree-sitter

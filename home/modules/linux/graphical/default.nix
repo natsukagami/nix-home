@@ -3,7 +3,6 @@ with lib;
 let
   cfg = config.linux.graphical;
 
-  thunderbird = pkgs.thunderbird-128;
   vscode = with pkgs; if stdenv.isAarch64 then unstable.vscode else unstable.vscode-fhs;
 
   wifi-indicator = pkgs.writeScriptBin "wifi-indicator" ''
@@ -52,15 +51,16 @@ in
     startup = mkOption {
       type = types.listOf types.package;
       description = "List of packages to include in ~/.config/autostart";
-      default = with pkgs; [
+      default = [
         cfg.defaults.webBrowser.package
-        thunderbird
-        vesktop
+        pkgs.thunderbird
+        cfg.defaults.discord.package
       ];
     };
     defaults = {
       webBrowser = mkPackageWithDesktopOption { description = "default web browser"; };
       terminal = mkPackageWithDesktopOption { description = "default terminal"; default.package = pkgs.kitty; };
+      discord = mkPackageWithDesktopOption { description = "Discord client"; default.package = pkgs.vesktop; };
     };
   };
   config = mkIf (cfg.type != null) {
@@ -83,6 +83,8 @@ in
       vivaldi
       # Audio
       qpwgraph # Pipewire graph
+      audacity
+      vlc
 
       unstable.zotero
       libreoffice
@@ -103,9 +105,6 @@ in
       xdg-utils # Open stuff
       wifi-indicator
     ] ++ cfg.startup);
-
-    nki.programs.discord.enable = pkgs.stdenv.isx86_64;
-    nki.programs.discord.package = pkgs.vesktop;
 
     # OBS
     programs.obs-studio = {
@@ -144,6 +143,14 @@ in
       "application/x-extension-rss" = [ "thunderbird.desktop" ];
       "x-scheme-handler/tg2" = [ "org.telegram.desktop.desktop" ];
       "x-scheme-handler/tonsite2" = [ "org.telegram.desktop.desktop" ];
+
+      # Other browser stuff
+      "application/x-extension-htm" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/x-extension-html" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/x-extension-shtml" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/xhtml+xml" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/x-extension-xhtml" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/x-extension-xht" = [ (desktopFileOf cfg.defaults.webBrowser) ];
     };
     xdg.mimeApps.defaultApplications = {
       # Email
@@ -162,6 +169,7 @@ in
 
       # Default web browser stuff
       "text/html" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "x-scheme-handler/chrome" = [ (desktopFileOf cfg.defaults.webBrowser) ];
       "x-scheme-handler/about" = [ (desktopFileOf cfg.defaults.webBrowser) ];
       "x-scheme-handler/unknown" = [ (desktopFileOf cfg.defaults.webBrowser) ];
       "x-scheme-handler/http" = [ (desktopFileOf cfg.defaults.webBrowser) ];
@@ -169,6 +177,12 @@ in
       "x-scheme-handler/ftp" = [ (desktopFileOf cfg.defaults.webBrowser) ];
       "x-scheme-handler/ftps" = [ (desktopFileOf cfg.defaults.webBrowser) ];
       "x-scheme-handler/file" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/x-extension-htm" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/x-extension-html" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/x-extension-shtml" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/xhtml+xml" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/x-extension-xhtml" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+      "application/x-extension-xht" = [ (desktopFileOf cfg.defaults.webBrowser) ];
 
       # Torrent
       "application/x-bittorrent" = [ "deluge.desktop" ];
@@ -184,13 +198,16 @@ in
       # Telegram
       "x-scheme-handler/tg2" = "org.telegram.desktop.desktop";
       "x-scheme-handler/tonsite2" = "org.telegram.desktop.desktop";
+
+      # Discord
+      "x-scheme-handler/discord" = [ (desktopFileOf cfg.defaults.discord) ];
     };
 
     # Add one for kakoune
     xdg.desktopEntries."kakoune" = {
       name = "Kakoune";
       genericName = "Text Editor";
-      exec = ''kitty --class kitty-float -o initial_window_width=150c -o initial_window_height=40c ${pkgs.writeShellScript "editor.sh" ''
+      exec = ''${lib.getExe pkgs.kitty} --class kitty-float -o initial_window_width=150c -o initial_window_height=40c ${pkgs.writeShellScript "editor.sh" ''
         $EDITOR "$@"
       ''} %U'';
       # exec = "kakoune %U";

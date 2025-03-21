@@ -22,8 +22,8 @@ let
     };
     authentik = mkImage {
       imageName = "ghcr.io/goauthentik/server";
-      finalImageTag = "2024.1.0.4";
-      imageDigest = "sha256:5843c56a56be58dcee8927c705f8c9def0af7189511c0e8e687d430f543b0f6d";
+      finalImageTag = "2025.2.1";
+      imageDigest = "sha256:dc07e81b4462a1dad9c6720f4c73993e37d7cb2d2f94a306187318704d112e71";
     };
   };
   authentikEnv = pkgs.writeText "authentik.env" ''
@@ -52,6 +52,7 @@ in
       serviceConfig.EnvironmentFile = cfg.envFile;
       serviceConfig.Type = "notify";
       serviceConfig.NotifyAccess = "all";
+      serviceConfig.TimeoutSec = 300;
       script = lib.mkBefore ''
         ${lib.getExe pkgs.wait4x} http http://127.0.0.1:${toString cfg.port} --expect-status-code 200 -t 0 -q -- systemd-notify --ready &
       '';

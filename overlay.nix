@@ -11,7 +11,7 @@ let
     typst-lsp = final.unstable.typst-lsp;
   };
   overlay-imported = final: prev: {
-    sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
+    # sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
     deploy-rs = inputs.deploy-rs.packages.default;
     dtth-phanpy = inputs.dtth-phanpy.packages.${final.system}.default;
     matrix-conduit = inputs.conduit.packages.${final.system}.default;
@@ -22,7 +22,7 @@ let
 
   overlay-versioning = final: prev: {
     gotosocial = prev.gotosocial.overrideAttrs (attrs: rec {
-      version = "0.17.1";
+      version = "0.18.1";
       ldflags = [
         "-s"
         "-w"
@@ -32,13 +32,13 @@ let
 
       web-assets = final.fetchurl {
         url = "https://github.com/superseriousbusiness/gotosocial/releases/download/v${version}/gotosocial_${version}_web-assets.tar.gz";
-        hash = "sha256-rGntLlIbgfCtdqpD7tnvAY8qwF+BpYbQWfAGMhdOTgY=";
+        hash = "sha256-5MSABLPyTbFMTno9vUDvLT9h7oQM6eNUuwD+dsHiCLo=";
       };
       src = final.fetchFromGitHub {
         owner = "superseriousbusiness";
         repo = "gotosocial";
         rev = "v${version}";
-        hash = "sha256-oWWsCs9jgd244yzWhgLkuHp7kY0BQ8+Ay6KpuBVG+U8=";
+        hash = "sha256-4jV1G1HwpIST2Y27RAhJB3CoJevwuhxdzi615hj0Qv0=";
       };
       postInstall = ''
         tar xf ${web-assets}
@@ -58,15 +58,6 @@ let
         ];
       });
 
-    swayfx-unwrapped = prev.swayfx-unwrapped.overrideAttrs (attrs: {
-      patches = (attrs.patches or [ ]) ++ [
-        (final.fetchurl {
-          url = "https://patch-diff.githubusercontent.com/raw/WillPower3309/swayfx/pull/315.patch";
-          hash = "sha256-zamOLHUjlzRs8PytPTAzEsdzgVtK+HVziHgrhwPcB+E=";
-        })
-      ];
-    });
-
     librewolf = (prev.librewolf.override {
       nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
     });
@@ -83,6 +74,14 @@ let
         glib-compile-schemas $out/share/glib-2.0/schemas
       '';
     });
+
+    vesktop = prev.vesktop.overrideAttrs (attrs: {
+      postFixup =
+        let
+          flagToReplace = if final.lib.hasInfix "--enable-wayland-ime=true" attrs.postFixup then "--enable-wayland-ime=true" else "--enable-wayland-ime";
+        in
+        builtins.replaceStrings [ "NIXOS_OZONE_WL" flagToReplace ] [ "WAYLAND_DISPLAY" "${flagToReplace} --wayland-text-input-version=3" ] attrs.postFixup;
+    });
   };
 
   overlay-libs = final: prev: {
@@ -90,33 +89,39 @@ let
   };
 
   overlay-packages = final: prev: {
-    kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter.nix { rustPlatform = final.unstable.rustPlatform; };
+    kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter { rustPlatform = final.unstable.rustPlatform; };
 
-    kak-lsp =
-      let
-        src = inputs.kak-lsp;
-        cargoArtifacts = final.libs.crane.buildDepsOnly { inherit src; };
-      in
-      final.libs.crane.buildPackage {
-        inherit src cargoArtifacts;
-        buildInputs = (with final;
-          lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
-        ) ++ (with final; [ libiconv ]);
-      };
+    kak-lsp = final.unstable.rustPlatform.buildRustPackage {
+      name = "kak-lsp";
+      src = inputs.kak-lsp;
+      cargoHash = "sha256-8Y+haxC7ssN07ODZcKoDdTv0vEnKqxYseLPoQSNmWI4=";
+      buildInputs = [ final.libiconv ];
 
-    zen-browser-bin = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
-      wrap-firefox = opts: final.wrapFirefox (opts // {
+      meta.mainProgram = "kak-lsp";
+    };
+    #   cargoArtifacts = final.libs.crane.buildDepsOnly { inherit src; };
+    # in
+    # final.libs.crane.buildPackage {
+    #   inherit src cargoArtifacts;
+    #   buildInputs = (with final;
+    #     lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
+    #   ) ++ (with final; [ libiconv ]);
+
+    #   meta.mainProgram = "kak-lsp";
+    # };
+
+    zen-browser-bin = inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
+      inherit (inputs.zen-browser.packages.${final.stdenv.system}) zen-browser-unwrapped;
+      wrapFirefox = opts: final.wrapFirefox (opts // {
         nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
       });
-      zen-browser-unwrapped = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser-unwrapped.override {
-        sources = inputs.zen-browser.inputs;
-      };
+      # zen-browser-unwrapped = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser-unwrapped.override {
+      #   sources = inputs.zen-browser.inputs;
+      # };
     };
   };
 in
 [
-  # inputs.swayfx.inputs.scenefx.overlays.override
-  # inputs.swayfx.overlays.override
   inputs.mpd-mpris.overlays.default
   inputs.rust-overlay.overlays.default
   inputs.youmubot.overlays.default
@@ -133,6 +138,3 @@ in
 
   # Bug fixes
 ] # we assign the overlay created before to the overlays of nixpkgs.
-
-
-

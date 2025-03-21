@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, options, config, lib, ... }:
 
 let
   iio-sway = pkgs.stdenv.mkDerivation {
@@ -22,7 +22,7 @@ in
     # We use our own firefox
     # ./firefox.nix
     # osu!
-    ./osu.nix
+    ./osu
   ];
 
   # Home Manager needs a bit of information about you and the
@@ -44,7 +44,7 @@ in
   # Graphical set up
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_0.png;
-  linux.graphical.startup = with pkgs; [ zen-browser-bin thunderbird vesktop slack ];
+  linux.graphical.startup = options.linux.graphical.startup.default ++ [ pkgs.slack ];
   linux.graphical.defaults.webBrowser.package = pkgs.zen-browser-bin;
   linux.graphical.defaults.webBrowser.desktopFile = "zen.desktop";
   # Enable sway
@@ -68,6 +68,7 @@ in
     ];
   };
   programs.my-niri.enable = true;
+  programs.my-niri.enableLaptop = true;
   # Assign some of the workspaces to big screen
   programs.my-niri.workspaces = lib.genAttrs [ "06" "07" "08" "09" "10" ] (_: { monitor = config.common.monitors.work.name; });
   programs.niri.settings = {

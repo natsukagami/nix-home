@@ -45,12 +45,15 @@ let
     ${pkgs.grim}/bin/grim -g (${pkgs.slurp}/bin/slurp) - | ${pkgs.swappy}/bin/swappy -f -
   '';
   playerctl = "${pkgs.playerctl}/bin/playerctl";
+
+  terminalCmd = lib.getExe config.linux.graphical.defaults.terminal.package;
 in
 {
   # imports = [ ./ibus.nix ];
 
   options.programs.my-sway = {
     enable = mkEnableOption "Enable the sway configuration";
+    package = mkPackageOption pkgs "swayfx" { };
     fontSize = mkOption {
       type = types.float;
       description = "The default font size";
@@ -64,11 +67,6 @@ in
       type = types.oneOf [ types.path types.str ];
       description = "Path to the wallpaper to be used";
       default = config.linux.graphical.wallpaper;
-    };
-    terminal = mkOption {
-      type = types.str;
-      description = "The command to the terminal emulator to be used";
-      default = lib.getExe config.linux.graphical.defaults.terminal.package;
     };
     browser = mkOption {
       type = types.str;
@@ -102,11 +100,12 @@ in
     enable = true;
     fontSize = mkDefault cfg.fontSize;
     enableLaptopBars = mkDefault cfg.enableLaptop;
-    terminal = mkDefault cfg.terminal;
   };
+  config.systemd.user.services.swaync.Install.WantedBy = mkIf cfg.enable [ "sway-session.target" ];
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
+    package = cfg.package;
     systemd.enable = true;
     systemd.variables = options.wayland.windowManager.sway.systemd.variables.default ++ [
       "PATH" # for portals
@@ -143,7 +142,7 @@ in
       ### Programs
       #
       # Terminal
-      terminal = cfg.terminal;
+      terminal = terminalCmd;
       menu = "${pkgs.dmenu}/bin/dmenu_path | ${pkgs.bemenu}/bin/bemenu | ${pkgs.findutils}/bin/xargs swaymsg exec --";
       # Startup
       startup = [

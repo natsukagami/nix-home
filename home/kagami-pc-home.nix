@@ -5,7 +5,7 @@
     # Common configuration
     ./common.nix
     # osu!
-    ./osu.nix
+    ./osu
   ];
 
   # Home Manager needs a bit of information about you and the
@@ -40,9 +40,11 @@
   linux.graphical.defaults.webBrowser.package = pkgs.zen-browser-bin;
   linux.graphical.defaults.webBrowser.desktopFile = "zen.desktop";
   programs.my-niri.enable = true;
+  programs.my-niri.enableLaptop = false;
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 15.0;
-  programs.my-sway.enableLaptop = true;
+  programs.my-sway.enableLaptop = false;
+  programs.my-waybar.fontSize = 15.0;
   programs.my-waybar.enableMpd = true;
   # Keyboard options
   wayland.windowManager.sway.config.input."type:keyboard".xkb_layout = "jp";

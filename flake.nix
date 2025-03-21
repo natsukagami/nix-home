@@ -18,46 +18,42 @@
 
     # --- Secure boot
     lanzaboote = {
-      url = github:nix-community/lanzaboote/v0.4.1;
+      url = "github:nix-community/lanzaboote/v0.4.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # --- Build tools
-    flake-utils.url = github:numtide/flake-utils;
-    crane.url = github:ipetkov/crane;
+    flake-utils.url = "github:numtide/flake-utils";
+    crane.url = "github:ipetkov/crane";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    arion.url = github:hercules-ci/arion;
+    arion.url = "github:hercules-ci/arion/v0.2.2.0";
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.1-1.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # ---
     # Imported apps
-    youmubot.url = "github:natsukagami/youmubot/osu-commands";
-    # swayfx = {
-    #   url = github:WillPower3309/swayfx;
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    youmubot.url = "github:natsukagami/youmubot";
     mpd-mpris = {
-      url = github:natsukagami/mpd-mpris;
+      url = "github:natsukagami/mpd-mpris";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki-dtth/phanpy?ref=dtth-fork";
     conduit.url = "gitlab:famedly/conduit/v0.9.0";
-    nix-gaming.url = github:fufexan/nix-gaming;
+    nix-gaming.url = "github:fufexan/nix-gaming";
     zen-browser.url = "github:youwen5/zen-browser-flake";
     niri.url = "github:sodiboo/niri-flake";
 
     # --- Sources
-    kakoune.url = github:mawww/kakoune;
+    kakoune.url = "github:mawww/kakoune";
     kakoune.flake = false;
-    kak-lsp.url = github:kakoune-lsp/kakoune-lsp;
+    kak-lsp.url = "github:kakoune-lsp/kakoune-lsp/v18.1.3";
     kak-lsp.flake = false;
-    nixos-m1.url = github:tpwrules/nixos-apple-silicon;
+    nixos-m1.url = "github:tpwrules/nixos-apple-silicon";
     nixos-m1.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---
@@ -114,6 +110,7 @@
           sops-nix.nixosModules.sops
           inputs.lix-module.nixosModules.default
         ];
+        config.nix.settings.extra-deprecated-features = [ "url-literals" ]; # So lix won't complain
       };
       common-nixos = stable: { ... }: {
         imports = [

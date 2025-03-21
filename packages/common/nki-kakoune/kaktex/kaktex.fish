@@ -1,5 +1,3 @@
-#!/usr/bin/env fish
-
 function usage
     echo "Usage: "
     echo "  kaktex set [client] [session]"

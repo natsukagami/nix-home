@@ -5,10 +5,10 @@ let
   osu-pkg = with pkgs; with lib;
     appimageTools.wrapType2 rec {
       pname = "osu-lazer-bin";
-      version = "2025.101.0";
+      version = "2025.321.0";
       src = fetchurl {
         url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
-        hash = "sha256-GsnTxVpNk2RXHLET6Ugv0/ZOlq8RUkw2ZXqRjkU+dzw=";
+        hash = "sha256-mNxoEx/wgJ1OUm7y9JLd5vHSwfcB49QjKDVQWZaMDJQ=";
       };
       extraPkgs = pkgs: with pkgs; [ icu ];
 
@@ -18,6 +18,7 @@ let
         ''
           mv -v $out/bin/${pname} $out/bin/osu\!
           install -m 444 -D ${contents}/osu\!.desktop -t $out/share/applications
+          install -m 444 -D ${./mimetypes.xml} $out/share/mime/packages/${pname}.xml
           for i in 16 32 48 64 96 128 256 512 1024; do
             install -D ${contents}/osu.png $out/share/icons/hicolor/''${i}x$i/apps/osu.png
           done
