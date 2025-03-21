@@ -112,11 +112,6 @@ hook global WinSetOption filetype=(rust) %{
     set-option buffer makecmd "cargo check"
 }
 
-hook global WinSetOption filetype=(scala) %{
-    # Format the document if possible
-    hook -group scala-fmt window BufWritePre .* %{ lsp-formatting-sync }
-}
-
 hook global WinSetOption filetype=(typst) %{
   set-option window comment_line "//"
   set-option window comment_block_begin "/*"

@@ -297,7 +297,7 @@ in
       map global object d '<a-semicolon>lsp-diagnostic-object --include-warnings<ret>' -docstring 'LSP errors and warnings'
       map global object D '<a-semicolon>lsp-diagnostic-object<ret>' -docstring 'LSP errors'
 
-      hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix|fsharp|templ) %{
+      hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix|fsharp|templ|scala) %{
           # Format the document if possible
           hook window -group lsp-formatting BufWritePre .* %{ lsp-formatting-sync }
       }
