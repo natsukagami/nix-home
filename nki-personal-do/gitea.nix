@@ -112,6 +112,7 @@ in
 
   services.forgejo = {
     enable = true;
+    package = pkgs.forgejo;
 
     inherit user;
 
