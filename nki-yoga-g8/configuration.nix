@@ -2,16 +2,8 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 
-let
-  vmware = { pkgs, ... }: {
-    environment.systemPackages = [ pkgs.vmware-horizon-client ];
-    virtualisation.vmware.host = {
-      enable = true;
-    };
-  };
-in
 {
   imports =
     [
@@ -21,8 +13,6 @@ in
       ../modules/personal/fonts
       # Encrypted DNS
       ../modules/services/edns
-
-      vmware
     ];
 
   # Secrets
