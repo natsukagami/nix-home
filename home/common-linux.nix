@@ -31,6 +31,8 @@ in
     home.packages = with pkgs; [
       psmisc # killall and friends
       file # Query file type
+      zip
+      python3
 
       pinentry-gnome3 # until pinentry-qt introduces caching
     ];

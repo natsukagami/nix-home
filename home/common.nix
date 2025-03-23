@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -35,6 +35,9 @@
     unstable.scala-next
     ## PDF Processors
     poppler_utils
+    # TeX
+    texlive.combined.scheme-full
+    inkscape # for TeX svg
     ## htop replacement
     htop-vim
     ## Bitwarden
@@ -45,6 +48,10 @@
     zstd
     atool
   ];
+  home.file.".latexmkrc".text = ''
+    $pdf_previewer = '${lib.getExe' pkgs.xdg-utils "xdg-open"}';
+  '';
+
 
   home.sessionVariables = {
     # Bat theme

@@ -32,11 +32,6 @@ in
 
   # More packages
   home.packages = (with pkgs; [
-    # CLI stuff
-    python3
-    zip
-    # TeX
-    texlive.combined.scheme-full
     # Note-taking
     rnote
   ]);

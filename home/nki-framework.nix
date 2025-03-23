@@ -15,17 +15,6 @@
   home.username = "nki";
   home.homeDirectory = "/home/nki";
 
-  # More packages
-  home.packages = (with pkgs; [
-    # CLI stuff
-    python3
-    zip
-    # TeX
-    texlive.combined.scheme-full
-    # Note-taking
-    rnote
-  ]);
-
   # Graphical set up
   linux.graphical.type = "wayland";
   linux.graphical.wallpaper = ./images/wallpaper_0.png;

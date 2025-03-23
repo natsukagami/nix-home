@@ -15,12 +15,6 @@
 
   # More packages
   home.packages = (with pkgs; [
-    # CLI stuff
-    zip
-    # TeX
-    texlive.combined.scheme-full
-    inkscape # for TeX svg
-
     # Gaming stuff
     wineWowPackages.full
     # wine-lol
