@@ -82,6 +82,22 @@ let
         in
         builtins.replaceStrings [ "NIXOS_OZONE_WL" flagToReplace ] [ "WAYLAND_DISPLAY" "${flagToReplace} --wayland-text-input-version=3" ] attrs.postFixup;
     });
+
+
+    editline-lix =
+      assert final.lib.assertMsg (final.lix.version == "2.92.0") "we only need to patch this for 2.92";
+      final.editline.overrideAttrs (prev: {
+        configureFlags = (prev.configureFlags or [ ]) ++ [
+          # Enable SIGSTOP (Ctrl-Z) behavior.
+          (final.lib.enableFeature true "sigstop")
+          # Enable ANSI arrow keys.
+          (final.lib.enableFeature true "arrow-keys")
+          # Use termcap library to query terminal size.
+          (final.lib.enableFeature true "termcap")
+        ];
+
+        propagatedBuildInputs = (prev.propagatedBuildInputs or [ ]) ++ [ final.ncurses ];
+      });
   };
 
   overlay-libs = final: prev: {

@@ -67,7 +67,7 @@
       lib = nixpkgs.lib;
 
       applyOverlays = { ... }: {
-        nixpkgs.overlays = lib.mkBefore overlays;
+        nixpkgs.overlays = lib.mkAfter overlays;
       };
 
       nixpkgsAsRegistry_ = stable: { lib, ... }: {

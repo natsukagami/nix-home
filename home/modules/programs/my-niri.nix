@@ -384,7 +384,7 @@ in
         "Mod+Shift+Space".action = toggle-window-floating; # Sway compat
 
         "Print".action = screenshot;
-        "Ctrl+Print".action = screenshot-screen;
+        "Ctrl+Print".action.screenshot-screen = [ ];
         "Shift+Print".action = screenshot-window;
 
         "Mod+Shift+E".action = quit;
