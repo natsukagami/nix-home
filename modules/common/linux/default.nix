@@ -360,6 +360,7 @@ in
         default = [ "kde" "gnome" "gtk" ];
         # "org.freedesktop.impl.portal.Access" = "gtk";
         # "org.freedesktop.impl.portal.Notification" = "gtk";
+        "org.freedesktop.impl.portal.ScreenCast" = "gnome";
         "org.freedesktop.impl.portal.Secret" = "kwallet";
         "org.freedesktop.impl.portal.FileChooser" = "kde";
       };
