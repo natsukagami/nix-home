@@ -15,6 +15,7 @@ let
     deploy-rs = inputs.deploy-rs.packages.default;
     dtth-phanpy = inputs.dtth-phanpy.packages.${final.system}.default;
     matrix-conduit = inputs.conduit.packages.${final.system}.default;
+    youmubot = inputs.youmubot.packages.${final.system}.youmubot;
 
     # A list of source-style inputs.
     sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
@@ -140,7 +141,6 @@ in
 [
   inputs.mpd-mpris.overlays.default
   inputs.rust-overlay.overlays.default
-  inputs.youmubot.overlays.default
   inputs.niri.overlays.niri
 
   overlay-unstable
