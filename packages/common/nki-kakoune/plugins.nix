@@ -64,10 +64,10 @@ builtins.map kakounePlugin [
   {
     name = "peneira";
     src = pkgs.fetchFromGitHub {
-      owner = "natsukagami";
+      owner = "gustavo-hms";
       repo = "peneira";
-      rev = "743b9971472853a752475e7c070ce99089c6840c";
-      sha256 = "sha256-E4ndbF9YC1p0KrvSuGgwmG1Y2IGTuGKJo/AuMixhzlM=";
+      rev = "b56dd10bb4771da327b05a9071b3ee9a092f9788";
+      sha256 = "sha256-rZBZ+ks9aaefmjl6GAAwg/HQqDbMEp+zkevMbJ1QeUI=";
     };
     activationScript = ''
       require-module peneira
