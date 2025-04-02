@@ -12,7 +12,7 @@ let
   playerctl = lib.getExe pkgs.playerctl;
   amixer = lib.getExe' pkgs.alsa-utils "amixer";
   brightnessctl = lib.getExe pkgs.brightnessctl;
-  app-menu = "${pkgs.dmenu}/bin/dmenu_path | ${pkgs.bemenu}/bin/bemenu | ${pkgs.findutils}/bin/xargs swaymsg exec --";
+  app-menu = "${pkgs.dmenu}/bin/dmenu_path | ${pkgs.bemenu}/bin/bemenu | ${pkgs.findutils}/bin/xargs niri msg action spawn --";
 
   wallpaper = config.linux.graphical.wallpaper;
 
@@ -366,7 +366,7 @@ in
 
         # Some basic spawns
         "Mod+Return".action = spawn (lib.getExe config.linux.graphical.defaults.terminal.package);
-        "Mod+Space".action = spawn (lib.getExe pkgs.rofi) "-show" "drun";
+        "Mod+Space".action = spawn "rofi" "-show" "drun";
         "Mod+R".action = sh app-menu;
         "Mod+Semicolon".action = spawn cfg.lock-command;
         "Mod+Shift+P".action = spawn "rofi-rbw-script";

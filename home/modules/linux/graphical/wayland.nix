@@ -87,7 +87,7 @@ let
   rofi-rbw-script = pkgs.writeShellApplication {
     name = "rofi-rbw-script";
     runtimeInputs = with pkgs; [
-      rofi
+      config.programs.rofi.package
       wtype
       rofi-rbw
     ];

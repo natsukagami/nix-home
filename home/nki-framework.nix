@@ -53,7 +53,7 @@
     let
       change-mode = pkgs.writeScript "change-mode" ''
         #!/usr/bin/env ${lib.getExe pkgs.fish}
-        set -ax PATH ${lib.getBin pkgs.power-profiles-daemon} ${lib.getBin pkgs.rofi} ${lib.getBin pkgs.ripgrep}
+        set -ax PATH ${lib.getBin pkgs.power-profiles-daemon} ${lib.getBin config.programs.rofi.package} ${lib.getBin pkgs.ripgrep}
 
         set profiles (powerprofilesctl list | rg "^[ *] (\S+):" -r '$1')
         set selected_index (math (contains -i (powerprofilesctl get) $profiles) - 1)
