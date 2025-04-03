@@ -1,40 +1,60 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
-  notificationModule = { config, pkgs, lib, ... }:
+  notificationModule =
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     let
       swaync = pkgs.swaynotificationcenter;
     in
-    with lib; mkIf (config.linux.graphical.type == "wayland") {
+    with lib;
+    mkIf (config.linux.graphical.type == "wayland") {
       services.swaync = {
         enable = true;
-        settings.widgets = [ "inhibitors" "title" "dnd" "mpris" "notifications" ];
+        settings.widgets = [
+          "inhibitors"
+          "title"
+          "dnd"
+          "mpris"
+          "notifications"
+        ];
         style = ./swaync.css;
       };
 
       programs.my-waybar = {
-        extraSettings = [{
-          modules-right = mkAfter [ "custom/swaync" ];
-          modules."custom/swaync" = {
-            tooltip = false;
-            format = "{icon} {}";
-            format-icons = {
-              notification = "<span foreground='red'><sup></sup></span>";
-              none = "";
-              dnd-notification = "<span foreground='red'><sup></sup></span>";
-              dnd-none = "";
-              inhibited-notification = "<span foreground='red'><sup></sup></span>";
-              inhibited-none = "";
-              dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
-              dnd-inhibited-none = "";
+        extraSettings = [
+          {
+            modules-right = mkAfter [ "custom/swaync" ];
+            modules."custom/swaync" = {
+              tooltip = false;
+              format = "{icon} {}";
+              format-icons = {
+                notification = "<span foreground='red'><sup></sup></span>";
+                none = "";
+                dnd-notification = "<span foreground='red'><sup></sup></span>";
+                dnd-none = "";
+                inhibited-notification = "<span foreground='red'><sup></sup></span>";
+                inhibited-none = "";
+                dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
+                dnd-inhibited-none = "";
+              };
+              return-type = "json";
+              # exec-if = "which swaync-client";
+              exec = "${swaync}/bin/swaync-client -swb";
+              on-click = "${swaync}/bin/swaync-client -t -sw";
+              on-click-right = "${swaync}/bin/swaync-client -d -sw";
+              escape = true;
             };
-            return-type = "json";
-            # exec-if = "which swaync-client";
-            exec = "${swaync}/bin/swaync-client -swb";
-            on-click = "${swaync}/bin/swaync-client -t -sw";
-            on-click-right = "${swaync}/bin/swaync-client -d -sw";
-            escape = true;
-          };
-        }];
+          }
+        ];
         extraStyle = mkAfter ''
           #custom-swaync {
               background: #F0FFFF;
@@ -44,32 +64,43 @@ let
       };
     };
 
-  plasmaModule = { pkgs, ... }: {
-    home.packages = with pkgs.kdePackages; [
-      discover
-      kmail
-      kontact
-      akonadi
-      kdepim-runtime
-      kmail-account-wizard
-      akonadi-import-wizard
-    ];
-    xdg.configFile."plasma-workspace/env/wayland.sh".source = pkgs.writeScript "plasma-wayland-env.sh" ''
-      export NIXOS_OZONE_WL=1
-    '';
-    xdg.dataFile."dbus-1/services/org.freedesktop.Notifications.service".source = "${pkgs.kdePackages.plasma-workspace}/share/dbus-1/services/org.kde.plasma.Notifications.service";
-  };
+  plasmaModule =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs.kdePackages; [
+        discover
+        kmail
+        kontact
+        akonadi
+        kdepim-runtime
+        kmail-account-wizard
+        akonadi-import-wizard
+      ];
+      xdg.configFile."plasma-workspace/env/wayland.sh".source =
+        pkgs.writeScript "plasma-wayland-env.sh" ''
+          export NIXOS_OZONE_WL=1
+        '';
+      xdg.dataFile."dbus-1/services/org.freedesktop.Notifications.service".source =
+        "${pkgs.kdePackages.plasma-workspace}/share/dbus-1/services/org.kde.plasma.Notifications.service";
+    };
 
   rofi-rbw-script = pkgs.writeShellApplication {
     name = "rofi-rbw-script";
-    runtimeInputs = with pkgs; [ rofi wtype rofi-rbw ];
+    runtimeInputs = with pkgs; [
+      rofi
+      wtype
+      rofi-rbw
+    ];
     text = "rofi-rbw";
     meta.mainProgram = "rofi-rbw-script";
   };
 in
 with lib;
 {
-  imports = [ notificationModule plasmaModule ];
+  imports = [
+    notificationModule
+    plasmaModule
+  ];
   config = mkIf (config.linux.graphical.type == "wayland") {
     # Additional packages
     home.packages = with pkgs; [
@@ -92,7 +123,12 @@ with lib;
       font = "monospace";
       terminal = "${lib.getExe config.programs.kitty.package}";
       theme = "Paper";
-      plugins = with pkgs; [ rofi-bluetooth rofi-calc rofi-rbw rofi-power-menu ];
+      plugins = with pkgs; [
+        rofi-bluetooth
+        rofi-calc
+        rofi-rbw
+        rofi-power-menu
+      ];
     };
 
     home.sessionVariables = {
@@ -129,4 +165,3 @@ with lib;
     # };
   };
 }
-

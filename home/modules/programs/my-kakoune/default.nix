@@ -1,11 +1,20 @@
-{ config, options, pkgs, lib, ... }:
+{
+  config,
+  options,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 let
   cfg = config.programs.my-kakoune;
 in
 {
-  imports = [ ./fish-session.nix ./tree-sitter.nix ];
+  imports = [
+    ./fish-session.nix
+    ./tree-sitter.nix
+  ];
 
   options.programs.my-kakoune = {
     enable = mkEnableOption "My version of the kakoune configuration";
@@ -38,7 +47,11 @@ in
       let
         kakouneFaces =
           let
-            txt = strings.concatStringsSep "\n" (builtins.attrValues (builtins.mapAttrs (name: face: "face global ${name} \"${face}\"") cfg.extraFaces));
+            txt = strings.concatStringsSep "\n" (
+              builtins.attrValues (
+                builtins.mapAttrs (name: face: "face global ${name} \"${face}\"") cfg.extraFaces
+              )
+            );
           in
           pkgs.writeText "faces.kak" txt;
       in
@@ -51,15 +64,13 @@ in
           # Load faces
           source ${kakouneFaces}
         '';
-      } // lib.mapAttrs'
-        (name: attrs: {
-          name = "kak/autoload/${name}";
-          value = attrs // {
-            target = "kak/autoload/${name}";
-          };
-        })
-        cfg.autoloadFile;
+      }
+      // lib.mapAttrs' (name: attrs: {
+        name = "kak/autoload/${name}";
+        value = attrs // {
+          target = "kak/autoload/${name}";
+        };
+      }) cfg.autoloadFile;
     xdg.dataFile."kak".source = "${cfg.package}/share/kak";
   };
 }
-

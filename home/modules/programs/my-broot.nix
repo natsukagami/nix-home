@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -91,10 +96,13 @@ in
 
     # Add an extra syntax_color config
     xdg.configFile."broot/conf.toml".source = mkOverride 1 (
-      tomlFormat.generate "broot-config" (with config.programs.broot; {
-        inherit (settings) verbs modal skin;
-        syntax_theme = "base16-ocean.light";
-      })
+      tomlFormat.generate "broot-config" (
+        with config.programs.broot;
+        {
+          inherit (settings) verbs modal skin;
+          syntax_theme = "base16-ocean.light";
+        }
+      )
     );
   };
 }

@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 let
   cfg = config.programs.my-kakoune.tree-sitter;
@@ -14,14 +19,44 @@ let
         default = "src";
       };
       grammar.compile = {
-        command = mkOption { type = types.str; default = "${pkgs.gcc}/bin/gcc"; };
-        args = mkOption { type = types.listOf types.str; default = [ "-c" "-fpic" "../parser.c" "../scanner.c" "-I" ".." ]; };
-        flags = mkOption { type = types.listOf types.str; default = [ "-O3" ]; };
+        command = mkOption {
+          type = types.str;
+          default = "${pkgs.gcc}/bin/gcc";
+        };
+        args = mkOption {
+          type = types.listOf types.str;
+          default = [
+            "-c"
+            "-fpic"
+            "../parser.c"
+            "../scanner.c"
+            "-I"
+            ".."
+          ];
+        };
+        flags = mkOption {
+          type = types.listOf types.str;
+          default = [ "-O3" ];
+        };
       };
       grammar.link = {
-        command = mkOption { type = types.str; default = "${pkgs.gcc}/bin/gcc"; };
-        args = mkOption { type = types.listOf types.str; default = [ "-shared" "-fpic" "parser.o" "scanner.o" ]; };
-        flags = mkOption { type = types.listOf types.str; default = [ "-O3" ]; };
+        command = mkOption {
+          type = types.str;
+          default = "${pkgs.gcc}/bin/gcc";
+        };
+        args = mkOption {
+          type = types.listOf types.str;
+          default = [
+            "-shared"
+            "-fpic"
+            "parser.o"
+            "scanner.o"
+          ];
+        };
+        flags = mkOption {
+          type = types.listOf types.str;
+          default = [ "-O3" ];
+        };
       };
       queries.src = mkOption {
         type = types.package;
@@ -34,12 +69,27 @@ let
     };
   };
   mkGrammarPackage =
-    { name
-    , src
-    , grammarPath ? "src"
-    , grammarCompileArgs ? [ "-O3" "-c" "-fpic" "../parser.c" "../scanner.c" "-I" ".." ]
-    , grammarLinkArgs ? [ "-shared" "-fpic" "parser.o" "scanner.o" ]
-    }: pkgs.stdenv.mkDerivation {
+    {
+      name,
+      src,
+      grammarPath ? "src",
+      grammarCompileArgs ? [
+        "-O3"
+        "-c"
+        "-fpic"
+        "../parser.c"
+        "../scanner.c"
+        "-I"
+        ".."
+      ],
+      grammarLinkArgs ? [
+        "-shared"
+        "-fpic"
+        "parser.o"
+        "scanner.o"
+      ],
+    }:
+    pkgs.stdenv.mkDerivation {
       inherit src;
       name = "kak-tree-sitter-grammar-${name}.so";
       version = "latest";
@@ -215,43 +265,54 @@ in
       toTs = name: "ts_${strings.concatStringsSep "_" (strings.splitString "." name)}";
       toScm = name: strings.concatStringsSep "." (strings.splitString "_" name);
 
-      definedFaces = attrsets.mapAttrs' (name: value: { inherit value; name = toTs name; }) allGroups;
-      aliasFaces = attrsets.mapAttrs' (name: value: { name = toTs name; value = "@${toTs value}"; }) aliases;
+      definedFaces = attrsets.mapAttrs' (name: value: {
+        inherit value;
+        name = toTs name;
+      }) allGroups;
+      aliasFaces = attrsets.mapAttrs' (name: value: {
+        name = toTs name;
+        value = "@${toTs value}";
+      }) aliases;
       faces = attrsets.recursiveUpdate definedFaces aliasFaces;
 
       toml = pkgs.formats.toml { };
 
-      toLanguageConf = name: lang: with lang; {
-        grammar = {
-          source.local.path = mkGrammarPackage {
-            inherit name;
-            src = grammar.src;
-            grammarPath = grammar.path;
-            grammarCompileArgs = grammar.compile.flags ++ grammar.compile.args;
-            grammarLinkArgs = grammar.link.flags ++ grammar.link.args;
+      toLanguageConf =
+        name: lang: with lang; {
+          grammar = {
+            source.local.path = mkGrammarPackage {
+              inherit name;
+              src = grammar.src;
+              grammarPath = grammar.path;
+              grammarCompileArgs = grammar.compile.flags ++ grammar.compile.args;
+              grammarLinkArgs = grammar.link.flags ++ grammar.link.args;
+            };
+            compile = grammar.compile.command;
+            compile_args = grammar.compile.args;
+            compile_flags = grammar.compile.flags;
+            link = grammar.link.command;
+            link_args = grammar.link.args ++ [
+              "-o"
+              "${name}.so"
+            ];
+            link_flags = grammar.link.flags;
           };
-          compile = grammar.compile.command;
-          compile_args = grammar.compile.args;
-          compile_flags = grammar.compile.flags;
-          link = grammar.link.command;
-          link_args = grammar.link.args ++ [ "-o" "${name}.so" ];
-          link_flags = grammar.link.flags;
+          queries = rec {
+            path = if queries.path == null then "runtime/queries/${name}" else queries.path;
+            source.local.path = "${queries.src}/${path}";
+          };
         };
-        queries = rec {
-          path = if queries.path == null then "runtime/queries/${name}" else queries.path;
-          source.local.path = "${queries.src}/${path}";
-        };
-      };
     in
     mkIf cfg.enable {
-      assertions = with lib.asserts; ([ ]
-        ++ attrsets.mapAttrsToList
-        (name: _: {
-          assertion = (! (builtins.hasAttr name allGroups));
-          message = "${name} was both defined and aliased";
-        })
-        aliases
-      );
+      assertions =
+        with lib.asserts;
+        (
+          [ ]
+          ++ attrsets.mapAttrsToList (name: _: {
+            assertion = (!(builtins.hasAttr name allGroups));
+            message = "${name} was both defined and aliased";
+          }) aliases
+        );
       home.packages = [ cfg.package ];
 
       xdg.configFile."kak-tree-sitter/config.toml" = {
@@ -271,4 +332,3 @@ in
     };
 
 }
-

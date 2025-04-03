@@ -68,7 +68,15 @@ in
         in
         {
           grammar.src = src;
-          grammar.compile.args = [ "-c" "-fpic" "../parser.c" "../scanner.c" "../unicode.h" "-I" ".." ];
+          grammar.compile.args = [
+            "-c"
+            "-fpic"
+            "../parser.c"
+            "../scanner.c"
+            "../unicode.h"
+            "-I"
+            ".."
+          ];
           queries.src = src;
           queries.path = "queries";
         };
@@ -79,9 +87,24 @@ in
           rev = "0e36bed171768908f331ff7dff9d956bae016efb";
           hash = "sha256-bpiT3FraOZhJaoiFWAoVJX1O+plnIi8aXOW2LwyU23M=";
         };
-        grammar.compile.args = [ "-c" "-fpic" "../scanner.cc" "../parser.c" "-I" ".." ];
-        grammar.link.args = [ "-shared" "-fpic" "scanner.o" "parser.o" ];
-        grammar.link.flags = [ "-O3" "-lstdc++" ];
+        grammar.compile.args = [
+          "-c"
+          "-fpic"
+          "../scanner.cc"
+          "../parser.c"
+          "-I"
+          ".."
+        ];
+        grammar.link.args = [
+          "-shared"
+          "-fpic"
+          "scanner.o"
+          "parser.o"
+        ];
+        grammar.link.flags = [
+          "-O3"
+          "-lstdc++"
+        ];
 
         queries.src = pkgs.fetchFromGitHub {
           owner = "helix-editor";
@@ -115,8 +138,18 @@ in
 
       go = {
         grammar.src = tree-sitter-go;
-        grammar.compile.args = [ "-c" "-fpic" "../parser.c" "-I" ".." ];
-        grammar.link.args = [ "-shared" "-fpic" "parser.o" ];
+        grammar.compile.args = [
+          "-c"
+          "-fpic"
+          "../parser.c"
+          "-I"
+          ".."
+        ];
+        grammar.link.args = [
+          "-shared"
+          "-fpic"
+          "parser.o"
+        ];
         queries.src = tree-sitter-go;
         queries.path = "queries";
       };
@@ -132,11 +165,20 @@ in
         in
         {
           grammar.src = src;
-          grammar.compile.args = [ "-c" "-fpic" "../parser.c" "-I" ".." ];
-          grammar.link.args = [ "-shared" "-fpic" "parser.o" ];
+          grammar.compile.args = [
+            "-c"
+            "-fpic"
+            "../parser.c"
+            "-I"
+            ".."
+          ];
+          grammar.link.args = [
+            "-shared"
+            "-fpic"
+            "parser.o"
+          ];
           queries.src = src;
           queries.path = "queries";
         };
     };
 }
-

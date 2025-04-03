@@ -1,4 +1,10 @@
-{ pkgs, config, lib, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+{
   imports = [
     ./hardware-configuration.nix
 
@@ -88,13 +94,19 @@
   services.my-tinc.rsaPrivateKey = config.sops.secrets."tinc/rsa-private-key".path;
   services.my-tinc.ed25519PrivateKey = config.sops.secrets."tinc/ed25519-private-key".path;
 
-  sops.secrets."nix-build-farm/private-key" = { mode = "0400"; };
+  sops.secrets."nix-build-farm/private-key" = {
+    mode = "0400";
+  };
   services.nix-build-farm.hostname = "home";
   services.nix-build-farm.privateKeyFile = config.sops.secrets."nix-build-farm/private-key".path;
 
   # Set up traefik
-  sops.secrets.cloudflare-dns-api-token = { owner = "traefik"; };
-  sops.secrets.traefik-dashboard-users = { owner = "traefik"; };
+  sops.secrets.cloudflare-dns-api-token = {
+    owner = "traefik";
+  };
+  sops.secrets.traefik-dashboard-users = {
+    owner = "traefik";
+  };
   cloud.traefik.cloudflareKeyFile = config.sops.secrets.cloudflare-dns-api-token.path;
   cloud.traefik.dashboard = {
     enable = true;
@@ -108,9 +120,19 @@
     settings.HOST = "127.0.0.1";
     settings.PORT = "16904";
   };
-  cloud.traefik.hosts.uptime-kuma = { host = "status.nkagami.me"; port = 16904; noCloudflare = true; };
-  cloud.traefik.hosts.uptime-kuma-dtth = { host = "status.dtth.ch"; port = 16904; };
-  cloud.traefik.hosts.uptime-kuma-codefun = { host = "status.codefun.vn"; port = 16904; };
+  cloud.traefik.hosts.uptime-kuma = {
+    host = "status.nkagami.me";
+    port = 16904;
+    noCloudflare = true;
+  };
+  cloud.traefik.hosts.uptime-kuma-dtth = {
+    host = "status.dtth.ch";
+    port = 16904;
+  };
+  cloud.traefik.hosts.uptime-kuma-codefun = {
+    host = "status.codefun.vn";
+    port = 16904;
+  };
 
   # Bitwarden
   sops.secrets.vaultwarden-env = { };
@@ -120,7 +142,9 @@
   virtualisation.arion.backend = "docker";
 
   # Conduit
-  sops.secrets.heisenbridge = { owner = "heisenbridge"; };
+  sops.secrets.heisenbridge = {
+    owner = "heisenbridge";
+  };
   cloud.conduit.enable = true;
   cloud.conduit.instances = {
     "nkagami" = {
@@ -155,7 +179,10 @@
   };
 
   # Mail
-  sops.secrets.mail-users = { owner = "maddy"; reloadUnits = [ "maddy.service" ]; };
+  sops.secrets.mail-users = {
+    owner = "maddy";
+    reloadUnits = [ "maddy.service" ];
+  };
   cloud.mail = {
     enable = true;
     debug = true;
@@ -177,7 +204,10 @@
   sops.secrets.authentik-env = { };
   cloud.authentik.enable = true;
   cloud.authentik.envFile = config.sops.secrets.authentik-env.path;
-  cloud.traefik.hosts.authentik = { host = "auth.dtth.ch"; port = config.cloud.authentik.port; };
+  cloud.traefik.hosts.authentik = {
+    host = "auth.dtth.ch";
+    port = config.cloud.authentik.port;
+  };
 
   # Firezone
   sops.secrets.firezone-env = { };
@@ -197,14 +227,18 @@
   };
 
   # GoToSocial
-  sops.secrets.gts-env = { restartUnits = [ "gotosocial.service" ]; };
+  sops.secrets.gts-env = {
+    restartUnits = [ "gotosocial.service" ];
+  };
   cloud.gotosocial = {
     enable = true;
     envFile = config.sops.secrets.gts-env.path;
   };
 
   # Grist
-  sops.secrets."grist/env" = { restartUnits = [ "arion-grist.service" ]; };
+  sops.secrets."grist/env" = {
+    restartUnits = [ "arion-grist.service" ];
+  };
   cloud.grist = {
     enable = true;
     envFile = config.sops.secrets."grist/env".path;
@@ -212,9 +246,12 @@
     dataDir = "/mnt/data/grist";
   };
 
-
   # ntfy
-  cloud.traefik.hosts.ntfy-sh = { host = "ntfy.nkagami.me"; port = 11161; noCloudflare = true; };
+  cloud.traefik.hosts.ntfy-sh = {
+    host = "ntfy.nkagami.me";
+    port = 11161;
+    noCloudflare = true;
+  };
   services.ntfy-sh = {
     enable = true;
     settings = {
@@ -238,4 +275,3 @@
     mkdir -p /var/lib/ntfy-sh/attachments
   '';
 }
-

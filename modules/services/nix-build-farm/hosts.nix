@@ -10,10 +10,18 @@
 
     builder = {
       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUhiVTh2NlNBa0kyOTBCc1QzVG1IRVVJQWdXcVFyNm9jRmpjakRRczRoT2ggcm9vdEBrYWdhbWlQQwo=";
-      systems = [ "x86_64-linux" "aarch64-linux" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       maxJobs = 16;
       speedFactor = 2;
-      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      supportedFeatures = [
+        "nixos-test"
+        "benchmark"
+        "big-parallel"
+        "kvm"
+      ];
     };
   };
 
@@ -28,10 +36,18 @@
 
     builder = {
       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUdOUlBCVFRkNTVVMXY1U1Jac0FjYVdhS3JGZTY0ZjIxOVViODVTQ2NWd28gcm9vdEBua2ktZnJhbWV3b3JrCg==";
-      systems = [ "x86_64-linux" "aarch64-linux" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+      ];
       maxJobs = 16;
       speedFactor = 3;
-      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      supportedFeatures = [
+        "nixos-test"
+        "benchmark"
+        "big-parallel"
+        "kvm"
+      ];
     };
   };
 }

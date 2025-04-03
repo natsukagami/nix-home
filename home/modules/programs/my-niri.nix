@@ -1,4 +1,10 @@
-{ config, osConfig, lib, pkgs, ... }:
+{
+  config,
+  osConfig,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = config.programs.my-niri;
 
@@ -26,16 +32,33 @@ in
     lock-command = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       description = "The command to lock the screen";
-      default = [ "${pkgs.swaylock}/bin/swaylock" ]
-        ++ (if wallpaper == "" then [ "" ] else [ "-i" "${wallpaper}" "-s" "fill" ])
-        ++ [ "-l" "-k" ];
+      default =
+        [ "${pkgs.swaylock}/bin/swaylock" ]
+        ++ (
+          if wallpaper == "" then
+            [ "" ]
+          else
+            [
+              "-i"
+              "${wallpaper}"
+              "-s"
+              "fill"
+            ]
+        )
+        ++ [
+          "-l"
+          "-k"
+        ];
     };
 
     workspaces = lib.mkOption {
-      type = lib.types.attrsOf
-        (lib.types.submodule {
+      type = lib.types.attrsOf (
+        lib.types.submodule {
           options = {
-            name = lib.mkOption { type = lib.types.str; description = "workspace name"; };
+            name = lib.mkOption {
+              type = lib.types.str;
+              description = "workspace name";
+            };
             fixed = lib.mkOption {
               type = lib.types.bool;
               default = true;
@@ -47,7 +70,8 @@ in
               description = "Default monitor to spawn workspace in";
             };
           };
-        });
+        }
+      );
       description = "A mapping of ordering to workspace names, for fixed workspaces";
     };
   };
@@ -55,17 +79,39 @@ in
   config = lib.mkIf cfg.enable {
     programs.my-niri.workspaces = {
       # Default workspaces, always there
-      "01" = { name = "🌏 web"; };
-      "02" = { name = "💬 chat"; };
-      "03" = { name = "⚙️ code"; };
-      "04" = { name = "🎶 music"; };
-      "05" = { name = "🔧 extra"; };
-      "06" = { name = "🧰 6"; };
-      "07" = { name = "🔩 7"; };
-      "08" = { name = "🛠️ 8"; };
-      "09" = { name = "🔨 9"; };
-      "10" = { name = "🎲 misc"; };
-      "99" = { name = "📧 Email"; };
+      "01" = {
+        name = "🌏 web";
+      };
+      "02" = {
+        name = "💬 chat";
+      };
+      "03" = {
+        name = "⚙️ code";
+      };
+      "04" = {
+        name = "🎶 music";
+      };
+      "05" = {
+        name = "🔧 extra";
+      };
+      "06" = {
+        name = "🧰 6";
+      };
+      "07" = {
+        name = "🔩 7";
+      };
+      "08" = {
+        name = "🛠️ 8";
+      };
+      "09" = {
+        name = "🔨 9";
+      };
+      "10" = {
+        name = "🎲 misc";
+      };
+      "99" = {
+        name = "📧 Email";
+      };
     };
     systemd.user.services.swaync.Install.WantedBy = [ "niri.service" ];
     systemd.user.services.swaync.Unit.After = [ "niri.service" ];
@@ -84,7 +130,10 @@ in
       Unit = {
         Description = "XWayland Client for niri";
         PartOf = [ "xwayland.target" ];
-        Before = [ "xwayland.target" "xdg-desktop-autostart.target" ];
+        Before = [
+          "xwayland.target"
+          "xdg-desktop-autostart.target"
+        ];
         After = [ "niri.service" ];
       };
       Install.WantedBy = [ "niri.service" ];
@@ -97,16 +146,20 @@ in
     };
 
     programs.niri.settings = {
-      environment = {
-        QT_QPA_PLATFORM = "wayland";
-        QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-        QT_IM_MODULE = "fcitx";
-        # export NIXOS_OZONE_WL=1 # Until text-input is merged
-        DISPLAY = xwayland-display;
-      } // lib.optionalAttrs osConfig.services.desktopManager.plasma6.enable {
-        XDG_MENU_PREFIX = "plasma-";
+      environment =
+        {
+          QT_QPA_PLATFORM = "wayland";
+          QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+          QT_IM_MODULE = "fcitx";
+          # export NIXOS_OZONE_WL=1 # Until text-input is merged
+          DISPLAY = xwayland-display;
+        }
+        // lib.optionalAttrs osConfig.services.desktopManager.plasma6.enable {
+          XDG_MENU_PREFIX = "plasma-";
+        };
+      input.keyboard.xkb = {
+        layout = "jp";
       };
-      input.keyboard.xkb = { layout = "jp"; };
       input.touchpad = lib.mkIf cfg.enableLaptop {
         tap = true;
         dwt = true;
@@ -138,9 +191,25 @@ in
 
       spawn-at-startup = [
         # Wallpaper
-        { command = [ (lib.getExe pkgs.swaybg) "-i" "${wallpaper}" "-m" "fill" ]; }
+        {
+          command = [
+            (lib.getExe pkgs.swaybg)
+            "-i"
+            "${wallpaper}"
+            "-m"
+            "fill"
+          ];
+        }
         # Waybar
-        { command = [ "systemctl" "--user" "start" "xdg-desktop-portal-gtk.service" "xdg-desktop-portal.service" ]; }
+        {
+          command = [
+            "systemctl"
+            "--user"
+            "start"
+            "xdg-desktop-portal-gtk.service"
+            "xdg-desktop-portal.service"
+          ];
+        }
       ];
 
       layout = {
@@ -154,11 +223,24 @@ in
 
         focus-ring = {
           width = 4;
-          active.gradient = { from = "#00447AFF"; to = "#71C4FFAA"; angle = 45; };
+          active.gradient = {
+            from = "#00447AFF";
+            to = "#71C4FFAA";
+            angle = 45;
+          };
           inactive.color = "#505050";
         };
         border.enable = false;
-        struts = let v = 8; in { left = v; right = v; bottom = v; top = v; };
+        struts =
+          let
+            v = 8;
+          in
+          {
+            left = v;
+            right = v;
+            bottom = v;
+            top = v;
+          };
       };
 
       prefer-no-csd = true;
@@ -166,18 +248,31 @@ in
       workspaces =
         let
           fixedWorkspaces = lib.filterAttrs (_: w: w.fixed) cfg.workspaces;
-          workspaceConfig = lib.mapAttrs
-            (_: w: { inherit (w) name; } // (lib.optionalAttrs (w.monitor != null) {
+          workspaceConfig = lib.mapAttrs (
+            _: w:
+            {
+              inherit (w) name;
+            }
+            // (lib.optionalAttrs (w.monitor != null) {
               open-on-output = w.monitor;
-            }))
-            fixedWorkspaces;
+            })
+          ) fixedWorkspaces;
         in
         workspaceConfig;
 
       window-rules = [
         # Rounded Corners
         {
-          geometry-corner-radius = let v = 8.0; in { bottom-left = v; bottom-right = v; top-left = v; top-right = v; };
+          geometry-corner-radius =
+            let
+              v = 8.0;
+            in
+            {
+              bottom-left = v;
+              bottom-right = v;
+              top-left = v;
+              top-right = v;
+            };
           clip-to-geometry = true;
         }
         # Workspace assignments
@@ -185,9 +280,18 @@ in
           open-on-workspace = cfg.workspaces."01".name;
           open-maximized = true;
           matches = [
-            { at-startup = true; app-id = "^firefox$"; }
-            { at-startup = true; app-id = "^librewolf$"; }
-            { at-startup = true; app-id = "^zen$"; }
+            {
+              at-startup = true;
+              app-id = "^firefox$";
+            }
+            {
+              at-startup = true;
+              app-id = "^librewolf$";
+            }
+            {
+              at-startup = true;
+              app-id = "^zen$";
+            }
           ];
         }
         {
@@ -225,7 +329,7 @@ in
 
         # xwaylandvideobridge
         {
-          matches = [{ app-id = "^xwaylandvideobridge$"; }];
+          matches = [ { app-id = "^xwaylandvideobridge$"; } ];
           open-floating = true;
           focus-ring.enable = false;
           opacity = 0.0;
@@ -242,15 +346,15 @@ in
 
         # Kitty dimming
         {
-          matches = [{ app-id = "kitty"; }];
-          excludes = [{ is-focused = true; }];
+          matches = [ { app-id = "kitty"; } ];
+          excludes = [ { is-focused = true; } ];
           opacity = 0.95;
         }
       ];
 
       layer-rules = [
         {
-          matches = [{ namespace = "^swaync-.*"; }];
+          matches = [ { namespace = "^swaync-.*"; } ];
           block-out-from = "screen-capture";
         }
       ];
@@ -268,14 +372,38 @@ in
         "Mod+Shift+P".action = spawn "rofi-rbw-script";
 
         # Audio and Volume
-        "XF86AudioPrev" = { action = spawn playerctl "previous"; allow-when-locked = true; };
-        "XF86AudioPlay" = { action = spawn playerctl "play-pause"; allow-when-locked = true; };
-        "Shift+XF86AudioPlay" = { action = spawn playerctl "stop"; allow-when-locked = true; };
-        "XF86AudioNext" = { action = spawn playerctl "next"; allow-when-locked = true; };
-        "XF86AudioRecord" = { action = spawn amixer "-q" "set" "Capture" "toggle"; allow-when-locked = true; };
-        "XF86AudioMute" = { action = spawn amixer "-q" "set" "Master" "toggle"; allow-when-locked = true; };
-        "XF86AudioLowerVolume" = { action = spawn amixer "-q" "set" "Master" "3%-"; allow-when-locked = true; };
-        "XF86AudioRaiseVolume" = { action = spawn amixer "-q" "set" "Master" "3%+"; allow-when-locked = true; };
+        "XF86AudioPrev" = {
+          action = spawn playerctl "previous";
+          allow-when-locked = true;
+        };
+        "XF86AudioPlay" = {
+          action = spawn playerctl "play-pause";
+          allow-when-locked = true;
+        };
+        "Shift+XF86AudioPlay" = {
+          action = spawn playerctl "stop";
+          allow-when-locked = true;
+        };
+        "XF86AudioNext" = {
+          action = spawn playerctl "next";
+          allow-when-locked = true;
+        };
+        "XF86AudioRecord" = {
+          action = spawn amixer "-q" "set" "Capture" "toggle";
+          allow-when-locked = true;
+        };
+        "XF86AudioMute" = {
+          action = spawn amixer "-q" "set" "Master" "toggle";
+          allow-when-locked = true;
+        };
+        "XF86AudioLowerVolume" = {
+          action = spawn amixer "-q" "set" "Master" "3%-";
+          allow-when-locked = true;
+        };
+        "XF86AudioRaiseVolume" = {
+          action = spawn amixer "-q" "set" "Master" "3%+";
+          allow-when-locked = true;
+        };
 
         # Backlight
         "XF86MonBrightnessDown".action = spawn brightnessctl "s" "10%-";
@@ -320,10 +448,22 @@ in
         "Mod+Ctrl+O".action = move-workspace-up;
 
         # Mouse bindings
-        "Mod+WheelScrollDown" = { action = focus-workspace-down; cooldown-ms = 150; };
-        "Mod+WheelScrollUp" = { action = focus-workspace-up; cooldown-ms = 150; };
-        "Mod+Ctrl+WheelScrollDown" = { action = move-column-to-workspace-down; cooldown-ms = 150; };
-        "Mod+Ctrl+WheelScrollUp" = { action = move-column-to-workspace-up; cooldown-ms = 150; };
+        "Mod+WheelScrollDown" = {
+          action = focus-workspace-down;
+          cooldown-ms = 150;
+        };
+        "Mod+WheelScrollUp" = {
+          action = focus-workspace-up;
+          cooldown-ms = 150;
+        };
+        "Mod+Ctrl+WheelScrollDown" = {
+          action = move-column-to-workspace-down;
+          cooldown-ms = 150;
+        };
+        "Mod+Ctrl+WheelScrollUp" = {
+          action = move-column-to-workspace-up;
+          cooldown-ms = 150;
+        };
 
         "Mod+WheelScrollRight".action = focus-column-right;
         "Mod+WheelScrollLeft".action = focus-column-left;
@@ -338,26 +478,66 @@ in
         #
         # For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
         # will all refer to the 3rd workspace.
-        "Mod+1" = lib.mkIf cfg.workspaces."01".fixed { action = focus-workspace (cfg.workspaces."01".name); };
-        "Mod+2" = lib.mkIf cfg.workspaces."02".fixed { action = focus-workspace (cfg.workspaces."02".name); };
-        "Mod+3" = lib.mkIf cfg.workspaces."03".fixed { action = focus-workspace (cfg.workspaces."03".name); };
-        "Mod+4" = lib.mkIf cfg.workspaces."04".fixed { action = focus-workspace (cfg.workspaces."04".name); };
-        "Mod+5" = lib.mkIf cfg.workspaces."05".fixed { action = focus-workspace (cfg.workspaces."05".name); };
-        "Mod+6" = lib.mkIf cfg.workspaces."06".fixed { action = focus-workspace (cfg.workspaces."06".name); };
-        "Mod+7" = lib.mkIf cfg.workspaces."07".fixed { action = focus-workspace (cfg.workspaces."07".name); };
-        "Mod+8" = lib.mkIf cfg.workspaces."08".fixed { action = focus-workspace (cfg.workspaces."08".name); };
-        "Mod+9" = lib.mkIf cfg.workspaces."09".fixed { action = focus-workspace (cfg.workspaces."09".name); };
-        "Mod+0" = lib.mkIf cfg.workspaces."10".fixed { action = focus-workspace (cfg.workspaces."10".name); };
-        "Mod+Shift+1" = lib.mkIf cfg.workspaces."01".fixed { action = move-column-to-workspace (cfg.workspaces."01".name); };
-        "Mod+Shift+2" = lib.mkIf cfg.workspaces."02".fixed { action = move-column-to-workspace (cfg.workspaces."02".name); };
-        "Mod+Shift+3" = lib.mkIf cfg.workspaces."03".fixed { action = move-column-to-workspace (cfg.workspaces."03".name); };
-        "Mod+Shift+4" = lib.mkIf cfg.workspaces."04".fixed { action = move-column-to-workspace (cfg.workspaces."04".name); };
-        "Mod+Shift+5" = lib.mkIf cfg.workspaces."05".fixed { action = move-column-to-workspace (cfg.workspaces."05".name); };
-        "Mod+Shift+6" = lib.mkIf cfg.workspaces."06".fixed { action = move-column-to-workspace (cfg.workspaces."06".name); };
-        "Mod+Shift+7" = lib.mkIf cfg.workspaces."07".fixed { action = move-column-to-workspace (cfg.workspaces."07".name); };
-        "Mod+Shift+8" = lib.mkIf cfg.workspaces."08".fixed { action = move-column-to-workspace (cfg.workspaces."08".name); };
-        "Mod+Shift+9" = lib.mkIf cfg.workspaces."09".fixed { action = move-column-to-workspace (cfg.workspaces."09".name); };
-        "Mod+Shift+0" = lib.mkIf cfg.workspaces."10".fixed { action = move-column-to-workspace (cfg.workspaces."10".name); };
+        "Mod+1" = lib.mkIf cfg.workspaces."01".fixed {
+          action = focus-workspace (cfg.workspaces."01".name);
+        };
+        "Mod+2" = lib.mkIf cfg.workspaces."02".fixed {
+          action = focus-workspace (cfg.workspaces."02".name);
+        };
+        "Mod+3" = lib.mkIf cfg.workspaces."03".fixed {
+          action = focus-workspace (cfg.workspaces."03".name);
+        };
+        "Mod+4" = lib.mkIf cfg.workspaces."04".fixed {
+          action = focus-workspace (cfg.workspaces."04".name);
+        };
+        "Mod+5" = lib.mkIf cfg.workspaces."05".fixed {
+          action = focus-workspace (cfg.workspaces."05".name);
+        };
+        "Mod+6" = lib.mkIf cfg.workspaces."06".fixed {
+          action = focus-workspace (cfg.workspaces."06".name);
+        };
+        "Mod+7" = lib.mkIf cfg.workspaces."07".fixed {
+          action = focus-workspace (cfg.workspaces."07".name);
+        };
+        "Mod+8" = lib.mkIf cfg.workspaces."08".fixed {
+          action = focus-workspace (cfg.workspaces."08".name);
+        };
+        "Mod+9" = lib.mkIf cfg.workspaces."09".fixed {
+          action = focus-workspace (cfg.workspaces."09".name);
+        };
+        "Mod+0" = lib.mkIf cfg.workspaces."10".fixed {
+          action = focus-workspace (cfg.workspaces."10".name);
+        };
+        "Mod+Shift+1" = lib.mkIf cfg.workspaces."01".fixed {
+          action = move-column-to-workspace (cfg.workspaces."01".name);
+        };
+        "Mod+Shift+2" = lib.mkIf cfg.workspaces."02".fixed {
+          action = move-column-to-workspace (cfg.workspaces."02".name);
+        };
+        "Mod+Shift+3" = lib.mkIf cfg.workspaces."03".fixed {
+          action = move-column-to-workspace (cfg.workspaces."03".name);
+        };
+        "Mod+Shift+4" = lib.mkIf cfg.workspaces."04".fixed {
+          action = move-column-to-workspace (cfg.workspaces."04".name);
+        };
+        "Mod+Shift+5" = lib.mkIf cfg.workspaces."05".fixed {
+          action = move-column-to-workspace (cfg.workspaces."05".name);
+        };
+        "Mod+Shift+6" = lib.mkIf cfg.workspaces."06".fixed {
+          action = move-column-to-workspace (cfg.workspaces."06".name);
+        };
+        "Mod+Shift+7" = lib.mkIf cfg.workspaces."07".fixed {
+          action = move-column-to-workspace (cfg.workspaces."07".name);
+        };
+        "Mod+Shift+8" = lib.mkIf cfg.workspaces."08".fixed {
+          action = move-column-to-workspace (cfg.workspaces."08".name);
+        };
+        "Mod+Shift+9" = lib.mkIf cfg.workspaces."09".fixed {
+          action = move-column-to-workspace (cfg.workspaces."09".name);
+        };
+        "Mod+Shift+0" = lib.mkIf cfg.workspaces."10".fixed {
+          action = move-column-to-workspace (cfg.workspaces."10".name);
+        };
 
         "Mod+asciicircum".action = focus-workspace (cfg.workspaces."99".name);
         "Mod+Shift+asciicircum".action = move-column-to-workspace (cfg.workspaces."99".name);
@@ -392,4 +572,3 @@ in
     };
   };
 }
-

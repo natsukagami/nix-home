@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -51,7 +56,6 @@
   home.file.".latexmkrc".text = ''
     $pdf_previewer = '${lib.getExe' pkgs.xdg-utils "xdg-open"}';
   '';
-
 
   home.sessionVariables = {
     # Bat theme

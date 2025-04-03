@@ -1,11 +1,15 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
   cfg = config.cloud.authentik;
 
-  mkImage =
-    { imageName, imageDigest, ... }: "${imageName}@${imageDigest}";
+  mkImage = { imageName, imageDigest, ... }: "${imageName}@${imageDigest}";
   # If we can pullImage we can just do
   # mkImage = pkgs.dockerTools.pullImage;
 
@@ -62,7 +66,10 @@ in
         image = images.postgresql;
         restart = "unless-stopped";
         healthcheck = {
-          test = [ "CMD-SHELL" "pg_isready -d $\${POSTGRES_DB} -U $\${POSTGRES_USER}" ];
+          test = [
+            "CMD-SHELL"
+            "pg_isready -d $\${POSTGRES_DB} -U $\${POSTGRES_USER}"
+          ];
           start_period = "20s";
           interval = "30s";
           retries = 5;
@@ -73,14 +80,20 @@ in
           POSTGRES_USER = "authentik";
           POSTGRES_DB = "authentik";
         };
-        env_file = [ cfg.envFile "${postgresEnv}" ];
+        env_file = [
+          cfg.envFile
+          "${postgresEnv}"
+        ];
       };
       services.redis.service = {
         image = images.redis;
         command = "--save 60 1 --loglevel warning";
         restart = "unless-stopped";
         healthcheck = {
-          test = [ "CMD-SHELL" "redis-cli ping | grep PONG" ];
+          test = [
+            "CMD-SHELL"
+            "redis-cli ping | grep PONG"
+          ];
           start_period = "20s";
           interval = "30s";
           retries = 5;
@@ -102,7 +115,10 @@ in
           AUTHENTIK_POSTGRESQL__USER = "authentik";
           AUTHENTIK_POSTGRESQL__NAME = "authentik";
         };
-        env_file = [ cfg.envFile "${authentikEnv}" ];
+        env_file = [
+          cfg.envFile
+          "${authentikEnv}"
+        ];
         ports = [
           "127.0.0.1:${toString cfg.port}:9000"
         ];
@@ -124,7 +140,10 @@ in
           AUTHENTIK_POSTGRESQL__USER = "authentik";
           AUTHENTIK_POSTGRESQL__NAME = "authentik";
         };
-        env_file = [ cfg.envFile "${authentikEnv}" ];
+        env_file = [
+          cfg.envFile
+          "${authentikEnv}"
+        ];
         user = "root";
       };
       docker-compose.volumes = {
@@ -134,4 +153,3 @@ in
     };
   };
 }
-

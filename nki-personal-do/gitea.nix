@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 with lib;
 let
   user = "gitea";
@@ -126,7 +131,11 @@ in
       };
       repository = {
         DEFAULT_PRIVATE = "private";
-        PREFERRED_LICENSES = strings.concatStringsSep "," [ "AGPL-3.0-or-later" "GPL-3.0-or-later" "Apache-2.0" ];
+        PREFERRED_LICENSES = strings.concatStringsSep "," [
+          "AGPL-3.0-or-later"
+          "GPL-3.0-or-later"
+          "Apache-2.0"
+        ];
         # DISABLE_HTTP_GIT = true;
         DEFAULT_BRANCH = "master";
         ENABLE_PUSH_CREATE_USER = true;
@@ -216,18 +225,17 @@ in
     environment.GNUPGHOME = "${config.services.gitea.stateDir}/.gnupg";
     # https://github.com/NixOS/nixpkgs/commit/93c1d370db28ad4573fb9890c90164ba55391ce7
     serviceConfig.SystemCallFilter = mkForce "~@clock @cpu-emulation @debug @keyring @module @mount @obsolete @raw-io @reboot @setuid @swap";
-    preStart =
-      ''
-        # Import the signing subkey
-        if cat ${config.services.forgejo.stateDir}/.gnupg/gpg.conf | grep -q ${signingKey}; then
-          echo "Keys already imported"
-          # imported
-        else
-          echo "Import your keys!"
-          ${pkgs.gnupg}/bin/gpg --quiet --import ${secrets."gitea/signing-key".path}
-          echo "trusted-key ${signingKey}" >> ${config.services.forgejo.stateDir}/.gnupg/gpg.conf
-          exit 1
-        fi
-      '';
+    preStart = ''
+      # Import the signing subkey
+      if cat ${config.services.forgejo.stateDir}/.gnupg/gpg.conf | grep -q ${signingKey}; then
+        echo "Keys already imported"
+        # imported
+      else
+        echo "Import your keys!"
+        ${pkgs.gnupg}/bin/gpg --quiet --import ${secrets."gitea/signing-key".path}
+        echo "trusted-key ${signingKey}" >> ${config.services.forgejo.stateDir}/.gnupg/gpg.conf
+        exit 1
+      fi
+    '';
   };
 }

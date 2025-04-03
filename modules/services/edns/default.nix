@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -34,7 +39,10 @@ in
 
         # Sources
         sources.public_resolvers = {
-          urls = [ "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md" "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md" ];
+          urls = [
+            "https://raw.githubusercontent.com/DNSCrypt/dnscrypt-resolvers/master/v3/public-resolvers.md"
+            "https://download.dnscrypt.info/resolvers-list/v3/public-resolvers.md"
+          ];
           cache_file = "/var/lib/dnscrypt-proxy/public_resolvers.md";
           minisign_key = "RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3";
         };
@@ -44,14 +52,22 @@ in
 
         # Anonymized DNS
         anonymized_dns.routes = [
-          { server_name = "*"; via = [ "anon-plan9-dns" "anon-v.dnscrypt.up-ipv4" ]; }
+          {
+            server_name = "*";
+            via = [
+              "anon-plan9-dns"
+              "anon-v.dnscrypt.up-ipv4"
+            ];
+          }
         ];
         anonymized_dns.skip_incompatible = true;
 
         # Cloaking rules
-        cloaking_rules = pkgs.writeText "cloaking_rules.txt" (lib.strings.concatStringsSep
-          "\n"
-          (lib.attrsets.mapAttrsToList (name: ip: "${name} ${ip}") cfg.cloaking-rules));
+        cloaking_rules = pkgs.writeText "cloaking_rules.txt" (
+          lib.strings.concatStringsSep "\n" (
+            lib.attrsets.mapAttrsToList (name: ip: "${name} ${ip}") cfg.cloaking-rules
+          )
+        );
       };
     };
   };

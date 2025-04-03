@@ -1,4 +1,10 @@
-{ pkgs, runCommand, zstd, lib, buildFHSEnvChroot }:
+{
+  pkgs,
+  runCommand,
+  zstd,
+  lib,
+  buildFHSEnvChroot,
+}:
 
 let
   typora-tar = builtins.fetchurl {
@@ -13,35 +19,39 @@ let
 in
 buildFHSEnvChroot {
   name = "typora";
-  targetPkgs = pkgs: with pkgs; [
-    glib
-    nss
-    nspr
-    at-spi2-atk
-    cups
-    dbus
-    gtk3
-    pango
-    cairo
-    mesa
-    expat
-    libdrm
-    libxkbcommon
-    alsa-lib
-    freefont_ttf
-    liberation_ttf
-    wayland
-    libglvnd
-    electron
-  ] ++ (with pkgs.xorg; [
-    libX11
-    libXcomposite
-    libXdamage
-    libXext
-    libXfixes
-    libXrandr
-    libxcb
-  ]);
+  targetPkgs =
+    pkgs:
+    with pkgs;
+    [
+      glib
+      nss
+      nspr
+      at-spi2-atk
+      cups
+      dbus
+      gtk3
+      pango
+      cairo
+      mesa
+      expat
+      libdrm
+      libxkbcommon
+      alsa-lib
+      freefont_ttf
+      liberation_ttf
+      wayland
+      libglvnd
+      electron
+    ]
+    ++ (with pkgs.xorg; [
+      libX11
+      libXcomposite
+      libXdamage
+      libXext
+      libXfixes
+      libXrandr
+      libxcb
+    ]);
   extraBuildCommands = ''
     # ldd ${typora-src}/bin/Typora-linux-arm64/Typora && false
   '';

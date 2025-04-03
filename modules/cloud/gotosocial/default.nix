@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 with lib;
 let
   cfg = config.cloud.gotosocial;
@@ -41,13 +46,21 @@ in
     # Postgres
     cloud.postgresql.databases = [ dbUser ];
     # Traefik
-    cloud.traefik.hosts = { gotosocial = { inherit (cfg) host port; }; } //
-      (if cfg.accountDomain != cfg.host && cfg.accountDomain != "" then {
-        gotosocial-wellknown = {
-          inherit (cfg) port;
-          filter = "Host(`${cfg.accountDomain}`) && (PathPrefix(`/.well-known/webfinger`) || PathPrefix(`/.well-known/nodeinfo`) || PathPrefix(`/.well-known/host-meta`))";
-        };
-      } else { });
+    cloud.traefik.hosts =
+      {
+        gotosocial = { inherit (cfg) host port; };
+      }
+      // (
+        if cfg.accountDomain != cfg.host && cfg.accountDomain != "" then
+          {
+            gotosocial-wellknown = {
+              inherit (cfg) port;
+              filter = "Host(`${cfg.accountDomain}`) && (PathPrefix(`/.well-known/webfinger`) || PathPrefix(`/.well-known/nodeinfo`) || PathPrefix(`/.well-known/host-meta`))";
+            };
+          }
+        else
+          { }
+      );
     # The service itself
     services.gotosocial = {
       enable = true;
@@ -60,7 +73,10 @@ in
         bind-address = "localhost";
         port = cfg.port;
         # Instance
-        instance-languages = [ "en-ca" "vi" ];
+        instance-languages = [
+          "en-ca"
+          "vi"
+        ];
         # Accounts
         accounts-registration-open = false;
         accounts-allow-custom-css = true;
@@ -73,15 +89,23 @@ in
         web-template-base-dir = "${cfg.package}/share/gotosocial/web/template";
         web-asset-base-dir = "${cfg.package}/share/gotosocial/web/assets";
         # Media
-        media-emoji-remote-max-size = 256 * 1024 /* bytes */;
-        media-emoji-local-max-size = 256 * 1024 /* bytes */;
+        media-emoji-remote-max-size =
+          256 * 1024 # bytes
+        ;
+        media-emoji-local-max-size =
+          256 * 1024 # bytes
+        ;
         media-remote-cache-days = 7;
         media-cleanup-from = "00:00";
         media-cleanup-every = "24h";
         # OIDC
         oidc-enabled = true;
         oidc-idp-name = "DTTH";
-        oidc-scopes = [ "openid" "email" "profile" ];
+        oidc-scopes = [
+          "openid"
+          "email"
+          "profile"
+        ];
         # HTTP Client
         http-client.block-ips = [ "11.0.0.0/24" ];
         # Advanced
@@ -92,8 +116,14 @@ in
         # instance-inject-mastodon-version = true;
       };
     };
-    systemd.services.gotosocial.requires = mkAfter [ "postgresql.service" "arion-authentik.service" ];
-    systemd.services.gotosocial.after = mkAfter [ "postgresql.service" "arion-authentik.service" ];
+    systemd.services.gotosocial.requires = mkAfter [
+      "postgresql.service"
+      "arion-authentik.service"
+    ];
+    systemd.services.gotosocial.after = mkAfter [
+      "postgresql.service"
+      "arion-authentik.service"
+    ];
     systemd.services.gotosocial.unitConfig = {
       RequiresMountsFor = [ storageLocation ];
       ReadWritePaths = [ storageLocation ];

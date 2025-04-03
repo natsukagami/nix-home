@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -6,118 +11,142 @@ let
 
   # Modules
   modules = {
-    adb = { config, ... }: mkIf config.common.linux.enable {
-      services.udev.packages = with pkgs; [ android-udev-rules ];
-      programs.adb.enable = true;
-      users.users.${config.common.linux.username}.extraGroups = [ "adbusers" ];
-    };
-    ios = { config, pkgs, ... }: mkIf config.common.linux.enable {
-      services.usbmuxd.enable = true;
-      services.usbmuxd.package = pkgs.usbmuxd2;
-      environment.systemPackages = with pkgs; [
-        libimobiledevice
-        ifuse
-      ];
-      users.users.${config.common.linux.username}.extraGroups = [ config.services.usbmuxd.group ];
-      systemd.network.networks."05-ios-tethering" = {
-        matchConfig.Driver = "ipheth";
-        networkConfig.DHCP = "yes";
-        linkConfig.RequiredForOnline = "no";
+    adb =
+      { config, ... }:
+      mkIf config.common.linux.enable {
+        services.udev.packages = with pkgs; [ android-udev-rules ];
+        programs.adb.enable = true;
+        users.users.${config.common.linux.username}.extraGroups = [ "adbusers" ];
       };
-    };
-
-    graphics = { config, pkgs, ... }: {
-      hardware.graphics.enable = true;
-      hardware.graphics.enable32Bit = true;
-      # Monitor backlight
-      hardware.i2c.enable = true;
-      services.ddccontrol.enable = true;
-      environment.systemPackages = [ pkgs.luminance pkgs.ddcutil ];
-    };
-
-    accounts = { pkgs, ... }: mkIf (config.common.linux.enable && !pkgs.stdenv.isAarch64) {
-      environment.systemPackages = [ pkgs.glib (pkgs.gnome-control-center or pkgs.gnome.gnome-control-center) ];
-      services.accounts-daemon.enable = true;
-      services.gnome.gnome-online-accounts.enable = true;
-      # programs.evolution.enable = true;
-      # programs.evolution.plugins = with pkgs; [ evolution-ews ];
-      # services.gnome.evolution-data-server.enable = true;
-      # services.gnome.evolution-data-server.plugins = with pkgs; [ evolution-ews ];
-    };
-
-    wlr = { lib, config, ... }: mkIf config.common.linux.enable {
-      # swaync disable notifications on screencast
-      xdg.portal.wlr.settings.screencast = {
-        exec_before = ''which swaync-client && swaync-client --inhibitor-add "xdg-desktop-portal-wlr" || true'';
-        exec_after = ''which swaync-client && swaync-client --inhibitor-remove "xdg-desktop-portal-wlr" || true'';
+    ios =
+      { config, pkgs, ... }:
+      mkIf config.common.linux.enable {
+        services.usbmuxd.enable = true;
+        services.usbmuxd.package = pkgs.usbmuxd2;
+        environment.systemPackages = with pkgs; [
+          libimobiledevice
+          ifuse
+        ];
+        users.users.${config.common.linux.username}.extraGroups = [ config.services.usbmuxd.group ];
+        systemd.network.networks."05-ios-tethering" = {
+          matchConfig.Driver = "ipheth";
+          networkConfig.DHCP = "yes";
+          linkConfig.RequiredForOnline = "no";
+        };
       };
 
-      # Niri stuff
-      # https://github.com/sodiboo/niri-flake/blob/main/docs.md
-      programs.niri.enable = true;
-      programs.niri.package = pkgs.niri-stable;
-      # Override gnome-keyring disabling
-      services.gnome.gnome-keyring.enable = lib.mkForce false;
-    };
-
-    logitech = { pkgs, ... }: mkIf cfg.enable {
-      services.ratbagd.enable = true;
-      environment.systemPackages = with pkgs; [ piper ];
-    };
-
-    kwallet = { pkgs, lib, ... }: mkIf cfg.enable {
-      environment.systemPackages = [ pkgs.kdePackages.kwallet ];
-      services.dbus.packages = [ pkgs.kdePackages.kwallet ];
-      xdg.portal = {
-        extraPortals = [ pkgs.kdePackages.kwallet ];
+    graphics =
+      { config, pkgs, ... }:
+      {
+        hardware.graphics.enable = true;
+        hardware.graphics.enable32Bit = true;
+        # Monitor backlight
+        hardware.i2c.enable = true;
+        services.ddccontrol.enable = true;
+        environment.systemPackages = [
+          pkgs.luminance
+          pkgs.ddcutil
+        ];
       };
-    };
 
-    virtualisation = { pkgs, ... }: mkIf cfg.enable {
-      virtualisation.podman = {
+    accounts =
+      { pkgs, ... }:
+      mkIf (config.common.linux.enable && !pkgs.stdenv.isAarch64) {
+        environment.systemPackages = [
+          pkgs.glib
+          (pkgs.gnome-control-center or pkgs.gnome.gnome-control-center)
+        ];
+        services.accounts-daemon.enable = true;
+        services.gnome.gnome-online-accounts.enable = true;
+        # programs.evolution.enable = true;
+        # programs.evolution.plugins = with pkgs; [ evolution-ews ];
+        # services.gnome.evolution-data-server.enable = true;
+        # services.gnome.evolution-data-server.plugins = with pkgs; [ evolution-ews ];
+      };
+
+    wlr =
+      { lib, config, ... }:
+      mkIf config.common.linux.enable {
+        # swaync disable notifications on screencast
+        xdg.portal.wlr.settings.screencast = {
+          exec_before = ''which swaync-client && swaync-client --inhibitor-add "xdg-desktop-portal-wlr" || true'';
+          exec_after = ''which swaync-client && swaync-client --inhibitor-remove "xdg-desktop-portal-wlr" || true'';
+        };
+
+        # Niri stuff
+        # https://github.com/sodiboo/niri-flake/blob/main/docs.md
+        programs.niri.enable = true;
+        programs.niri.package = pkgs.niri-stable;
+        # Override gnome-keyring disabling
+        services.gnome.gnome-keyring.enable = lib.mkForce false;
+      };
+
+    logitech =
+      { pkgs, ... }:
+      mkIf cfg.enable {
+        services.ratbagd.enable = true;
+        environment.systemPackages = with pkgs; [ piper ];
+      };
+
+    kwallet =
+      { pkgs, lib, ... }:
+      mkIf cfg.enable {
+        environment.systemPackages = [ pkgs.kdePackages.kwallet ];
+        services.dbus.packages = [ pkgs.kdePackages.kwallet ];
+        xdg.portal = {
+          extraPortals = [ pkgs.kdePackages.kwallet ];
+        };
+      };
+
+    virtualisation =
+      { pkgs, ... }:
+      mkIf cfg.enable {
+        virtualisation.podman = {
+          enable = true;
+          extraPackages = [ pkgs.slirp4netns ];
+          dockerCompat = true;
+          defaultNetwork.settings.dns_enabled = true;
+        };
+
+        virtualisation.oci-containers.backend = "podman";
+
+        virtualisation.virtualbox.host.enable = false;
+        users.extraGroups.vboxusers.members = [ cfg.username ];
+      };
+  };
+
+  rt-audio =
+    { pkgs, ... }:
+    mkIf cfg.enable {
+      services.pipewire.lowLatency = {
+        # enable this module
         enable = true;
-        extraPackages = [ pkgs.slirp4netns ];
-        dockerCompat = true;
-        defaultNetwork.settings.dns_enabled = true;
+        # defaults (no need to be set unless modified)
+        quantum = 32;
+        rate = 44100;
       };
+      security.rtkit.enable = true;
 
-      virtualisation.oci-containers.backend = "podman";
-
-      virtualisation.virtualbox.host.enable = false;
-      users.extraGroups.vboxusers.members = [ cfg.username ];
+      # Real time configurations
+      boot.kernel.sysctl = {
+        "vm.swappiness" = 10;
+        "fs.inotify.max_user_watches" = 524288;
+      };
+      security.pam.loginLimits = [
+        {
+          domain = "@audio";
+          item = "rtprio";
+          type = "-";
+          value = "90";
+        }
+        {
+          domain = "@audio";
+          item = "memlock";
+          type = "-";
+          value = "unlimited";
+        }
+      ];
     };
-  };
-
-  rt-audio = { pkgs, ... }: mkIf cfg.enable {
-    services.pipewire.lowLatency = {
-      # enable this module
-      enable = true;
-      # defaults (no need to be set unless modified)
-      quantum = 32;
-      rate = 44100;
-    };
-    security.rtkit.enable = true;
-
-    # Real time configurations
-    boot.kernel.sysctl = {
-      "vm.swappiness" = 10;
-      "fs.inotify.max_user_watches" = 524288;
-    };
-    security.pam.loginLimits = [
-      {
-        domain = "@audio";
-        item = "rtprio";
-        type = "-";
-        value = "90";
-      }
-      {
-        domain = "@audio";
-        item = "memlock";
-        type = "-";
-        value = "unlimited";
-      }
-    ];
-  };
 in
 {
   imports = with modules; [
@@ -155,23 +184,30 @@ in
       dnsServers = mkOption {
         type = types.listOf types.str;
         description = "DNS server list";
-        default = [ "1.1.1.1" "2606:4700:4700:1111" ];
+        default = [
+          "1.1.1.1"
+          "2606:4700:4700:1111"
+        ];
       };
       networks = mkOption {
-        type = types.attrsOf (types.submodule {
-          options.match = mkOption {
-            type = types.str;
-            description = "The interface name to match";
-          };
-          options.isRequired = mkOption {
-            type = types.bool;
-            description = "Require this interface to be connected for network-online.target";
-            default = false;
-          };
-        });
+        type = types.attrsOf (
+          types.submodule {
+            options.match = mkOption {
+              type = types.str;
+              description = "The interface name to match";
+            };
+            options.isRequired = mkOption {
+              type = types.bool;
+              description = "Require this interface to be connected for network-online.target";
+              default = false;
+            };
+          }
+        );
         description = "Network configuration";
         default = {
-          default = { match = "*"; };
+          default = {
+            match = "*";
+          };
         };
       };
     };
@@ -196,18 +232,16 @@ in
     };
     boot.initrd.systemd.enable = builtins.length (builtins.attrNames (cfg.luksDevices)) > 0;
     # LUKS devices
-    boot.initrd.luks.devices = builtins.mapAttrs
-      (name: path: {
-        device = path;
-        preLVM = true;
-        allowDiscards = true;
+    boot.initrd.luks.devices = builtins.mapAttrs (name: path: {
+      device = path;
+      preLVM = true;
+      allowDiscards = true;
 
-        crypttabExtraOpts = [
-          "tpm2-device=auto"
-          "fido2-device=auto"
-        ];
-      })
-      cfg.luksDevices;
+      crypttabExtraOpts = [
+        "tpm2-device=auto"
+        "fido2-device=auto"
+      ];
+    }) cfg.luksDevices;
 
     ## Hardware-related
 
@@ -251,7 +285,10 @@ in
       ];
       shell = pkgs.fish;
     };
-    nix.settings.trusted-users = [ "root" cfg.username ];
+    nix.settings.trusted-users = [
+      "root"
+      cfg.username
+    ];
 
     ## Network configuration
     systemd.network.enable = true;
@@ -262,13 +299,11 @@ in
     networking.hostName = cfg.networking.hostname;
     networking.wireless.iwd.enable = true;
     networking.wireless.iwd.settings.General.EnableNetworkConfiguration = true;
-    systemd.network.networks = builtins.mapAttrs
-      (name: cfg: {
-        matchConfig.Name = cfg.match;
-        networkConfig.DHCP = "yes";
-        linkConfig.RequiredForOnline = if cfg.isRequired then "yes" else "no";
-      })
-      cfg.networking.networks;
+    systemd.network.networks = builtins.mapAttrs (name: cfg: {
+      matchConfig.Name = cfg.match;
+      networkConfig.DHCP = "yes";
+      linkConfig.RequiredForOnline = if cfg.isRequired then "yes" else "no";
+    }) cfg.networking.networks;
     # Leave DNS to systemd-resolved
     services.resolved.enable = true;
     services.resolved.domains = cfg.networking.dnsServers;
@@ -285,19 +320,26 @@ in
     console.keyMap = "jp106"; # Console key layout
     i18n.defaultLocale = "ja_JP.UTF-8";
     # Input methods (only fcitx5 works reliably on Wayland)
-    i18n.inputMethod = {
-      fcitx5.waylandFrontend = true;
-      fcitx5.addons = with pkgs; [
-        fcitx5-mozc
-        fcitx5-unikey
-        fcitx5-gtk
-      ];
-    } // (if config.system.nixos.release == "24.05" then {
-      enabled = "fcitx5";
-    } else {
-      enable = true;
-      type = "fcitx5";
-    });
+    i18n.inputMethod =
+      {
+        fcitx5.waylandFrontend = true;
+        fcitx5.addons = with pkgs; [
+          fcitx5-mozc
+          fcitx5-unikey
+          fcitx5-gtk
+        ];
+      }
+      // (
+        if config.system.nixos.release == "24.05" then
+          {
+            enabled = "fcitx5";
+          }
+        else
+          {
+            enable = true;
+            type = "fcitx5";
+          }
+      );
 
     # Default packages
     environment.systemPackages = with pkgs; [
@@ -335,7 +377,10 @@ in
     programs.gamescope = {
       enable = true;
       # capSysNice = true; # https://github.com/NixOS/nixpkgs/issues/351516
-      args = [ "--adaptive-sync" "--rt" ];
+      args = [
+        "--adaptive-sync"
+        "--rt"
+      ];
     };
 
     ## Services
@@ -353,11 +398,22 @@ in
       wlr.enable = true;
       xdgOpenUsePortal = true;
       # gtk portal needed to make gtk apps happy
-      extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-gtk ];
+      extraPortals = [
+        pkgs.kdePackages.xdg-desktop-portal-kde
+        pkgs.xdg-desktop-portal-gtk
+      ];
 
-      config.sway.default = [ "wlr" "kde" "kwallet" ];
+      config.sway.default = [
+        "wlr"
+        "kde"
+        "kwallet"
+      ];
       config.niri = {
-        default = [ "kde" "gnome" "gtk" ];
+        default = [
+          "kde"
+          "gnome"
+          "gtk"
+        ];
         # "org.freedesktop.impl.portal.Access" = "gtk";
         # "org.freedesktop.impl.portal.Notification" = "gtk";
         "org.freedesktop.impl.portal.ScreenCast" = "gnome";

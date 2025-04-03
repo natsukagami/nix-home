@@ -1,4 +1,10 @@
-{ pkgs, runCommandLocal, zstd, lib, buildFHSEnvChroot }:
+{
+  pkgs,
+  runCommandLocal,
+  zstd,
+  lib,
+  buildFHSEnvChroot,
+}:
 
 let
   zotero-tar = builtins.fetchurl {
@@ -14,7 +20,19 @@ let
 in
 buildFHSEnvChroot {
   name = "zotero";
-  targetPkgs = pkgs: with pkgs; [ gtk3 dbus-glib libstartup_notification libpaper ] ++ (with pkgs.xorg; [ libX11 libXt ]);
+  targetPkgs =
+    pkgs:
+    with pkgs;
+    [
+      gtk3
+      dbus-glib
+      libstartup_notification
+      libpaper
+    ]
+    ++ (with pkgs.xorg; [
+      libX11
+      libXt
+    ]);
   runScript = "env QT_SCALE_FACTOR=2 ${zotero-src}/usr/lib/zotero/zotero";
 
   extraInstallCommands = ''

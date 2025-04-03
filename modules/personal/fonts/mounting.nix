@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 lib.mkIf pkgs.stdenv.isLinux {
   system.fsPackages = [ pkgs.bindfs ];
   fileSystems =
@@ -6,7 +11,11 @@ lib.mkIf pkgs.stdenv.isLinux {
       mkRoSymBind = path: {
         device = path;
         fsType = "fuse.bindfs";
-        options = [ "ro" "resolve-symlinks" "x-gvfs-hide" ];
+        options = [
+          "ro"
+          "resolve-symlinks"
+          "x-gvfs-hide"
+        ];
       };
       aggregatedIcons = pkgs.buildEnv {
         name = "system-icons";

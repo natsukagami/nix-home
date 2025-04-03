@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   ipv6-rotator =
     let
@@ -11,7 +16,14 @@ let
     in
     pkgs.writeShellApplication {
       name = "smart-ipv6-rotator";
-      runtimeInputs = [ (pkgs.python3.withPackages (p: with p; [ pyroute2 requests ])) ];
+      runtimeInputs = [
+        (pkgs.python3.withPackages (
+          p: with p; [
+            pyroute2
+            requests
+          ]
+        ))
+      ];
       text = ''
         if [ -z "$IPV6_ROTATOR_RANGE" ]; then
           echo "Range required"
@@ -22,10 +34,17 @@ let
     };
 in
 {
-  sops.secrets."invidious" = { mode = "0444"; };
-  sops.secrets."invidious-rotator-env" = { mode = "0444"; };
+  sops.secrets."invidious" = {
+    mode = "0444";
+  };
+  sops.secrets."invidious-rotator-env" = {
+    mode = "0444";
+  };
   cloud.postgresql.databases = [ "invidious" ];
-  cloud.traefik.hosts.invidious = { host = "invi.dtth.ch"; port = 61191; };
+  cloud.traefik.hosts.invidious = {
+    host = "invi.dtth.ch";
+    port = 61191;
+  };
   services.invidious = {
     enable = true;
     domain = "invi.dtth.ch";
@@ -54,8 +73,13 @@ in
   };
   systemd.timers.smart-ipv6-rotator = {
     description = "Rotate ipv6 routes to Google";
-    timerConfig = { OnCalendar = "*-*-* 00,06,12,18:00:00"; };
-    wantedBy = [ "invidious.service" "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 00,06,12,18:00:00";
+    };
+    wantedBy = [
+      "invidious.service"
+      "timers.target"
+    ];
     unitConfig = { };
   };
   systemd.services.smart-ipv6-rotator = {
@@ -68,4 +92,3 @@ in
     };
   };
 }
-

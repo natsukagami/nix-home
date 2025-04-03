@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   secrets = config.sops.secrets;
 
@@ -9,8 +14,12 @@ let
   storageMount = "/mnt/data/vikunja";
 in
 {
-  sops.secrets."vikunja/env" = { restartUnits = [ "vikunja.service" ]; };
-  sops.secrets."vikunja/provider-clientsecret" = { restartUnits = [ "vikunja.service" ]; };
+  sops.secrets."vikunja/env" = {
+    restartUnits = [ "vikunja.service" ];
+  };
+  sops.secrets."vikunja/provider-clientsecret" = {
+    restartUnits = [ "vikunja.service" ];
+  };
   cloud.postgresql.databases = [ user ];
   cloud.traefik.hosts.vikunja = {
     inherit port host;
@@ -22,7 +31,6 @@ in
     isSystemUser = true;
   };
   users.groups."${user}" = { };
-
 
   services.vikunja = {
     inherit port;
@@ -81,7 +89,11 @@ in
   };
 
   systemd.services.vikunja = {
-    serviceConfig.LoadCredential = [ "VIKUNJA_AUTH_OPENID_PROVIDERS_AUTHENTIK_CLIENTSECRET_FILE:${secrets."vikunja/provider-clientsecret".path}" ];
+    serviceConfig.LoadCredential = [
+      "VIKUNJA_AUTH_OPENID_PROVIDERS_AUTHENTIK_CLIENTSECRET_FILE:${
+        secrets."vikunja/provider-clientsecret".path
+      }"
+    ];
     serviceConfig.User = user;
     serviceConfig.DynamicUser = lib.mkForce false;
     serviceConfig.ReadWritePaths = [ storageMount ];
@@ -96,4 +108,3 @@ in
     mode = "0700";
   };
 }
-

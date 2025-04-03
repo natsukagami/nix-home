@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.linux.graphical;
@@ -17,34 +22,56 @@ let
     end
   '';
 
-  mkPackageWithDesktopOption = opts: mkOption ({
-    type = types.submodule {
-      options = {
-        package = mkOption {
-          type = types.package;
-          description = "The package for " + description;
+  mkPackageWithDesktopOption =
+    opts:
+    mkOption (
+      {
+        type = types.submodule {
+          options = {
+            package = mkOption {
+              type = types.package;
+              description = "The package for " + description;
+            };
+            desktopFile = mkOption {
+              type = types.nullOr types.str;
+              default = null;
+              description = "The desktop file name for " + description + ", defaults to [packagename].desktop";
+            };
+          };
         };
-        desktopFile = mkOption {
-          type = types.nullOr types.str;
-          default = null;
-          description = "The desktop file name for " + description + ", defaults to [packagename].desktop";
-        };
-      };
-    };
-  } // opts);
+      }
+      // opts
+    );
 
-  desktopFileOf = cfg: if cfg.desktopFile == null then "${cfg.package}/share/applications/${cfg.package.pname}.desktop" else cfg.desktopFile;
+  desktopFileOf =
+    cfg:
+    if cfg.desktopFile == null then
+      "${cfg.package}/share/applications/${cfg.package.pname}.desktop"
+    else
+      cfg.desktopFile;
 in
 {
-  imports = [ ./x11.nix ./wayland.nix ./alacritty.nix ];
+  imports = [
+    ./x11.nix
+    ./wayland.nix
+    ./alacritty.nix
+  ];
   options.linux.graphical = {
     type = mkOption {
-      type = types.nullOr (types.enum [ "x11" "wayland" ]);
+      type = types.nullOr (
+        types.enum [
+          "x11"
+          "wayland"
+        ]
+      );
       description = "Enable linux graphical configurations, with either 'x11' or 'wayland'";
       default = null;
     };
     wallpaper = mkOption {
-      type = types.oneOf [ types.str types.path ];
+      type = types.oneOf [
+        types.str
+        types.path
+      ];
       description = "Path to the wallpaper file";
       default = "";
     };
@@ -59,52 +86,61 @@ in
     };
     defaults = {
       webBrowser = mkPackageWithDesktopOption { description = "default web browser"; };
-      terminal = mkPackageWithDesktopOption { description = "default terminal"; default.package = pkgs.kitty; };
-      discord = mkPackageWithDesktopOption { description = "Discord client"; default.package = pkgs.vesktop; };
+      terminal = mkPackageWithDesktopOption {
+        description = "default terminal";
+        default.package = pkgs.kitty;
+      };
+      discord = mkPackageWithDesktopOption {
+        description = "Discord client";
+        default.package = pkgs.vesktop;
+      };
     };
   };
   config = mkIf (cfg.type != null) {
     # Packages
 
-    home.packages = (with pkgs; [
-      cfg.defaults.webBrowser.package
-      cfg.defaults.terminal.package
+    home.packages = (
+      with pkgs;
+      [
+        cfg.defaults.webBrowser.package
+        cfg.defaults.terminal.package
 
-      ## GUI stuff
-      evince # PDF reader
-      gparted
-      vscode
-      feh # For images?
-      deluge # Torrent client
-      pavucontrol # PulseAudio control panel
-      sublime-music # For navidrome
-      # cinny-desktop
-      gajim
-      vivaldi
-      # Audio
-      qpwgraph # Pipewire graph
-      audacity
-      vlc
+        ## GUI stuff
+        evince # PDF reader
+        gparted
+        vscode
+        feh # For images?
+        deluge # Torrent client
+        pavucontrol # PulseAudio control panel
+        sublime-music # For navidrome
+        # cinny-desktop
+        gajim
+        vivaldi
+        # Audio
+        qpwgraph # Pipewire graph
+        audacity
+        vlc
 
-      unstable.zotero
-      libreoffice
+        unstable.zotero
+        libreoffice
 
-      mpv # for anki
-      anki-bin
+        mpv # for anki
+        anki-bin
 
-      # Chat stuff
-      tdesktop
-      whatsapp-for-linux
-      slack
-      zoom-us
+        # Chat stuff
+        tdesktop
+        whatsapp-for-linux
+        slack
+        zoom-us
 
-
-      ## CLI stuff
-      dex # .desktop file management, startup
-      # sct # Display color temperature
-      xdg-utils # Open stuff
-      wifi-indicator
-    ] ++ cfg.startup);
+        ## CLI stuff
+        dex # .desktop file management, startup
+        # sct # Display color temperature
+        xdg-utils # Open stuff
+        wifi-indicator
+      ]
+      ++ cfg.startup
+    );
 
     # OBS
     programs.obs-studio = {
@@ -129,7 +165,10 @@ in
     xdg.mimeApps.enable = true;
 
     xdg.mimeApps.associations.added = {
-      "x-scheme-handler/mailto" = [ "thunderbird.desktop" "org.gnome.Evolution.desktop" ];
+      "x-scheme-handler/mailto" = [
+        "thunderbird.desktop"
+        "org.gnome.Evolution.desktop"
+      ];
       "application/pdf" = [ "org.gnome.Evince.desktop" ];
       "text/plain" = [ "kakoune.desktop" ];
 
@@ -154,7 +193,10 @@ in
     };
     xdg.mimeApps.defaultApplications = {
       # Email
-      "x-scheme-handler/mailto" = [ "thunderbird.desktop" "org.gnome.Evolution.desktop" ];
+      "x-scheme-handler/mailto" = [
+        "thunderbird.desktop"
+        "org.gnome.Evolution.desktop"
+      ];
       "x-scheme-handler/webcal" = [ "thunderbird.desktop" ];
       "x-scheme-handler/webcals" = [ "thunderbird.desktop" ];
 
@@ -246,7 +288,10 @@ in
     ## Qt
     qt.enable = true;
     qt.platformTheme.name = "kde";
-    qt.platformTheme.package = with pkgs.kdePackages; [ plasma-integration systemsettings ];
+    qt.platformTheme.package = with pkgs.kdePackages; [
+      plasma-integration
+      systemsettings
+    ];
     qt.style.package = [ pkgs.kdePackages.breeze ];
     qt.style.name = "Breeze";
 
@@ -267,7 +312,8 @@ in
         };
         autoStartup = listToAttrs (map f cfg.startup);
       in
-      autoStartup // {
+      autoStartup
+      // {
         ## Polkit UI
         "autostart/polkit.desktop".text = ''
           ${builtins.readFile "${pkgs.pantheon.pantheon-agent-polkit}/etc/xdg/autostart/io.elementary.desktop.agent-polkit.desktop"}
@@ -304,5 +350,3 @@ in
     };
   };
 }
-
-

@@ -1,10 +1,18 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   cfg = config.linux.graphical;
 in
 with lib;
 {
-  imports = [ ./x11/hidpi.nix ./x11/i3.nix ];
+  imports = [
+    ./x11/hidpi.nix
+    ./x11/i3.nix
+  ];
   options.linux.graphical.hasDE = mkOption {
     type = types.bool;
     description = "When enabled, disable stuff that already comes with a DE";
@@ -43,4 +51,3 @@ with lib;
     };
   };
 }
-

@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -28,7 +33,10 @@ in
       };
       shell = {
         program = "/bin/sh";
-        args = [ "-ic" "${config.programs.fish.package}/bin/fish" ];
+        args = [
+          "-ic"
+          "${config.programs.fish.package}/bin/fish"
+        ];
       };
       colors = {
         # Default colors
@@ -57,7 +65,11 @@ in
       };
 
       key_bindings = [
-        { key = "C"; mods = "Alt|Control"; action = "SpawnNewInstance"; }
+        {
+          key = "C";
+          mods = "Alt|Control";
+          action = "SpawnNewInstance";
+        }
       ];
     };
   };

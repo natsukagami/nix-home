@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
 let
   host = "blog.dtth.ch";
@@ -11,7 +16,9 @@ in
   # traefik
   cloud.traefik.hosts.writefreely-dtth = { inherit host port; };
 
-  sops.secrets."writefreely-oauth-secret" = { owner = user; };
+  sops.secrets."writefreely-oauth-secret" = {
+    owner = user;
+  };
 
   users.users.${user} = {
     isSystemUser = true;
@@ -65,16 +72,18 @@ in
       tokenEndpoint = "/application/o/token/";
       inspectEndpoint = "/application/o/userinfo/";
       authEndpoint = "/application/o/authorize/";
-      scopes = [ "email" "openid" "profile" ];
+      scopes = [
+        "email"
+        "openid"
+        "profile"
+      ];
       mapUserId = "nickname";
       mapUsername = "preferred_username";
       mapDisplayName = "name";
     };
-
 
     database.type = "sqlite3";
 
     admin.name = "nki";
   };
 }
-

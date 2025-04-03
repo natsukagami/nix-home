@@ -1,7 +1,14 @@
-{ config, pkgs, ... }: {
-  sops.secrets.authentik-oidc-client-secret = { owner = "outline"; };
-  sops.secrets."outline/smtp-password" = { owner = "outline"; };
-  sops.secrets."outline/s3-secret-key" = { owner = "outline"; };
+{ config, pkgs, ... }:
+{
+  sops.secrets.authentik-oidc-client-secret = {
+    owner = "outline";
+  };
+  sops.secrets."outline/smtp-password" = {
+    owner = "outline";
+  };
+  sops.secrets."outline/s3-secret-key" = {
+    owner = "outline";
+  };
 
   services.outline = {
     enable = true;
@@ -52,5 +59,8 @@
     AWS_S3_R2 = "true";
     AWS_S3_R2_PUBLIC_URL = "https://s3.wiki.dtth.ch";
   };
-  cloud.traefik.hosts.outline = { host = "wiki.dtth.ch"; port = 18729; };
+  cloud.traefik.hosts.outline = {
+    host = "wiki.dtth.ch";
+    port = 18729;
+  };
 }

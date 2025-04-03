@@ -1,6 +1,18 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
-with { inherit (lib) mkEnableOption mkOption types mkIf; };
+with {
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    ;
+};
 let
   cfg = config.nki.services.nix-cache;
 

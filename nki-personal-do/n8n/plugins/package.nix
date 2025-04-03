@@ -1,4 +1,5 @@
-{ nodejs, importNpmLock }: importNpmLock.buildNodeModules {
+{ nodejs, importNpmLock }:
+importNpmLock.buildNodeModules {
   inherit nodejs;
   npmRoot = ./.;
 }

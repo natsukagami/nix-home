@@ -1,9 +1,18 @@
 { nixpkgs, nixpkgs-unstable, ... }@inputs:
 let
   overlay-unstable = final: prev: {
-    stable = import nixpkgs { config.allowUnfree = true; system = prev.system; };
-    unstable = import nixpkgs-unstable { config.allowUnfree = true; system = prev.system; };
-    x86 = import nixpkgs-unstable { system = prev.system; config.allowUnsupportedSystem = true; };
+    stable = import nixpkgs {
+      config.allowUnfree = true;
+      system = prev.system;
+    };
+    unstable = import nixpkgs-unstable {
+      config.allowUnfree = true;
+      system = prev.system;
+    };
+    x86 = import nixpkgs-unstable {
+      system = prev.system;
+      config.allowUnsupportedSystem = true;
+    };
   };
   overlay-needs-unstable = final: prev: {
     # Typst updates really quickly.
@@ -50,18 +59,19 @@ let
 
     input-remapper = final.unstable.input-remapper;
 
-    kakoune-unwrapped =
-      prev.kakoune-unwrapped.overrideAttrs (attrs: {
-        version = "r${builtins.substring 0 6 inputs.kakoune.rev}";
-        src = inputs.kakoune;
-        patches = [
-          # patches in the original package was already applied
-        ];
-      });
-
-    librewolf = (prev.librewolf.override {
-      nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
+    kakoune-unwrapped = prev.kakoune-unwrapped.overrideAttrs (attrs: {
+      version = "r${builtins.substring 0 6 inputs.kakoune.rev}";
+      src = inputs.kakoune;
+      patches = [
+        # patches in the original package was already applied
+      ];
     });
+
+    librewolf = (
+      prev.librewolf.override {
+        nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
+      }
+    );
 
     vikunja =
       # builtins.seq
@@ -71,19 +81,27 @@ let
     luminance = prev.luminance.overrideAttrs (attrs: {
       nativeBuildInputs = attrs.nativeBuildInputs ++ [ final.wrapGAppsHook ];
       buildInputs = attrs.buildInputs ++ [ final.glib ];
-      postInstall = attrs.postInstall + ''
-        glib-compile-schemas $out/share/glib-2.0/schemas
-      '';
+      postInstall =
+        attrs.postInstall
+        + ''
+          glib-compile-schemas $out/share/glib-2.0/schemas
+        '';
     });
 
     vesktop = prev.vesktop.overrideAttrs (attrs: {
       postFixup =
         let
-          flagToReplace = if final.lib.hasInfix "--enable-wayland-ime=true" attrs.postFixup then "--enable-wayland-ime=true" else "--enable-wayland-ime";
+          flagToReplace =
+            if final.lib.hasInfix "--enable-wayland-ime=true" attrs.postFixup then
+              "--enable-wayland-ime=true"
+            else
+              "--enable-wayland-ime";
         in
-        builtins.replaceStrings [ "NIXOS_OZONE_WL" flagToReplace ] [ "WAYLAND_DISPLAY" "${flagToReplace} --wayland-text-input-version=3" ] attrs.postFixup;
+        builtins.replaceStrings
+          [ "NIXOS_OZONE_WL" flagToReplace ]
+          [ "WAYLAND_DISPLAY" "${flagToReplace} --wayland-text-input-version=3" ]
+          attrs.postFixup;
     });
-
 
     editline-lix =
       assert final.lib.assertMsg (final.lix.version == "2.92.0") "we only need to patch this for 2.92";
@@ -106,7 +124,9 @@ let
   };
 
   overlay-packages = final: prev: {
-    kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter { rustPlatform = final.unstable.rustPlatform; };
+    kak-tree-sitter = final.callPackage ./packages/common/kak-tree-sitter {
+      rustPlatform = final.unstable.rustPlatform;
+    };
 
     kak-lsp = final.unstable.rustPlatform.buildRustPackage {
       name = "kak-lsp";
@@ -129,9 +149,14 @@ let
 
     zen-browser-bin = inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
       inherit (inputs.zen-browser.packages.${final.stdenv.system}) zen-browser-unwrapped;
-      wrapFirefox = opts: final.wrapFirefox (opts // {
-        nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
-      });
+      wrapFirefox =
+        opts:
+        final.wrapFirefox (
+          opts
+          // {
+            nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
+          }
+        );
       # zen-browser-unwrapped = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser-unwrapped.override {
       #   sources = inputs.zen-browser.inputs;
       # };

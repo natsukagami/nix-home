@@ -1,4 +1,11 @@
-{ fish, lib, writeScript, writeTextDir, kakouneUtils, ... }:
+{
+  fish,
+  lib,
+  writeScript,
+  writeTextDir,
+  kakouneUtils,
+  ...
+}:
 let
   kaktex-script = writeScript "kaktex" ''
     #!/usr/bin/env ${lib.getExe fish}

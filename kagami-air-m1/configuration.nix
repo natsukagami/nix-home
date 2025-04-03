@@ -2,24 +2,39 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # Fonts
-      ../modules/personal/fonts
-      # Encrypted DNS
-      ../modules/services/edns
-      # Override base mesa
-      ({ ... }: { nixpkgs.overlays = lib.mkBefore [ (final: prev: { mesa = prev.mesa.override { enableOpenCL = true; meson = final.unstable.meson; }; }) ]; })
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    # Fonts
+    ../modules/personal/fonts
+    # Encrypted DNS
+    ../modules/services/edns
+    # Override base mesa
+    (
+      { ... }:
+      {
+        nixpkgs.overlays = lib.mkBefore [
+          (final: prev: {
+            mesa = prev.mesa.override {
+              enableOpenCL = true;
+              meson = final.unstable.meson;
+            };
+          })
+        ];
+      }
+    )
+  ];
 
   # time.timeZone = lib.mkForce "Asia/Ho_Chi_Minh";
   services.xserver.desktopManager.plasma5.enable = true;
-
 
   # Asahi kernel configuration
   hardware.asahi = {
@@ -46,9 +61,9 @@
           hash = "sha256-IcKKe1RA8sCaUfWK71ELzF15YaBS3DjoYhNMIWiQ5Jw=";
         };
 
-        patches = lib.forEach attrs.patches (p:
-          if lib.hasSuffix "opencl.patch" p
-          then ./mesa-asahi-edge/opencl.patch else p);
+        patches = lib.forEach attrs.patches (
+          p: if lib.hasSuffix "opencl.patch" p then ./mesa-asahi-edge/opencl.patch else p
+        );
       });
     })
   ];
@@ -145,4 +160,3 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
 }
-

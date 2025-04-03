@@ -1,11 +1,14 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 {
   homebrew.enable = true;
-  homebrew.brewPrefix =
-    if pkgs.stdenv.isAarch64 then "/opt/homebrew/bin"
-    else "/usr/local/bin";
+  homebrew.brewPrefix = if pkgs.stdenv.isAarch64 then "/opt/homebrew/bin" else "/usr/local/bin";
   homebrew.onActivation.cleanup = "zap";
   homebrew.onActivation.upgrade = true;
 

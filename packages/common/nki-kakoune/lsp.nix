@@ -35,46 +35,83 @@ let
 
     languageServers =
       let
-        vscodeServerWith = { name, extraFileTypes ? [ ] }: {
-          name = "vscode-${name}-language-server";
-          value = {
-            args = [ "--stdio" ];
-            command = "vscode-${name}-language-server";
-            filetypes = [ name ] ++ extraFileTypes;
-            roots = [ "package.json" ".git" ];
-            package = nodePackages.vscode-langservers-extracted;
+        vscodeServerWith =
+          {
+            name,
+            extraFileTypes ? [ ],
+          }:
+          {
+            name = "vscode-${name}-language-server";
+            value = {
+              args = [ "--stdio" ];
+              command = "vscode-${name}-language-server";
+              filetypes = [ name ] ++ extraFileTypes;
+              roots = [
+                "package.json"
+                ".git"
+              ];
+              package = nodePackages.vscode-langservers-extracted;
+            };
           };
-        };
       in
       {
         ccls = {
-          args = [ "-v=2" "-log-file=/tmp/ccls.log" ];
+          args = [
+            "-v=2"
+            "-log-file=/tmp/ccls.log"
+          ];
           package = ccls;
           command = "ccls";
-          filetypes = [ "c" "cpp" ];
-          roots = [ "compile_commands.json" ".cquery" ".git" ];
+          filetypes = [
+            "c"
+            "cpp"
+          ];
+          roots = [
+            "compile_commands.json"
+            ".cquery"
+            ".git"
+          ];
         };
         gopls = {
           command = "gopls";
           package = gopls;
           filetypes = [ "go" ];
           offset_encoding = "utf-8";
-          roots = [ "Gopkg.toml" "go.mod" ".git" ".hg" ];
-          settings = { gopls = { hoverKind = "SynopsisDocumentation"; semanticTokens = true; }; };
+          roots = [
+            "Gopkg.toml"
+            "go.mod"
+            ".git"
+            ".hg"
+          ];
+          settings = {
+            gopls = {
+              hoverKind = "SynopsisDocumentation";
+              semanticTokens = true;
+            };
+          };
           settings_section = "gopls";
         };
         haskell-language-server = {
           args = [ "--lsp" ];
           command = "haskell-language-server-wrapper";
           filetypes = [ "haskell" ];
-          roots = [ "Setup.hs" "stack.yaml" "*.cabal" "package.yaml" ];
+          roots = [
+            "Setup.hs"
+            "stack.yaml"
+            "*.cabal"
+            "package.yaml"
+          ];
           settings_section = "haskell";
         };
         nil = {
           command = "nil";
           package = nil;
           filetypes = [ "nix" ];
-          roots = [ "flake.nix" "shell.nix" ".git" ];
+          roots = [
+            "flake.nix"
+            "shell.nix"
+            ".git"
+          ];
           settings.nil = {
             formatting.command = [ "${lib.getExe nixfmt-rfc-style}" ];
           };
@@ -84,21 +121,43 @@ let
           package = python311Packages.python-lsp-server;
           filetypes = [ "python" ];
           offset_encoding = "utf-8";
-          roots = [ "requirements.txt" "setup.py" ".git" ".hg" ];
+          roots = [
+            "requirements.txt"
+            "setup.py"
+            ".git"
+            ".hg"
+          ];
         };
         # Spellchecking server
         ltex-ls = {
           command = "ltex-ls";
           args = [ "--log-file=/tmp" ];
-          filetypes = [ "latex" "typst" ];
-          roots = [ "main.tex" "main.typ" ".git" ];
+          filetypes = [
+            "latex"
+            "typst"
+          ];
+          roots = [
+            "main.tex"
+            "main.typ"
+            ".git"
+          ];
           package = ltex-ls;
         };
         tailwind = {
           command = "tailwindcss-language-server";
           args = [ "--stdio" ];
-          filetypes = [ "html" "css" "javascript" "typescript" "templ" ];
-          roots = [ "tailwind.config.{js,cjs,mjs,ts}" "package.json" ".git" ];
+          filetypes = [
+            "html"
+            "css"
+            "javascript"
+            "typescript"
+            "templ"
+          ];
+          roots = [
+            "tailwind.config.{js,cjs,mjs,ts}"
+            "package.json"
+            ".git"
+          ];
           settings_section = "tailwindCSS";
           settings.tailwindCSS = {
             validate = "warning";
@@ -115,12 +174,20 @@ let
         typescript-language-server = {
           args = [ "--stdio" ];
           command = "typescript-language-server";
-          filetypes = [ "typescript" "javascript" ];
+          filetypes = [
+            "typescript"
+            "javascript"
+          ];
           roots = [ "package.json" ];
           package = nodePackages.typescript-language-server;
         };
         fsautocomplete = {
-          args = [ "--adaptive-lsp-server-enabled" "--project-graph-enabled" "--source-text-factory" "RoslynSourceText" ];
+          args = [
+            "--adaptive-lsp-server-enabled"
+            "--project-graph-enabled"
+            "--source-text-factory"
+            "RoslynSourceText"
+          ];
           command = "fsautocomplete";
           filetypes = [ "fsharp" ];
           roots = [ "*.fsproj" ];
@@ -133,7 +200,11 @@ let
         metals = {
           command = "metals";
           filetypes = [ "scala" ];
-          roots = [ "build.sbt" "build.sc" "build.mill" ];
+          roots = [
+            "build.sbt"
+            "build.sc"
+            "build.mill"
+          ];
           settings_section = "metals";
           settings.metals = {
             inlayHints.inferredTypes.enable = true;
@@ -143,18 +214,30 @@ let
             icons = "unicode";
             isHttpEnabled = true;
             statusBarProvider = "log-message";
-            compilerOptions = { overrideDefFormat = "unicode"; };
+            compilerOptions = {
+              overrideDefFormat = "unicode";
+            };
           };
           package = metals;
         };
         texlab = {
           command = "texlab";
           filetypes = [ "latex" ];
-          roots = [ "main.tex" "all.tex" ".git" ];
+          roots = [
+            "main.tex"
+            "all.tex"
+            ".git"
+          ];
           settings_section = "texlab";
           settings.texlab = {
             build.executable = "latexmk";
-            build.args = [ "-pdf" "-shell-escape" "-interaction=nonstopmode" "-synctex=1" "%f" ];
+            build.args = [
+              "-pdf"
+              "-shell-escape"
+              "-interaction=nonstopmode"
+              "-synctex=1"
+              "%f"
+            ];
 
             build.forwardSearchAfter = true;
             build.onSave = true;
@@ -174,7 +257,10 @@ let
         tinymist = {
           command = "tinymist";
           filetypes = [ "typst" ];
-          roots = [ "main.typ" ".git" ];
+          roots = [
+            "main.typ"
+            ".git"
+          ];
           settings_section = "tinymist";
           settings.tinymist = {
             exportPdf = "onSave";
@@ -185,14 +271,20 @@ let
         marksman = {
           command = "marksman";
           filetypes = [ "markdown" ];
-          roots = [ ".marksman.toml" ".git" ];
+          roots = [
+            ".marksman.toml"
+            ".git"
+          ];
           package = marksman;
         };
         templ = {
           command = "templ";
           args = [ "lsp" ];
           filetypes = [ "templ" ];
-          roots = [ "go.mod" ".git" ];
+          roots = [
+            "go.mod"
+            ".git"
+          ];
           package = templ;
         };
         rust-analyzer = {
@@ -203,78 +295,202 @@ let
           package = rust-analyzer;
         };
 
-      } // (builtins.listToAttrs (builtins.map
-        (ft: vscodeServerWith {
-          name = ft;
-          extraFileTypes = if ft == "json" then [ ] else [ "templ" ];
-        }) [ "html" "css" "json" ]));
+      }
+      // (builtins.listToAttrs (
+        builtins.map
+          (
+            ft:
+            vscodeServerWith {
+              name = ft;
+              extraFileTypes = if ft == "json" then [ ] else [ "templ" ];
+            }
+          )
+          [
+            "html"
+            "css"
+            "json"
+          ]
+      ));
 
     faces = [
       ## Items
       # (Rust) Macros
-      { face = "attribute"; token = "attribute"; }
-      { face = "attribute"; token = "derive"; }
-      { face = "macro"; token = "macro"; } # Function-like Macro
+      {
+        face = "attribute";
+        token = "attribute";
+      }
+      {
+        face = "attribute";
+        token = "derive";
+      }
+      {
+        face = "macro";
+        token = "macro";
+      } # Function-like Macro
       # Keyword and Fixed Tokens
-      { face = "keyword"; token = "keyword"; }
-      { face = "operator"; token = "operator"; }
+      {
+        face = "keyword";
+        token = "keyword";
+      }
+      {
+        face = "operator";
+        token = "operator";
+      }
       # Functions and Methods
-      { face = "function"; token = "function"; }
-      { face = "method"; token = "method"; }
+      {
+        face = "function";
+        token = "function";
+      }
+      {
+        face = "method";
+        token = "method";
+      }
       # Constants
-      { face = "string"; token = "string"; }
-      { face = "format_specifier"; token = "formatSpecifier"; }
+      {
+        face = "string";
+        token = "string";
+      }
+      {
+        face = "format_specifier";
+        token = "formatSpecifier";
+      }
       # Variables
-      { face = "variable"; token = "variable"; modifiers = [ "readonly" ]; }
-      { face = "mutable_variable"; token = "variable"; }
-      { face = "module"; token = "namespace"; }
-      { face = "variable"; token = "type_parameter"; }
-      { face = "class"; token = "enum"; }
-      { face = "class"; token = "struct"; }
-      { face = "class"; token = "trait"; }
-      { face = "class"; token = "union"; }
-      { face = "class"; token = "class"; }
+      {
+        face = "variable";
+        token = "variable";
+        modifiers = [ "readonly" ];
+      }
+      {
+        face = "mutable_variable";
+        token = "variable";
+      }
+      {
+        face = "module";
+        token = "namespace";
+      }
+      {
+        face = "variable";
+        token = "type_parameter";
+      }
+      {
+        face = "class";
+        token = "enum";
+      }
+      {
+        face = "class";
+        token = "struct";
+      }
+      {
+        face = "class";
+        token = "trait";
+      }
+      {
+        face = "class";
+        token = "union";
+      }
+      {
+        face = "class";
+        token = "class";
+      }
 
       ## Comments
-      { face = "documentation"; token = "comment"; modifiers = [ "documentation" ]; }
-      { face = "comment"; token = "comment"; }
+      {
+        face = "documentation";
+        token = "comment";
+        modifiers = [ "documentation" ];
+      }
+      {
+        face = "comment";
+        token = "comment";
+      }
 
       # Typst
-      { face = "header"; token = "heading"; }
-      { face = "ts_markup_link_url"; token = "link"; }
-      { face = "ts_markup_link_uri"; token = "ref"; }
-      { face = "ts_markup_link_label"; token = "label"; }
-      { face = "ts_property"; token = "pol"; }
-      { face = "ts_markup_list_checked"; token = "marker"; }
-      { face = "ts_constant_builtin_boolean"; token = "bool"; }
-      { face = "ts_keyword_control"; token = "delim"; }
-      { face = "ts_number"; token = "text"; modifiers = [ "math" ]; }
-      { face = "ts_markup_bold"; token = "text"; modifiers = [ "strong" ]; }
-      { face = "ts_markup_italic"; token = "text"; modifiers = [ "emph" ]; }
+      {
+        face = "header";
+        token = "heading";
+      }
+      {
+        face = "ts_markup_link_url";
+        token = "link";
+      }
+      {
+        face = "ts_markup_link_uri";
+        token = "ref";
+      }
+      {
+        face = "ts_markup_link_label";
+        token = "label";
+      }
+      {
+        face = "ts_property";
+        token = "pol";
+      }
+      {
+        face = "ts_markup_list_checked";
+        token = "marker";
+      }
+      {
+        face = "ts_constant_builtin_boolean";
+        token = "bool";
+      }
+      {
+        face = "ts_keyword_control";
+        token = "delim";
+      }
+      {
+        face = "ts_number";
+        token = "text";
+        modifiers = [ "math" ];
+      }
+      {
+        face = "ts_markup_bold";
+        token = "text";
+        modifiers = [ "strong" ];
+      }
+      {
+        face = "ts_markup_italic";
+        token = "text";
+        modifiers = [ "emph" ];
+      }
     ];
 
     raw = {
-      server = { timeout = 1800; };
+      server = {
+        timeout = 1800;
+      };
       snippet_support = false;
       verbosity = 255;
     };
   };
 
-  per-lang-config = lang:
+  per-lang-config =
+    lang:
     let
       toml = formats.toml { };
       servers = lib.filterAttrs (_: server: builtins.elem lang server.filetypes) config.languageServers;
-      serverSettings = lib.mapAttrs
-        (name: server: builtins.removeAttrs
-          (server // {
-            root_globs = server.roots;
-          }) [ "package" "filetypes" "roots" ])
-        servers;
+      serverSettings = lib.mapAttrs (
+        name: server:
+        builtins.removeAttrs
+          (
+            server
+            // {
+              root_globs = server.roots;
+            }
+          )
+          [
+            "package"
+            "filetypes"
+            "roots"
+          ]
+      ) servers;
       serversToml = toml.generate "kak-lsp-${lang}.toml" serverSettings;
       lang-id =
-        if builtins.hasAttr lang config.languageIDs then ''
-          set-option buffer lsp_language_id ${config.languageIDs.${lang}}
-        '' else "# No lang-id remap needed";
+        if builtins.hasAttr lang config.languageIDs then
+          ''
+            set-option buffer lsp_language_id ${config.languageIDs.${lang}}
+          ''
+        else
+          "# No lang-id remap needed";
     in
     ''
       # LSP Configuration for ${lang}
@@ -288,14 +504,18 @@ let
 
   lang-config =
     let
-      langs = lib.unique (lib.flatten (lib.mapAttrsToList (_: server: server.filetypes) config.languageServers));
+      langs = lib.unique (
+        lib.flatten (lib.mapAttrsToList (_: server: server.filetypes) config.languageServers)
+      );
     in
     lib.concatMapStringsSep "\n" per-lang-config langs;
   faces-config =
     let
-      mapFace = face:
+      mapFace =
+        face:
         let
-          modifiers = if builtins.hasAttr "modifiers" face then ", modifiers=${builtins.toJSON face.modifiers}" else "";
+          modifiers =
+            if builtins.hasAttr "modifiers" face then ", modifiers=${builtins.toJSON face.modifiers}" else "";
         in
         "{face=${builtins.toJSON face.face}, token=${builtins.toJSON face.token}${modifiers}}";
       faces = lib.concatMapStringsSep ",\n    " mapFace config.faces;
@@ -319,9 +539,9 @@ let
   #     language_ids = config.languageIDs;
   #   } // config.raw);
 
-  serverPackages =
-    builtins.filter (v: v != null)
-      (lib.mapAttrsToList (_: serv: serv.package or null) config.languageServers);
+  serverPackages = builtins.filter (v: v != null) (
+    lib.mapAttrsToList (_: serv: serv.package or null) config.languageServers
+  );
 in
 {
   extraPaths = lib.makeBinPath (serverPackages ++ [ kak-lsp ]);
@@ -385,4 +605,3 @@ in
     }
   '';
 }
-

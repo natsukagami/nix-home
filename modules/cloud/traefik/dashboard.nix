@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -28,7 +33,8 @@ in
     # Dynamic configuration
     # ---------------------
     ## Middleware
-    services.traefik.dynamicConfigOptions.http.middlewares.dashboard-auth.basicAuth.usersFile = cfg.usersFile;
+    services.traefik.dynamicConfigOptions.http.middlewares.dashboard-auth.basicAuth.usersFile =
+      cfg.usersFile;
     ## Router
     services.traefik.dynamicConfigOptions.http.routers.dashboard = {
       rule = "Host(`${cfg.host}`)";

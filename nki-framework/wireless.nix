@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
   environment.systemPackages = with pkgs; [ iw ];
   # Disable power_save on boot
   services.udev.packages = [

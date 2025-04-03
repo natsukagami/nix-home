@@ -1,10 +1,11 @@
-{ lib
-, fish
-, writeScript
-, writeTextDir
-, prependRc ? ""
-, appendRc ? ""
-, ...
+{
+  lib,
+  fish,
+  writeScript,
+  writeTextDir,
+  prependRc ? "",
+  appendRc ? "",
+  ...
 }:
 
 let

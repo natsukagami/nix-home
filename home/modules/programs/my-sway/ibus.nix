@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 with lib;
 let
   cfg = config.programs.my-sway;
@@ -6,15 +11,22 @@ let
   # Set up an ibus script
   ibusNext = (
     let
-      input-methods = [ "xkb:us::eng" "mozc-jp" "Bamboo" ];
-      next = m:
+      input-methods = [
+        "xkb:us::eng"
+        "mozc-jp"
+        "Bamboo"
+      ];
+      next =
+        m:
         let
-          nextRec = l:
-            if (length l == 1)
-            then head input-methods
-            else if (m == head l)
-            then (head (tail l))
-            else nextRec (tail l);
+          nextRec =
+            l:
+            if (length l == 1) then
+              head input-methods
+            else if (m == head l) then
+              (head (tail l))
+            else
+              nextRec (tail l);
         in
         nextRec input-methods;
       changeTo = m: ''
@@ -52,4 +64,3 @@ in
     };
   };
 }
-

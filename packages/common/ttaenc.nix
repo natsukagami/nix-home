@@ -1,4 +1,5 @@
-{ stdenv, lib }: stdenv.mkDerivation rec {
+{ stdenv, lib }:
+stdenv.mkDerivation rec {
   name = "ttaenc";
   version = "3.4.1";
 

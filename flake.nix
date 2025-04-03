@@ -61,86 +61,120 @@
     secrets.url = "git+ssh://git@github.com/natsukagami/nix-deploy-secrets";
   };
 
-  outputs = { self, darwin, nixpkgs, nixpkgs-unstable, home-manager, deploy-rs, sops-nix, ... }@inputs:
+  outputs =
+    {
+      self,
+      darwin,
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      deploy-rs,
+      sops-nix,
+      ...
+    }@inputs:
     let
       overlays = import ./overlay.nix inputs;
       lib = nixpkgs.lib;
 
-      applyOverlays = { ... }: {
-        nixpkgs.overlays = lib.mkAfter overlays;
-      };
-
-      nixpkgsAsRegistry_ = stable: { lib, ... }: {
-        imports = [ applyOverlays ];
-        nix.registry.current-system.flake = self;
-        nix.registry.nixpkgs-unstable.flake = nixpkgs-unstable;
-        nixpkgs.config.allowUnfree = true;
-        nix.nixPath = lib.mkDefault [
-          "nixpkgs-unstable=${nixpkgs-unstable}"
-        ];
-      };
-
-      osuStable = { pkgs, ... }: {
-        nix.settings = {
-          substituters = [ "https://nix-gaming.cachix.org" ];
-          trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
+      applyOverlays =
+        { ... }:
+        {
+          nixpkgs.overlays = lib.mkAfter overlays;
         };
-        environment.systemPackages = [ inputs.nix-gaming.packages.${pkgs.hostPlatform.system}.osu-stable ];
-        programs.gamemode = {
-          enable = true;
-          enableRenice = true;
-          settings = {
-            general = {
-              renice = 10;
-            };
 
-            custom = {
-              start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
-              end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+      nixpkgsAsRegistry_ =
+        stable:
+        { lib, ... }:
+        {
+          imports = [ applyOverlays ];
+          nix.registry.current-system.flake = self;
+          nix.registry.nixpkgs-unstable.flake = nixpkgs-unstable;
+          nixpkgs.config.allowUnfree = true;
+          nix.nixPath = lib.mkDefault [
+            "nixpkgs-unstable=${nixpkgs-unstable}"
+          ];
+        };
+
+      osuStable =
+        { pkgs, ... }:
+        {
+          nix.settings = {
+            substituters = [ "https://nix-gaming.cachix.org" ];
+            trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
+          };
+          environment.systemPackages = [ inputs.nix-gaming.packages.${pkgs.hostPlatform.system}.osu-stable ];
+          programs.gamemode = {
+            enable = true;
+            enableRenice = true;
+            settings = {
+              general = {
+                renice = 10;
+              };
+
+              custom = {
+                start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
+                end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+              };
             };
           };
         };
-      };
 
       # Common Nix modules
-      common-nix = stable: { ... }: {
-        imports = [
-          (nixpkgsAsRegistry_ stable)
-          ./common.nix
-          sops-nix.nixosModules.sops
-          inputs.lix-module.nixosModules.default
-        ];
-        config.nix.settings.extra-deprecated-features = [ "url-literals" ]; # So lix won't complain
-      };
-      common-nixos = stable: { ... }: {
-        imports = [
-          ./modules/my-tinc
-          ./modules/common/linux
-          (common-nix stable)
-          inputs.secrets.nixosModules.common
-          inputs.nix-gaming.nixosModules.pipewireLowLatency
-          inputs.niri.nixosModules.niri
-        ];
-      };
+      common-nix =
+        stable:
+        { ... }:
+        {
+          imports = [
+            (nixpkgsAsRegistry_ stable)
+            ./common.nix
+            sops-nix.nixosModules.sops
+            inputs.lix-module.nixosModules.default
+          ];
+          config.nix.settings.extra-deprecated-features = [ "url-literals" ]; # So lix won't complain
+        };
+      common-nixos =
+        stable:
+        { ... }:
+        {
+          imports = [
+            ./modules/my-tinc
+            ./modules/common/linux
+            (common-nix stable)
+            inputs.secrets.nixosModules.common
+            inputs.nix-gaming.nixosModules.pipewireLowLatency
+            inputs.niri.nixosModules.niri
+          ];
+        };
 
-      mkPersonalSystem = nixpkgs-module: system: { configuration
-                                                 , homeManagerUsers ? { }
-                                                 , extraModules ? [ ]
-                                                 , includeCommonModules ? true
-                                                 ,
-                                                 }:
+      mkPersonalSystem =
+        nixpkgs-module: system:
+        {
+          configuration,
+          homeManagerUsers ? { },
+          extraModules ? [ ],
+          includeCommonModules ? true,
+        }:
         let
           home-manager-module =
-            if nixpkgs-module == inputs.nixpkgs then inputs.home-manager
-            else if nixpkgs-module == inputs.nixpkgs-unstable then inputs.home-manager-unstable
-            else builtins.abort "Unknown nixpkgs module, use `nixpkgs` or `nixpkgs-unstable`";
+            if nixpkgs-module == inputs.nixpkgs then
+              inputs.home-manager
+            else if nixpkgs-module == inputs.nixpkgs-unstable then
+              inputs.home-manager-unstable
+            else
+              builtins.abort "Unknown nixpkgs module, use `nixpkgs` or `nixpkgs-unstable`";
         in
         nixpkgs-module.lib.nixosSystem {
           inherit system;
           modules =
-            (if includeCommonModules then [
-              (common-nixos nixpkgs-module)
-            ] else [ ]) ++ [
+            (
+              if includeCommonModules then
+                [
+                  (common-nixos nixpkgs-module)
+                ]
+              else
+                [ ]
+            )
+            ++ [
               configuration
               # Home Manager
               home-manager-module.nixosModules.home-manager
@@ -149,7 +183,8 @@
                 home-manager.useUserPackages = true;
                 home-manager.users = homeManagerUsers;
               }
-            ] ++ extraModules;
+            ]
+            ++ extraModules;
         };
 
     in
@@ -186,14 +221,17 @@
         homeManagerUsers.nki = import ./home/nki-x1c1.nix;
         extraModules = [
           inputs.lanzaboote.nixosModules.lanzaboote
-          ({ ... }: {
-            # Sets up secure boot
-            boot.loader.systemd-boot.enable = lib.mkForce false;
-            boot.lanzaboote = {
-              enable = true;
-              pkiBundle = "/etc/secureboot";
-            };
-          })
+          (
+            { ... }:
+            {
+              # Sets up secure boot
+              boot.loader.systemd-boot.enable = lib.mkForce false;
+              boot.lanzaboote = {
+                enable = true;
+                pkiBundle = "/etc/secureboot";
+              };
+            }
+          )
         ];
       };
       # framework configuration
@@ -203,14 +241,17 @@
         extraModules = [
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-          ({ ... }: {
-            # Sets up secure boot
-            boot.loader.systemd-boot.enable = lib.mkForce false;
-            boot.lanzaboote = {
-              enable = true;
-              pkiBundle = "/etc/secureboot";
-            };
-          })
+          (
+            { ... }:
+            {
+              # Sets up secure boot
+              boot.loader.systemd-boot.enable = lib.mkForce false;
+              boot.lanzaboote = {
+                enable = true;
+                pkiBundle = "/etc/secureboot";
+              };
+            }
+          )
         ];
       };
       # macbook nixos

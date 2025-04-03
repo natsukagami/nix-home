@@ -1,7 +1,7 @@
-{ callPackage, ... } :
+{ callPackage, ... }:
 let
-utils = callPackage ./utils.nix { };
-faces = {
+  utils = callPackage ./utils.nix { };
+  faces = {
     Default = "%opt{text},%opt{base}";
     BufferPadding = "%opt{base},%opt{base}";
     MenuForeground = "%opt{blue},white+bF";
@@ -27,5 +27,6 @@ faces = {
     format_specifier = "+i@string";
     mutable_variable = "+i@variable";
     class = "+b@variable";
-};
-in utils.mkFacesScript "default-faces" faces
+  };
+in
+utils.mkFacesScript "default-faces" faces

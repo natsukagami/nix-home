@@ -1,4 +1,16 @@
-{ lib, fetchFromGitHub, stdenv, nodejs, pnpm, buildGoModule, mage, writeShellScriptBin, nixosTests, autoPatchelfHook, musl }:
+{
+  lib,
+  fetchFromGitHub,
+  stdenv,
+  nodejs,
+  pnpm,
+  buildGoModule,
+  mage,
+  writeShellScriptBin,
+  nixosTests,
+  autoPatchelfHook,
+  musl,
+}:
 
 let
   version = "0.24.5-git";
@@ -16,7 +28,12 @@ let
     sourceRoot = "${finalAttrs.src.name}/frontend";
 
     pnpmDeps = pnpm.fetchDeps {
-      inherit (finalAttrs) pname version src sourceRoot;
+      inherit (finalAttrs)
+        pname
+        version
+        src
+        sourceRoot
+        ;
       hash = "sha256-sOCaJDBgEMID+lN5plQpSqaGBIUs5h2tAwDzhtOH53o=";
     };
 
@@ -52,7 +69,8 @@ let
   });
 
   # Injects a `t.Skip()` into a given test since there's apparently no other way to skip tests here.
-  skipTest = lineOffset: testCase: file:
+  skipTest =
+    lineOffset: testCase: file:
     let
       jumpAndAppend = lib.concatStringsSep ";" (lib.replicate (lineOffset - 1) "n" ++ [ "a" ]);
     in
@@ -77,7 +95,10 @@ buildGoModule {
         fi
       '';
     in
-    [ fakeGit mage ];
+    [
+      fakeGit
+      mage
+    ];
 
   vendorHash = "sha256-UWjlivF9ySXCAr84A1trCJ/n9pB98ZhEyG11qz3PL7g=";
 

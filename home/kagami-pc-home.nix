@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -14,19 +19,22 @@
   home.homeDirectory = "/home/nki";
 
   # More packages
-  home.packages = (with pkgs; [
-    # Gaming stuff
-    wineWowPackages.full
-    # wine-lol
-    winetricks
-    lutris
-    steam
+  home.packages = (
+    with pkgs;
+    [
+      # Gaming stuff
+      wineWowPackages.full
+      # wine-lol
+      winetricks
+      lutris
+      steam
 
-    # Manage tlmc
-    flacon
-    ttaenc
-    picard
-  ]);
+      # Manage tlmc
+      flacon
+      ttaenc
+      picard
+    ]
+  );
 
   # Enable X11 configuration
   linux.graphical.type = "wayland";
@@ -46,12 +54,24 @@
   # 144hz adaptive refresh ON!
   nki.programs.kitty.enable = true;
   nki.programs.kitty.fontSize = 14;
-  programs.my-waybar.makeBars = with config.common.monitors; barWith: [
-    # For primary
-    (barWith { extraSettings = { output = [ home_4k.meta.connection ]; }; })
-    # For secondary, hide mpd
-    (barWith { showMedia = false; showConnectivity = false; extraSettings = { output = [ home_1440.meta.connection ]; }; })
-  ];
+  programs.my-waybar.makeBars =
+    with config.common.monitors;
+    barWith: [
+      # For primary
+      (barWith {
+        extraSettings = {
+          output = [ home_4k.meta.connection ];
+        };
+      })
+      # For secondary, hide mpd
+      (barWith {
+        showMedia = false;
+        showConnectivity = false;
+        extraSettings = {
+          output = [ home_1440.meta.connection ];
+        };
+      })
+    ];
 
   # Yellow light!
   services.wlsunset = {
@@ -72,10 +92,28 @@
   # ncmpcpp
   programs.ncmpcpp.enable = true;
   programs.ncmpcpp.bindings = [
-    { key = "j"; command = "scroll_down"; }
-    { key = "k"; command = "scroll_up"; }
-    { key = "J"; command = [ "select_item" "scroll_down" ]; }
-    { key = "K"; command = [ "select_item" "scroll_up" ]; }
+    {
+      key = "j";
+      command = "scroll_down";
+    }
+    {
+      key = "k";
+      command = "scroll_up";
+    }
+    {
+      key = "J";
+      command = [
+        "select_item"
+        "scroll_down"
+      ];
+    }
+    {
+      key = "K";
+      command = [
+        "select_item"
+        "scroll_up"
+      ];
+    }
   ];
   programs.ncmpcpp.settings = {
     # General
@@ -133,4 +171,3 @@
   # changes in each release.
   home.stateVersion = "21.05";
 }
-

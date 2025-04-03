@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   secrets = config.sops.secrets;
   cfg = config.services.peertube;
@@ -9,8 +14,14 @@ let
   port = 19878;
 in
 {
-  sops.secrets."peertube" = { owner = cfg.user; restartUnits = [ "peertube.service" ]; };
-  sops.secrets."peertube-env" = { owner = cfg.user; restartUnits = [ "peertube.service" ]; };
+  sops.secrets."peertube" = {
+    owner = cfg.user;
+    restartUnits = [ "peertube.service" ];
+  };
+  sops.secrets."peertube-env" = {
+    owner = cfg.user;
+    restartUnits = [ "peertube.service" ];
+  };
   # database
   cloud.postgresql.databases = [ "peertube" ];
   # traefik
@@ -61,7 +72,9 @@ in
     };
 
     # Trust proxy
-    settings.trust_proxy = [ "loopback" ] ++ config.services.traefik.staticConfigOptions.entrypoints.https.forwardedHeaders.trustedIPs;
+    settings.trust_proxy = [
+      "loopback"
+    ] ++ config.services.traefik.staticConfigOptions.entrypoints.https.forwardedHeaders.trustedIPs;
 
     # Federation
     settings.federation = {
@@ -70,7 +83,10 @@ in
       videos.cleanup_remote_interactions = true;
     };
 
-    dataDirs = [ "/var/lib/peertube" "/mnt/data/peertube" ];
+    dataDirs = [
+      "/var/lib/peertube"
+      "/mnt/data/peertube"
+    ];
   };
 
   systemd.services.peertube = {
@@ -90,4 +106,3 @@ in
     };
   };
 }
-

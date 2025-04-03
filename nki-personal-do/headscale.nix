@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   secrets = config.sops.secrets;
 
@@ -7,9 +12,14 @@ let
   webuiPort = 19877;
 in
 rec {
-  sops.secrets."headscale/client_secret" = { owner = "headscale"; };
+  sops.secrets."headscale/client_secret" = {
+    owner = "headscale";
+  };
   sops.secrets."headscale/webui-env" = { };
-  sops.secrets."headscale/derp-servers/vnm" = { owner = "headscale"; name = "headscale/derp-servers/vnm.yaml"; };
+  sops.secrets."headscale/derp-servers/vnm" = {
+    owner = "headscale";
+    name = "headscale/derp-servers/vnm.yaml";
+  };
   # database
   cloud.postgresql.databases = [ "headscale" ];
   # traefik
@@ -27,8 +37,14 @@ rec {
     noCloudflare = true;
   };
 
-  systemd.services.headscale.requires = [ "postgresql.service" "arion-authentik.service" ];
-  systemd.services.headscale.after = [ "postgresql.service" "arion-authentik.service" ];
+  systemd.services.headscale.requires = [
+    "postgresql.service"
+    "arion-authentik.service"
+  ];
+  systemd.services.headscale.after = [
+    "postgresql.service"
+    "arion-authentik.service"
+  ];
   services.headscale = {
     enable = true;
     inherit port;

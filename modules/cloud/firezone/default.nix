@@ -1,11 +1,15 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
   cfg = config.cloud.firezone;
 
-  mkImage =
-    { imageName, imageDigest, ... }: "${imageName}@${imageDigest}";
+  mkImage = { imageName, imageDigest, ... }: "${imageName}@${imageDigest}";
   # If we can pullImage we can just do
   # mkImage = pkgs.dockerTools.pullImage;
 
@@ -48,7 +52,10 @@ in
         image = images.postgresql;
         restart = "unless-stopped";
         healthcheck = {
-          test = [ "CMD-SHELL" "pg_isready -d $\${POSTGRES_DB} -U $\${POSTGRES_USER}" ];
+          test = [
+            "CMD-SHELL"
+            "pg_isready -d $\${POSTGRES_DB} -U $\${POSTGRES_USER}"
+          ];
           start_period = "20s";
           interval = "30s";
           retries = 5;
@@ -89,7 +96,10 @@ in
         driver = "bridge";
         ipam.config = [
           { subnet = "172.25.0.0/16"; }
-          { subnet = "2001:3990:3990::/64"; gateway = "2001:3990:3990::1"; }
+          {
+            subnet = "2001:3990:3990::/64";
+            gateway = "2001:3990:3990::1";
+          }
         ];
       };
     };

@@ -1,4 +1,13 @@
-{ lib, rustPlatform, fetchFromSourcehut, symlinkJoin, clang, git, writeText, ... }:
+{
+  lib,
+  rustPlatform,
+  fetchFromSourcehut,
+  symlinkJoin,
+  clang,
+  git,
+  writeText,
+  ...
+}:
 let
   src = fetchFromSourcehut {
     owner = "~hadronized";
@@ -12,9 +21,17 @@ let
     pname = "kak-tree-sitter";
     version = "1.1.3";
     cargoHash = "sha256-1OwPfl1446SYt1556jwR9mvWOWEv+ab+wH7GZQeS4/E=";
-    cargoBuildOptions = [ "--package" "kak-tree-sitter" "--package" "ktsctl" ];
+    cargoBuildOptions = [
+      "--package"
+      "kak-tree-sitter"
+      "--package"
+      "ktsctl"
+    ];
 
-    nativeBuildInputs = [ clang git ];
+    nativeBuildInputs = [
+      clang
+      git
+    ];
 
     patches = [
       # Allow absolute-path style repos
@@ -31,7 +48,7 @@ let
         +        .trim_start_matches(":/")
         +        .trim_start_matches("/"),
              );
- 
+
              self.runtime_dir.join("sources").join(url_dir)
       '')
     ];
@@ -40,4 +57,3 @@ let
   };
 in
 kak-tree-sitter
-

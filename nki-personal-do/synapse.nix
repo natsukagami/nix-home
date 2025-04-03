@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   port = 61001;
   user = "matrix-synapse";
@@ -10,7 +15,9 @@ in
 {
   sops.secrets."matrix-synapse-dtth/oidc-config".owner = user;
   sops.secrets."matrix-synapse-dtth/appservice-discord".owner = user;
-  sops.secrets.matrix-discord-bridge = { mode = "0644"; };
+  sops.secrets.matrix-discord-bridge = {
+    mode = "0644";
+  };
 
   cloud.postgresql.databases = [ user ];
   cloud.traefik.hosts.matrix-synapse = {
@@ -29,20 +36,33 @@ in
     enable = true;
     withJemalloc = true;
     dataDir = "${config.fileSystems.data.mountPoint}/matrix-synapse-dtth";
-    extras = [ "systemd" "url-preview" "oidc" "postgres" ];
+    extras = [
+      "systemd"
+      "url-preview"
+      "oidc"
+      "postgres"
+    ];
     settings = {
       server_name = "dtth.ch";
       enable_registration = false;
       public_baseurl = "https://${host}/";
 
-      listeners = [{
-        inherit port;
-        x_forwarded = true;
-        tls = false;
-        resources = [
-          { names = [ "client" "federation" ]; compress = false; }
-        ];
-      }];
+      listeners = [
+        {
+          inherit port;
+          x_forwarded = true;
+          tls = false;
+          resources = [
+            {
+              names = [
+                "client"
+                "federation"
+              ];
+              compress = false;
+            }
+          ];
+        }
+      ];
       database = {
         name = "psycopg2";
         args = {
@@ -96,25 +116,32 @@ in
   };
 
   services.nginx.virtualHosts.synapse-dtth-wellknown = {
-    listen = [{ addr = "127.0.0.1"; port = port + 1; }];
+    listen = [
+      {
+        addr = "127.0.0.1";
+        port = port + 1;
+      }
+    ];
     # Check https://github.com/spantaleev/matrix-docker-ansible-deploy/blob/master/docs/configuring-well-known.md
     # for the file structure.
-    root = pkgs.symlinkJoin
-      {
-        name = "well-known-files-for-synapse";
-        paths = [
-          (pkgs.writeTextDir ".well-known/matrix/client" (builtins.toJSON {
+    root = pkgs.symlinkJoin {
+      name = "well-known-files-for-synapse";
+      paths = [
+        (pkgs.writeTextDir ".well-known/matrix/client" (
+          builtins.toJSON {
             "m.homeserver".base_url = "https://${host}";
-          }))
-          (pkgs.writeTextDir ".well-known/matrix/server" (builtins.toJSON {
+          }
+        ))
+        (pkgs.writeTextDir ".well-known/matrix/server" (
+          builtins.toJSON {
             "m.server" = "${host}:443";
-          }))
-        ];
-      };
+          }
+        ))
+      ];
+    };
     # Enable CORS from anywhere since we want all clients to find us out
     extraConfig = ''
       add_header 'Access-Control-Allow-Origin' "*";
     '';
   };
 }
-

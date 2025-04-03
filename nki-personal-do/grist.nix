@@ -1,11 +1,15 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
   cfg = config.cloud.grist;
 
-  mkImage =
-    { imageName, imageDigest, ... }: "${imageName}@${imageDigest}";
+  mkImage = { imageName, imageDigest, ... }: "${imageName}@${imageDigest}";
   # If we can pullImage we can just do
   # mkImage = pkgs.dockerTools.pullImage;
 
@@ -24,7 +28,12 @@ let
     };
   };
   defaultEnv = {
-    GRIST_HIDE_UI_ELEMENTS = lib.concatStringsSep "," [ "helpCenter" "billing" "multiAccounts" "supportGrist" ];
+    GRIST_HIDE_UI_ELEMENTS = lib.concatStringsSep "," [
+      "helpCenter"
+      "billing"
+      "multiAccounts"
+      "supportGrist"
+    ];
     GRIST_PAGE_TITLE_SUFFIX = " - DTTH Grist";
     GRIST_FORCE_LOGIN = "true";
     GRIST_WIDGET_LIST_URL = "https://github.com/gristlabs/grist-widget/releases/download/latest/manifest.json";
@@ -60,7 +69,11 @@ in
       allowedWebhookDomains = mkOption {
         type = types.listOf types.str;
         description = "List of domains to be allowed in webhooks";
-        default = [ "dtth.ch" "nkagami.me" "discord.com" ];
+        default = [
+          "dtth.ch"
+          "nkagami.me"
+          "discord.com"
+        ];
       };
       defaultEmail = mkOption {
         type = types.str;
@@ -105,7 +118,10 @@ in
         command = "--save 60 1 --loglevel warning";
         restart = "unless-stopped";
         healthcheck = {
-          test = [ "CMD-SHELL" "valkey-cli ping | grep PONG" ];
+          test = [
+            "CMD-SHELL"
+            "valkey-cli ping | grep PONG"
+          ];
           start_period = "20s";
           interval = "30s";
           retries = 5;
@@ -124,4 +140,3 @@ in
     };
   };
 }
-

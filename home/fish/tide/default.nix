@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -42,25 +47,38 @@ in
     leftItems = mkOption {
       type = types.listOf types.str;
       description = "The list of left-items. Note that `newline` and `character` is not included here and will always appear last";
-      default = [ "os" "context" "pwd" "git" ];
+      default = [
+        "os"
+        "context"
+        "pwd"
+        "git"
+      ];
     };
   };
 
   config.programs.fish =
     let
-      tideItems = attrsets.mapAttrs' (name: def: { name = "_tide_item_${name}"; value = def; });
+      tideItems = attrsets.mapAttrs' (
+        name: def: {
+          name = "_tide_item_${name}";
+          value = def;
+        }
+      );
     in
     mkIf cfg.enable {
-      functions = tideItems ({
-        nix_shell = ''
-          # In a Nix Shell
-          if set -qx DIRENV_FILE && test -f $DIRENV_FILE && rg -q "^use flake" $DIRENV_FILE
-            set -U tide_nix_shell_color "FFA500"
-            set -U tide_nix_shell_bg_color normal
-            _tide_print_item nix_shell "❄"
-          end
-        '';
-      } // cfg.items);
+      functions = tideItems (
+        {
+          nix_shell = ''
+            # In a Nix Shell
+            if set -qx DIRENV_FILE && test -f $DIRENV_FILE && rg -q "^use flake" $DIRENV_FILE
+              set -U tide_nix_shell_color "FFA500"
+              set -U tide_nix_shell_bg_color normal
+              _tide_print_item nix_shell "❄"
+            end
+          '';
+        }
+        // cfg.items
+      );
       plugins = [
         {
           name = "tide";
@@ -78,7 +96,9 @@ in
   config.xdg.configFile."fish/tide/init.fish" = {
     text = ''
       # Configure tide items
-      set -U tide_left_prompt_items ${concatMapStringsSep " " escapeShellArg cfg.leftItems} newline character
+      set -U tide_left_prompt_items ${
+        concatMapStringsSep " " escapeShellArg cfg.leftItems
+      } newline character
       set -U tide_right_prompt_items ${concatMapStringsSep " " escapeShellArg cfg.rightItems} time
     '';
 

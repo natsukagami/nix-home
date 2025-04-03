@@ -40,20 +40,24 @@ in
     in
     {
       nix.distributedBuilds = true;
-      nix.buildMachines = lib.mapAttrsToList
-        (name: host: {
+      nix.buildMachines = lib.mapAttrsToList (
+        name: host:
+        {
           hostName = host.host;
           sshUser = build-user;
           sshKey = cfg.privateKeyFile;
-        } // host.builder)
-        otherBuilders;
+        }
+        // host.builder
+      ) otherBuilders;
 
       users = mkIf (isBuilder host) {
         users.${build-user} = {
           description = "Nix build farm user";
           group = build-user;
           isNormalUser = true;
-          openssh.authorizedKeys.keys = lib.mapAttrsToList (_: host: ''from="${cfg.ipAddrs}" ${host.pubKey}'') otherHosts;
+          openssh.authorizedKeys.keys = lib.mapAttrsToList (
+            _: host: ''from="${cfg.ipAddrs}" ${host.pubKey}''
+          ) otherHosts;
         };
         groups.${build-user} = { };
       };
@@ -62,5 +66,3 @@ in
     }
   );
 }
-
-

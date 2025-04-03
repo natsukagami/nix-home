@@ -5,22 +5,23 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # Fonts
-      ../modules/personal/fonts
-      # Encrypted DNS
-      ../modules/services/edns
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    # Fonts
+    ../modules/personal/fonts
+    # Encrypted DNS
+    ../modules/services/edns
+  ];
 
   # Secrets
   common.linux.sops.enable = true;
   common.linux.sops.file = ./secrets.yaml;
 
   # Build farm
-  sops.secrets."nix-build-farm/private-key" = { mode = "0400"; };
+  sops.secrets."nix-build-farm/private-key" = {
+    mode = "0400";
+  };
   services.nix-build-farm.hostname = "yoga";
   services.nix-build-farm.privateKeyFile = config.sops.secrets."nix-build-farm/private-key".path;
 
@@ -141,4 +142,3 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "22.05"; # Did you read the comment?
 }
-

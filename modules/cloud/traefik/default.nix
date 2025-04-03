@@ -1,22 +1,29 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
   # Copied from traefik.nix
-  jsonValue = with types;
+  jsonValue =
+    with types;
     let
-      valueType = nullOr
-        (oneOf [
+      valueType =
+        nullOr (oneOf [
           bool
           int
           float
           str
           (lazyAttrsOf valueType)
           (listOf valueType)
-        ]) // {
-        description = "JSON value";
-        emptyValue.value = { };
-      };
+        ])
+        // {
+          description = "JSON value";
+          emptyValue.value = { };
+        };
     in
     valueType;
 
@@ -41,7 +48,11 @@ let
   cfg = config.cloud.traefik;
 in
 {
-  imports = [ ./config.nix ./dashboard.nix ./certs-dumper.nix ];
+  imports = [
+    ./config.nix
+    ./dashboard.nix
+    ./certs-dumper.nix
+  ];
   options.cloud.traefik = {
     cloudflareKeyFile = mkOption {
       type = types.path;
@@ -104,7 +115,12 @@ in
   config.systemd.services.traefik.environment.CF_DNS_API_TOKEN_FILE = cfg.cloudflareKeyFile;
 
   # Set up firewall to allow traefik traffic.
-  config.networking.firewall.allowedTCPPorts = [ 443 993 587 465 ];
+  config.networking.firewall.allowedTCPPorts = [
+    443
+    993
+    587
+    465
+  ];
   config.networking.firewall.allowedUDPPorts = [
     443 # QUIC
     51820 # Wireguard

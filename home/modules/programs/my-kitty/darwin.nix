@@ -1,9 +1,15 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   cfg = config.nki.programs.kitty;
   cmd = "cmd";
 in
-with lib; {
+with lib;
+{
   programs.kitty = mkIf (cfg.enable && pkgs.stdenv.isDarwin) {
 
     # Darwin-specific setup
@@ -24,4 +30,3 @@ with lib; {
     };
   };
 }
-

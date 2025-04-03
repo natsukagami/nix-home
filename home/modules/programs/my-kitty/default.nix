@@ -1,21 +1,41 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 let
   cfg = config.nki.programs.kitty;
 
-  theme = { lib, options, config, ... }: {
-    programs.kitty = lib.mkIf config.nki.programs.kitty.enable (
-      if builtins.hasAttr "themeFile" options.programs.kitty then {
-        themeFile = "ayu_light";
-      } else {
-        theme = "Ayu Light";
-      }
-    );
-  };
+  theme =
+    {
+      lib,
+      options,
+      config,
+      ...
+    }:
+    {
+      programs.kitty = lib.mkIf config.nki.programs.kitty.enable (
+        if builtins.hasAttr "themeFile" options.programs.kitty then
+          {
+            themeFile = "ayu_light";
+          }
+        else
+          {
+            theme = "Ayu Light";
+          }
+      );
+    };
 in
 with lib;
 {
-  imports = [ theme ./darwin.nix ./linux.nix ./tabs.nix ];
+  imports = [
+    theme
+    ./darwin.nix
+    ./linux.nix
+    ./tabs.nix
+  ];
 
   options.nki.programs.kitty = {
     enable = mkEnableOption "Enable kitty";
@@ -73,14 +93,17 @@ with lib;
       let
         # Background color and transparency
         background =
-          if isNull cfg.background then {
-            background_opacity = "0.93";
-            dynamic_background_opacity = true;
-          } else {
-            background_image = "${cfg.background}";
-            background_image_layout = "scaled";
-            background_tint = "0.85";
-          };
+          if isNull cfg.background then
+            {
+              background_opacity = "0.93";
+              dynamic_background_opacity = true;
+            }
+          else
+            {
+              background_image = "${cfg.background}";
+              background_image_layout = "scaled";
+              background_tint = "0.85";
+            };
       in
       mkMerge [
         background
@@ -123,4 +146,3 @@ with lib;
       '';
   };
 }
-

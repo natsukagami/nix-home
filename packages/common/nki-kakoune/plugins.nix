@@ -1,37 +1,57 @@
-{ pkgs, symlinkJoin, writeTextDir, kakouneUtils, ... }:
+{
+  pkgs,
+  symlinkJoin,
+  writeTextDir,
+  kakouneUtils,
+  ...
+}:
 with {
   inherit (kakouneUtils) buildKakounePluginFrom2Nix;
 };
 let
   toDir = name: file: writeTextDir name (builtins.readFile file);
 
-  writeActivationScript = script: writeTextDir "on-load.kak" ''
-    hook global KakBegin .* %{
-      ${script}
-    }
-  '';
+  writeActivationScript =
+    script:
+    writeTextDir "on-load.kak" ''
+      hook global KakBegin .* %{
+        ${script}
+      }
+    '';
 
-  writeModuleWrapper = name: script: writeTextDir "module.kak" ''
-    provide-module ${name} %◍
-      ${script}
-    ◍
-  '';
+  writeModuleWrapper =
+    name: script:
+    writeTextDir "module.kak" ''
+      provide-module ${name} %◍
+        ${script}
+      ◍
+    '';
 
-  kakounePlugin = { name, src, wrapAsModule ? false, activationScript ? null, ... }@attrs:
+  kakounePlugin =
+    {
+      name,
+      src,
+      wrapAsModule ? false,
+      activationScript ? null,
+      ...
+    }@attrs:
     let
       module = if wrapAsModule then writeModuleWrapper name (builtins.readFile src) else src;
     in
     buildKakounePluginFrom2Nix {
       pname = name;
       version = attrs.version or "latest";
-      src = if activationScript == null then module else
-      symlinkJoin {
-        name = "${name}-src";
-        paths = [
+      src =
+        if activationScript == null then
           module
-          (writeActivationScript activationScript)
-        ];
-      };
+        else
+          symlinkJoin {
+            name = "${name}-src";
+            paths = [
+              module
+              (writeActivationScript activationScript)
+            ];
+          };
     };
 in
 builtins.map kakounePlugin [
@@ -129,12 +149,14 @@ builtins.map kakounePlugin [
   }
   {
     name = "racket.kak";
-    src = (builtins.fetchTree {
-      type = "git";
-      url = "https://bitbucket.org/KJ_Duncan/kakoune-racket.kak.git";
-      rev = "e397042009b46916ff089d79166ec0e8ca813a18";
-      narHash = "sha256-IcxFmvG0jqpMCG/dT9crVRgPgMGKkic6xwrnW5z4+bc=";
-    }) + "/rc";
+    src =
+      (builtins.fetchTree {
+        type = "git";
+        url = "https://bitbucket.org/KJ_Duncan/kakoune-racket.kak.git";
+        rev = "e397042009b46916ff089d79166ec0e8ca813a18";
+        narHash = "sha256-IcxFmvG0jqpMCG/dT9crVRgPgMGKkic6xwrnW5z4+bc=";
+      })
+      + "/rc";
   }
   # {
   #   name = "kakoune-discord";
@@ -142,13 +164,14 @@ builtins.map kakounePlugin [
   # }
   rec {
     name = "kakoune-mirror";
-    src = pkgs.fetchFromGitHub
-      {
+    src =
+      pkgs.fetchFromGitHub {
         owner = "Delapouite";
         repo = "kakoune-mirror";
         rev = "5710635f440bcca914d55ff2ec1bfcba9efe0f15";
         sha256 = "sha256-uslx4zZhvjUylrPWvTOugsKYKKpF0EEz1drc1Ckrpjk=";
-      } + "/mirror.kak";
+      }
+      + "/mirror.kak";
     wrapAsModule = true;
     activationScript = ''
       require-module ${name}

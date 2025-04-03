@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 let
   discord = pkgs.armcord.override { nss = pkgs.nss_latest; };
@@ -30,15 +35,18 @@ in
   '';
 
   # More packages
-  home.packages = (with pkgs; [
-    mate.mate-terminal
+  home.packages = (
+    with pkgs;
+    [
+      mate.mate-terminal
 
-    firefox-wayland
+      firefox-wayland
 
-    discord
+      discord
 
-    typora
-  ]);
+      typora
+    ]
+  );
 
   # Graphical set up
   linux.graphical.type = "wayland";
@@ -125,4 +133,3 @@ in
   # changes in each release.
   home.stateVersion = "21.05";
 }
-

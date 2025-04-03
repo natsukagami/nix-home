@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   secrets = config.sops.secrets;
 
@@ -12,7 +17,9 @@ let
   plugins = pkgs.callPackage ./n8n/plugins/package.nix { };
 in
 {
-  sops.secrets."n8n/env" = { reloadUnits = [ "n8n.service" ]; };
+  sops.secrets."n8n/env" = {
+    reloadUnits = [ "n8n.service" ];
+  };
   cloud.postgresql.databases = [ db ];
   cloud.traefik.hosts.n8n = {
     inherit port host;

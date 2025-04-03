@@ -1,4 +1,10 @@
-{ pkgs, options, config, lib, ... }:
+{
+  pkgs,
+  options,
+  config,
+  lib,
+  ...
+}:
 
 let
   iio-sway = pkgs.stdenv.mkDerivation {
@@ -11,7 +17,11 @@ let
       hash = "sha256-JGacKajslCOvd/BFfFSf7s1/hgF6rJqJ6H6xNnsuMb4=";
     };
     buildInputs = with pkgs; [ dbus ];
-    nativeBuildInputs = with pkgs; [ meson ninja pkg-config ];
+    nativeBuildInputs = with pkgs; [
+      meson
+      ninja
+      pkg-config
+    ];
     meta.mainProgram = "iio-sway";
   };
 in
@@ -31,10 +41,13 @@ in
   home.homeDirectory = "/home/nki";
 
   # More packages
-  home.packages = (with pkgs; [
-    # Note-taking
-    rnote
-  ]);
+  home.packages = (
+    with pkgs;
+    [
+      # Note-taking
+      rnote
+    ]
+  );
 
   # Graphical set up
   linux.graphical.type = "wayland";
@@ -65,7 +78,9 @@ in
   programs.my-niri.enable = true;
   programs.my-niri.enableLaptop = true;
   # Assign some of the workspaces to big screen
-  programs.my-niri.workspaces = lib.genAttrs [ "06" "07" "08" "09" "10" ] (_: { monitor = config.common.monitors.work.name; });
+  programs.my-niri.workspaces = lib.genAttrs [ "06" "07" "08" "09" "10" ] (_: {
+    monitor = config.common.monitors.work.name;
+  });
   programs.niri.settings = {
     # input.keyboard.xkb.options = "ctrl:swapcaps";
     input.mouse = lib.mkForce {
@@ -110,19 +125,29 @@ in
     settings = [
       {
         profile.name = "undocked";
-        profile.outputs = [{ criteria = "eDP-1"; }];
+        profile.outputs = [ { criteria = "eDP-1"; } ];
       }
       {
         profile.name = "work-both";
         profile.outputs = [
-          { criteria = "eDP-1"; position = "0,${toString (builtins.floor ((2160 / work.scale - 1200) + 1200 / 3))}"; status = "enable"; }
-          { criteria = work.name; position = "1920,0"; }
+          {
+            criteria = "eDP-1";
+            position = "0,${toString (builtins.floor ((2160 / work.scale - 1200) + 1200 / 3))}";
+            status = "enable";
+          }
+          {
+            criteria = work.name;
+            position = "1920,0";
+          }
         ];
       }
       {
         profile.name = "work-one";
         profile.outputs = [
-          { criteria = "eDP-1"; status = "disable"; }
+          {
+            criteria = "eDP-1";
+            status = "disable";
+          }
           { criteria = work.name; }
         ];
       }
@@ -139,4 +164,3 @@ in
   # changes in each release.
   home.stateVersion = "21.05";
 }
-

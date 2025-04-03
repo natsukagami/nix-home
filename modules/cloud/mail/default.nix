@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -238,7 +243,12 @@ in
       # MTA-STS server
       services.nginx.enable = true;
       services.nginx.virtualHosts.maddy-mta-sts = {
-        listen = [{ addr = "127.0.0.1"; port = mtaStsPort; }];
+        listen = [
+          {
+            addr = "127.0.0.1";
+            port = mtaStsPort;
+          }
+        ];
         root = mtaStsDir;
       };
 
@@ -273,7 +283,10 @@ in
 
       # maddy itself
       systemd.services."${name}" = {
-        after = [ "network.target" "traefik-certs-dumper.service" ];
+        after = [
+          "network.target"
+          "traefik-certs-dumper.service"
+        ];
         wantedBy = [ "multi-user.target" ];
         requires = [ "postgresql.service" ];
 
@@ -326,7 +339,6 @@ in
           TimeoutStopSec = "7s";
           KillMode = "mixed";
           KillSignal = "SIGTERM";
-
 
           # Required to bind on ports lower than 1024.
           AmbientCapabilities = "CAP_NET_BIND_SERVICE";

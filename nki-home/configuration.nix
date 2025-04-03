@@ -2,33 +2,39 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 with lib;
 let
-  openrazer = { pkgs, ... }: {
-    # Razer stuff
-    hardware.openrazer = {
-      enable = true;
-      users = [ "nki" ];
+  openrazer =
+    { pkgs, ... }:
+    {
+      # Razer stuff
+      hardware.openrazer = {
+        enable = true;
+        users = [ "nki" ];
+      };
+      environment.systemPackages = with pkgs; [ polychromatic ];
     };
-    environment.systemPackages = with pkgs; [ polychromatic ];
-  };
 in
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # Fonts
-      ../modules/personal/fonts
-      # Encrypted DNS
-      ../modules/services/edns
-      # Other services
-      ../modules/personal/u2f.nix
-      ./peertube-runner.nix
-      openrazer
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    # Fonts
+    ../modules/personal/fonts
+    # Encrypted DNS
+    ../modules/services/edns
+    # Other services
+    ../modules/personal/u2f.nix
+    ./peertube-runner.nix
+    openrazer
+  ];
 
   # Kernel
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
@@ -43,35 +49,48 @@ in
   common.linux.sops.file = ./secrets.yaml;
 
   # Nix cache server
-  sops.secrets."nix-cache/private-key" = { owner = "harmonia"; group = "harmonia"; mode = "0600"; };
+  sops.secrets."nix-cache/private-key" = {
+    owner = "harmonia";
+    group = "harmonia";
+    mode = "0600";
+  };
   nki.services.nix-cache = {
     enableServer = true;
     privateKeyFile = config.sops.secrets."nix-cache/private-key".path;
   };
 
-  sops.secrets."nix-build-farm/private-key" = { mode = "0400"; };
+  sops.secrets."nix-build-farm/private-key" = {
+    mode = "0400";
+  };
   services.nix-build-farm.hostname = "home";
   services.nix-build-farm.privateKeyFile = config.sops.secrets."nix-build-farm/private-key".path;
 
   # Networking
-  common.linux.networking =
-    {
-      hostname = "kagamiPC"; # Define your hostname.
-      networks = {
-        "10-wired" = {
-          match = "enp*";
-          isRequired = true;
-        };
-        "20-wireless".match = "wlan*";
+  common.linux.networking = {
+    hostname = "kagamiPC"; # Define your hostname.
+    networks = {
+      "10-wired" = {
+        match = "enp*";
+        isRequired = true;
       };
-      dnsServers = [ "127.0.0.1" ];
+      "20-wireless".match = "wlan*";
     };
+    dnsServers = [ "127.0.0.1" ];
+  };
   nki.services.edns.enable = true;
   nki.services.edns.ipv6 = true;
   ## DTTH Wireguard
   #
-  sops.secrets."dtth-wg/private-key" = { owner = "root"; group = "systemd-network"; mode = "0640"; };
-  sops.secrets."dtth-wg/preshared-key" = { owner = "root"; group = "systemd-network"; mode = "0640"; };
+  sops.secrets."dtth-wg/private-key" = {
+    owner = "root";
+    group = "systemd-network";
+    mode = "0640";
+  };
+  sops.secrets."dtth-wg/preshared-key" = {
+    owner = "root";
+    group = "systemd-network";
+    mode = "0640";
+  };
   systemd.network.netdevs."10-dtth-wg" = {
     netdevConfig = {
       Kind = "wireguard";
@@ -81,25 +100,36 @@ in
     wireguardConfig = {
       PrivateKeyFile = config.sops.secrets."dtth-wg/private-key".path;
     };
-    wireguardPeers = [{
-      PublicKey = "+7iI4jwmM1Qr+/DKB1Hv8JgFkGu7lSV0PAoo+O5d3yQ=";
-      PresharedKeyFile = config.sops.secrets."dtth-wg/preshared-key".path;
-      AllowedIPs = [ "100.64.0.0/10" "fd00::/106" ];
-      Endpoint = "vpn.dtth.ch:51820";
-      PersistentKeepalive = 25;
-    }];
+    wireguardPeers = [
+      {
+        PublicKey = "+7iI4jwmM1Qr+/DKB1Hv8JgFkGu7lSV0PAoo+O5d3yQ=";
+        PresharedKeyFile = config.sops.secrets."dtth-wg/preshared-key".path;
+        AllowedIPs = [
+          "100.64.0.0/10"
+          "fd00::/106"
+        ];
+        Endpoint = "vpn.dtth.ch:51820";
+        PersistentKeepalive = 25;
+      }
+    ];
   };
   systemd.network.networks."dtth-wg" = {
     matchConfig.Name = "dtth-wg";
-    address = [ "100.73.146.80/32" "fd00::33:105b/128" ];
+    address = [
+      "100.73.146.80/32"
+      "fd00::33:105b/128"
+    ];
     DHCP = "no";
     routes = [
-      { Destination = "100.64.0.0/10"; Scope = "link"; }
+      {
+        Destination = "100.64.0.0/10";
+        Scope = "link";
+      }
       { Destination = "fd00::/106"; }
     ];
   };
 
-  # Define a user account. 
+  # Define a user account.
   common.linux.username = "nki";
   services.getty.autologinUser = "nki";
 
@@ -117,7 +147,11 @@ in
       ntfsMount = path: {
         device = path;
         fsType = "ntfs";
-        options = [ "rw" "uid=${toString config.users.users.nki.uid}" "nofail" ];
+        options = [
+          "rw"
+          "uid=${toString config.users.users.nki.uid}"
+          "nofail"
+        ];
       };
     in
     {
@@ -149,7 +183,6 @@ in
     bindPort = 6565;
   };
 
-
   # Music server
   services.navidrome.enable = true;
   services.navidrome.settings = {
@@ -157,7 +190,10 @@ in
     MusicFolder = "/mnt/Stuff/Music";
   };
   systemd.services.navidrome.serviceConfig.BindReadOnlyPaths = lib.mkAfter [ "/etc" ];
-  networking.firewall.allowedTCPPorts = [ 4533 8000 ];
+  networking.firewall.allowedTCPPorts = [
+    4533
+    8000
+  ];
 
   # Printers
   services.printing.enable = true;
@@ -201,4 +237,3 @@ in
 
   virtualisation.spiceUSBRedirection.enable = true;
 }
-

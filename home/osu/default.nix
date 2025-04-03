@@ -2,7 +2,9 @@
 
 let
   # osu-pkg = pkgs.unstable.osu-lazer-bin;
-  osu-pkg = with pkgs; with lib;
+  osu-pkg =
+    with pkgs;
+    with lib;
     appimageTools.wrapType2 rec {
       pname = "osu-lazer-bin";
       version = "2025.321.0";
@@ -13,7 +15,8 @@ let
       extraPkgs = pkgs: with pkgs; [ icu ];
 
       extraInstallCommands =
-        let contents = appimageTools.extract { inherit pname version src; };
+        let
+          contents = appimageTools.extract { inherit pname version src; };
         in
         ''
           mv -v $out/bin/${pname} $out/bin/osu\!
@@ -30,4 +33,3 @@ in
   xdg.mimeApps.defaultApplications."x-scheme-handler/osu" = "osu!.desktop";
   # home.packages = [ pkgs.osu-lazer ];
 }
-

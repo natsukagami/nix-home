@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -56,9 +61,11 @@
         powerprofilesctl set $new_profile
       '';
     in
-    [{
-      modules."battery"."on-click" = change-mode;
-    }];
+    [
+      {
+        modules."battery"."on-click" = change-mode;
+      }
+    ];
 
   # input-remapping
   xdg.configFile."autostart/input-remapper-autoload.desktop".source =
@@ -75,7 +82,7 @@
     settings = [
       {
         profile.name = "undocked";
-        profile.outputs = [{ criteria = "eDP-1"; }];
+        profile.outputs = [ { criteria = "eDP-1"; } ];
       }
       {
         profile.name = "work-both";
@@ -85,7 +92,10 @@
             position = "0,${toString (builtins.floor ((2160 / work.scale - 1200) + 1200 / 3))}";
             status = "enable";
           }
-          { criteria = work.name; position = "1920,0"; }
+          {
+            criteria = work.name;
+            position = "1920,0";
+          }
         ];
       }
       {
@@ -111,4 +121,3 @@
   # changes in each release.
   home.stateVersion = "21.05";
 }
-

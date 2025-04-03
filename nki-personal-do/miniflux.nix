@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 with lib;
 let
   user = "miniflux";
@@ -42,7 +47,10 @@ in
   systemd.services.miniflux = {
     description = "Miniflux service";
     wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" "postgresql.service" ];
+    after = [
+      "network.target"
+      "postgresql.service"
+    ];
     requires = [ "postgresql.service" ];
 
     serviceConfig = {
@@ -72,16 +80,22 @@ in
       ProtectKernelModules = true;
       ProtectKernelTunables = true;
       ProtectProc = "invisible";
-      RestrictAddressFamilies = [ "AF_INET" "AF_INET6" "AF_UNIX" ];
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+        "AF_UNIX"
+      ];
       RestrictNamespaces = true;
       RestrictRealtime = true;
       RestrictSUIDSGID = true;
       SystemCallArchitectures = "native";
-      SystemCallFilter = [ "@system-service" "~@privileged" ];
+      SystemCallFilter = [
+        "@system-service"
+        "~@privileged"
+      ];
       UMask = "0077";
     };
 
     environment = configEnv;
   };
 }
-

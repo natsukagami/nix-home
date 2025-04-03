@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -18,12 +23,14 @@ let
     "10: 10"
   ];
   wsAttrs = builtins.listToAttrs (
-    map
-      (i: { name = toString (remainder i 10); value = builtins.elemAt workspaces (i - 1); })
-      (range 1 11)
+    map (i: {
+      name = toString (remainder i 10);
+      value = builtins.elemAt workspaces (i - 1);
+    }) (range 1 11)
   );
   remainder = x: y: x - (builtins.div x y) * y;
-  range = from: to:
+  range =
+    from: to:
     let
       f = cur: if cur == to then [ ] else [ cur ] ++ f (cur + 1);
     in
@@ -40,27 +47,55 @@ in
     xsession.windowManager.i3 = {
       enable = true;
       config.assigns = {
-        "${wsAttrs."1"}" = [{ class = "^firefox$"; }];
-        "${wsAttrs."2"}" = [{ class = "^discord$"; }];
+        "${wsAttrs."1"}" = [ { class = "^firefox$"; } ];
+        "${wsAttrs."2"}" = [ { class = "^discord$"; } ];
       };
-      config.bars = [{
-        command = "${pkgs.i3-gaps}/bin/i3bar -t";
-        statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-default.toml";
-        position = "top";
-        colors = {
-          background = "#00000080";
-          statusline = "#ffffff";
-          separator = "#666666";
+      config.bars = [
+        {
+          command = "${pkgs.i3-gaps}/bin/i3bar -t";
+          statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-default.toml";
+          position = "top";
+          colors = {
+            background = "#00000080";
+            statusline = "#ffffff";
+            separator = "#666666";
 
-          focusedWorkspace = { background = "#4c7899"; border = "#285577"; text = "#ffffff"; };
-          activeWorkspace = { background = "#333333"; border = "#5f676a"; text = "#ffffff"; };
-          inactiveWorkspace = { background = "#333333"; border = "#222222"; text = "#888888"; };
-          urgentWorkspace = { background = "#2f343a"; border = "#900000"; text = "#ffffff"; };
-          bindingMode = { background = "#2f343a"; border = "#900000"; text = "#ffffff"; };
-        };
-      }];
+            focusedWorkspace = {
+              background = "#4c7899";
+              border = "#285577";
+              text = "#ffffff";
+            };
+            activeWorkspace = {
+              background = "#333333";
+              border = "#5f676a";
+              text = "#ffffff";
+            };
+            inactiveWorkspace = {
+              background = "#333333";
+              border = "#222222";
+              text = "#888888";
+            };
+            urgentWorkspace = {
+              background = "#2f343a";
+              border = "#900000";
+              text = "#ffffff";
+            };
+            bindingMode = {
+              background = "#2f343a";
+              border = "#900000";
+              text = "#ffffff";
+            };
+          };
+        }
+      ];
       config.focus.newWindow = "none";
-      config.fonts = { names = [ "FantasqueSansMono Nerd Font Mono" "monospace" ]; size = 11.0; };
+      config.fonts = {
+        names = [
+          "FantasqueSansMono Nerd Font Mono"
+          "monospace"
+        ];
+        size = 11.0;
+      };
       config.gaps.outer = 5;
       config.gaps.inner = 5;
       config.gaps.smartGaps = true;
@@ -69,52 +104,56 @@ in
       config.window.titlebar = false;
 
       # Keybindings
-      config.keybindings = lib.mkOptionDefault ({
-        ## vim-style movements
-        "${mod}+h" = "focus left";
-        "${mod}+j" = "focus down";
-        "${mod}+k" = "focus up";
-        "${mod}+l" = "focus right";
-        "${mod}+Shift+h" = "move left";
-        "${mod}+Shift+j" = "move down";
-        "${mod}+Shift+k" = "move up";
-        "${mod}+Shift+l" = "move right";
-        ## Splits
-        "${mod}+v" = "split v";
-        "${mod}+Shift+v" = "split h";
-        ## Run
-        "${mod}+r" = "exec ${pkgs.dmenu}/bin/dmenu_run";
-        "${mod}+d" = "exec i3-dmenu-desktop --dmenu='${pkgs.dmenu}/bin/dmenu -i'";
-      } // (
-        builtins.listToAttrs (lib.flatten (map
-          (key: [
-            {
-              name = "${mod}+${key}";
-              value = "workspace ${builtins.getAttr key wsAttrs}";
-            }
-            {
-              name = "${mod}+Shift+${key}";
-              value = "move to workspace ${builtins.getAttr key wsAttrs}";
-            }
-          ])
-          (builtins.attrNames wsAttrs))
-        )));
+      config.keybindings = lib.mkOptionDefault (
+        {
+          ## vim-style movements
+          "${mod}+h" = "focus left";
+          "${mod}+j" = "focus down";
+          "${mod}+k" = "focus up";
+          "${mod}+l" = "focus right";
+          "${mod}+Shift+h" = "move left";
+          "${mod}+Shift+j" = "move down";
+          "${mod}+Shift+k" = "move up";
+          "${mod}+Shift+l" = "move right";
+          ## Splits
+          "${mod}+v" = "split v";
+          "${mod}+Shift+v" = "split h";
+          ## Run
+          "${mod}+r" = "exec ${pkgs.dmenu}/bin/dmenu_run";
+          "${mod}+d" = "exec i3-dmenu-desktop --dmenu='${pkgs.dmenu}/bin/dmenu -i'";
+        }
+        // (builtins.listToAttrs (
+          lib.flatten (
+            map (key: [
+              {
+                name = "${mod}+${key}";
+                value = "workspace ${builtins.getAttr key wsAttrs}";
+              }
+              {
+                name = "${mod}+Shift+${key}";
+                value = "move to workspace ${builtins.getAttr key wsAttrs}";
+              }
+            ]) (builtins.attrNames wsAttrs)
+          )
+        ))
+      );
 
       # Workspace
       config.defaultWorkspace = "workspace ${builtins.getAttr "1" wsAttrs}";
-      config.startup = [
-        { command = "firefox"; }
-        { command = "discord"; }
-        { command = "dex -ae i3"; }
-        { command = "ibus-daemon -drxR"; }
-      ] ++
-      (
-        if (config.linux.graphical.wallpaper != "")
-        then [{ command = "${pkgs.feh}/bin/feh --bg-fill ${config.linux.graphical.wallpaper}"; }]
-        else [ ]
-      );
+      config.startup =
+        [
+          { command = "firefox"; }
+          { command = "discord"; }
+          { command = "dex -ae i3"; }
+          { command = "ibus-daemon -drxR"; }
+        ]
+        ++ (
+          if (config.linux.graphical.wallpaper != "") then
+            [ { command = "${pkgs.feh}/bin/feh --bg-fill ${config.linux.graphical.wallpaper}"; } ]
+          else
+            [ ]
+        );
     };
-
 
     # i3status
     programs.i3status-rust.enable = true;
@@ -154,5 +193,3 @@ in
     };
   };
 }
-
-

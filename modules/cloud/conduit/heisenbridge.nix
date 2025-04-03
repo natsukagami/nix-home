@@ -1,9 +1,15 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.cloud.conduit.heisenbridge;
   cfgConduit = config.cloud.conduit;
 in
-with lib; {
+with lib;
+{
   options.cloud.conduit.heisenbridge = {
     enable = mkEnableOption "Enable heisenbridge for conduit";
     package = mkPackageOption pkgs "heisenbridge" { };
@@ -23,17 +29,26 @@ with lib; {
   };
   config = mkIf cfg.enable (
     let
-      cfgFile = if cfg.port == null then cfg.appserviceFile else
-      pkgs.runCommand "heisenbridge-config" { } ''
-        cp ${cfg.appserviceFile} $out
-        ${pkgs.sd}/bin/sd '^url: .*$' "url: http://127.0.0.1:${cfg.port}"
-      '';
-      listenArgs = lists.optionals (cfg.port != null) [ "--listen-port" (toString cfg.port) ];
+      cfgFile =
+        if cfg.port == null then
+          cfg.appserviceFile
+        else
+          pkgs.runCommand "heisenbridge-config" { } ''
+            cp ${cfg.appserviceFile} $out
+            ${pkgs.sd}/bin/sd '^url: .*$' "url: http://127.0.0.1:${cfg.port}"
+          '';
+      listenArgs = lists.optionals (cfg.port != null) [
+        "--listen-port"
+        (toString cfg.port)
+      ];
     in
     {
       systemd.services.heisenbridge = {
         description = "Matrix<->IRC bridge";
-        requires = [ "matrix-conduit-nkagami.service" "matrix-synapse.service" ]; # So the registration file can be used by Synapse
+        requires = [
+          "matrix-conduit-nkagami.service"
+          "matrix-synapse.service"
+        ]; # So the registration file can be used by Synapse
         wantedBy = [ "multi-user.target" ];
 
         serviceConfig = rec {
@@ -77,12 +92,18 @@ with lib; {
           RemoveIPC = true;
           UMask = "0077";
 
-          CapabilityBoundingSet = [ "CAP_CHOWN" ] ++ optional (cfg.port != null && cfg.port < 1024) "CAP_NET_BIND_SERVICE";
+          CapabilityBoundingSet = [
+            "CAP_CHOWN"
+          ] ++ optional (cfg.port != null && cfg.port < 1024) "CAP_NET_BIND_SERVICE";
           AmbientCapabilities = CapabilityBoundingSet;
           NoNewPrivileges = true;
           LockPersonality = true;
           RestrictRealtime = true;
-          SystemCallFilter = [ "@system-service" "~@privileged" "@chown" ];
+          SystemCallFilter = [
+            "@system-service"
+            "~@privileged"
+            "@chown"
+          ];
           SystemCallArchitectures = "native";
           RestrictAddressFamilies = "AF_INET AF_INET6";
         };
@@ -97,4 +118,3 @@ with lib; {
     }
   );
 }
-

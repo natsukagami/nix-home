@@ -5,15 +5,14 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # Fonts
-      ../modules/personal/fonts
-      # Some PAM stuff
-      ../modules/services/swaylock.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    # Fonts
+    ../modules/personal/fonts
+    # Some PAM stuff
+    ../modules/services/swaylock.nix
+  ];
   # Use the latest kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -54,7 +53,6 @@
   services.xserver.enable = true;
   services.xserver.autorun = false;
 
-
   # Enable the Plasma 5 Desktop Environment.
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.desktopManager.plasma5.enable = true;
@@ -65,13 +63,18 @@
     fi
   '';
 
-
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
   i18n.inputMethod.enabled = "ibus";
-  i18n.inputMethod.ibus.engines = (with pkgs.ibus-engines; [ bamboo mozc libpinyin ]);
-
+  i18n.inputMethod.ibus.engines = (
+    with pkgs.ibus-engines;
+    [
+      bamboo
+      mozc
+      libpinyin
+    ]
+  );
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;

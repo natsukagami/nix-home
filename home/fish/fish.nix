@@ -1,4 +1,10 @@
-{ config, options, pkgs, lib, ... }:
+{
+  config,
+  options,
+  pkgs,
+  lib,
+  ...
+}:
 
 with lib;
 let
@@ -157,7 +163,6 @@ in
       };
     };
 
-
     tide = {
       enable = true;
       leftItems = options.programs.fish.tide.leftItems.default;
@@ -172,10 +177,7 @@ in
     };
 
     everywhereAbbrs = {
-      lsports =
-        if pkgs.stdenv.isDarwin
-        then "lsof -i -P | grep LISTEN"
-        else "ss -tulp";
+      lsports = if pkgs.stdenv.isDarwin then "lsof -i -P | grep LISTEN" else "ss -tulp";
     };
 
     shellInit = ''
@@ -234,11 +236,11 @@ in
       bind -M default gl end-of-line
 
       # Everywhere abbrs
-      ${
-        concatStringsSep "\n"
-          (mapAttrsToList (k: v: "abbr --add --position anywhere -- ${k} ${escapeShellArg v}")
-            config.programs.fish.everywhereAbbrs)
-      }
+      ${concatStringsSep "\n" (
+        mapAttrsToList (
+          k: v: "abbr --add --position anywhere -- ${k} ${escapeShellArg v}"
+        ) config.programs.fish.everywhereAbbrs
+      )}
 
       # Replace today with actual today
       abbr --add --position anywhere today -f echo-today

@@ -1,4 +1,9 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   user = "peertube-runner-nodejs";
   instance = "systemd-instance";
@@ -27,8 +32,8 @@ in
     runnerName = "kagamipc"
   '';
 
-  environment.etc."${user}/${instance}/config.toml".source = config.sops.templates."peertube-config.toml".path;
-
+  environment.etc."${user}/${instance}/config.toml".source =
+    config.sops.templates."peertube-config.toml".path;
 
   systemd.services.peertube-runner = {
     description = "PeerTube runner daemon";
@@ -36,20 +41,19 @@ in
     after = [ "network.target" ];
     requires = [ ];
 
-    serviceConfig =
-      {
-        ExecStart = "${lib.getExe' pkgs.peertube.runner "peertube-runner"} server --id ${instance}";
-        User = user;
-        RuntimeDirectory = user;
-        StateDirectory = user;
-        CacheDirectory = user;
-        # Hardening
-        ProtectSystem = "full";
-        PrivateDevices = false;
-        NoNewPrivileges = true;
-        ProtectHome = true;
-        CapabilityBoundingSet = "~CAP_SYS_ADMIN";
-      };
+    serviceConfig = {
+      ExecStart = "${lib.getExe' pkgs.peertube.runner "peertube-runner"} server --id ${instance}";
+      User = user;
+      RuntimeDirectory = user;
+      StateDirectory = user;
+      CacheDirectory = user;
+      # Hardening
+      ProtectSystem = "full";
+      PrivateDevices = false;
+      NoNewPrivileges = true;
+      ProtectHome = true;
+      CapabilityBoundingSet = "~CAP_SYS_ADMIN";
+    };
 
     environment = {
       NODE_ENV = "production";
@@ -61,7 +65,9 @@ in
       XDG_STATE_HOME = "/var/lib";
     };
 
-    path = with pkgs; [ nodejs ffmpeg ];
+    path = with pkgs; [
+      nodejs
+      ffmpeg
+    ];
   };
 }
-

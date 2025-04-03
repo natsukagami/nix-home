@@ -1,8 +1,16 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   openconnect-epfl = pkgs.writeShellApplication {
     name = "openconnect-epfl";
-    runtimeInputs = with pkgs; [ openconnect rbw ];
+    runtimeInputs = with pkgs; [
+      openconnect
+      rbw
+    ];
     text = ''
       METHOD="Microsoft Entra ID"
       RBW_ENTRY="EPFL Microsoft Auth"
@@ -20,4 +28,3 @@ in
 {
   home.packages = [ openconnect-epfl ];
 }
-
