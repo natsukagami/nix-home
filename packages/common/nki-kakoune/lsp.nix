@@ -1,24 +1,25 @@
-{ lib
-, writeTextDir
-, formats
-, kak-lsp
-, # LSP packages
-  ccls
-, gopls
-, nil
-, nixpkgs-fmt
-, python311Packages
-, ltex-ls
-, nodePackages
-, tailwindcss-language-server
-, fsautocomplete
-, metals
-, texlab
-, tinymist
-, marksman
-, templ
-, rust-analyzer
-, ...
+{
+  lib,
+  writeTextDir,
+  formats,
+  kak-lsp,
+  # LSP packages
+  ccls,
+  gopls,
+  nil,
+  nixfmt-rfc-style,
+  python311Packages,
+  ltex-ls,
+  nodePackages,
+  tailwindcss-language-server,
+  fsautocomplete,
+  metals,
+  texlab,
+  tinymist,
+  marksman,
+  templ,
+  rust-analyzer,
+  ...
 }:
 let
   # Configuration for kak-lsp
@@ -75,7 +76,7 @@ let
           filetypes = [ "nix" ];
           roots = [ "flake.nix" "shell.nix" ".git" ];
           settings.nil = {
-            formatting.command = [ "${lib.getExe nixpkgs-fmt}" ];
+            formatting.command = [ "${lib.getExe nixfmt-rfc-style}" ];
           };
         };
         pylsp = {
