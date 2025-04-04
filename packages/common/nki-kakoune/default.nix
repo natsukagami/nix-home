@@ -2,21 +2,24 @@
   callPackage,
   kakoune,
   kakoune-unwrapped,
+  nki-kak-util ? callPackage ./util.nix { },
+  nki-kak-lsp ? callPackage ./lsp.nix { },
+  nki-kak-rc ? callPackage ./rc.nix { },
+  nki-kak-plugins ? callPackage ./plugins.nix { util = nki-kak-util; },
+  nki-kak-kaktex ? callPackage ./kaktex { },
+  nki-kak-themes ? callPackage ./themes.nix { },
+  nki-kak-faces ? callPackage ./faces.nix { util = nki-kak-util; },
   ...
 }:
-let
-  lsp = callPackage ./lsp.nix { };
-  rc = (callPackage ./rc.nix { });
-in
 (kakoune.override {
   plugins =
-    callPackage ./plugins.nix { }
-    ++ callPackage ./themes.nix { }
+    nki-kak-plugins
+    ++ nki-kak-themes
     ++ [
-      (callPackage ./kaktex { })
-      (callPackage ./faces.nix { })
-      rc
-      lsp.plugin
+      nki-kak-kaktex
+      nki-kak-faces
+      nki-kak-rc
+      nki-kak-lsp.plugin
     ];
 }).overrideAttrs
   (attrs: {
@@ -27,6 +30,15 @@ in
       rm "$out/bin/kak"
       makeWrapper "${kakoune-unwrapped}/bin/kak" "$out/bin/kak" \
         --set KAKOUNE_RUNTIME "$out/share/kak" \
-        --suffix PATH ":" "${lsp.extraPaths}"
+        --suffix PATH ":" "${nki-kak-lsp.extraPaths}"
     '';
+
+    passthru = {
+      lsp = nki-kak-lsp;
+      rc = nki-kak-rc;
+      plugins = nki-kak-plugins;
+      kaktex = nki-kak-kaktex;
+      themes = nki-kak-themes;
+      faces = nki-kak-faces;
+    };
   })

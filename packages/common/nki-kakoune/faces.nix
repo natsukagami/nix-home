@@ -1,6 +1,9 @@
-{ callPackage, ... }:
+{
+  callPackage,
+  utils ? callPackage ./utils.nix { },
+  ...
+}:
 let
-  utils = callPackage ./utils.nix { };
   faces = {
     Default = "%opt{text},%opt{base}";
     BufferPadding = "%opt{base},%opt{base}";

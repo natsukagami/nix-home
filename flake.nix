@@ -189,7 +189,12 @@
 
     in
     {
-      overlays.default = lib.composeManyExtensions overlays;
+      overlays = {
+        default = lib.composeManyExtensions overlays;
+        kakoune = final: prev: {
+          nki-kakoune = final.callPackage ./packages/common/nki-kakoune { };
+        };
+      };
 
       packages.x86_64-linux.deploy-rs = deploy-rs.packages.x86_64-linux.default;
       apps.x86_64-linux.deploy-rs = deploy-rs.apps.x86_64-linux.default;

@@ -1,59 +1,14 @@
 {
-  pkgs,
-  symlinkJoin,
-  writeTextDir,
-  kakouneUtils,
+  callPackage,
+  utils ? callPackage ./utils.nix { },
+  fetchFromGitHub,
+  fetchFromGitLab,
+  luajit,
   ...
 }:
 with {
-  inherit (kakouneUtils) buildKakounePluginFrom2Nix;
+  inherit (utils) toDir writeModuleWrapper kakounePlugin;
 };
-let
-  toDir = name: file: writeTextDir name (builtins.readFile file);
-
-  writeActivationScript =
-    script:
-    writeTextDir "on-load.kak" ''
-      hook global KakBegin .* %{
-        ${script}
-      }
-    '';
-
-  writeModuleWrapper =
-    name: script:
-    writeTextDir "module.kak" ''
-      provide-module ${name} %◍
-        ${script}
-      ◍
-    '';
-
-  kakounePlugin =
-    {
-      name,
-      src,
-      wrapAsModule ? false,
-      activationScript ? null,
-      ...
-    }@attrs:
-    let
-      module = if wrapAsModule then writeModuleWrapper name (builtins.readFile src) else src;
-    in
-    buildKakounePluginFrom2Nix {
-      pname = name;
-      version = attrs.version or "latest";
-      src =
-        if activationScript == null then
-          module
-        else
-          symlinkJoin {
-            name = "${name}-src";
-            paths = [
-              module
-              (writeActivationScript activationScript)
-            ];
-          };
-    };
-in
 builtins.map kakounePlugin [
   # My own scripts
   {
@@ -68,7 +23,7 @@ builtins.map kakounePlugin [
   # Plugins
   {
     name = "luar";
-    src = pkgs.fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "gustavo-hms";
       repo = "luar";
       rev = "2f430316f8fc4d35db6c93165e2e77dc9f3d0450";
@@ -78,12 +33,12 @@ builtins.map kakounePlugin [
       # Enable luar
       require-module luar
       # Use luajit
-      set-option global luar_interpreter ${pkgs.luajit}/bin/luajit
+      set-option global luar_interpreter ${luajit}/bin/luajit
     '';
   }
   {
     name = "peneira";
-    src = pkgs.fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "gustavo-hms";
       repo = "peneira";
       rev = "b56dd10bb4771da327b05a9071b3ee9a092f9788";
@@ -128,7 +83,7 @@ builtins.map kakounePlugin [
   }
   {
     name = "kakoune-focus";
-    src = pkgs.fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "caksoylar";
       repo = "kakoune-focus";
       rev = "949c0557cd4c476822acfa026ca3c50f3d38a3c0";
@@ -140,7 +95,7 @@ builtins.map kakounePlugin [
   }
   {
     name = "kakoune-inc-dec";
-    src = pkgs.fetchFromGitLab {
+    src = fetchFromGitLab {
       owner = "Screwtapello";
       repo = "kakoune-inc-dec";
       rev = "7bfe9c51";
@@ -158,14 +113,10 @@ builtins.map kakounePlugin [
       })
       + "/rc";
   }
-  # {
-  #   name = "kakoune-discord";
-  #   src = (builtins.getFlake "github:natsukagami/kakoune-discord/03f95e40d6efd8fd3de7bca31653d43de2dcfc5f").packages.${pkgs.system}.kakoune-discord-rc + "/rc";
-  # }
   rec {
     name = "kakoune-mirror";
     src =
-      pkgs.fetchFromGitHub {
+      fetchFromGitHub {
         owner = "Delapouite";
         repo = "kakoune-mirror";
         rev = "5710635f440bcca914d55ff2ec1bfcba9efe0f15";
@@ -182,7 +133,7 @@ builtins.map kakounePlugin [
   }
   {
     name = "unicode-math";
-    src = pkgs.fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "natsukagami";
       repo = "kakoune-unicode-math";
       rev = "08dff25da2b86ee0b0777091992bc7fb28c3cb1d";
@@ -199,7 +150,7 @@ builtins.map kakounePlugin [
   }
   {
     name = "kakoune-buffers";
-    src = pkgs.fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "Delapouite";
       repo = "kakoune-buffers";
       rev = "6b2081f5b7d58c72de319a5cba7bf628b6802881";
