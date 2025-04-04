@@ -2,7 +2,7 @@
   callPackage,
   kakoune,
   kakoune-unwrapped,
-  nki-kak-util ? callPackage ./util.nix { },
+  nki-kak-util ? callPackage ./utils.nix { },
   nki-kak-lsp ? callPackage ./lsp.nix { },
   nki-kak-rc ? callPackage ./rc.nix { },
   nki-kak-plugins ? callPackage ./plugins.nix { util = nki-kak-util; },
