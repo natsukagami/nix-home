@@ -84,15 +84,22 @@ let
         "${pkgs.kdePackages.plasma-workspace}/share/dbus-1/services/org.kde.plasma.Notifications.service";
     };
 
-  rofi-rbw-script = pkgs.writeShellApplication {
+  rofi-rbw-script = pkgs.writeTextFile rec {
     name = "rofi-rbw-script";
-    runtimeInputs = with pkgs; [
-      config.programs.rofi.package
-      wtype
+    text = ''
+      #!/usr/bin/env fish
+      set -a PATH ${
+        lib.concatMapStringsSep " " (p: "${lib.getBin p}/bin") [
+          config.programs.rofi.package
+          pkgs.ydotool
+          pkgs.rofi-rbw
+        ]
+      }
       rofi-rbw
-    ];
-    text = "rofi-rbw";
-    meta.mainProgram = "rofi-rbw-script";
+    '';
+    executable = true;
+    destination = "/bin/${name}";
+    meta.mainProgram = name;
   };
 in
 with lib;

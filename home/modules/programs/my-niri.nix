@@ -18,6 +18,14 @@ let
 
   xwayland-display = ":0";
 
+  # Override for lack of per-keyboard layout
+  ydotool-en = pkgs.writeScriptBin "ydotool" ''
+    #!/usr/bin/env sh
+    niri msg action switch-layout 1 && fcitx5-remote -c # us
+    ${lib.getExe pkgs.ydotool} "$@"
+    niri msg action switch-layout 0 # ja
+  '';
+
 in
 {
   options.programs.my-niri = {
@@ -77,6 +85,7 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    home.packages = [ ydotool-en ];
     programs.my-niri.workspaces = {
       # Default workspaces, always there
       "01" = {
@@ -158,7 +167,7 @@ in
           XDG_MENU_PREFIX = "plasma-";
         };
       input.keyboard.xkb = {
-        layout = "jp";
+        layout = "jp,us";
       };
       input.touchpad = lib.mkIf cfg.enableLaptop {
         tap = true;
