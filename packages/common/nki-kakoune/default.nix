@@ -40,5 +40,6 @@
       kaktex = nki-kak-kaktex;
       themes = nki-kak-themes;
       faces = nki-kak-faces;
+      util = nki-kak-util;
     };
   })

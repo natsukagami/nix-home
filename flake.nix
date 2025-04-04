@@ -199,6 +199,16 @@
       packages.x86_64-linux.deploy-rs = deploy-rs.packages.x86_64-linux.default;
       apps.x86_64-linux.deploy-rs = deploy-rs.apps.x86_64-linux.default;
 
+      packages.x86_64-linux.nki-kakoune =
+        (import nixpkgs-unstable { system = "x86_64-linux"; }).callPackage ./packages/common/nki-kakoune
+          { };
+      packages.aarch64-linux.nki-kakoune =
+        (import nixpkgs-unstable { system = "aarch64-linux"; }).callPackage ./packages/common/nki-kakoune
+          { };
+      packages.aarch64-darwin.nki-kakoune =
+        (import nixpkgs-unstable { system = "aarch64-darwin"; }).callPackage ./packages/common/nki-kakoune
+          { };
+
       # MacBook configuration: nix-darwin + home-manager
       darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem rec {
         system = "aarch64-darwin";
