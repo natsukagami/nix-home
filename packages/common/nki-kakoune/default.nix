@@ -12,6 +12,7 @@
   ...
 }:
 (kakoune.override {
+  kakoune = kakoune-unwrapped;
   plugins =
     nki-kak-plugins
     ++ nki-kak-themes

@@ -187,11 +187,27 @@
             ++ extraModules;
         };
 
+      kakoune-unwrapped-from-pkgs =
+        pkgs:
+        pkgs.kakoune-unwrapped.overrideAttrs (attrs: {
+          version = "r${builtins.substring 0 6 inputs.kakoune.rev}";
+          src = inputs.kakoune;
+          patches = [
+            # patches in the original package was already applied
+          ];
+        });
+      nki-kakoune-from-pkgs =
+        pkgs:
+        pkgs.callPackage ./packages/common/nki-kakoune {
+          kakoune-unwrapped = kakoune-unwrapped-from-pkgs pkgs;
+        };
+
     in
     {
       overlays = {
         default = lib.composeManyExtensions overlays;
         kakoune = final: prev: {
+          kakoune-unwrapped = kakoune-unwrapped-from-pkgs prev;
           nki-kakoune = final.callPackage ./packages/common/nki-kakoune { };
         };
       };
@@ -199,15 +215,15 @@
       packages.x86_64-linux.deploy-rs = deploy-rs.packages.x86_64-linux.default;
       apps.x86_64-linux.deploy-rs = deploy-rs.apps.x86_64-linux.default;
 
-      packages.x86_64-linux.nki-kakoune =
-        (import nixpkgs-unstable { system = "x86_64-linux"; }).callPackage ./packages/common/nki-kakoune
-          { };
-      packages.aarch64-linux.nki-kakoune =
-        (import nixpkgs-unstable { system = "aarch64-linux"; }).callPackage ./packages/common/nki-kakoune
-          { };
-      packages.aarch64-darwin.nki-kakoune =
-        (import nixpkgs-unstable { system = "aarch64-darwin"; }).callPackage ./packages/common/nki-kakoune
-          { };
+      packages.x86_64-linux.nki-kakoune = nki-kakoune-from-pkgs (
+        import nixpkgs-unstable { system = "x86_64-linux"; }
+      );
+      packages.aarch64-linux.nki-kakoune = nki-kakoune-from-pkgs (
+        import nixpkgs-unstable { system = "aarch64-linux"; }
+      );
+      packages.aarch64-darwin.nki-kakoune = nki-kakoune-from-pkgs (
+        import nixpkgs-unstable { system = "aarch64-darwin"; }
+      );
 
       # MacBook configuration: nix-darwin + home-manager
       darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem rec {
