@@ -117,6 +117,20 @@ let
         virtualisation.virtualbox.host.enable = false;
         users.extraGroups.vboxusers.members = [ cfg.username ];
       };
+
+    nix-ld =
+      { pkgs, ... }:
+      {
+        programs.nix-ld = {
+          enable = true;
+          libraries = with pkgs; [
+            ncurses
+            llvmPackages.libcxx
+            glibc
+            sqlite
+          ];
+        };
+      };
   };
 
   rt-audio =
@@ -165,6 +179,7 @@ in
     virtualisation
     accounts
     rt-audio
+    nix-ld
   ];
 
   options.common.linux = {
