@@ -131,7 +131,7 @@ let
     kak-lsp = final.unstable.rustPlatform.buildRustPackage {
       name = "kak-lsp";
       src = inputs.kak-lsp;
-      cargoHash = "sha256-8Y+haxC7ssN07ODZcKoDdTv0vEnKqxYseLPoQSNmWI4=";
+      cargoLock.lockFile = "${inputs.kak-lsp}/Cargo.lock";
       buildInputs = [ final.libiconv ];
 
       meta.mainProgram = "kak-lsp";

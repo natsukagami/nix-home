@@ -20,7 +20,8 @@ let
     inherit src;
     pname = "kak-tree-sitter";
     version = "1.1.3";
-    cargoHash = "sha256-1OwPfl1446SYt1556jwR9mvWOWEv+ab+wH7GZQeS4/E=";
+    cargoLock.lockFile = "${src}/Cargo.lock";
+
     cargoBuildOptions = [
       "--package"
       "kak-tree-sitter"
