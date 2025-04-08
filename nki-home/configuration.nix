@@ -84,29 +84,29 @@ in
       nki.services.edns.ipv6 = true;
       ## DTTH Wireguard
       #
-      sops.secrets."dtth-wg/private-key" = {
+      sops.secrets."wg-dtth/private-key" = {
         owner = "root";
         group = "systemd-network";
         mode = "0640";
       };
-      sops.secrets."dtth-wg/preshared-key" = {
+      sops.secrets."wg-dtth/preshared-key" = {
         owner = "root";
         group = "systemd-network";
         mode = "0640";
       };
-      systemd.network.netdevs."10-dtth-wg" = {
+      systemd.network.netdevs."10-wg-dtth" = {
         netdevConfig = {
           Kind = "wireguard";
-          Name = "dtth-wg";
+          Name = "wg-dtth";
           MTUBytes = "1280";
         };
         wireguardConfig = {
-          PrivateKeyFile = config.sops.secrets."dtth-wg/private-key".path;
+          PrivateKeyFile = config.sops.secrets."wg-dtth/private-key".path;
         };
         wireguardPeers = [
           {
             PublicKey = "+7iI4jwmM1Qr+/DKB1Hv8JgFkGu7lSV0PAoo+O5d3yQ=";
-            PresharedKeyFile = config.sops.secrets."dtth-wg/preshared-key".path;
+            PresharedKeyFile = config.sops.secrets."wg-dtth/preshared-key".path;
             AllowedIPs = [
               "100.64.0.0/10"
               "fd00::/106"
@@ -116,8 +116,8 @@ in
           }
         ];
       };
-      systemd.network.networks."dtth-wg" = {
-        matchConfig.Name = "dtth-wg";
+      systemd.network.networks."wg-dtth" = {
+        matchConfig.Name = "wg-dtth";
         address = [
           "100.73.146.80/32"
           "fd00::33:105b/128"
