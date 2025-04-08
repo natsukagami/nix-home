@@ -115,6 +115,9 @@
 
   services.dbus.packages = with pkgs; [ gcr ];
 
+  services.avahi.enable = true;
+  networking.firewall.allowedTCPPorts = [ 8010 ];
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

@@ -173,6 +173,7 @@ in
       cat = "bat --theme=GitHub ";
       catp = "bat --theme=GitHub -p ";
       l = "exa -l --color=always ";
+      e = "$EDITOR";
       "cp+" = "rsync -avzP";
     };
 
@@ -205,13 +206,6 @@ in
       functions --erase fish_title
       function fish_title
         echo (__original_fish_title) - fish
-      end
-
-      # Set up an editor alias
-      if test -n "$EDITOR"
-          alias e="$EDITOR"
-      else
-          alias e="kak"
       end
 
       # Source iTerm2 integration

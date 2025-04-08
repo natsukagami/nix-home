@@ -76,73 +76,106 @@ with lib;
     };
   };
 
-  config.linux.graphical = mkIf (cfg.enable && cfg.setDefault) {
-    defaults.terminal.package = cfg.package;
-  };
+  config = mkIf cfg.enable {
+    linux.graphical = mkIf cfg.setDefault {
+      defaults.terminal.package = cfg.package;
+    };
+    programs.kitty = {
+      enable = true;
 
-  config.programs.kitty = mkIf cfg.enable {
-    enable = true;
+      package = cfg.package;
 
-    package = cfg.package;
+      font.package = pkgs.fantasque-sans-mono;
+      font.name = "Fantasque Sans Mono";
+      font.size = cfg.fontSize;
 
-    font.package = pkgs.fantasque-sans-mono;
-    font.name = "Fantasque Sans Mono";
-    font.size = cfg.fontSize;
+      settings =
+        let
+          # Background color and transparency
+          background =
+            if isNull cfg.background then
+              {
+                background_opacity = "0.93";
+                dynamic_background_opacity = true;
+              }
+            else
+              {
+                background_image = "${cfg.background}";
+                background_image_layout = "scaled";
+                background_tint = "0.85";
+              };
+        in
+        mkMerge [
+          background
+          {
+            # Scrollback (128MBs)
+            scrollback_pager_history_size = 128;
 
-    settings =
-      let
-        # Background color and transparency
-        background =
-          if isNull cfg.background then
-            {
-              background_opacity = "0.93";
-              dynamic_background_opacity = true;
-            }
-          else
-            {
-              background_image = "${cfg.background}";
-              background_image_layout = "scaled";
-              background_tint = "0.85";
-            };
-      in
-      mkMerge [
-        background
-        {
-          # Scrollback (128MBs)
-          scrollback_pager_history_size = 128;
+            # Disable Shell integration (leave it for Nix)
+            shell_integration = "no-rc";
 
-          # Disable Shell integration (leave it for Nix)
-          shell_integration = "no-rc";
+            # Allow remote control (for kakoune integration)
+            allow_remote_control = true;
 
-          # Allow remote control (for kakoune integration)
-          allow_remote_control = true;
+            # Mouse focus
+            focus_follows_mouse = true;
+          }
+        ];
 
-          # Mouse focus
-          focus_follows_mouse = true;
-        }
-      ];
+      keybindings = {
+        "${cfg.cmd}+shift+equal" = "no_op"; # Not possible with a JIS keyboard
+        "${cfg.cmd}+shift+^" = "change_font_size all +2.0"; # ... so use ^ instead
 
-    keybindings = {
-      "${cfg.cmd}+shift+equal" = "no_op"; # Not possible with a JIS keyboard
-      "${cfg.cmd}+shift+^" = "change_font_size all +2.0"; # ... so use ^ instead
+        ## Clear screen
+        "${cfg.cmd}+backspace" = "clear_terminal to_cursor active";
+        "${cfg.cmd}+shift+backspace" = "clear_terminal reset active";
 
-      ## Clear screen
-      "${cfg.cmd}+backspace" = "clear_terminal to_cursor active";
-      "${cfg.cmd}+shift+backspace" = "clear_terminal reset active";
-      ## Hints
-      "${cfg.cmd}+shift+p>n" = "kitten hints --type=linenum --linenum-action=tab kak {path} +{line}";
+        ## Command scrolling
+        "${cfg.cmd}+shift+j" = "scroll_to_prompt 1";
+        "${cfg.cmd}+shift+k" = "scroll_to_prompt -1";
+      };
+
+      extraConfig =
+        let
+          # Nerd Fonts glyph map
+          glyphMap = pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/Sharparam/dotfiles/main/kitty/.config/kitty/font-nerd-symbols.conf";
+            hash = "sha256-1OaDWLC3y8ASD2ttRWWgPEpRnfKXu6H6vS3cFVpzT0o=";
+          };
+        in
+        ''
+          include ${glyphMap}
+        '';
     };
 
-    extraConfig =
-      let
-        # Nerd Fonts glyph map
-        glyphMap = pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/Sharparam/dotfiles/main/kitty/.config/kitty/font-nerd-symbols.conf";
-          hash = "sha256-1OaDWLC3y8ASD2ttRWWgPEpRnfKXu6H6vS3cFVpzT0o=";
-        };
-      in
-      ''
-        include ${glyphMap}
-      '';
+    # Open protocol
+    xdg.configFile."kitty/open-actions.conf".text = ''
+      protocol file
+      fragment_matches [0-9]+
+      action launch --type=overlay --cwd=current -- $\{EDITOR} +$\{FRAGMENT} -- $\{FILE_PATH}
+
+      # Open HTML files with xdg-open
+      protocol file
+      mime text/html
+      action launch xdg-open $\{FILE_PATH}
+
+      # Open text files without fragments in the editor
+      protocol file
+      mime text/*
+      action launch --type=overlay --cwd=current -- $\{EDITOR} -- $\{FILE_PATH}
+
+      # Open other files with xdg-open
+      protocol file
+      action launch xdg-open $\{FILE_PATH}
+    '';
+
+    programs.fish.shellAliases = {
+      e = lib.mkForce "kitten edit-in-kitty";
+      "ssh+" = "kitten ssh";
+      "clip" = "kitten clipboard";
+      "rg" = "kitten hyperlinked-grep";
+      "icat" = "kitten icat";
+      "notify" = "kitten notify";
+    };
   };
 }

@@ -32,7 +32,6 @@ in
         # Rebind $VISUAL, $EDITOR and e command
         set -gx VISUAL "kak -c $kak_session"
         set -gx EDITOR "kak -c $kak_session"
-        alias e="kak -c $kak_session"
       '';
 
       kill-kak-session = ''
@@ -47,7 +46,6 @@ in
         # Rebind $VISUAL, $EDITOR and e command
         set -gx VISUAL "kak"
         set -gx EDITOR "kak"
-        alias e="kak"
       '';
     };
     programs.fish.tide = {
