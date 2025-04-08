@@ -173,7 +173,7 @@ with lib;
       e = lib.mkForce "kitten edit-in-kitty";
       "ssh+" = "kitten ssh";
       "clip" = "kitten clipboard";
-      "rg" = "kitten hyperlinked-grep";
+      "eg" = "kitten hyperlinked-grep";
       "icat" = "kitten icat";
       "notify" = "kitten notify";
     };
