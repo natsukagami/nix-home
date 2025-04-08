@@ -165,6 +165,32 @@ let
         }
       ];
     };
+
+  tailscale =
+    { config, ... }:
+    {
+      options.common.linux = {
+        tailscale = {
+          firewall.allowPorts = mkOption {
+            type = types.listOf types.port;
+            description = "List of ports to allow tailscale to pass through";
+            default = [ ];
+          };
+        };
+      };
+      config =
+        let
+          cfg = config.common.linux.tailscale;
+        in
+        {
+          # Enable tailscale
+          services.tailscale.enable = true;
+          networking.firewall.interfaces."tailscale0" = {
+            allowedUDPPorts = cfg.firewall.allowPorts;
+            allowedTCPPorts = cfg.firewall.allowPorts;
+          };
+        };
+    };
 in
 {
   imports = with modules; [
@@ -180,6 +206,7 @@ in
     accounts
     rt-audio
     nix-ld
+    tailscale
   ];
 
   options.common.linux = {
@@ -330,8 +357,6 @@ in
     # Firewall: only open to SSH now
     networking.firewall.allowedTCPPorts = [ 22 ];
     networking.firewall.allowedUDPPorts = [ 22 ];
-    # Enable tailscale
-    services.tailscale.enable = true;
 
     ## Time and Region
     time.timeZone = lib.mkDefault "Europe/Zurich";
