@@ -89,7 +89,7 @@ rec {
   environment.etc."headscale/config.yaml".mode = "0644";
   virtualisation.arion.projects.headscale-webui.settings = {
     services.webui.service = {
-      image = "ghcr.io/ifargle/headscale-webui@sha256:b4f02337281853648b071301af4329b4e4fc9189d77ced2eb2fbb78204321cab";
+      image = "ghcr.io/ifargle/headscale-webui@sha256:f047209ddf2f71587d8a0f749b0cb92f22a3105dda624724a053c2a7aa23a210";
       restart = "unless-stopped";
 
       environment = {
