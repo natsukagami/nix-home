@@ -170,7 +170,6 @@ with lib;
     '';
 
     programs.fish.shellAliases = {
-      e = lib.mkForce "kitten edit-in-kitty";
       "ssh+" = "kitten ssh";
       "clip" = "kitten clipboard";
       "eg" = "kitten hyperlinked-grep";
