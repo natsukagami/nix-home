@@ -61,6 +61,8 @@ in
       nki.services.nix-cache = {
         enableServer = true;
         privateKeyFile = config.sops.secrets."nix-cache/private-key".path;
+        sslCertificate = ./cert.pem;
+        sslCertificateKey = config.sops.secrets."nginx/key.pem".path;
       };
 
       sops.secrets."nix-build-farm/private-key" = {
@@ -242,6 +244,28 @@ in
       virtualisation.spiceUSBRedirection.enable = true;
     }
     {
+      sops.secrets."nginx/key.pem" = {
+        owner = "nginx";
+        reloadUnits = [ "nginx.service" ];
+      };
+      security.dhparams.enable = true;
+      security.dhparams.params.nginx.bits = 4096;
+      systemd.services.nginx.requires = [ "dhparams-gen-nginx.service" ];
+      # Nginx HTTPS
+      services.nginx = {
+        sslDhparam = config.security.dhparams.params.nginx.path;
+        defaultListen = [
+          {
+            addr = "0.0.0.0";
+            ssl = true;
+            extraParameters = [
+            ];
+          }
+        ];
+      };
+      common.linux.tailscale.firewall.allowPorts = [ 443 ];
+    }
+    {
       # LLM poop
       services.ollama = {
         enable = true;
@@ -259,7 +283,7 @@ in
         enable = true;
         port = 5689;
         openFirewall = true;
-        host = "0.0.0.0";
+        host = "127.0.0.1";
         environment = {
           ANONYMIZED_TELEMETRY = "False";
           DO_NOT_TRACK = "True";
@@ -268,7 +292,27 @@ in
           ENABLE_SIGNUP = "false";
         };
       };
-      common.linux.tailscale.firewall.allowPorts = [ config.services.open-webui.port ];
+      services.nginx = {
+        enable = true;
+        recommendedProxySettings = true;
+        virtualHosts = {
+          # ... existing hosts config etc. ...
+          "llm" = {
+            serverAliases = [
+              "llm.home.tinc"
+              "llm.kagamipc.dtth.ts"
+            ];
+            forceSSL = true;
+            sslCertificate = ./cert.pem;
+            sslCertificateKey = config.sops.secrets."nginx/key.pem".path;
+            locations."/" = {
+              proxyPass = "http://127.0.0.1:5689";
+              proxyWebsockets = true;
+            };
+          };
+        };
+      };
+
     }
   ];
 }

@@ -41,11 +41,19 @@ in
       type = types.path;
       description = "Path to the private key .pem file";
     };
+    sslCertificate = mkOption {
+      type = types.path;
+      description = "Path to the private key .pem file";
+    };
+    sslCertificateKey = mkOption {
+      type = types.path;
+      description = "Path to the private key .pem file";
+    };
   };
 
   config = {
     nix.settings = mkIf cfg.enableClient {
-      substituters = lib.mkAfter [ "http://${cfg.host}" ];
+      substituters = lib.mkAfter [ "https://${cfg.host}" ];
       trusted-public-keys = [ cfg.publicKey ];
     };
 
@@ -64,6 +72,9 @@ in
       virtualHosts = {
         # ... existing hosts config etc. ...
         "${cfg.host}" = {
+          forceSSL = true;
+          sslCertificate = cfg.sslCertificate;
+          sslCertificateKey = cfg.sslCertificateKey;
           locations."/".proxyPass = "http://${bindAddr}";
         };
       };

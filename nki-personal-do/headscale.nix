@@ -61,6 +61,13 @@ rec {
 
       dns = {
         base_domain = "dtth.ts";
+        extra_records = [
+          {
+            name = "llm.kagamipc.dtth.ts";
+            type = "A";
+            value = "100.64.0.1";
+          }
+        ];
       };
 
       noise = {

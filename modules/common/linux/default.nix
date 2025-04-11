@@ -485,5 +485,8 @@ in
       EDITOR = "kak";
       VISUAL = "kak";
     };
+
+    # Trust my own cert
+    security.pki.certificateFiles = [ ../../../nki-home/cert.pem ];
   };
 }
