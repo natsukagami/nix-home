@@ -30,8 +30,8 @@ in
         echo "New kakoune session started (pid = $last_pid, session name = $kak_session)."
 
         # Rebind $VISUAL, $EDITOR and e command
-        set -gx VISUAL "kak -c $kak_session"
-        set -gx EDITOR "kak -c $kak_session"
+        set -gx VISUAL kak -c $kak_session
+        set -gx EDITOR kak -c $kak_session
       '';
 
       kill-kak-session = ''
