@@ -9,6 +9,22 @@
   ...
 }:
 
+let
+  from-encdata = subvol: {
+    device = "/dev/disk/by-uuid/d1db9f65-6add-4714-b9d7-16e16f687396";
+    fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "subvol=${subvol}"
+    ];
+    encrypted = {
+      enable = true;
+      label = "encdata";
+      blkDev = "/dev/disk/by-uuid/6544f506-9a22-479c-8bfc-aee1b9e0deda";
+      keyFile = "/sysroot/var/crypto/key_data";
+    };
+  };
+in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -45,20 +61,8 @@
     fsType = "vfat";
   };
 
-  fileSystems."/mnt/steam" = {
-    device = "/dev/disk/by-uuid/d1db9f65-6add-4714-b9d7-16e16f687396";
-    fsType = "btrfs";
-    options = [
-      "compress=zstd"
-      "subvol=steam"
-    ];
-    encrypted = {
-      enable = true;
-      label = "encdata";
-      blkDev = "/dev/disk/by-uuid/6544f506-9a22-479c-8bfc-aee1b9e0deda";
-      keyFile = "/sysroot/var/crypto/key_data";
-    };
-  };
+  fileSystems."/mnt/steam" = from-encdata "steam";
+  fileSystems."/nix" = from-encdata "nix";
 
   swapDevices = [ { device = "/dev/disk/by-uuid/561f6441-1915-4059-a5e1-76a449b0c9bf"; } ];
 
