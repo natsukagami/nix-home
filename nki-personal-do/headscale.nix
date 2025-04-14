@@ -94,23 +94,4 @@ rec {
   };
 
   environment.etc."headscale/config.yaml".mode = "0644";
-  virtualisation.arion.projects.headscale-webui.settings = {
-    services.webui.service = {
-      image = "ghcr.io/ifargle/headscale-webui@sha256:f047209ddf2f71587d8a0f749b0cb92f22a3105dda624724a053c2a7aa23a210";
-      restart = "unless-stopped";
-
-      environment = {
-        TZ = "Europe/Zurich";
-        COLOR = "blue-gray";
-        HS_SERVER = "https://hs.dtth.ch";
-        SCRIPT_NAME = "/admin";
-      };
-      env_file = [ secrets."headscale/webui-env".path ];
-      ports = [ "127.0.0.1:${toString webuiPort}:5000" ];
-      volumes = [
-        "/var/lib/headscale/webui:/data"
-        "/etc/headscale:/etc/headscale:ro"
-      ];
-    };
-  };
 }
