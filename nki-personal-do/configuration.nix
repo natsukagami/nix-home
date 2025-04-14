@@ -274,4 +274,7 @@
   systemd.services.ntfy-sh.preStart = ''
     mkdir -p /var/lib/ntfy-sh/attachments
   '';
+
+  # Trust my own cert
+  security.pki.certificateFiles = [ ../nki-home/cert.pem ];
 }
