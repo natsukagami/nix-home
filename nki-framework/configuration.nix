@@ -21,6 +21,8 @@
     ./wireless.nix
   ];
 
+  time.timeZone = lib.mkForce "America/Toronto";
+
   # Sops
   common.linux.sops.enable = true;
   common.linux.sops.file = ./secrets.yaml;
