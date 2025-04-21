@@ -34,6 +34,7 @@ in
     ../modules/personal/u2f.nix
     ./peertube-runner.nix
     ./deluge.nix
+    ./minecraft.nix
     openrazer
   ];
 
