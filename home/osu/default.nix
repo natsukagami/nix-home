@@ -7,10 +7,10 @@ let
     with lib;
     appimageTools.wrapType2 rec {
       pname = "osu-lazer-bin";
-      version = "2025.321.0";
+      version = "2025.420.0";
       src = fetchurl {
         url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
-        hash = "sha256-mNxoEx/wgJ1OUm7y9JLd5vHSwfcB49QjKDVQWZaMDJQ=";
+        hash = "sha256-yrVFep119E2PkRsyB0UPhZnjR7jXuhd9CktIgL98om4=";
       };
       extraPkgs = pkgs: with pkgs; [ icu ];
 
