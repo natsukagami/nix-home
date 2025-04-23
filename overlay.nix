@@ -34,7 +34,7 @@ let
     gotosocial =
       let
         local = prev.gotosocial.overrideAttrs (attrs: rec {
-          version = "0.19.0-rc2";
+          version = "0.19.0";
           ldflags = [
             "-s"
             "-w"
@@ -44,13 +44,13 @@ let
 
           web-assets = final.fetchurl {
             url = "https://github.com/superseriousbusiness/gotosocial/releases/download/v${version}/gotosocial_${version}_web-assets.tar.gz";
-            hash = "sha256-Ixg8qmg0eeY/lD5Rye3xazc98GICUrzvZ7i/o7EdM+8=";
+            hash = "sha256-Ba497VKK30MWcLlR4CDDUrFZKWf/UXiSgeDr/f7fFkc=";
           };
           src = final.fetchFromGitHub {
             owner = "superseriousbusiness";
             repo = "gotosocial";
             rev = "v${version}";
-            hash = "sha256-F/Js5rdrGOrwvLNv98RNYbTe3eweRj2hAXoxEox7AsI=";
+            hash = "sha256-ioIsa2L1w4z1b7tWFhHScmPwRRq0WLngIdm4r2eCveM=";
           };
           postInstall = ''
             tar xf ${web-assets}
