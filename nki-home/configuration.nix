@@ -275,7 +275,7 @@ in
           "gemma3:12b"
         ];
         acceleration = "rocm";
-        rocmOverrideGfx = "10.3.1";
+        rocmOverrideGfx = "10.3.0";
       };
       systemd.services.ollama = {
         serviceConfig.LimitMEMLOCK = "${toString (16 * 1024 * 1024 * 1024)}";

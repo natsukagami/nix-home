@@ -20,7 +20,7 @@ let
     typst-lsp = final.unstable.typst-lsp;
     # Update to v7 beforehand
     peertube =
-      assert (builtins.compareVersions prev.peertube.version "7.0.0" == -1);
+      assert (builtins.compareVersions prev.peertube.version "7.0.1" <= 0);
       final.unstable.peertube;
   };
   overlay-imported = final: prev: {
