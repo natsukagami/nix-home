@@ -28,8 +28,14 @@ in
     {
       description = "WireGuard network interface for Deluge";
       bindsTo = [ "netns@${wg}.service" ];
-      requires = [ "network-online.target" ];
-      after = [ "netns@${wg}.service" ];
+      requires = [
+        "network-online.target"
+        "dnscrypt-proxy2.service"
+      ];
+      after = [
+        "netns@${wg}.service"
+        "dnscrypt-proxy2.service"
+      ];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
@@ -59,6 +65,9 @@ in
   systemd.services.deluged.bindsTo = [ "netns@${wg}.service" ];
   systemd.services.deluged.requires = [
     "network-online.target"
+    "${wg}.service"
+  ];
+  systemd.services.deluged.after = [
     "${wg}.service"
   ];
   systemd.services.deluged.serviceConfig.NetworkNamespacePath = [ "/var/run/netns/${wg}" ];
