@@ -254,6 +254,7 @@ in
       systemd.services.nginx.requires = [ "dhparams-gen-nginx.service" ];
       # Nginx HTTPS
       services.nginx = {
+        clientMaxBodySize = "256M";
         sslDhparam = config.security.dhparams.params.nginx.path;
         defaultListen = [
           {
@@ -293,6 +294,9 @@ in
           ENABLE_SIGNUP = "false";
         };
       };
+      systemd.services.open-webui.path = [
+        pkgs.ffmpeg
+      ];
       services.nginx = {
         enable = true;
         recommendedProxySettings = true;
@@ -313,7 +317,7 @@ in
           };
         };
       };
-
+      environment.systemPackages = [ pkgs.nvtopPackages.amd ];
     }
   ];
 }

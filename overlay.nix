@@ -141,6 +141,24 @@ let
           hash = "sha256-xkf5HWXvzanT9tCDHbVpgUAmQlqmrPMlnv6MbcN0k9E=";
         };
       });
+
+    ollama =
+      assert final.lib.assertMsg (
+        builtins.compareVersions prev.ollama-cuda.version "0.6.7" < 0
+      ) "Remove `ollama` overlay to use upstream version";
+      (prev.ollama.override { rocmGpuTargets = [ "gfx1030" ]; }).overrideAttrs (
+        finalAttrs: prevAttrs: {
+          version = "0.6.7";
+          src = final.fetchFromGitHub {
+            owner = "ollama";
+            repo = "ollama";
+            tag = "v${finalAttrs.version}";
+            hash = "sha256-GRqvaD/tAPI9cVlVu+HmRTv5zr7oCHdSlKoFfSLJ4r4=";
+            fetchSubmodules = true;
+          };
+          vendorHash = "sha256-t7+GLNC6mRcXq9ErxN6gGki5WWWoEcMfzRVjta4fddA=";
+        }
+      );
   };
 
   overlay-libs = final: prev: {
@@ -160,16 +178,6 @@ let
 
       meta.mainProgram = "kak-lsp";
     };
-    #   cargoArtifacts = final.libs.crane.buildDepsOnly { inherit src; };
-    # in
-    # final.libs.crane.buildPackage {
-    #   inherit src cargoArtifacts;
-    #   buildInputs = (with final;
-    #     lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [ Security SystemConfiguration CoreServices ])
-    #   ) ++ (with final; [ libiconv ]);
-
-    #   meta.mainProgram = "kak-lsp";
-    # };
 
     zen-browser-bin = inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
       inherit (inputs.zen-browser.packages.${final.stdenv.system}) zen-browser-unwrapped;
