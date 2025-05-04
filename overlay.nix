@@ -98,17 +98,21 @@ let
       });
 
     rofi-wayland-unwrapped =
-      assert final.lib.assertMsg (prev.rofi-wayland-unwrapped.version == "1.7.8+wayland1")
+      assert final.lib.assertMsg
+        (builtins.compareVersions prev.rofi-wayland-unwrapped.version "1.7.8+wayland1" == -1)
         "We only need this for https://github.com/lbonn/rofi/commit/f2f22e7edc635f7e4022afcf81a411776268c1c3. Use upstream package instead";
-      prev.rofi-wayland-unwrapped.overrideAttrs (prev: {
-        src = final.fetchFromGitHub {
-          owner = "lbonn";
-          repo = "rofi";
-          rev = "3bec3fac59394a475d162e72d5be2fb042115274";
-          fetchSubmodules = true;
-          hash = "sha256-xkf5HWXvzanT9tCDHbVpgUAmQlqmrPMlnv6MbcN0k9E=";
-        };
-      });
+      if prev.rofi-wayland-unwrapped.version == "1.7.8+wayland1" then
+        prev.rofi-wayland-unwrapped.overrideAttrs (prev: {
+          src = final.fetchFromGitHub {
+            owner = "lbonn";
+            repo = "rofi";
+            rev = "3bec3fac59394a475d162e72d5be2fb042115274";
+            fetchSubmodules = true;
+            hash = "sha256-xkf5HWXvzanT9tCDHbVpgUAmQlqmrPMlnv6MbcN0k9E=";
+          };
+        })
+      else
+        prev.rofi-wayland-unwrapped;
 
     ollama =
       assert final.lib.assertMsg (
