@@ -49,6 +49,9 @@ in
         }
         // host.builder
       ) otherBuilders;
+      nix.extraOptions = ''
+        builders-use-substitutes = true
+      ''; # allow builders to fetch built artifacts
 
       users = mkIf (isBuilder host) {
         users.${build-user} = {
