@@ -35,38 +35,6 @@ let
   };
 
   overlay-versioning = final: prev: {
-    gotosocial =
-      let
-        local = prev.gotosocial.overrideAttrs (attrs: rec {
-          version = "0.19.0";
-          ldflags = [
-            "-s"
-            "-w"
-            "-X main.Version=${version}"
-          ];
-          doCheck = false;
-
-          web-assets = final.fetchurl {
-            url = "https://github.com/superseriousbusiness/gotosocial/releases/download/v${version}/gotosocial_${version}_web-assets.tar.gz";
-            hash = "sha256-Ba497VKK30MWcLlR4CDDUrFZKWf/UXiSgeDr/f7fFkc=";
-          };
-          src = final.fetchFromGitHub {
-            owner = "superseriousbusiness";
-            repo = "gotosocial";
-            rev = "v${version}";
-            hash = "sha256-ioIsa2L1w4z1b7tWFhHScmPwRRq0WLngIdm4r2eCveM=";
-          };
-          postInstall = ''
-            tar xf ${web-assets}
-            mkdir -p $out/share/gotosocial
-            mv web $out/share/gotosocial/
-          '';
-        });
-      in
-      if builtins.compareVersions prev.gotosocial.version local.version == -1 then
-        local
-      else
-        prev.gotosocial;
 
     input-remapper = final.unstable.input-remapper;
 
