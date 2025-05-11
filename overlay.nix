@@ -118,7 +118,7 @@ let
       packageOverrides = pfinal: pprev: {
         langchain =
           assert final.lib.assertMsg (
-            pprev.langchain.version != "0.3.24"
+            pprev.langchain.version == "0.3.25" || pprev.langchain.version == "0.3.24-fix"
           ) "Revert to 0.3.24 has been applied, remove overlay";
           pprev.langchain.overrideAttrs (
             afinal: aprev: {
@@ -133,6 +133,37 @@ let
           );
       };
     };
+
+    open-webui =
+      assert final.lib.assertMsg (
+        builtins.compareVersions prev.open-webui.version "0.6.9" == -1
+      ) "open-webui >=0.6.9 is upstream, remove overlay to upgrade";
+      prev.open-webui.overrideAttrs (
+        afinal: aprev: {
+          version = "0.6.9";
+          src = final.fetchFromGitHub {
+            owner = "open-webui";
+            repo = "open-webui";
+            rev = "v${afinal.version}";
+            hash = "sha256-Eib5UpPPQHXHOBVWrsNH1eEJrF8Vx9XshGYUnnAehpM=";
+          };
+
+          makeWrapperArgs = [ "--set FRONTEND_BUILD_DIR ${afinal.passthru.frontend}/share/open-webui" ];
+
+          passthru.frontend = aprev.passthru.frontend.overrideAttrs (
+            fafinal: faprev: {
+              src = afinal.src;
+              version = afinal.version;
+              npmDepsHash = "sha256-Vcc8ExET53EVtNUhb4JoxYIUWoQ++rVTpxUPgcZ+GNI=";
+              npmDeps = final.fetchNpmDeps {
+                inherit (fafinal) src;
+                name = "${fafinal.pname}-${fafinal.version}-npm-deps";
+                hash = fafinal.npmDepsHash;
+              };
+            }
+          );
+        }
+      );
   };
 
   overlay-libs = final: prev: {
