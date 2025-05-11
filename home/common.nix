@@ -118,6 +118,7 @@
           .envrc
           .kakrc
         ''}";
+        commit.verbose = true;
         safe.directory = "*";
         merge.conflictstyle = "zdiff3";
       };
