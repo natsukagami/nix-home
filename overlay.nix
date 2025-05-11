@@ -99,7 +99,7 @@ let
 
     rofi-wayland-unwrapped =
       assert final.lib.assertMsg
-        (builtins.compareVersions prev.rofi-wayland-unwrapped.version "1.7.8+wayland1" == -1)
+        (builtins.compareVersions prev.rofi-wayland-unwrapped.version "1.7.8+wayland1" <= 0)
         "We only need this for https://github.com/lbonn/rofi/commit/f2f22e7edc635f7e4022afcf81a411776268c1c3. Use upstream package instead";
       if prev.rofi-wayland-unwrapped.version == "1.7.8+wayland1" then
         prev.rofi-wayland-unwrapped.overrideAttrs (prev: {
@@ -114,23 +114,25 @@ let
       else
         prev.rofi-wayland-unwrapped;
 
-    ollama =
-      assert final.lib.assertMsg (
-        builtins.compareVersions prev.ollama-cuda.version "0.6.7" < 0
-      ) "Remove `ollama` overlay to use upstream version";
-      (prev.ollama.override { rocmGpuTargets = [ "gfx1030" ]; }).overrideAttrs (
-        finalAttrs: prevAttrs: {
-          version = "0.6.7";
-          src = final.fetchFromGitHub {
-            owner = "ollama";
-            repo = "ollama";
-            tag = "v${finalAttrs.version}";
-            hash = "sha256-GRqvaD/tAPI9cVlVu+HmRTv5zr7oCHdSlKoFfSLJ4r4=";
-            fetchSubmodules = true;
-          };
-          vendorHash = "sha256-t7+GLNC6mRcXq9ErxN6gGki5WWWoEcMfzRVjta4fddA=";
-        }
-      );
+    python312 = prev.python312.override {
+      packageOverrides = pfinal: pprev: {
+        langchain =
+          assert final.lib.assertMsg (
+            pprev.langchain.version != "0.3.24"
+          ) "Revert to 0.3.24 has been applied, remove overlay";
+          pprev.langchain.overrideAttrs (
+            afinal: aprev: {
+              version = "0.3.24-fix";
+              src = final.fetchFromGitHub {
+                owner = "langchain-ai";
+                repo = "langchain";
+                tag = "langchain==${afinal.version}";
+                hash = "sha256-Up/pH2TxLPiPO49oIa2ZlNeH3TyN9sZSlNsqOIRmlxc=";
+              };
+            }
+          );
+      };
+    };
   };
 
   overlay-libs = final: prev: {
