@@ -38,6 +38,6 @@ with lib;
   # Nix options
   # Always have flakes enabled!
   nix.extraOptions = ''
-    experimental-features = nix-command flakes repl-flake
+    experimental-features = nix-command flakes
   '';
 }
