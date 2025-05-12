@@ -80,7 +80,7 @@ in
       description = "List of packages to include in ~/.config/autostart";
       default = [
         cfg.defaults.webBrowser.package
-        pkgs.thunderbird
+        pkgs.thunderbird-latest
         cfg.defaults.discord.package
       ];
     };
