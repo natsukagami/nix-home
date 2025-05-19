@@ -13,26 +13,34 @@ let
 
     set -a PATH ${pkgs.gum}/bin
 
-    set -x GUM_CHOOSE_HEADER "Select the Desktop to boot into:"
+    set GUM_CHOOSE_HEADER "Select the Desktop to boot into:"
     set CHOICES
 
-    if which sway &>/dev/null
-      set -a CHOICES "sway"
-    end
     if which niri-session &>/dev/null
       set -a CHOICES "Niri"
+    end
+    if which sway &>/dev/null
+      set -a CHOICES "sway"
     end
     if which startplasma-wayland &>/dev/null
       set -a CHOICES "KDE Plasma"
     end
     set -a CHOICES "None: continue to shell"
 
-    switch (gum choose $CHOICES)
+    set PREVIOUS_CHOICE_FILE ~/.local/state/last_desktop
+
+    while test -z "$CHOICE"
+      set PREVIOUS_CHOICE (cat $PREVIOUS_CHOICE_FILE 2>/dev/null || echo)
+      set CHOICE (gum choose --selected=$PREVIOUS_CHOICE --header=$GUM_CHOOSE_HEADER $CHOICES)
+    end
+
+    echo $CHOICE > $PREVIOUS_CHOICE_FILE
+    switch $CHOICE
+      case "Niri"
+        exec niri-session
       case "sway"
         systemctl --user unset-environment NIXOS_OZONE_WL
         exec sway
-      case "Niri"
-        exec niri-session
       case "KDE Plasma"
         exec ${pkgs.kdePackages.plasma-workspace}/libexec/plasma-dbus-run-session-if-needed startplasma-wayland
       case '*'
