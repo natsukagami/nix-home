@@ -48,10 +48,7 @@
     ## Bitwarden
     rbw
     ## File compression stuff
-    zip
-    unzip
-    zstd
-    atool
+    ouch
   ];
   home.file.".latexmkrc".text = ''
     $pdf_previewer = '${lib.getExe' pkgs.xdg-utils "xdg-open"}';
