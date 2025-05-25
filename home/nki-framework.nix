@@ -47,7 +47,13 @@
     fixed = false;
   });
   programs.niri.settings = {
-    input.keyboard.xkb.options = "ctrl:swapcaps";
+    input.mouse = lib.mkForce {
+      # Make M575 fast for now
+      accel-profile = "adaptive";
+      accel-speed = 0.4;
+    };
+
+    # input.keyboard.xkb.options = "ctrl:swapcaps";
   };
   programs.my-waybar.extraSettings =
     let
