@@ -15,6 +15,9 @@ let
   app-menu = "${pkgs.dmenu}/bin/dmenu_path | ${pkgs.bemenu}/bin/bemenu | ${pkgs.findutils}/bin/xargs niri msg action spawn --";
 
   wallpaper = config.linux.graphical.wallpaper;
+  blurred-wallpaper = pkgs.runCommandNoCC "blurred-${baseNameOf wallpaper}" { } ''
+    ${lib.getExe pkgs.imagemagick} convert -blur 0x25 ${wallpaper} $out
+  '';
 
   xwayland-display = ":0";
 
@@ -25,7 +28,6 @@ let
     ${lib.getExe pkgs.ydotool} "$@"
     niri msg action switch-layout 0 # ja
   '';
-
 in
 {
   options.programs.my-niri = {
@@ -202,11 +204,22 @@ in
         # Wallpaper
         {
           command = [
-            (lib.getExe pkgs.swaybg)
+            "${lib.getExe pkgs.swaybg}"
             "-i"
-            "${wallpaper}"
+            (toString wallpaper)
             "-m"
             "fill"
+          ];
+        }
+        {
+          command = [
+            "${lib.getExe pkgs.swaybg}"
+            "-i"
+            (toString blurred-wallpaper)
+            "-m"
+            "fill"
+            "-n"
+            "wallpaper-blurred"
           ];
         }
         # Waybar
@@ -222,6 +235,7 @@ in
       ];
 
       layout = {
+        background-color = "transparent";
         gaps = 16;
         preset-column-widths = [
           { proportion = 1. / 3.; }
@@ -366,218 +380,225 @@ in
           matches = [ { namespace = "^swaync-.*"; } ];
           block-out-from = "screen-capture";
         }
+        {
+          matches = [ { namespace = "^wallpaper-blurred$"; } ];
+          place-within-backdrop = true;
+        }
       ];
 
-      binds = with config.lib.niri.actions; {
-        # Mod-Shift-/, which is usually the same as Mod-?,
-        # shows a list of important hotkeys.
-        "Mod+Shift+Slash".action = show-hotkey-overlay;
+      binds =
+        with config.lib.niri.actions;
+        let
+          move-column-to-workspace = workspace: { move-column-to-workspace = workspace; };
+        in
+        {
+          # Mod-Shift-/, which is usually the same as Mod-?,
+          # shows a list of important hotkeys.
+          "Mod+Shift+Slash".action = show-hotkey-overlay;
 
-        # Some basic spawns
-        "Mod+Return".action = spawn (lib.getExe config.linux.graphical.defaults.terminal.package);
-        "Mod+Space".action = spawn "rofi" "-show" "drun";
-        "Mod+R".action = sh app-menu;
-        "Mod+Semicolon".action = spawn cfg.lock-command;
-        "Mod+Shift+P".action = spawn "rofi-rbw-script";
+          # Some basic spawns
+          "Mod+Return".action = spawn (lib.getExe config.linux.graphical.defaults.terminal.package);
+          "Mod+Space".action = spawn "rofi" "-show" "drun";
+          "Mod+R".action = sh app-menu;
+          "Mod+Semicolon".action = spawn cfg.lock-command;
+          "Mod+Shift+P".action = spawn "rofi-rbw-script";
 
-        # Audio and Volume
-        "XF86AudioPrev" = {
-          action = spawn playerctl "previous";
-          allow-when-locked = true;
-        };
-        "XF86AudioPlay" = {
-          action = spawn playerctl "play-pause";
-          allow-when-locked = true;
-        };
-        "Shift+XF86AudioPlay" = {
-          action = spawn playerctl "stop";
-          allow-when-locked = true;
-        };
-        "XF86AudioNext" = {
-          action = spawn playerctl "next";
-          allow-when-locked = true;
-        };
-        "XF86AudioRecord" = {
-          action = spawn amixer "-q" "set" "Capture" "toggle";
-          allow-when-locked = true;
-        };
-        "XF86AudioMute" = {
-          action = spawn amixer "-q" "set" "Master" "toggle";
-          allow-when-locked = true;
-        };
-        "XF86AudioLowerVolume" = {
-          action = spawn amixer "-q" "set" "Master" "3%-";
-          allow-when-locked = true;
-        };
-        "XF86AudioRaiseVolume" = {
-          action = spawn amixer "-q" "set" "Master" "3%+";
-          allow-when-locked = true;
-        };
+          # Audio and Volume
+          "XF86AudioPrev" = {
+            action = spawn playerctl "previous";
+            allow-when-locked = true;
+          };
+          "XF86AudioPlay" = {
+            action = spawn playerctl "play-pause";
+            allow-when-locked = true;
+          };
+          "Shift+XF86AudioPlay" = {
+            action = spawn playerctl "stop";
+            allow-when-locked = true;
+          };
+          "XF86AudioNext" = {
+            action = spawn playerctl "next";
+            allow-when-locked = true;
+          };
+          "XF86AudioRecord" = {
+            action = spawn amixer "-q" "set" "Capture" "toggle";
+            allow-when-locked = true;
+          };
+          "XF86AudioMute" = {
+            action = spawn amixer "-q" "set" "Master" "toggle";
+            allow-when-locked = true;
+          };
+          "XF86AudioLowerVolume" = {
+            action = spawn amixer "-q" "set" "Master" "3%-";
+            allow-when-locked = true;
+          };
+          "XF86AudioRaiseVolume" = {
+            action = spawn amixer "-q" "set" "Master" "3%+";
+            allow-when-locked = true;
+          };
 
-        # Backlight
-        "XF86MonBrightnessDown".action = spawn brightnessctl "s" "10%-";
-        "XF86MonBrightnessUp".action = spawn brightnessctl "s" "10%+";
-        "Shift+XF86MonBrightnessDown".action = spawn brightnessctl "-d" "kbd_backlight" "s" "25%-";
-        "Shift+XF86MonBrightnessUp".action = spawn brightnessctl "-d" "kbd_backlight" "s" "25%+";
+          # Backlight
+          "XF86MonBrightnessDown".action = spawn brightnessctl "s" "10%-";
+          "XF86MonBrightnessUp".action = spawn brightnessctl "s" "10%+";
+          "Shift+XF86MonBrightnessDown".action = spawn brightnessctl "-d" "kbd_backlight" "s" "25%-";
+          "Shift+XF86MonBrightnessUp".action = spawn brightnessctl "-d" "kbd_backlight" "s" "25%+";
 
-        "Mod+Shift+Q".action = close-window;
+          "Mod+Shift+Q".action = close-window;
 
-        "Mod+Left".action = focus-column-or-monitor-left;
-        "Mod+Right".action = focus-column-or-monitor-right;
-        "Mod+Up".action = focus-window-or-workspace-up;
-        "Mod+Down".action = focus-window-or-workspace-down;
-        "Mod+H".action = focus-column-or-monitor-left;
-        "Mod+L".action = focus-column-or-monitor-right;
-        "Mod+K".action = focus-window-or-workspace-up;
-        "Mod+J".action = focus-window-or-workspace-down;
+          "Mod+Left".action = focus-column-or-monitor-left;
+          "Mod+Right".action = focus-column-or-monitor-right;
+          "Mod+Up".action = focus-window-or-workspace-up;
+          "Mod+Down".action = focus-window-or-workspace-down;
+          "Mod+H".action = focus-column-or-monitor-left;
+          "Mod+L".action = focus-column-or-monitor-right;
+          "Mod+K".action = focus-window-or-workspace-up;
+          "Mod+J".action = focus-window-or-workspace-down;
 
-        "Mod+Shift+Left".action = move-column-left-or-to-monitor-left;
-        "Mod+Shift+Right".action = move-column-right-or-to-monitor-right;
-        "Mod+Shift+Up".action = move-window-up-or-to-workspace-up;
-        "Mod+Shift+Down".action = move-window-down-or-to-workspace-down;
-        "Mod+Shift+H".action = move-column-left-or-to-monitor-left;
-        "Mod+Shift+L".action = move-column-right-or-to-monitor-right;
-        "Mod+Shift+K".action = move-window-up-or-to-workspace-up;
-        "Mod+Shift+J".action = move-window-down-or-to-workspace-down;
+          "Mod+Shift+Left".action = move-column-left-or-to-monitor-left;
+          "Mod+Shift+Right".action = move-column-right-or-to-monitor-right;
+          "Mod+Shift+Up".action = move-window-up-or-to-workspace-up;
+          "Mod+Shift+Down".action = move-window-down-or-to-workspace-down;
+          "Mod+Shift+H".action = move-column-left-or-to-monitor-left;
+          "Mod+Shift+L".action = move-column-right-or-to-monitor-right;
+          "Mod+Shift+K".action = move-window-up-or-to-workspace-up;
+          "Mod+Shift+J".action = move-window-down-or-to-workspace-down;
 
-        "Mod+Bracketleft".action = focus-column-first;
-        "Mod+Bracketright".action = focus-column-last;
-        "Mod+Shift+Bracketleft".action = move-column-to-first;
-        "Mod+Shift+Bracketright".action = move-column-to-last;
+          "Mod+Bracketleft".action = focus-column-first;
+          "Mod+Bracketright".action = focus-column-last;
+          "Mod+Shift+Bracketleft".action = move-column-to-first;
+          "Mod+Shift+Bracketright".action = move-column-to-last;
 
-        # For compat with my current sway
-        "Mod+Ctrl+H".action = move-workspace-to-monitor-left;
-        "Mod+Ctrl+L".action = move-workspace-to-monitor-right;
+          # For compat with my current sway
+          "Mod+Ctrl+H".action = move-workspace-to-monitor-left;
+          "Mod+Ctrl+L".action = move-workspace-to-monitor-right;
 
-        "Mod+I".action = focus-workspace-down;
-        "Mod+O".action = focus-workspace-up;
-        "Mod+Shift+I".action = move-column-to-workspace-down;
-        "Mod+Shift+O".action = move-column-to-workspace-up;
-        "Mod+Ctrl+I".action = move-workspace-down;
-        "Mod+Ctrl+O".action = move-workspace-up;
+          "Mod+O".action = focus-workspace-down;
+          "Mod+I".action = focus-workspace-up;
+          "Mod+Ctrl+O".action = move-workspace-down;
+          "Mod+Ctrl+I".action = move-workspace-up;
 
-        # Mouse bindings
-        "Mod+WheelScrollDown" = {
-          action = focus-workspace-down;
-          cooldown-ms = 150;
-        };
-        "Mod+WheelScrollUp" = {
-          action = focus-workspace-up;
-          cooldown-ms = 150;
-        };
-        "Mod+Ctrl+WheelScrollDown" = {
-          action = move-column-to-workspace-down;
-          cooldown-ms = 150;
-        };
-        "Mod+Ctrl+WheelScrollUp" = {
-          action = move-column-to-workspace-up;
-          cooldown-ms = 150;
-        };
+          # Mouse bindings
+          "Mod+WheelScrollDown" = {
+            action = focus-workspace-down;
+            cooldown-ms = 150;
+          };
+          "Mod+WheelScrollUp" = {
+            action = focus-workspace-up;
+            cooldown-ms = 150;
+          };
+          "Mod+Ctrl+WheelScrollDown" = {
+            action = move-column-to-workspace-down;
+            cooldown-ms = 150;
+          };
+          "Mod+Ctrl+WheelScrollUp" = {
+            action = move-column-to-workspace-up;
+            cooldown-ms = 150;
+          };
 
-        "Mod+WheelScrollRight".action = focus-column-right;
-        "Mod+WheelScrollLeft".action = focus-column-left;
-        "Mod+Ctrl+WheelScrollRight".action = move-column-right;
-        "Mod+Ctrl+WheelScrollLeft".action = move-column-left;
+          "Mod+WheelScrollRight".action = focus-column-right;
+          "Mod+WheelScrollLeft".action = focus-column-left;
+          "Mod+Ctrl+WheelScrollRight".action = move-column-right;
+          "Mod+Ctrl+WheelScrollLeft".action = move-column-left;
 
-        # You can refer to workspaces by index. However, keep in mind that
-        # niri is a dynamic workspace system, so these commands are kind of
-        # "best effort". Trying to refer to a workspace index bigger than
-        # the current workspace count will instead refer to the bottommost
-        # (empty) workspace.
-        #
-        # For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
-        # will all refer to the 3rd workspace.
-        "Mod+1" = lib.mkIf cfg.workspaces."01".fixed {
-          action = focus-workspace (cfg.workspaces."01".name);
-        };
-        "Mod+2" = lib.mkIf cfg.workspaces."02".fixed {
-          action = focus-workspace (cfg.workspaces."02".name);
-        };
-        "Mod+3" = lib.mkIf cfg.workspaces."03".fixed {
-          action = focus-workspace (cfg.workspaces."03".name);
-        };
-        "Mod+4" = lib.mkIf cfg.workspaces."04".fixed {
-          action = focus-workspace (cfg.workspaces."04".name);
-        };
-        "Mod+5" = lib.mkIf cfg.workspaces."05".fixed {
-          action = focus-workspace (cfg.workspaces."05".name);
-        };
-        "Mod+6" = lib.mkIf cfg.workspaces."06".fixed {
-          action = focus-workspace (cfg.workspaces."06".name);
-        };
-        "Mod+7" = lib.mkIf cfg.workspaces."07".fixed {
-          action = focus-workspace (cfg.workspaces."07".name);
-        };
-        "Mod+8" = lib.mkIf cfg.workspaces."08".fixed {
-          action = focus-workspace (cfg.workspaces."08".name);
-        };
-        "Mod+9" = lib.mkIf cfg.workspaces."09".fixed {
-          action = focus-workspace (cfg.workspaces."09".name);
-        };
-        "Mod+0" = lib.mkIf cfg.workspaces."10".fixed {
-          action = focus-workspace (cfg.workspaces."10".name);
-        };
-        "Mod+Shift+1" = lib.mkIf cfg.workspaces."01".fixed {
-          action = move-column-to-workspace (cfg.workspaces."01".name);
-        };
-        "Mod+Shift+2" = lib.mkIf cfg.workspaces."02".fixed {
-          action = move-column-to-workspace (cfg.workspaces."02".name);
-        };
-        "Mod+Shift+3" = lib.mkIf cfg.workspaces."03".fixed {
-          action = move-column-to-workspace (cfg.workspaces."03".name);
-        };
-        "Mod+Shift+4" = lib.mkIf cfg.workspaces."04".fixed {
-          action = move-column-to-workspace (cfg.workspaces."04".name);
-        };
-        "Mod+Shift+5" = lib.mkIf cfg.workspaces."05".fixed {
-          action = move-column-to-workspace (cfg.workspaces."05".name);
-        };
-        "Mod+Shift+6" = lib.mkIf cfg.workspaces."06".fixed {
-          action = move-column-to-workspace (cfg.workspaces."06".name);
-        };
-        "Mod+Shift+7" = lib.mkIf cfg.workspaces."07".fixed {
-          action = move-column-to-workspace (cfg.workspaces."07".name);
-        };
-        "Mod+Shift+8" = lib.mkIf cfg.workspaces."08".fixed {
-          action = move-column-to-workspace (cfg.workspaces."08".name);
-        };
-        "Mod+Shift+9" = lib.mkIf cfg.workspaces."09".fixed {
-          action = move-column-to-workspace (cfg.workspaces."09".name);
-        };
-        "Mod+Shift+0" = lib.mkIf cfg.workspaces."10".fixed {
-          action = move-column-to-workspace (cfg.workspaces."10".name);
-        };
+          # You can refer to workspaces by index. However, keep in mind that
+          # niri is a dynamic workspace system, so these commands are kind of
+          # "best effort". Trying to refer to a workspace index bigger than
+          # the current workspace count will instead refer to the bottommost
+          # (empty) workspace.
+          #
+          # For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
+          # will all refer to the 3rd workspace.
+          "Mod+1" = lib.mkIf cfg.workspaces."01".fixed {
+            action = focus-workspace (cfg.workspaces."01".name);
+          };
+          "Mod+2" = lib.mkIf cfg.workspaces."02".fixed {
+            action = focus-workspace (cfg.workspaces."02".name);
+          };
+          "Mod+3" = lib.mkIf cfg.workspaces."03".fixed {
+            action = focus-workspace (cfg.workspaces."03".name);
+          };
+          "Mod+4" = lib.mkIf cfg.workspaces."04".fixed {
+            action = focus-workspace (cfg.workspaces."04".name);
+          };
+          "Mod+5" = lib.mkIf cfg.workspaces."05".fixed {
+            action = focus-workspace (cfg.workspaces."05".name);
+          };
+          "Mod+6" = lib.mkIf cfg.workspaces."06".fixed {
+            action = focus-workspace (cfg.workspaces."06".name);
+          };
+          "Mod+7" = lib.mkIf cfg.workspaces."07".fixed {
+            action = focus-workspace (cfg.workspaces."07".name);
+          };
+          "Mod+8" = lib.mkIf cfg.workspaces."08".fixed {
+            action = focus-workspace (cfg.workspaces."08".name);
+          };
+          "Mod+9" = lib.mkIf cfg.workspaces."09".fixed {
+            action = focus-workspace (cfg.workspaces."09".name);
+          };
+          "Mod+0" = lib.mkIf cfg.workspaces."10".fixed {
+            action = focus-workspace (cfg.workspaces."10".name);
+          };
+          "Mod+Shift+1" = lib.mkIf cfg.workspaces."01".fixed {
+            action = move-column-to-workspace (cfg.workspaces."01".name);
+          };
+          "Mod+Shift+2" = lib.mkIf cfg.workspaces."02".fixed {
+            action = move-column-to-workspace (cfg.workspaces."02".name);
+          };
+          "Mod+Shift+3" = lib.mkIf cfg.workspaces."03".fixed {
+            action = move-column-to-workspace (cfg.workspaces."03".name);
+          };
+          "Mod+Shift+4" = lib.mkIf cfg.workspaces."04".fixed {
+            action = move-column-to-workspace (cfg.workspaces."04".name);
+          };
+          "Mod+Shift+5" = lib.mkIf cfg.workspaces."05".fixed {
+            action = move-column-to-workspace (cfg.workspaces."05".name);
+          };
+          "Mod+Shift+6" = lib.mkIf cfg.workspaces."06".fixed {
+            action = move-column-to-workspace (cfg.workspaces."06".name);
+          };
+          "Mod+Shift+7" = lib.mkIf cfg.workspaces."07".fixed {
+            action = move-column-to-workspace (cfg.workspaces."07".name);
+          };
+          "Mod+Shift+8" = lib.mkIf cfg.workspaces."08".fixed {
+            action = move-column-to-workspace (cfg.workspaces."08".name);
+          };
+          "Mod+Shift+9" = lib.mkIf cfg.workspaces."09".fixed {
+            action = move-column-to-workspace (cfg.workspaces."09".name);
+          };
+          "Mod+Shift+0" = lib.mkIf cfg.workspaces."10".fixed {
+            action = move-column-to-workspace (cfg.workspaces."10".name);
+          };
 
-        "Mod+asciicircum".action = focus-workspace (cfg.workspaces."99".name);
-        "Mod+Shift+asciicircum".action = move-column-to-workspace (cfg.workspaces."99".name);
+          "Mod+asciicircum".action = focus-workspace (cfg.workspaces."99".name);
+          "Mod+Shift+asciicircum".action = move-column-to-workspace (cfg.workspaces."99".name);
 
-        "Mod+Tab".action = focus-workspace-previous;
+          "Mod+Tab".action = focus-workspace-previous;
 
-        "Mod+Comma".action = consume-or-expel-window-left;
-        "Mod+Period".action = consume-or-expel-window-right;
+          "Mod+Comma".action = consume-or-expel-window-left;
+          "Mod+Period".action = consume-or-expel-window-right;
 
-        "Mod+W".action = switch-preset-column-width;
-        "Mod+Shift+W".action = switch-preset-window-height;
-        "Mod+Ctrl+W".action = reset-window-height;
-        "Mod+F".action = maximize-column;
-        "Mod+Shift+F".action = fullscreen-window;
-        "Mod+E".action = center-column;
+          "Mod+W".action = switch-preset-column-width;
+          "Mod+Shift+W".action = switch-preset-window-height;
+          "Mod+Ctrl+W".action = reset-window-height;
+          "Mod+F".action = maximize-column;
+          "Mod+Shift+F".action = fullscreen-window;
+          "Mod+E".action = center-column;
 
-        "Mod+Minus".action = set-column-width "-10%";
-        "Mod+At".action = set-column-width "+10%";
-        "Mod+Shift+Minus".action = set-window-height "-10%";
-        "Mod+Shift+At".action = set-window-height "+10%";
+          "Mod+Minus".action = set-column-width "-10%";
+          "Mod+At".action = set-column-width "+10%";
+          "Mod+Shift+Minus".action = set-window-height "-10%";
+          "Mod+Shift+At".action = set-window-height "+10%";
 
-        "Mod+V".action = switch-focus-between-floating-and-tiling;
-        "Mod+Shift+V".action = toggle-window-floating;
-        "Mod+Shift+Space".action = toggle-window-floating; # Sway compat
+          "Mod+V".action = switch-focus-between-floating-and-tiling;
+          "Mod+Shift+V".action = toggle-window-floating;
+          "Mod+Shift+Space".action = toggle-window-floating; # Sway compat
 
-        "Print".action = screenshot;
-        "Ctrl+Print".action.screenshot-screen = [ ];
-        "Shift+Print".action = screenshot-window;
+          "Print".action = screenshot;
+          "Ctrl+Print".action.screenshot-screen = [ ];
+          "Shift+Print".action = screenshot-window;
 
-        "Mod+Shift+E".action = quit;
-      };
+          "Mod+Shift+E".action = quit;
+        };
     };
   };
 }

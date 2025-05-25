@@ -166,6 +166,17 @@ let
       nodejs = final.nodejs_20; # doesn't seem to compile with nodejs 22
       mkYarnPackage = attrs: final.mkYarnPackage (attrs // { nodejs = final.nodejs_20; });
     };
+
+    swaybg = prev.swaybg.overrideAttrs (
+      finalAttrs: prevAttrs: {
+        src = final.fetchFromGitHub {
+          owner = "Emantor";
+          repo = "swaybg";
+          rev = "topic/explicit-namespace";
+          hash = "sha256-u+K1+1l9JXp3xu3yqy9AnhMlqCLk7EIY5O2HawaHCQ8=";
+        };
+      }
+    );
   };
 
   overlay-libs = final: prev: {
