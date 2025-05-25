@@ -314,6 +314,6 @@
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
     }
     // (inputs.flake-utils.lib.eachDefaultSystem (system: {
-      formatter = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
+      formatter = nixpkgs.legacyPackages.${system}.nixfmt-tree;
     }));
 }
