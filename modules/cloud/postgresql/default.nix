@@ -41,8 +41,7 @@ in
   };
 
   config.systemd.services.postgresql.serviceConfig = {
-    StateDirectory = "postgresql postgresql ${config.services.postgresql.dataDir}";
-    StateDirectoryMode = "0750";
+    ReadWritePaths = [ "${config.services.postgresql.dataDir}" ];
   };
 
   # Backup settings

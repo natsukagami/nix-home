@@ -92,7 +92,9 @@ in
   systemd.services.peertube = {
     requires = [ "arion-authentik.service" ];
     after = [ "arion-authentik.service" ];
-    unitConfig.RequiresMountsFor = [ dataFolder ];
+    serviceConfig.RequiresMountsFor = [ dataFolder ];
+    serviceConfig.StateDirectory = lib.mkForce ""; # disable automatic creation
+    serviceConfig.SystemCallFilter = [ "@chown" ];
   };
   systemd.tmpfiles.settings."10-peertube" = {
     # The service hard-codes a lot of paths here, so it's nicer if we just symlink

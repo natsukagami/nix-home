@@ -52,10 +52,22 @@ let
       }
     );
 
-    vikunja =
-      # builtins.seq
-      # (final.lib.assertMsg (prev.vikunja.version == "0.24.5") "Vikunja probably doesn't need custom versions anymore")
-      (final.callPackage ./packages/common/vikunja.nix { });
+    vikunja = prev.vikunja.overrideAttrs (
+      finalAttrs: prevAttrs:
+      let
+        rev = "bb9dc03351acbc763d25dfb3d241c8a88c98cb98";
+      in
+      {
+        version = "${prevAttrs.version}-${final.lib.substring 0 6 rev}";
+        src = final.fetchFromGitHub {
+          inherit rev;
+          owner = "go-vikunja";
+          repo = "vikunja";
+          hash = "sha256-1DBn+fRsDNKv3xycI6SHrCaUJ8OKdrNPLgBL25c6gWE=";
+        };
+        vendorHash = "sha256-IuQtMO8XrjadqvuOG5P/ObguCuyh1Gsw/Or7dtu7NI8=";
+      }
+    );
 
     luminance = prev.luminance.overrideAttrs (attrs: {
       nativeBuildInputs = attrs.nativeBuildInputs ++ [ final.wrapGAppsHook ];
@@ -149,6 +161,11 @@ let
           );
         }
       );
+
+    matrix-appservice-discord = prev.matrix-appservice-discord.override {
+      nodejs = final.nodejs_20; # doesn't seem to compile with nodejs 22
+      mkYarnPackage = attrs: final.mkYarnPackage (attrs // { nodejs = final.nodejs_20; });
+    };
   };
 
   overlay-libs = final: prev: {
