@@ -104,7 +104,8 @@
           line-numbers = true;
         };
       };
-      signing.key = "0x55A032EB38B49ADB";
+      gpg.format = "ssh";
+      signing.key = "~/.ssh/nki@nkagami.me";
       signing.signByDefault = true;
       userEmail = "nki@nkagami.me";
       userName = "Natsu Kagami";
