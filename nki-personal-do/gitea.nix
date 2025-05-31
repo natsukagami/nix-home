@@ -9,6 +9,7 @@ let
   user = "gitea";
   host = "git.dtth.ch";
   port = 61116;
+  anubisPort = port + 1;
 
   secrets = config.sops.secrets;
 
@@ -109,11 +110,22 @@ in
   cloud.postgresql.databases = [ user ];
   # traefik
   cloud.traefik.hosts.gitea = {
-    inherit port host;
+    inherit host;
+    port = anubisPort;
     noCloudflare = true;
   };
 
   systemd.services.forgejo.requires = [ "postgresql.service" ];
+
+  services.anubis.instances.forgejo = {
+    enable = true;
+    settings = {
+      BIND = ":${toString anubisPort}";
+      BIND_NETWORK = "tcp";
+      OG_PASSTHROUGH = true;
+      TARGET = "http://127.0.0.1:${toString port}";
+    };
+  };
 
   services.forgejo = {
     enable = true;
@@ -193,6 +205,10 @@ in
         MINIO_BUCKET = "dtth-gitea";
         MINIO_LOCATION = "auto";
         MINIO_CHECKSUM_ALGORITHM = "md5"; # R2 moment
+      };
+
+      log = {
+        LEVEL = "Warn";
       };
 
       federation.ENABLED = true;

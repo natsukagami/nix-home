@@ -35,6 +35,7 @@
     ./n8n.nix
     ./ntfy.nix
     ./grist.nix
+    ./renovate.nix
   ];
 
   system.stateVersion = "21.11";
