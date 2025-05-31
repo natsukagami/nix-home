@@ -106,10 +106,12 @@
       };
       userEmail = "nki@nkagami.me";
       userName = "Natsu Kagami";
+      signing = {
+        format = "ssh";
+        key = "~/.ssh/nki@nkagami.me";
+        signByDefault = true;
+      };
       extraConfig = {
-        gpg.format = "ssh";
-        signing.key = "~/.ssh/nki@nkagami.me";
-        signing.signByDefault = true;
         init.defaultBranch = "master";
         core.excludesFile = "${pkgs.writeText ".gitignore" ''
           .direnv
