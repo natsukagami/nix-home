@@ -104,12 +104,12 @@
           line-numbers = true;
         };
       };
-      gpg.format = "ssh";
-      signing.key = "~/.ssh/nki@nkagami.me";
-      signing.signByDefault = true;
       userEmail = "nki@nkagami.me";
       userName = "Natsu Kagami";
       extraConfig = {
+        gpg.format = "ssh";
+        signing.key = "~/.ssh/nki@nkagami.me";
+        signing.signByDefault = true;
         init.defaultBranch = "master";
         core.excludesFile = "${pkgs.writeText ".gitignore" ''
           .direnv
