@@ -115,7 +115,7 @@ in
         sublime-music # For navidrome
         # cinny-desktop
         gajim
-        vivaldi
+        brave
         # Audio
         qpwgraph # Pipewire graph
         audacity
