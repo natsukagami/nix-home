@@ -53,19 +53,10 @@ let
     );
 
     vikunja = prev.vikunja.overrideAttrs (
-      finalAttrs: prevAttrs:
-      let
-        rev = "bb9dc03351acbc763d25dfb3d241c8a88c98cb98";
-      in
-      {
-        version = "${prevAttrs.version}-${final.lib.substring 0 6 rev}";
-        src = final.fetchFromGitHub {
-          inherit rev;
-          owner = "go-vikunja";
-          repo = "vikunja";
-          hash = "sha256-1DBn+fRsDNKv3xycI6SHrCaUJ8OKdrNPLgBL25c6gWE=";
-        };
-        vendorHash = "sha256-IuQtMO8XrjadqvuOG5P/ObguCuyh1Gsw/Or7dtu7NI8=";
+      finalAttrs: prevAttrs: {
+        version = "${prevAttrs.version}-${inputs.vikunja.rev}";
+        src = inputs.vikunja;
+        vendorHash = "sha256-zit7v47QqTZdEUyanNvxQb8FHjI+7wsXHkvTpvf1Pis=";
       }
     );
 
