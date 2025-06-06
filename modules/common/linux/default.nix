@@ -124,7 +124,7 @@ let
         programs.nix-ld = {
           enable = true;
           libraries = with pkgs; [
-            ncurses
+            (ncurses.override { withTermlib = true; })
             llvmPackages.libcxx
             glibc
             sqlite
