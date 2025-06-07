@@ -45,6 +45,7 @@
     inkscape # for TeX svg
     ## htop replacement
     htop-vim
+    nmon
     ## Bitwarden
     rbw
     ## File compression stuff
