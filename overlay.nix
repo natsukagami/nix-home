@@ -105,11 +105,6 @@ let
       };
     };
 
-    matrix-appservice-discord = prev.matrix-appservice-discord.override {
-      nodejs = final.nodejs_20; # doesn't seem to compile with nodejs 22
-      mkYarnPackage = attrs: final.mkYarnPackage (attrs // { nodejs = final.nodejs_20; });
-    };
-
     swaybg = prev.swaybg.overrideAttrs (
       finalAttrs: prevAttrs: {
         src = final.fetchFromGitHub {
