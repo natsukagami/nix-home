@@ -224,6 +224,11 @@ let
               };
               package = metals;
             };
+            sourcekit-lsp = {
+              command = "sourcekit-lsp";
+              filetypes = [ "swift" ];
+              roots = [ "Package.swift" ];
+            };
             texlab = {
               command = "texlab";
               filetypes = [ "latex" ];
@@ -377,6 +382,10 @@ let
             token = "type_parameter";
           }
           {
+            face = "variable";
+            token = "typeParameter";
+          }
+          {
             face = "class";
             token = "enum";
           }
@@ -500,11 +509,43 @@ let
     in
     ''
       # LSP Configuration for ${lang}
-      hook -group lsp-filetype-${lang} global BufSetOption filetype=(?:${lang}) %{
+      hook -group lsp-filetype-${lang} global WinSetOption filetype=(?:${lang}) %{
         set-option buffer lsp_servers %{
       ${builtins.readFile serversToml}
         }
         ${lang-id}
+        ${
+          if lang.formatOnSave or true then
+            ''
+              # Format the document if possible
+              hook window -group lsp-formatting BufWritePre .* %{ lsp-formatting-sync }
+            ''
+          else
+            ""
+        }
+        ${
+          if lang.semanticTokens or true then
+            ''
+              # Semantic tokens
+              hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+              hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+              hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+              hook -once -always window WinSetOption filetype=.* %{
+                remove-hooks window semantic-tokens
+              }
+            ''
+          else
+            ""
+        }
+        ${
+          if lang.inlayHints or true then
+            ''
+              # Enable inlay hints
+              lsp-inlay-hints-enable window
+            ''
+          else
+            ""
+        }
       }
     '';
 
@@ -571,25 +612,6 @@ in
       map global object t '<a-semicolon>lsp-object Class Interface Struct<ret>' -docstring 'LSP class interface or struct'
       map global object d '<a-semicolon>lsp-diagnostic-object --include-warnings<ret>' -docstring 'LSP errors and warnings'
       map global object D '<a-semicolon>lsp-diagnostic-object<ret>' -docstring 'LSP errors'
-
-      hook global WinSetOption filetype=(racket|rust|python|go|javascript|typescript|c|cpp|tex|latex|haskell|nix|fsharp|templ|scala) %{
-          # Format the document if possible
-          hook window -group lsp-formatting BufWritePre .* %{ lsp-formatting-sync }
-      }
-
-      hook global WinSetOption filetype=(rust|scala|fsharp) %{
-          # Enable inlay hints
-          lsp-inlay-hints-enable window
-      }
-
-      hook global WinSetOption filetype=(rust|go|fsharp|typst|scala) %{
-        hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
-        hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
-        hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
-        hook -once -always window WinSetOption filetype=.* %{
-          remove-hooks window semantic-tokens
-        }
-      }
 
       define-command -params 0 -docstring "Set up build" scala-build-connect %{
           lsp-execute-command 'build-connect' '[]'
