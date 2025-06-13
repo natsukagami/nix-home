@@ -1516,11 +1516,11 @@
     "vikunja": {
       "flake": false,
       "locked": {
-        "lastModified": 1748504181,
-        "narHash": "sha256-8ZUR+XsDVISCzJh0qbmADjzQIIerYiQNjGJB8HIuNeU=",
+        "lastModified": 1749805508,
+        "narHash": "sha256-tb9SJxlhMi2YIR1YWls0Y9OfeJ9y3qfL+N+W6RDtSOs=",
         "owner": "go-vikunja",
         "repo": "vikunja",
-        "rev": "85fe915cbcf96109f6469d944e0ea7e8aa47ee7e",
+        "rev": "a9714f6a4ae6274cb6dc88a1c38ddbdf35de6460",
         "type": "github"
       },
       "original": {

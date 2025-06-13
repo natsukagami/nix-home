@@ -56,7 +56,13 @@ let
       finalAttrs: prevAttrs: {
         version = "${prevAttrs.version}-${inputs.vikunja.rev}";
         src = inputs.vikunja;
-        vendorHash = "sha256-zit7v47QqTZdEUyanNvxQb8FHjI+7wsXHkvTpvf1Pis=";
+        vendorHash = "sha256-duQ/B153PAd+ow/VbiWvqbFiPeyp2qL/FzROm2/wtKM=";
+        # vendorHash = final.lib.fakeHash;
+
+        checkPhase = ''
+          mage test:feature
+          mage test:web
+        '';
       }
     );
 
