@@ -126,6 +126,7 @@ let
           libraries = with pkgs; [
             (ncurses.override { withTermlib = true; })
             llvmPackages.libcxx
+            gcc
             glibc
             sqlite
           ];
