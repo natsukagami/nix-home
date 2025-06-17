@@ -22,6 +22,13 @@ let
     peertube =
       assert (builtins.compareVersions prev.peertube.version "7.0.1" <= 0);
       final.unstable.peertube;
+    # Use 1.7.9 until things get better.
+    rofi-wayland-unwrapped =
+      assert final.lib.assertMsg (
+        prev.rofi-wayland-unwrapped.version == final.unstable.rofi-wayland-unwrapped.version
+        || prev.rofi-wayland-unwrapped.version == "1.7.8+wayland1"
+      ) "rofi-wayland-unwrapped updated, use stable version";
+      final.unstable.rofi-wayland-unwrapped;
   };
   overlay-imported = final: prev: {
     # sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
