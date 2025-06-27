@@ -244,6 +244,10 @@ in
       virtualisation.libvirtd.enable = true;
 
       virtualisation.spiceUSBRedirection.enable = true;
+
+      # Virtualbox
+      virtualisation.virtualbox.host.enable = true;
+      users.extraGroups.vboxusers.members = [ "nki" ];
     }
     {
       sops.secrets."nginx/key.pem" = {

@@ -113,9 +113,6 @@ let
         };
 
         virtualisation.oci-containers.backend = "podman";
-
-        virtualisation.virtualbox.host.enable = false;
-        users.extraGroups.vboxusers.members = [ cfg.username ];
       };
 
     nix-ld =
