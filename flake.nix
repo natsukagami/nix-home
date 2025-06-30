@@ -31,7 +31,7 @@
     };
     arion.url = "github:hercules-ci/arion/v0.2.2.0";
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.1.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -46,12 +46,12 @@
     conduit.url = "gitlab:famedly/conduit/v0.10.3";
     nix-gaming.url = "github:fufexan/nix-gaming";
     zen-browser.url = "github:youwen5/zen-browser-flake";
-    niri.url = "github:natsukagami/niri-flake";
+    niri.url = "github:sodiboo/niri-flake";
 
     # --- Sources
     kakoune.url = "github:mawww/kakoune";
     kakoune.flake = false;
-    kak-lsp.url = "github:kakoune-lsp/kakoune-lsp/v18.1.3";
+    kak-lsp.url = "github:kakoune-lsp/kakoune-lsp/v18.2.0";
     kak-lsp.flake = false;
     nixos-m1.url = "github:tpwrules/nixos-apple-silicon";
     nixos-m1.inputs.nixpkgs.follows = "nixpkgs";

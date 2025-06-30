@@ -155,6 +155,11 @@ let
       #   sources = inputs.zen-browser.inputs;
       # };
     };
+
+    tailwindcss-language-server = prev.tailwindcss-language-server.override {
+      # Until nodejs 24 is fixed upstream (nixOS/nixpkgs#420937)
+      nodejs_latest = final.nodejs_22;
+    };
   };
 in
 [
