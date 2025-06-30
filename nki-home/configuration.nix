@@ -273,6 +273,11 @@ in
       common.linux.tailscale.firewall.allowPorts = [ 443 ];
     }
     {
+      services.jellyfin = {
+        enable = true;
+      };
+    }
+    {
       # LLM poop
       services.ollama = {
         enable = true;
