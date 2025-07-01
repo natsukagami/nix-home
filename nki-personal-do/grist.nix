@@ -14,11 +14,11 @@ let
   # mkImage = pkgs.dockerTools.pullImage;
 
   images = {
-    # https://hub.docker.com/r/gristlabs/grist/tags
+    # https://hub.docker.com/r/gristlabs/grist-oss/tags
     grist = mkImage {
       imageName = "docker.io/gristlabs/grist-oss";
-      finalImageTag = "1.5.1";
-      imageDigest = "sha256:fe12125036a2f034430e56ca37f4258b5e489c98eb351fbfd63a771f69f4fa86";
+      finalImageTag = "1.6.1";
+      imageDigest = "sha256:1edf23a8c008f31ff801c48ff1224beeabd594e2f63f705932aeb7fa47551174";
     };
     # https://hub.docker.com/r/valkey/valkey/tags
     valkey = mkImage {
