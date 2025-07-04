@@ -108,14 +108,15 @@
   security.pam.services.swaylock.fprintAuth = true;
   security.pam.services.login.fprintAuth = true;
 
-  users.users.kannaaa3 = {
-    isNormalUser = true;
-    extraGroups = [ ];
-    openssh.authorizedKeys.keys = [
-      ''ssh-rsa AAAB3NzaC1yc2EAAAADAQABAAACAQDjuBvHgNnIK6SuihcBWyLHhRpWOg6gGJuoMFhhZYWbyWJDSxUtyZyjDtGXVynDxlmRESyJSk8zFi22HMutVP6CkXGMVwkYRO9c45FvPAsnQh99I/YAlWGQpCHDLKm2FumCZ44GR9zm+Zc2jIYx/StmHl+B+Y/eSRtTIf+WelQorE2l8vUecbTwt2mKzEuDbtSP07Tz1bSbY5nRgnZznbmDGrc5ckTpQBdvun2oWlvh8TM8EXcZtYCl+36mym2LOQiIj4V38kLvQ/sACA8O9kL9stN0TfVg7dl6f8zu5no6EBVd97Oh7ywmbtsbbjwBcmMPaJavGmBBkBjadUvlvpZyJASsm0MITH38SkTUUsYH3BGeFr+h1Aaoce1fD8xIQcK2EYTQHHqJEd/J8wKjiJHxt29+i/6m+4W1wzZNb03Oj/g1N57rWmjaU286Kse2Twftzvkencr7Dc41YTip1VfYRfSPpimlhe2qNGbn4V7U6/MPoHvta7n/3X/LSWy6kvsFCHF2EMi67do6r2w3aE4d6Qh9ViFPhTxbayq5GIxDSWjzOclp0GIw41ZtkTaT2o7KXkA0FUu+d9xrlcAmfzWOj1D3rUAts3U8mFtdIVhmNv+WR5QaBOs8zVvcfY3HuZvO66ttP2QeIZEHpLFg+20huqxc9Mk0C3lBXxzBfj9O7Q== cin@cin-2410''
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEtKxChFFrNRfkEHm59gHSXOpTyXYNUaDTQ/CYzNwMpe cinnabar1337@gmail.com"
-    ];
-  };
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = [ "nki" ];
+  virtualisation.libvirtd.enable = true;
+
+  virtualisation.spiceUSBRedirection.enable = true;
+
+  # Virtualbox
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "nki" ];
 
   # Secrets
   # sops.defaultSopsFile = ./secrets.yaml;
