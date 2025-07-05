@@ -99,27 +99,27 @@ in
       "03" = {
         name = "⚙️ code";
       };
-      "04" = {
-        name = "🎶 music";
-      };
-      "05" = {
-        name = "🔧 extra";
-      };
-      "06" = {
-        name = "🧰 6";
-      };
-      "07" = {
-        name = "🔩 7";
-      };
-      "08" = {
-        name = "🛠️ 8";
-      };
-      "09" = {
-        name = "🔨 9";
-      };
-      "10" = {
-        name = "🎲 misc";
-      };
+      # "04" = {
+      #   name = "🎶 music";
+      # };
+      # "05" = {
+      #   name = "🔧 extra";
+      # };
+      # "06" = {
+      #   name = "🧰 6";
+      # };
+      # "07" = {
+      #   name = "🔩 7";
+      # };
+      # "08" = {
+      #   name = "🛠️ 8";
+      # };
+      # "09" = {
+      #   name = "🔨 9";
+      # };
+      # "10" = {
+      #   name = "🎲 misc";
+      # };
       "99" = {
         name = "📧 Email";
       };
@@ -180,7 +180,7 @@ in
       input.mouse = {
         accel-profile = "flat";
       };
-      input.warp-mouse-to-focus = true;
+      input.warp-mouse-to-focus.enable = true;
       input.focus-follows-mouse = {
         enable = true;
         max-scroll-amount = "0%";
@@ -468,14 +468,13 @@ in
           "Mod+Shift+Bracketleft".action = move-column-to-first;
           "Mod+Shift+Bracketright".action = move-column-to-last;
 
-          # For compat with my current sway
-          "Mod+Ctrl+H".action = move-workspace-to-monitor-left;
-          "Mod+Ctrl+L".action = move-workspace-to-monitor-right;
+          "Mod+Ctrl+H".action = move-workspace-up;
+          "Mod+Ctrl+L".action = move-workspace-down;
 
-          "Mod+O".action = focus-workspace-down;
-          "Mod+I".action = focus-workspace-up;
-          "Mod+Ctrl+O".action = move-workspace-down;
-          "Mod+Ctrl+I".action = move-workspace-up;
+          "Mod+O".action = focus-monitor-left;
+          "Mod+I".action = focus-monitor-right;
+          "Mod+Shift+O".action = move-workspace-to-monitor-left;
+          "Mod+Shift+I".action = move-workspace-to-monitor-right;
 
           # Mouse bindings
           "Mod+WheelScrollDown" = {
@@ -517,57 +516,57 @@ in
           "Mod+3" = lib.mkIf cfg.workspaces."03".fixed {
             action = focus-workspace (cfg.workspaces."03".name);
           };
-          "Mod+4" = lib.mkIf cfg.workspaces."04".fixed {
-            action = focus-workspace (cfg.workspaces."04".name);
-          };
-          "Mod+5" = lib.mkIf cfg.workspaces."05".fixed {
-            action = focus-workspace (cfg.workspaces."05".name);
-          };
-          "Mod+6" = lib.mkIf cfg.workspaces."06".fixed {
-            action = focus-workspace (cfg.workspaces."06".name);
-          };
-          "Mod+7" = lib.mkIf cfg.workspaces."07".fixed {
-            action = focus-workspace (cfg.workspaces."07".name);
-          };
-          "Mod+8" = lib.mkIf cfg.workspaces."08".fixed {
-            action = focus-workspace (cfg.workspaces."08".name);
-          };
-          "Mod+9" = lib.mkIf cfg.workspaces."09".fixed {
-            action = focus-workspace (cfg.workspaces."09".name);
-          };
-          "Mod+0" = lib.mkIf cfg.workspaces."10".fixed {
-            action = focus-workspace (cfg.workspaces."10".name);
-          };
-          "Mod+Shift+1" = lib.mkIf cfg.workspaces."01".fixed {
-            action = move-column-to-workspace (cfg.workspaces."01".name);
-          };
-          "Mod+Shift+2" = lib.mkIf cfg.workspaces."02".fixed {
-            action = move-column-to-workspace (cfg.workspaces."02".name);
-          };
-          "Mod+Shift+3" = lib.mkIf cfg.workspaces."03".fixed {
-            action = move-column-to-workspace (cfg.workspaces."03".name);
-          };
-          "Mod+Shift+4" = lib.mkIf cfg.workspaces."04".fixed {
-            action = move-column-to-workspace (cfg.workspaces."04".name);
-          };
-          "Mod+Shift+5" = lib.mkIf cfg.workspaces."05".fixed {
-            action = move-column-to-workspace (cfg.workspaces."05".name);
-          };
-          "Mod+Shift+6" = lib.mkIf cfg.workspaces."06".fixed {
-            action = move-column-to-workspace (cfg.workspaces."06".name);
-          };
-          "Mod+Shift+7" = lib.mkIf cfg.workspaces."07".fixed {
-            action = move-column-to-workspace (cfg.workspaces."07".name);
-          };
-          "Mod+Shift+8" = lib.mkIf cfg.workspaces."08".fixed {
-            action = move-column-to-workspace (cfg.workspaces."08".name);
-          };
-          "Mod+Shift+9" = lib.mkIf cfg.workspaces."09".fixed {
-            action = move-column-to-workspace (cfg.workspaces."09".name);
-          };
-          "Mod+Shift+0" = lib.mkIf cfg.workspaces."10".fixed {
-            action = move-column-to-workspace (cfg.workspaces."10".name);
-          };
+          # "Mod+4" = lib.mkIf cfg.workspaces."04".fixed {
+          #   action = focus-workspace (cfg.workspaces."04".name);
+          # };
+          # "Mod+5" = lib.mkIf cfg.workspaces."05".fixed {
+          #   action = focus-workspace (cfg.workspaces."05".name);
+          # };
+          # "Mod+6" = lib.mkIf cfg.workspaces."06".fixed {
+          #   action = focus-workspace (cfg.workspaces."06".name);
+          # };
+          # "Mod+7" = lib.mkIf cfg.workspaces."07".fixed {
+          #   action = focus-workspace (cfg.workspaces."07".name);
+          # };
+          # "Mod+8" = lib.mkIf cfg.workspaces."08".fixed {
+          #   action = focus-workspace (cfg.workspaces."08".name);
+          # };
+          # "Mod+9" = lib.mkIf cfg.workspaces."09".fixed {
+          #   action = focus-workspace (cfg.workspaces."09".name);
+          # };
+          # "Mod+0" = lib.mkIf cfg.workspaces."10".fixed {
+          #   action = focus-workspace (cfg.workspaces."10".name);
+          # };
+          # "Mod+Shift+1" = lib.mkIf cfg.workspaces."01".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."01".name);
+          # };
+          # "Mod+Shift+2" = lib.mkIf cfg.workspaces."02".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."02".name);
+          # };
+          # "Mod+Shift+3" = lib.mkIf cfg.workspaces."03".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."03".name);
+          # };
+          # "Mod+Shift+4" = lib.mkIf cfg.workspaces."04".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."04".name);
+          # };
+          # "Mod+Shift+5" = lib.mkIf cfg.workspaces."05".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."05".name);
+          # };
+          # "Mod+Shift+6" = lib.mkIf cfg.workspaces."06".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."06".name);
+          # };
+          # "Mod+Shift+7" = lib.mkIf cfg.workspaces."07".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."07".name);
+          # };
+          # "Mod+Shift+8" = lib.mkIf cfg.workspaces."08".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."08".name);
+          # };
+          # "Mod+Shift+9" = lib.mkIf cfg.workspaces."09".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."09".name);
+          # };
+          # "Mod+Shift+0" = lib.mkIf cfg.workspaces."10".fixed {
+          #   action = move-column-to-workspace (cfg.workspaces."10".name);
+          # };
 
           "Mod+asciicircum".action = focus-workspace (cfg.workspaces."99".name);
           "Mod+Shift+asciicircum".action = move-column-to-workspace (cfg.workspaces."99".name);

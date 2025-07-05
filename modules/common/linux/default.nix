@@ -76,7 +76,7 @@ let
         # Niri stuff
         # https://github.com/sodiboo/niri-flake/blob/main/docs.md
         programs.niri.enable = true;
-        programs.niri.package = pkgs.niri;
+        programs.niri.package = pkgs.niri-stable;
         # Override gnome-keyring disabling
         services.gnome.gnome-keyring.enable = lib.mkForce false;
         # ydotool
