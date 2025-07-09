@@ -468,13 +468,13 @@ in
           "Mod+Shift+Bracketleft".action = move-column-to-first;
           "Mod+Shift+Bracketright".action = move-column-to-last;
 
-          "Mod+Ctrl+H".action = move-workspace-up;
-          "Mod+Ctrl+L".action = move-workspace-down;
+          "Mod+Ctrl+K".action = move-workspace-up;
+          "Mod+Ctrl+J".action = move-workspace-down;
 
-          "Mod+O".action = focus-monitor-left;
-          "Mod+I".action = focus-monitor-right;
-          "Mod+Shift+O".action = move-workspace-to-monitor-left;
-          "Mod+Shift+I".action = move-workspace-to-monitor-right;
+          "Mod+I".action = focus-monitor-left;
+          "Mod+O".action = focus-monitor-right;
+          "Mod+Shift+I".action = move-workspace-to-monitor-left;
+          "Mod+Shift+O".action = move-workspace-to-monitor-right;
 
           # Mouse bindings
           "Mod+WheelScrollDown" = {
@@ -485,19 +485,19 @@ in
             action = focus-workspace-up;
             cooldown-ms = 150;
           };
-          "Mod+Ctrl+WheelScrollDown" = {
+          "Mod+Shift+WheelScrollDown" = {
             action = move-column-to-workspace-down;
             cooldown-ms = 150;
           };
-          "Mod+Ctrl+WheelScrollUp" = {
+          "Mod+Shift+WheelScrollUp" = {
             action = move-column-to-workspace-up;
             cooldown-ms = 150;
           };
 
           "Mod+WheelScrollRight".action = focus-column-right;
           "Mod+WheelScrollLeft".action = focus-column-left;
-          "Mod+Ctrl+WheelScrollRight".action = move-column-right;
-          "Mod+Ctrl+WheelScrollLeft".action = move-column-left;
+          "Mod+Shift+WheelScrollRight".action = move-column-right;
+          "Mod+Shift+WheelScrollLeft".action = move-column-left;
 
           # You can refer to workspaces by index. However, keep in mind that
           # niri is a dynamic workspace system, so these commands are kind of
