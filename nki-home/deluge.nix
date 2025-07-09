@@ -33,38 +33,46 @@ in
         "dnscrypt-proxy2.service"
       ];
       after = [
+        "network-online.target"
         "netns@${wg}.service"
         "dnscrypt-proxy2.service"
       ];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = pkgs.writers.writeBash "wg-up" ''
-          set -e
-          ${ip} link add ${wg} type wireguard
-          ${ip} link set ${wg} netns ${wg}
-          ${ip} -n ${wg} address add "100.123.50.189/32" dev ${wg}
-          ${ip} netns exec ${wg} \
-            ${wireguard} setconf ${wg} ${config.sops.secrets."wg-deluge.conf".path}
-          ${ip} -n ${wg} link set ${wg} up
-          # need to set lo up as network namespace is started with lo down
-          ${ip} -n ${wg} link set lo up
-          ${ip} -n ${wg} route add default dev ${wg}
-          # ${ip} -n ${wg} -6 route add default dev ${wg}
-        '';
-        ExecStop = pkgs.writers.writeBash "wg-down" ''
-          ${ip} -n ${wg} route del default dev ${wg}
-          # ${ip} -n ${wg} -6 route del default dev ${wg}
-          ${ip} -n ${wg} link del ${wg}
-          ${ip} link del ${wg}
-        '';
-      };
+      serviceConfig =
+        let
+          wg-down = pkgs.writers.writeBash "wg-down" ''
+            ${ip} -n ${wg} route del default dev ${wg}
+            # ${ip} -n ${wg} -6 route del default dev ${wg}
+            ${ip} -n ${wg} link del ${wg}
+            ${ip} link del ${wg}
+          '';
+        in
+        {
+          Type = "oneshot";
+          Restart = "on-failure";
+          RemainAfterExit = true;
+          ExecStart = pkgs.writers.writeBash "wg-up" ''
+            set -e
+            ${wg-down} || true
+            ${ip} link add ${wg} type wireguard
+            ${ip} link set ${wg} netns ${wg}
+            ${ip} -n ${wg} address add "100.123.50.189/32" dev ${wg}
+            ${ip} netns exec ${wg} \
+              ${wireguard} setconf ${wg} ${config.sops.secrets."wg-deluge.conf".path}
+            ${ip} -n ${wg} link set ${wg} up
+            # need to set lo up as network namespace is started with lo down
+            ${ip} -n ${wg} link set lo up
+            ${ip} -n ${wg} route add default dev ${wg}
+            # ${ip} -n ${wg} -6 route add default dev ${wg}
+          '';
+          ExecStop = wg-down;
+        };
     };
 
   # binding deluged to network namespace
   systemd.services.deluged.bindsTo = [ "netns@${wg}.service" ];
   systemd.services.deluged.requires = [
     "network-online.target"
+    "proxy-to-deluged.service"
     "${wg}.service"
   ];
   systemd.services.deluged.after = [
