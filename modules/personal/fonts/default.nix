@@ -6,13 +6,6 @@
 }:
 
 with lib;
-let
-  nerd-fonts =
-    if builtins.hasAttr "nerd-fonts" pkgs then
-      pkgs.nerd-fonts.symbols-only
-    else
-      pkgs.nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; };
-in
 {
   imports = [ ./mounting.nix ];
   # Fonts
@@ -23,7 +16,8 @@ in
         mkForce [
           noto-fonts-emoji-blob-bin
           ibm-plex
-          nerd-fonts
+          plemoljp # IBM Plex + Mono JP
+          nerd-fonts.symbols-only
           noto-fonts
           (pkgs.noto-fonts-cjk-sans or pkgs.noto-fonts-cjk)
           merriweather
@@ -52,6 +46,7 @@ in
                 "Blobmoji"
               ];
               monospace = lib.mkBefore [
+                "PlemolJP35"
                 "IBM Plex Mono"
                 "Font Awesome 6 Free"
                 "Symbols Nerd Font"
