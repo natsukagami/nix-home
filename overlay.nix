@@ -18,10 +18,6 @@ let
     # Typst updates really quickly.
     typst = final.unstable.typst;
     typst-lsp = final.unstable.typst-lsp;
-    # Update to v7 beforehand
-    peertube =
-      assert (builtins.compareVersions prev.peertube.version "7.0.1" <= 0);
-      final.unstable.peertube;
     # Use 1.7.9 until things get better.
     rofi-wayland-unwrapped =
       assert final.lib.assertMsg (
