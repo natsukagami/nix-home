@@ -10,7 +10,7 @@ let
       version = "2025.711.0-tachyon";
       src = fetchurl {
         url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
-        hash = "sha256-vEe6lUmvnKLcHkBZefynFLymk+u6iJgg/AHutgFJA4s=";
+        hash = "sha256-hPLHh457e5EoPqtcSIE1B7W0iZWbeeUUoAI0qtWUeXU=";
       };
       extraPkgs = pkgs: with pkgs; [ icu ];
 
