@@ -66,6 +66,9 @@ in
           '';
           ExecStop = wg-down;
         };
+      unitConfig = {
+        StartLimitIntervalSec = 0;
+      };
     };
 
   # binding deluged to network namespace
