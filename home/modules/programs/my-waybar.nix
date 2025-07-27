@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  osConfig,
   pkgs,
   ...
 }:
@@ -138,7 +139,8 @@ in
                   # format = "{:📅 %Y-%m-%d | 🕰️ %H:%M [%Z]}";
                   format = "📅 {0:%Y-%m-%d} |️ 🕰️ {0:%H:%M [%Z]}";
                   tooltip-format = "\n<span size='9pt' font_family='Noto Sans Mono CJK JP'>{calendar}</span>";
-                  timezones = [
+                  timezones = lib.lists.unique [
+                    osConfig.time.timeZone
                     "Europe/Zurich"
                     "America/Toronto"
                     "Asia/Tokyo"

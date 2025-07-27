@@ -21,6 +21,8 @@
     ./wireless.nix
   ];
 
+  # time.timeZone = "Europe/Zurich";
+
   # Sops
   common.linux.sops.enable = true;
   common.linux.sops.file = ./secrets.yaml;
