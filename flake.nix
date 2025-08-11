@@ -30,10 +30,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     arion.url = "github:hercules-ci/arion/v0.2.2.0";
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.3-1.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     # ---
     # Imported apps
@@ -130,9 +126,7 @@
             (nixpkgsAsRegistry_ stable)
             ./common.nix
             sops-nix.nixosModules.sops
-            inputs.lix-module.nixosModules.default
           ];
-          config.nix.settings.extra-deprecated-features = [ "url-literals" ]; # So lix won't complain
         };
       common-nixos =
         stable:
