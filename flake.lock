@@ -1569,11 +1569,11 @@
         "rust-overlay": "rust-overlay_4"
       },
       "locked": {
-        "lastModified": 1750621567,
-        "narHash": "sha256-jp4Yvtba1N89FTvlmUKmG0w8uyoM792IPPnI2K51+iI=",
+        "lastModified": 1754923675,
+        "narHash": "sha256-oLgv0N+TmxXjC2JVCTMnbxyBkNavrsGsoc9dfdJo84w=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "9cd506d0481c714a5b5248acd8d20f0abd3bd3bd",
+        "rev": "aaf54b48047e13e4b53ebe96050b0bba1829ef31",
         "type": "github"
       },
       "original": {
