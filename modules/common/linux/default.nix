@@ -67,6 +67,9 @@ let
     wlr =
       { lib, config, ... }:
       mkIf config.common.linux.enable {
+        console.enable = true;
+        services.displayManager.enable = false;
+        systemd.services.display-manager.enable = false;
         # swaync disable notifications on screencast
         xdg.portal.wlr.settings.screencast = {
           exec_before = ''which swaync-client && swaync-client --inhibitor-add "xdg-desktop-portal-wlr" || true'';
@@ -373,26 +376,25 @@ in
     console.keyMap = "jp106"; # Console key layout
     i18n.defaultLocale = "ja_JP.UTF-8";
     # Input methods (only fcitx5 works reliably on Wayland)
-    i18n.inputMethod =
-      {
-        fcitx5.waylandFrontend = true;
-        fcitx5.addons = with pkgs; [
-          fcitx5-mozc
-          fcitx5-unikey
-          fcitx5-gtk
-        ];
-      }
-      // (
-        if config.system.nixos.release == "24.05" then
-          {
-            enabled = "fcitx5";
-          }
-        else
-          {
-            enable = true;
-            type = "fcitx5";
-          }
-      );
+    i18n.inputMethod = {
+      fcitx5.waylandFrontend = true;
+      fcitx5.addons = with pkgs; [
+        fcitx5-mozc
+        fcitx5-unikey
+        fcitx5-gtk
+      ];
+    }
+    // (
+      if config.system.nixos.release == "24.05" then
+        {
+          enabled = "fcitx5";
+        }
+      else
+        {
+          enable = true;
+          type = "fcitx5";
+        }
+    );
 
     # Default packages
     environment.systemPackages = with pkgs; [

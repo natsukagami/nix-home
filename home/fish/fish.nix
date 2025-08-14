@@ -8,7 +8,7 @@
 
 with lib;
 let
-  bootDesktop = pkgs.writeScript "boot-desktop" ''
+  bootDesktop = pkgs.writeScriptBin "boot-desktop" ''
     #!/usr/bin/env fish
 
     set -a PATH ${pkgs.gum}/bin
@@ -65,6 +65,8 @@ in
     fzf
     fd
     bat
+
+    bootDesktop
   ];
 
   config.programs.fish = {
@@ -202,7 +204,7 @@ in
     interactiveShellInit = ''
       # Sway!
       if status --is-login; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
-        exec ${bootDesktop}
+        exec ${lib.getExe bootDesktop}
       end
 
       function fish_greeting
