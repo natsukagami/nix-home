@@ -120,18 +120,18 @@ let
                 formatting.command = [ "${lib.getExe nixfmt-rfc-style}" ];
               };
             };
-            pylsp = {
-              command = "pylsp";
-              package = python311Packages.python-lsp-server;
-              filetypes = [ "python" ];
-              offset_encoding = "utf-8";
-              roots = [
-                "requirements.txt"
-                "setup.py"
-                ".git"
-                ".hg"
-              ];
-            };
+            # pylsp = {
+            #   command = "pylsp";
+            #   package = python311Packages.python-lsp-server;
+            #   filetypes = [ "python" ];
+            #   offset_encoding = "utf-8";
+            #   roots = [
+            #     "requirements.txt"
+            #     "setup.py"
+            #     ".git"
+            #     ".hg"
+            #   ];
+            # };
             # Spellchecking server
             ltex-ls = {
               command = "ltex-ls";
