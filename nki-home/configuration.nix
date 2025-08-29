@@ -289,19 +289,19 @@ in
       systemd.services.ollama = {
         serviceConfig.LimitMEMLOCK = "${toString (16 * 1024 * 1024 * 1024)}";
       };
-      services.open-webui = {
-        enable = true;
-        port = 5689;
-        openFirewall = true;
-        host = "127.0.0.1";
-        environment = {
-          ANONYMIZED_TELEMETRY = "False";
-          DO_NOT_TRACK = "True";
-          SCARF_NO_ANALYTICS = "True";
-          ENV = "prod";
-          ENABLE_SIGNUP = "false";
-        };
-      };
+      # services.open-webui = {
+      #   enable = true;
+      #   port = 5689;
+      #   openFirewall = true;
+      #   host = "127.0.0.1";
+      #   environment = {
+      #     ANONYMIZED_TELEMETRY = "False";
+      #     DO_NOT_TRACK = "True";
+      #     SCARF_NO_ANALYTICS = "True";
+      #     ENV = "prod";
+      #     ENABLE_SIGNUP = "false";
+      #   };
+      # };
       systemd.services.open-webui.path = [
         pkgs.ffmpeg
       ];

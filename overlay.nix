@@ -72,11 +72,9 @@ let
     luminance = prev.luminance.overrideAttrs (attrs: {
       nativeBuildInputs = attrs.nativeBuildInputs ++ [ final.wrapGAppsHook ];
       buildInputs = attrs.buildInputs ++ [ final.glib ];
-      postInstall =
-        attrs.postInstall
-        + ''
-          glib-compile-schemas $out/share/glib-2.0/schemas
-        '';
+      postInstall = attrs.postInstall + ''
+        glib-compile-schemas $out/share/glib-2.0/schemas
+      '';
     });
 
     vesktop = prev.vesktop.overrideAttrs (attrs: {
@@ -93,26 +91,6 @@ let
           [ "WAYLAND_DISPLAY" "${flagToReplace} --wayland-text-input-version=3" ]
           attrs.postFixup;
     });
-
-    python312 = prev.python312.override {
-      packageOverrides = pfinal: pprev: {
-        langchain =
-          assert final.lib.assertMsg (
-            pprev.langchain.version == "0.3.25" || pprev.langchain.version == "0.3.24-fix"
-          ) "Revert to 0.3.24 has been applied, remove overlay";
-          pprev.langchain.overrideAttrs (
-            afinal: aprev: {
-              version = "0.3.24-fix";
-              src = final.fetchFromGitHub {
-                owner = "langchain-ai";
-                repo = "langchain";
-                tag = "langchain==${afinal.version}";
-                hash = "sha256-Up/pH2TxLPiPO49oIa2ZlNeH3TyN9sZSlNsqOIRmlxc=";
-              };
-            }
-          );
-      };
-    };
 
     swaybg = prev.swaybg.overrideAttrs (
       finalAttrs: prevAttrs: {
