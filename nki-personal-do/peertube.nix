@@ -30,6 +30,7 @@ in
     noCloudflare = true;
   };
 
+  networking.firewall.allowedTCPPorts = [ 1935 ]; # livestreams
   services.peertube = {
     enable = true;
     enableWebHttps = true;
@@ -74,7 +75,8 @@ in
     # Trust proxy
     settings.trust_proxy = [
       "loopback"
-    ] ++ config.services.traefik.staticConfigOptions.entrypoints.https.forwardedHeaders.trustedIPs;
+    ]
+    ++ config.services.traefik.staticConfigOptions.entrypoints.https.forwardedHeaders.trustedIPs;
 
     # Federation
     settings.federation = {

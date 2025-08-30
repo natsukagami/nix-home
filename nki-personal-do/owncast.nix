@@ -17,6 +17,7 @@ in
   services.owncast = {
     inherit user port;
     listen = "0.0.0.0"; # Listen to direct IP requests too
+    rtmp-port = 1999;
     enable = true;
     openFirewall = true;
     dataDir = "${config.fileSystems.data.mountPoint}/owncast";
