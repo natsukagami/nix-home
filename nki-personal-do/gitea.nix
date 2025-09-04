@@ -177,6 +177,8 @@ in
       };
       session = {
         COOKIE_SECURE = true;
+        PROVIDER = "db";
+        SESSION_LIFE_TIME = 86400 * 14; # 14 days
       };
 
       oauth2_client = {
