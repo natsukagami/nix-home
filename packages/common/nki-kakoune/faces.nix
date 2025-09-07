@@ -29,7 +29,8 @@ let
     method = "@function";
     format_specifier = "+i@string";
     mutable_variable = "+i@variable";
-    class = "+b@variable";
+    class = "+b@module";
+    interface = "+ib@module";
   };
 in
 utils.mkFacesScript "default-faces" faces

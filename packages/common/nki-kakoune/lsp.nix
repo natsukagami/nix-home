@@ -32,7 +32,6 @@ let
           c = "c_cpp";
           cpp = "c_cpp";
           javascript = "javascriptreact";
-          typescript = "typescriptreact";
           protobuf = "proto";
           sh = "shellscript";
         };
@@ -159,8 +158,6 @@ let
               ];
               roots = [
                 "tailwind.config.{js,cjs,mjs,ts}"
-                "package.json"
-                ".git"
               ];
               settings_section = "tailwindCSS";
               settings.tailwindCSS = {
@@ -182,8 +179,18 @@ let
                 "typescript"
                 "javascript"
               ];
-              roots = [ "package.json" ];
+              roots = [ "tsconfig.json" ];
               package = nodePackages.typescript-language-server;
+              settings_section = "_";
+              workspace_did_change_configuration_subsection = "did_change_configuration";
+              settings._ = { };
+              settings._.did_change_configuration.typescript.inlayHints = {
+                includeInlayEnumMemberValueHints = true;
+                includeInlayFunctionLikeReturnTypeHints = true;
+                includeInlayFunctionParameterTypeHints = true;
+                includeInlayVariableTypeHints = true;
+                includeInlayPropertyDeclarationTypeHints = true;
+              };
             };
             fsautocomplete = {
               args = [
@@ -354,6 +361,10 @@ let
             face = "method";
             token = "method";
           }
+          {
+            face = "method";
+            token = "member";
+          }
           # Constants
           {
             face = "string";
@@ -374,15 +385,28 @@ let
             token = "variable";
           }
           {
+            face = "mutable_variable";
+            token = "parameter";
+            modifiers = [ "mutable" ];
+          }
+          {
+            face = "variable";
+            token = "parameter";
+          }
+          {
             face = "module";
             token = "namespace";
           }
           {
-            face = "variable";
+            face = "type";
             token = "type_parameter";
           }
           {
-            face = "variable";
+            face = "type";
+            token = "type";
+          }
+          {
+            face = "type";
             token = "typeParameter";
           }
           {
@@ -394,8 +418,12 @@ let
             token = "struct";
           }
           {
-            face = "class";
+            face = "interface";
             token = "trait";
+          }
+          {
+            face = "interface";
+            token = "interface";
           }
           {
             face = "class";
@@ -629,6 +657,7 @@ in
       ${lang-config}
 
       ## Faces
+      set-face global InlayHint "+bd@type"
       ${faces-config}
 
       ## Extra setup
