@@ -343,7 +343,10 @@ in
       xwayland = {
         Unit.Description = "XWayland support";
         Unit.After = [ "graphical-session-pre.target" ];
-        Unit.Before = [ "graphical-session.target" ];
+        Unit.Before = [
+          "graphical-session.target"
+          "xdg-desktop-autostart.target"
+        ];
         Unit.BindsTo = [ "graphical-session.target" ];
         Install.WantedBy = [ "graphical-session.target" ];
       };

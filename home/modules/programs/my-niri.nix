@@ -19,8 +19,6 @@ let
     ${lib.getExe pkgs.imagemagick} convert -blur 0x25 ${wallpaper} $out
   '';
 
-  xwayland-display = ":0";
-
   # Override for lack of per-keyboard layout
   ydotool-en = pkgs.writeScriptBin "ydotool" ''
     #!/usr/bin/env sh
@@ -116,33 +114,14 @@ in
     systemd.user.services.waybar.Unit.After = [ "niri.service" ];
     systemd.user.services.waybar.Install.WantedBy = [ "niri.service" ];
 
-    # xwayland-satellite
-    systemd.user.services.niri-xwayland-satellite = lib.mkIf cfg.enable {
-      Unit = {
-        Description = "XWayland Client for niri";
-        PartOf = [ "xwayland.target" ];
-        Before = [
-          "xwayland.target"
-          "xdg-desktop-autostart.target"
-        ];
-        After = [ "niri.service" ];
-      };
-      Install.WantedBy = [ "niri.service" ];
-      Install.UpheldBy = [ "niri.service" ];
-      Service.Slice = "session.slice";
-      Service.Type = "notify";
-      Service.ExecStart = "${lib.getExe pkgs.xwayland-satellite} ${xwayland-display}";
-      Service.ExecStartPost = [ "systemctl --user set-environment DISPLAY=${xwayland-display}" ];
-      Service.ExecStopPost = [ "systemctl --user unset-environment" ];
-    };
+    systemd.user.services.xwayland.Unit.ConsistsOf = [ "niri.service" ];
 
     programs.niri.settings = {
+      xwayland-satellite.path = "${lib.getExe pkgs.xwayland-satellite}";
       environment = {
         QT_QPA_PLATFORM = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
         QT_IM_MODULE = "fcitx";
-        # export NIXOS_OZONE_WL=1 # Until text-input is merged
-        DISPLAY = xwayland-display;
       }
       // lib.optionalAttrs osConfig.services.desktopManager.plasma6.enable {
         XDG_MENU_PREFIX = "plasma-";
