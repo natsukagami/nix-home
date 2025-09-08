@@ -303,169 +303,168 @@ in
       systemd.enable = true;
       systemd.target = "sway-session.target";
       settings = cfg.makeBars barWith;
-      style =
-        ''
-          * {
-              border: none;
-              border-radius: 0;
-              font-family: monospace, 'Font Awesome 5', 'Symbols Nerd Font Mono', 'SFNS Display',  Helvetica, Arial, sans-serif;
-              font-size: ${toString (cfg.fontSize * 1.1)}px;
-              min-height: 0;
-          }
+      style = ''
+        * {
+            border: none;
+            border-radius: 0;
+            font-family: monospace, 'SFNS Display',  Helvetica, Arial, sans-serif;
+            font-size: ${toString (builtins.ceil (cfg.fontSize * 1.1))}px;
+            min-height: 0;
+        }
 
-          window#waybar {
-              background: rgba(43, 48, 59, 0.8);
-              border-bottom: 3px solid rgba(100, 114, 125, 0.5);
-              color: #ffffff;
-          }
+        window#waybar {
+            background: rgba(43, 48, 59, 0.8);
+            border-bottom: 3px solid rgba(100, 114, 125, 0.5);
+            color: #ffffff;
+        }
 
-          window#waybar.hidden {
-              opacity: 0.0;
-          }
-          /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
-          #workspaces button {
-              padding: 0 5px;
-              background: transparent;
-              color: #ffffff;
-              border-bottom: 3px solid transparent;
-          }
+        window#waybar.hidden {
+            opacity: 0.0;
+        }
+        /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+        #workspaces button {
+            padding: 0 5px;
+            background: transparent;
+            color: #ffffff;
+            border-bottom: 3px solid transparent;
+        }
 
-          #workspaces button.focused {
-              background: #64727D;
-              border-bottom: 3px solid #ffffff;
-          }
+        #workspaces button.focused {
+            background: #64727D;
+            border-bottom: 3px solid #ffffff;
+        }
 
-          #workspaces button.urgent {
-              background-color: #eb4d4b;
-          }
+        #workspaces button.urgent {
+            background-color: #eb4d4b;
+        }
 
-          #window, #sway, #sway-window {
-            padding-left: 1em;
-            margin-bottom: 0.4em;
-          }
+        #window, #sway, #sway-window {
+          padding-left: 1em;
+          margin-bottom: 0.4em;
+        }
 
-          #mode {
-              background: #64727D;
-              border-bottom: 3px solid #ffffff;
-          }
+        #mode {
+            background: #64727D;
+            border-bottom: 3px solid #ffffff;
+        }
 
-          /* #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #bluetooth, #custom-media, #tray, #mode, #idle_inhibitor, #mpd { */
-          .modules-right > * > * {
-            margin: 0.2em 0 0.4em 0;
-            padding: 0.2em 0.5em;
-            border: 1px solid rgba(0, 0, 0, 0.25);
-            border-radius: 0.3em;
-          }
+        /* #clock, #battery, #cpu, #memory, #temperature, #backlight, #network, #pulseaudio, #bluetooth, #custom-media, #tray, #mode, #idle_inhibitor, #mpd { */
+        .modules-right > * > * {
+          margin: 0.2em 0 0.4em 0;
+          padding: 0.2em 0.5em;
+          border: 1px solid rgba(0, 0, 0, 0.25);
+          border-radius: 0.3em;
+        }
 
-          .modules-right > *:not(:last-child) > * {
-            margin-right: 0.4em;
-          }
+        .modules-right > *:not(:last-child) > * {
+          margin-right: 0.4em;
+        }
 
-          #clock {
-              background-color: #64727D;
-          }
+        #clock {
+            background-color: #64727D;
+        }
 
-          #battery {
-              background-color: #ffffff;
-              color: #000000;
-          }
+        #battery {
+            background-color: #ffffff;
+            color: #000000;
+        }
 
-          #battery.charging {
-              color: #ffffff;
-              background-color: #26A65B;
-          }
+        #battery.charging {
+            color: #ffffff;
+            background-color: #26A65B;
+        }
 
-          @keyframes blink {
-              to {
-                  background-color: #ffffff;
-                  color: #000000;
-              }
-          }
+        @keyframes blink {
+            to {
+                background-color: #ffffff;
+                color: #000000;
+            }
+        }
 
-          #battery.critical:not(.charging) {
-              background: #f53c3c;
-              color: #ffffff;
-              animation-name: blink;
-              animation-duration: 0.5s;
-              animation-timing-function: linear;
-              animation-iteration-count: infinite;
-              animation-direction: alternate;
-          }
+        #battery.critical:not(.charging) {
+            background: #f53c3c;
+            color: #ffffff;
+            animation-name: blink;
+            animation-duration: 0.5s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
 
-          #cpu {
-              background: #2ecc71;
-              color: #000000;
-          }
+        #cpu {
+            background: #2ecc71;
+            color: #000000;
+        }
 
-          #memory {
-              background: #9b59b6;
-          }
+        #memory {
+            background: #9b59b6;
+        }
 
-          #backlight {
-              background: #90b1b1;
-          }
+        #backlight {
+            background: #90b1b1;
+        }
 
-          #network {
-              background: #2980b9;
-          }
+        #network {
+            background: #2980b9;
+        }
 
-          #network.disconnected {
-              background: #f53c3c;
-          }
+        #network.disconnected {
+            background: #f53c3c;
+        }
 
-          #pulseaudio {
-              background: #f1c40f;
-              color: #000000;
-          }
+        #pulseaudio {
+            background: #f1c40f;
+            color: #000000;
+        }
 
-          #pulseaudio.muted {
-              background: #90b1b1;
-          }
+        #pulseaudio.muted {
+            background: #90b1b1;
+        }
 
-          #bluetooth {
-              background: DarkSlateBlue;
-              color: white;
-          }
+        #bluetooth {
+            background: DarkSlateBlue;
+            color: white;
+        }
 
-          #custom-media {
-              background: #66cc99;
-              color: #2a5c45;
-          }
+        #custom-media {
+            background: #66cc99;
+            color: #2a5c45;
+        }
 
-          .custom-spotify {
-              background: #66cc99;
-          }
+        .custom-spotify {
+            background: #66cc99;
+        }
 
-          .custom-vlc {
-              background: #ffa000;
-          }
+        .custom-vlc {
+            background: #ffa000;
+        }
 
-          #temperature {
-              background: #f0932b;
-          }
+        #temperature {
+            background: #f0932b;
+        }
 
-          #temperature.critical {
-              background: #eb4d4b;
-          }
+        #temperature.critical {
+            background: #eb4d4b;
+        }
 
-          #tray {
-              background-color: #2980b9;
-          }
+        #tray {
+            background-color: #2980b9;
+        }
 
-          #idle_inhibitor {
-              background-color: #2d3436;
-          }
+        #idle_inhibitor {
+            background-color: #2d3436;
+        }
 
-          #idle_inhibitor.activated {
-              background-color: #ecf0f1;
-              color: #2d3436;
-          }
+        #idle_inhibitor.activated {
+            background-color: #ecf0f1;
+            color: #2d3436;
+        }
 
-          #mpd {
-              background-color: teal;
-              color: white;
-          }
-        ''
-        + cfg.extraStyle;
+        #mpd {
+            background-color: teal;
+            color: white;
+        }
+      ''
+      + cfg.extraStyle;
     };
 }
