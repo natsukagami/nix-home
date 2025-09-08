@@ -25,6 +25,10 @@ let
         || prev.rofi-wayland-unwrapped.version == "1.7.8+wayland1"
       ) "rofi-wayland-unwrapped updated, use stable version";
       final.unstable.rofi-wayland-unwrapped;
+    # Tailscale newer = better
+    tailscale = final.unstable.tailscale;
+    # rbw 1.14 has SSH
+    rbw = final.unstable.rbw;
   };
   overlay-imported = final: prev: {
     # sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
