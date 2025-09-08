@@ -42,23 +42,24 @@ in
     lock-command = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       description = "The command to lock the screen";
-      default =
-        [ "${pkgs.swaylock}/bin/swaylock" ]
-        ++ (
-          if wallpaper == "" then
-            [ "" ]
-          else
-            [
-              "-i"
-              "${wallpaper}"
-              "-s"
-              "fill"
-            ]
-        )
-        ++ [
-          "-l"
-          "-k"
-        ];
+      default = [
+        "${pkgs.swaylock}/bin/swaylock"
+      ]
+      ++ (
+        if wallpaper == "" then
+          [ "" ]
+        else
+          [
+            "-i"
+            "${wallpaper}"
+            "-s"
+            "fill"
+          ]
+      )
+      ++ [
+        "-l"
+        "-k"
+      ];
     };
 
     workspaces = lib.mkOption {
@@ -99,27 +100,6 @@ in
       "03" = {
         name = "⚙️ code";
       };
-      # "04" = {
-      #   name = "🎶 music";
-      # };
-      # "05" = {
-      #   name = "🔧 extra";
-      # };
-      # "06" = {
-      #   name = "🧰 6";
-      # };
-      # "07" = {
-      #   name = "🔩 7";
-      # };
-      # "08" = {
-      #   name = "🛠️ 8";
-      # };
-      # "09" = {
-      #   name = "🔨 9";
-      # };
-      # "10" = {
-      #   name = "🎲 misc";
-      # };
       "99" = {
         name = "📧 Email";
       };
@@ -157,17 +137,16 @@ in
     };
 
     programs.niri.settings = {
-      environment =
-        {
-          QT_QPA_PLATFORM = "wayland";
-          QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-          QT_IM_MODULE = "fcitx";
-          # export NIXOS_OZONE_WL=1 # Until text-input is merged
-          DISPLAY = xwayland-display;
-        }
-        // lib.optionalAttrs osConfig.services.desktopManager.plasma6.enable {
-          XDG_MENU_PREFIX = "plasma-";
-        };
+      environment = {
+        QT_QPA_PLATFORM = "wayland";
+        QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+        QT_IM_MODULE = "fcitx";
+        # export NIXOS_OZONE_WL=1 # Until text-input is merged
+        DISPLAY = xwayland-display;
+      }
+      // lib.optionalAttrs osConfig.services.desktopManager.plasma6.enable {
+        XDG_MENU_PREFIX = "plasma-";
+      };
       input.keyboard.xkb = {
         layout = "jp,us";
       };
@@ -507,67 +486,12 @@ in
           #
           # For example, with 2 workspaces + 1 empty, indices 3, 4, 5 and so on
           # will all refer to the 3rd workspace.
-          "Mod+1" = lib.mkIf cfg.workspaces."01".fixed {
-            action = focus-workspace (cfg.workspaces."01".name);
-          };
-          "Mod+2" = lib.mkIf cfg.workspaces."02".fixed {
-            action = focus-workspace (cfg.workspaces."02".name);
-          };
-          "Mod+3" = lib.mkIf cfg.workspaces."03".fixed {
-            action = focus-workspace (cfg.workspaces."03".name);
-          };
-          # "Mod+4" = lib.mkIf cfg.workspaces."04".fixed {
-          #   action = focus-workspace (cfg.workspaces."04".name);
-          # };
-          # "Mod+5" = lib.mkIf cfg.workspaces."05".fixed {
-          #   action = focus-workspace (cfg.workspaces."05".name);
-          # };
-          # "Mod+6" = lib.mkIf cfg.workspaces."06".fixed {
-          #   action = focus-workspace (cfg.workspaces."06".name);
-          # };
-          # "Mod+7" = lib.mkIf cfg.workspaces."07".fixed {
-          #   action = focus-workspace (cfg.workspaces."07".name);
-          # };
-          # "Mod+8" = lib.mkIf cfg.workspaces."08".fixed {
-          #   action = focus-workspace (cfg.workspaces."08".name);
-          # };
-          # "Mod+9" = lib.mkIf cfg.workspaces."09".fixed {
-          #   action = focus-workspace (cfg.workspaces."09".name);
-          # };
-          # "Mod+0" = lib.mkIf cfg.workspaces."10".fixed {
-          #   action = focus-workspace (cfg.workspaces."10".name);
-          # };
-          # "Mod+Shift+1" = lib.mkIf cfg.workspaces."01".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."01".name);
-          # };
-          # "Mod+Shift+2" = lib.mkIf cfg.workspaces."02".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."02".name);
-          # };
-          # "Mod+Shift+3" = lib.mkIf cfg.workspaces."03".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."03".name);
-          # };
-          # "Mod+Shift+4" = lib.mkIf cfg.workspaces."04".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."04".name);
-          # };
-          # "Mod+Shift+5" = lib.mkIf cfg.workspaces."05".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."05".name);
-          # };
-          # "Mod+Shift+6" = lib.mkIf cfg.workspaces."06".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."06".name);
-          # };
-          # "Mod+Shift+7" = lib.mkIf cfg.workspaces."07".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."07".name);
-          # };
-          # "Mod+Shift+8" = lib.mkIf cfg.workspaces."08".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."08".name);
-          # };
-          # "Mod+Shift+9" = lib.mkIf cfg.workspaces."09".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."09".name);
-          # };
-          # "Mod+Shift+0" = lib.mkIf cfg.workspaces."10".fixed {
-          #   action = move-column-to-workspace (cfg.workspaces."10".name);
-          # };
-
+          "Mod+A".action = focus-workspace (cfg.workspaces."01".name);
+          "Mod+Shift+A".action = move-column-to-workspace (cfg.workspaces."01".name);
+          "Mod+S".action = focus-workspace (cfg.workspaces."02".name);
+          "Mod+Shift+S".action = move-column-to-workspace (cfg.workspaces."02".name);
+          "Mod+D".action = focus-workspace (cfg.workspaces."03".name);
+          "Mod+Shift+D".action = move-column-to-workspace (cfg.workspaces."03".name);
           "Mod+asciicircum".action = focus-workspace (cfg.workspaces."99".name);
           "Mod+Shift+asciicircum".action = move-column-to-workspace (cfg.workspaces."99".name);
 
@@ -597,7 +521,32 @@ in
           "Shift+Print".action = screenshot-window;
 
           "Mod+Shift+E".action = quit;
-        };
+        }
+        // (builtins.listToAttrs (
+          builtins.concatMap
+            (id: [
+              {
+                name = "Mod+${toString (if id == 10 then 0 else id)}";
+                value.action = focus-workspace id;
+              }
+              {
+                name = "Mod+Shift+${toString (if id == 10 then 0 else id)}";
+                value.action = move-column-to-workspace id;
+              }
+            ])
+            [
+              1
+              2
+              3
+              4
+              5
+              6
+              7
+              8
+              9
+              10
+            ]
+        ));
     };
   };
 }
