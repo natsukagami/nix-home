@@ -218,13 +218,20 @@ let
               ];
               settings_section = "metals";
               settings.metals = {
-                inlayHints.inferredTypes.enable = true;
-                inlayHints.typeParameters.enable = true;
-                inlayHints.hintsInPatternMatch.enable = true;
+                # User options
+                defaultBspToBuildTool = true; # Disable bloop by default
+                superMethodLensesEnabled = true;
+                inlayHints = {
+                  inferredTypes.enable = true;
+                  typeParameters.enable = true;
+                  hintsInPatternMatch.enable = true;
+                  # namedParameters.enable = true; # noisy
+                  byNameParameters.enable = true;
+                };
                 # From kakoune-lsp's own options
                 icons = "unicode";
                 isHttpEnabled = true;
-                statusBarProvider = "log-message";
+                statusBarProvider = "show-message";
                 compilerOptions = {
                   overrideDefFormat = "unicode";
                 };
