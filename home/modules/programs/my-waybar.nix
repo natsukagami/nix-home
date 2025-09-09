@@ -308,7 +308,7 @@ in
             border: none;
             border-radius: 0;
             font-family: monospace, 'SFNS Display',  Helvetica, Arial, sans-serif;
-            font-size: ${toString (builtins.ceil (cfg.fontSize * 1.1))}px;
+            font-size: ${toString (cfg.fontSize * 1.1)}px;
             min-height: 0;
         }
 
