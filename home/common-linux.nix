@@ -29,6 +29,12 @@ let
         Exec=${pkgs.kdePackages.kwallet}/bin/kwalletd6
       '';
     };
+
+  python = pkgs.python3.withPackages (
+    p: with p; [
+      websockets
+    ]
+  );
 in
 {
   imports = [
@@ -43,7 +49,7 @@ in
         psmisc # killall and friends
         file # Query file type
         zip
-        python3
+        python
 
         pinentry-gnome3 # until pinentry-qt introduces caching
       ];

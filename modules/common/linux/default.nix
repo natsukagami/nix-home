@@ -418,6 +418,7 @@ in
     # programs.gnome-terminal.enable = true;
     # KDEConnect is just based
     programs.kdeconnect.enable = true;
+    programs.partition-manager.enable = true;
     # Flatpaks are useful... sometimes...
     services.flatpak.enable = true;
     # AppImages should run
