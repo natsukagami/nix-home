@@ -125,7 +125,14 @@ with lib;
 
     programs.rofi = {
       enable = true;
-      package = pkgs.rofi-wayland;
+      package =
+        /**
+          Use rofi-wayland if we're on stable
+        */
+        if builtins.compareVersions pkgs.rofi-unwrapped.version "2.0.0" >= 0 then
+          pkgs.rofi
+        else
+          pkgs.rofi-wayland;
       cycle = true;
       font = "monospace";
       terminal = "${lib.getExe config.programs.kitty.package}";

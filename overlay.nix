@@ -18,13 +18,6 @@ let
     # Typst updates really quickly.
     typst = final.unstable.typst;
     typst-lsp = final.unstable.typst-lsp;
-    # Use 1.7.9 until things get better.
-    rofi-wayland-unwrapped =
-      assert final.lib.assertMsg (
-        prev.rofi-wayland-unwrapped.version == final.unstable.rofi-wayland-unwrapped.version
-        || prev.rofi-wayland-unwrapped.version == "1.7.8+wayland1"
-      ) "rofi-wayland-unwrapped updated, use stable version";
-      final.unstable.rofi-wayland-unwrapped;
     # Tailscale newer = better
     tailscale = final.unstable.tailscale;
     # rbw 1.14 has SSH
