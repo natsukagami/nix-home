@@ -1,13 +1,13 @@
 {
   gotosocial,
   fetchurl,
-  fetchgit,
+  fetchzip,
   ...
 }:
 gotosocial.overrideAttrs (
   finalAttrs: prevAttrs: {
     pname = "gotosocial-dtth";
-    version = "0.19.1";
+    version = "0.20.0-rc1";
     ldflags = [
       "-s"
       "-w"
@@ -16,12 +16,17 @@ gotosocial.overrideAttrs (
     doCheck = false;
     web-assets = fetchurl {
       url = "https://codeberg.org/superseriousbusiness/gotosocial/releases/download/v${finalAttrs.version}/gotosocial_${finalAttrs.version}_web-assets.tar.gz";
-      hash = "sha256-UtxFm8ZSpIGXruBdanSF1lkA7Gs1FJNhoqzDTqSNYUM=";
+      hash = "sha256-yl4sGB4o+hdfYcbl1LViBDJ8Sn/BKFe43c41JfhXylg=";
     };
-    src = fetchgit {
-      url = "https://codeberg.org/superseriousbusiness/gotosocial.git";
-      rev = "v${finalAttrs.version}";
-      hash = "sha256-RhJRdRxTdbZwIAGD3gH0mjDfCvdS7xkRxcUd1ArsNoo=";
+    src = fetchzip {
+      url = "https://codeberg.org/superseriousbusiness/gotosocial/releases/download/v${finalAttrs.version}/gotosocial-${finalAttrs.version}-source-code.tar.gz";
+      hash = "sha256-adB+zHXhfUJwMg606GYTkDMPxHExJSk6N6h/uB13KQ0=";
+      stripRoot = false;
     };
+    postInstall = ''
+      tar xf ${finalAttrs.web-assets}
+      mkdir -p $out/share/gotosocial
+      mv web $out/share/gotosocial/
+    '';
   }
 )
