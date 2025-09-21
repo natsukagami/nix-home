@@ -74,20 +74,18 @@ let
       '';
     });
 
-    vesktop = prev.vesktop.overrideAttrs (attrs: {
-      postFixup =
-        let
-          flagToReplace =
-            if final.lib.hasInfix "--enable-wayland-ime=true" attrs.postFixup then
-              "--enable-wayland-ime=true"
-            else
-              "--enable-wayland-ime";
-        in
+    discord-canary = prev.discord-canary.overrideAttrs (attrs:
+    # if final.lib.hasInfix "NIXOS_OZONE_WL" prevAttrs.installPhase then
+    {
+      installPhase =
         builtins.replaceStrings
-          [ "NIXOS_OZONE_WL" flagToReplace ]
-          [ "WAYLAND_DISPLAY" "${flagToReplace} --wayland-text-input-version=3" ]
-          attrs.postFixup;
-    });
+          [ "NIXOS_OZONE_WL" "--enable-wayland-ime=true" ]
+          [ "WAYLAND_DISPLAY" "--enable-wayland-ime=true --wayland-text-input-version=3" ]
+          attrs.installPhase;
+    }
+    # else
+    #   { }
+    );
 
     swaybg = prev.swaybg.overrideAttrs (
       finalAttrs: prevAttrs: {
