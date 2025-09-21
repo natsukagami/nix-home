@@ -52,20 +52,6 @@ let
       }
     );
 
-    vikunja = prev.vikunja.overrideAttrs (
-      finalAttrs: prevAttrs: {
-        version = "${prevAttrs.version}-${inputs.vikunja.rev}";
-        src = inputs.vikunja;
-        vendorHash = "sha256-duQ/B153PAd+ow/VbiWvqbFiPeyp2qL/FzROm2/wtKM=";
-        # vendorHash = final.lib.fakeHash;
-
-        checkPhase = ''
-          mage test:feature
-          mage test:web
-        '';
-      }
-    );
-
     luminance = prev.luminance.overrideAttrs (attrs: {
       nativeBuildInputs = attrs.nativeBuildInputs ++ [ final.wrapGAppsHook ];
       buildInputs = attrs.buildInputs ++ [ final.glib ];

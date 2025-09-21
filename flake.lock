@@ -1139,7 +1139,6 @@
         "rust-overlay": "rust-overlay_3",
         "secrets": "secrets",
         "sops-nix": "sops-nix",
-        "vikunja": "vikunja",
         "youmubot": "youmubot",
         "zen-browser": "zen-browser"
       }
@@ -1426,22 +1425,6 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
-        "type": "github"
-      }
-    },
-    "vikunja": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1749805508,
-        "narHash": "sha256-tb9SJxlhMi2YIR1YWls0Y9OfeJ9y3qfL+N+W6RDtSOs=",
-        "owner": "go-vikunja",
-        "repo": "vikunja",
-        "rev": "a9714f6a4ae6274cb6dc88a1c38ddbdf35de6460",
-        "type": "github"
-      },
-      "original": {
-        "owner": "go-vikunja",
-        "repo": "vikunja",
         "type": "github"
       }
     },

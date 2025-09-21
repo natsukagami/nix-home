@@ -51,8 +51,6 @@
     kak-lsp.flake = false;
     nixos-m1.url = "github:tpwrules/nixos-apple-silicon";
     nixos-m1.inputs.nixpkgs.follows = "nixpkgs";
-    vikunja.url = "github:go-vikunja/vikunja";
-    vikunja.flake = false;
 
     # ---
     # DEPLOYMENT ONLY! secrets
