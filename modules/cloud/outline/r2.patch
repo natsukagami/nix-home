@@ -67,6 +67,7 @@ index d2288c215..72251962c 100644
      });
  
 -    const presignedPost = await FileStorage.getPresignedPost(
+-      ctx,
 -      key,
 -      acl,
 -      maxUploadSize,
@@ -85,6 +86,7 @@ index d2288c215..72251962c 100644
 +      method = "POST";
 +
 +      presignedPost = await FileStorage.getPresignedPost(
++        ctx,
 +        key,
 +        acl,
 +        maxUploadSize,
