@@ -26,7 +26,7 @@ in
     # networking.dhcpcd.extraConfig = "nohook resolv.conf";
     # networking.networkmanager.dns = "none";
 
-    services.dnscrypt-proxy2 = {
+    services.dnscrypt-proxy = {
       enable = true;
 
       settings = {
