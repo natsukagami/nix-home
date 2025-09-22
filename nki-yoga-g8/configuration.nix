@@ -65,7 +65,8 @@
   services.power-profiles-daemon.enable = false;
   # powerManagement.enable = true;
   # powerManagement.powertop.enable = true;
-  services.logind.lidSwitch = "suspend";
+  services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
+  systemd.sleep.extraConfig = "HibernateDelaySec=4h";
 
   # Printing
   services.printing.drivers = with pkgs; [ epfl-cups-drivers ];
