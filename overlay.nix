@@ -22,6 +22,8 @@ let
     tailscale = final.unstable.tailscale;
     # rbw 1.14 has SSH
     rbw = final.unstable.rbw;
+    # Renovate updates frequently
+    renovate = final.unstable.renovate;
   };
   overlay-imported = final: prev: {
     # sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };

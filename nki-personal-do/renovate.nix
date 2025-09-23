@@ -1,6 +1,5 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }:
@@ -37,8 +36,10 @@
       go
       cargo
       nodejs
+      yarn
       gradle
       docker
+      config.nix.package
 
       nix-update
     ];
