@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }:
 {
@@ -14,6 +15,7 @@
     reloadUnits = [ ];
   };
 
+  systemd.services.renovate.unitConfig.ReadWritePaths = [ "/mnt/data/cache/renovate" ];
   services.renovate = {
     enable = true;
     credentials = {
@@ -24,6 +26,7 @@
     settings = {
       platform = "gitea";
       endpoint = "https://git.dtth.ch";
+      cacheDir = lib.mkForce "/mnt/data/cache/renovate";
 
       autodiscover = true;
       binarySource = "global";
