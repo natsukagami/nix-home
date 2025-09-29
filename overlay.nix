@@ -109,6 +109,17 @@ let
       meta.mainProgram = "kak-lsp";
     };
 
+    rbw = prev.rbw.overrideAttrs (
+      finalAttrs: prevAttrs: {
+        patches = (prevAttrs.patches or [ ]) ++ [
+          (final.fetchpatch {
+            url = "https://patch-diff.githubusercontent.com/raw/doy/rbw/pull/280.patch";
+            hash = "sha256-A2LK2yFJL84F7f0Nh2vfbLoauP9xBCQCm5sflcaVv3w=";
+          })
+        ];
+      }
+    );
+
     zen-browser-bin = inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
       inherit (inputs.zen-browser.packages.${final.stdenv.system}) zen-browser-unwrapped;
       wrapFirefox =

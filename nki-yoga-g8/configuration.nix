@@ -65,7 +65,7 @@
   services.power-profiles-daemon.enable = false;
   # powerManagement.enable = true;
   # powerManagement.powertop.enable = true;
-  services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
+  services.logind.extraConfig = "HandleLidSwitch=suspend-then-hibernate";
   systemd.sleep.extraConfig = "HibernateDelaySec=4h";
 
   # Printing
