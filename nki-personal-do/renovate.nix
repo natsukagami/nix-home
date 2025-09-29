@@ -15,7 +15,7 @@
     reloadUnits = [ ];
   };
 
-  systemd.services.renovate.unitConfig.ReadWritePaths = [ "/mnt/data/cache/renovate" ];
+  systemd.services.renovate.serviceConfig.ReadWritePaths = [ "/mnt/data/cache/renovate" ];
   services.renovate = {
     enable = true;
     credentials = {
