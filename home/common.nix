@@ -51,6 +51,8 @@
     ## File compression stuff
     ouch
 
+    pkgs.unstable.scala-cli
+
     distrobox
   ];
   home.file.".latexmkrc".text = ''

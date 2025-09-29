@@ -38,6 +38,10 @@ let
 
   overlay-versioning = final: prev: {
 
+    tailscale = prev.tailscale.overrideAttrs (oa: {
+      doCheck = false;
+    }); # until new kernel is applied
+
     input-remapper = final.unstable.input-remapper;
 
     kakoune-unwrapped = prev.kakoune-unwrapped.overrideAttrs (attrs: {
