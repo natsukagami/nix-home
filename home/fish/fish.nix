@@ -146,7 +146,7 @@ in
         description = "Search with ripgrep and put results into the editor";
       };
       echo-today = "date +%F";
-      newfile = "mkdir -p (dirname $argv[-1]) && touch $argv";
+      newfile = "for f in $argv; mkdir -p (dirname $f) && touch $f && printf 'New file %s created.\n' $f; end";
 
       # pls
       pls = {
