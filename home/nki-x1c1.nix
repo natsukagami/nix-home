@@ -55,6 +55,7 @@ in
   linux.graphical.startup = options.linux.graphical.startup.default ++ [ pkgs.slack ];
   linux.graphical.defaults.webBrowser.package = pkgs.zen-browser-bin;
   linux.graphical.defaults.webBrowser.desktopFile = "zen.desktop";
+  home.pointerCursor.name = lib.mkForce "Adwaita"; # More serious
   # Enable sway
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 14.0;
