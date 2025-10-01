@@ -37,6 +37,7 @@ let
     echo $CHOICE > $PREVIOUS_CHOICE_FILE
     switch $CHOICE
       case "Niri"
+        systemctl --user set-environment XDG_MENU_PREFIX=plasma-
         exec niri-session
       case "sway"
         systemctl --user unset-environment NIXOS_OZONE_WL
