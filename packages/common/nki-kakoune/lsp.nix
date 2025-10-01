@@ -629,9 +629,8 @@ in
   extraPaths = lib.makeBinPath (serverPackages ++ [ kak-lsp ]);
   plugin = writeTextDir "share/kak/autoload/kak-lsp.kak" ''
     hook global KakBegin .* %{
-      try %{
-        eval %sh{kak-lsp --kakoune -s $kak_session}
-      }
+      eval %sh{kak-lsp}
+      remove-hooks global lsp-filetype-.*
 
       lsp-enable
       map global lsp N -docstring "Display the next message request" ": lsp-show-message-request-next<ret>"
