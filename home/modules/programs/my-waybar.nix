@@ -118,6 +118,11 @@ in
                     "\\((\\d+)\\) Discord \\| (.*)" = "[🗨️] {$1} $2";
                   };
                 };
+                "niri/workspaces" = {
+                  format = "{value}{icon}";
+                  format-icons.default = "";
+                  format-icons.urgent = "󱨈";
+                };
                 "niri/window" = {
                   format = "{title}";
                   "rewrite" = {
@@ -329,8 +334,12 @@ in
             border-bottom: 3px solid transparent;
         }
 
+        #workspaces button.active {
+            background: rgba(95, 142, 139, 0.4);
+        }
+
         #workspaces button.focused {
-            background: #64727D;
+            background: rgba(100, 114, 125, 1);
             border-bottom: 3px solid #ffffff;
         }
 

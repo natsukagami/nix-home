@@ -37,14 +37,14 @@ let
               tooltip = false;
               format = "{icon} {}";
               format-icons = {
-                notification = "<span foreground='red'><sup></sup></span>";
-                none = "";
-                dnd-notification = "<span foreground='red'><sup></sup></span>";
-                dnd-none = "";
-                inhibited-notification = "<span foreground='red'><sup></sup></span>";
-                inhibited-none = "";
-                dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
-                dnd-inhibited-none = "";
+                notification = "🔔";
+                none = "🎐";
+                dnd-notification = "🤫";
+                dnd-none = "🔕";
+                inhibited-notification = "🔔";
+                inhibited-none = "🎐";
+                dnd-inhibited-notification = "🤫";
+                dnd-inhibited-none = "🔕";
               };
               return-type = "json";
               # exec-if = "which swaync-client";
