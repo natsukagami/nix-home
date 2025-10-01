@@ -23,8 +23,10 @@ in
       default = [
         "status"
         "cmd_duration"
+        "context"
         "jobs"
         "direnv"
+        "bun"
         "node"
         "python"
         "rustc"
@@ -39,8 +41,10 @@ in
         "toolbox"
         "terraform"
         "aws"
+        "nix_shell"
         "crystal"
         "elixir"
+        "zig"
         "nix_shell"
       ];
     };
@@ -66,6 +70,13 @@ in
       );
     in
     mkIf cfg.enable {
+      interactiveShellInit = ''
+        # Configure tide items
+        set -g tide_left_prompt_items ${
+          concatMapStringsSep " " escapeShellArg cfg.leftItems
+        } newline character
+        set -g tide_right_prompt_items ${concatMapStringsSep " " escapeShellArg cfg.rightItems} time
+      '';
       functions = tideItems (
         {
           nix_shell = ''
@@ -85,23 +96,11 @@ in
           src = pkgs.fetchFromGitHub {
             owner = "IlanCosman";
             repo = "tide";
-            rev = "v6.0.1";
+            rev = "v6.2.0";
             # sha256 = lib.fakeSha256;
-            sha256 = "sha256-oLD7gYFCIeIzBeAW1j62z5FnzWAp3xSfxxe7kBtTLgA=";
+            sha256 = "sha256-1ApDjBUZ1o5UyfQijv9a3uQJ/ZuQFfpNmHiDWzoHyuw=";
           };
         }
       ];
     };
-
-  config.xdg.configFile."fish/tide/init.fish" = {
-    text = ''
-      # Configure tide items
-      set -U tide_left_prompt_items ${
-        concatMapStringsSep " " escapeShellArg cfg.leftItems
-      } newline character
-      set -U tide_right_prompt_items ${concatMapStringsSep " " escapeShellArg cfg.rightItems} time
-    '';
-
-    onChange = "fish ~/.config/fish/tide/init.fish";
-  };
 }
