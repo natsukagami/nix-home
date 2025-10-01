@@ -112,7 +112,6 @@ in
         feh # For images?
         deluge # Torrent client
         pavucontrol # PulseAudio control panel
-        sublime-music # For navidrome
         # cinny-desktop
         gajim
         brave
@@ -267,10 +266,10 @@ in
       package = pkgs.kdePackages.breeze-icons;
       name = "breeze";
     };
-    gtk.theme = {
-      package = pkgs.kdePackages.breeze-gtk;
-      name = "Breeze";
-    };
+    # gtk.theme = {
+    #   package = pkgs.kdePackages.breeze-gtk;
+    #   name = "Breeze";
+    # };
     gtk.gtk2.configLocation = "${config.xdg.configHome}/gtk-2.0/gtkrc";
     gtk.gtk2.extraConfig = ''
       gtk-enable-animations=1
