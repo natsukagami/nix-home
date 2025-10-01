@@ -229,11 +229,11 @@ let
                   byNameParameters.enable = true;
                 };
                 # From kakoune-lsp's own options
-                icons = "unicode";
+                icons = "none";
                 isHttpEnabled = true;
                 statusBarProvider = "show-message";
                 compilerOptions = {
-                  overrideDefFormat = "unicode";
+                  overrideDefFormat = "ascii";
                 };
               };
               package = metals;
