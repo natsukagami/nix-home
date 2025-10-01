@@ -134,6 +134,30 @@ let
       #   sources = inputs.zen-browser.inputs;
       # };
     };
+
+    noto-fonts-emoji-blob-bin = prev.noto-fonts-emoji-blob-bin.overrideAttrs (
+      finalAttrs: prevAttrs: {
+        version = "17r1";
+        src = final.fetchurl {
+          name = "Blobmoji.ttf";
+          url = "https://github.com/DavidBerdik/blobmoji2/releases/download/blobmoji-${finalAttrs.version}/NotoColorEmoji.ttf";
+          hash = "sha256-/8dfFW9lAn1h6pdrfvYydkFAORPImBI3Gj0GT9FcZ/I=";
+        };
+      }
+    );
+
+    kitty = prev.kitty.overrideAttrs (
+      finalAttrs: prevAttrs: {
+        patches = (prevAttrs.patches or [ ]) ++ [
+          # Fix test failure with fish >= 4.1
+          # See: https://github.com/kovidgoyal/kitty/commit/2f991691f9dca291c52bd619c800d3c2f3eb0d66
+          (final.fetchpatch {
+            url = "https://github.com/kovidgoyal/kitty/commit/2f991691f9dca291c52bd619c800d3c2f3eb0d66.patch";
+            hash = "sha256-LIQz3e2qgiwpsMd5EbEcvd7ePEEPJvIH4NmNpxydQiU=";
+          })
+        ];
+      }
+    );
   };
 in
 [
