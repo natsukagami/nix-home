@@ -139,8 +139,8 @@ with lib;
         let
           # Nerd Fonts glyph map
           glyphMap = pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/Sharparam/dotfiles/main/kitty/.config/kitty/font-nerd-symbols.conf";
-            hash = "sha256-1OaDWLC3y8ASD2ttRWWgPEpRnfKXu6H6vS3cFVpzT0o=";
+            url = "https://raw.githubusercontent.com/Sharparam/dotfiles/5572c57bbcd8efbffb84587264d41e90eae9a934/kitty/.config/kitty/font-nerd-symbols.conf";
+            hash = "sha256-fXX+nboqi4CaL/P5yst7PP05amcCk5DJ/QnQeqAR6nA=";
           };
         in
         ''
