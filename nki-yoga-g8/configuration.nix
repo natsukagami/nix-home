@@ -38,10 +38,10 @@
   # Power Management
   services.upower = {
     enable = true;
-    criticalPowerAction = "PowerOff";
+    criticalPowerAction = "Hibernate";
 
     usePercentageForPolicy = true;
-    percentageCritical = 3;
+    percentageCritical = 5;
     percentageLow = 10;
   };
   services.tlp.enable = true;
