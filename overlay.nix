@@ -146,7 +146,7 @@ let
       }
     );
 
-    kitty = prev.kitty.overrideAttrs (
+    kitty = prev.unstable.kitty.overrideAttrs (
       finalAttrs: prevAttrs: {
         patches = (prevAttrs.patches or [ ]) ++ [
           # Fix test failure with fish >= 4.1
