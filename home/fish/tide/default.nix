@@ -45,7 +45,7 @@ in
         "crystal"
         "elixir"
         "zig"
-        "nix_shell"
+        # "nix_shell"
       ];
     };
     leftItems = mkOption {
