@@ -9,6 +9,9 @@
   sops.secrets."outline/s3-secret-key" = {
     owner = "outline";
   };
+  sops.secrets."outline/extra-env" = {
+    owner = "outline";
+  };
 
   services.outline = {
     enable = true;
@@ -55,6 +58,9 @@
   };
   cloud.postgresql.databases = [ "outline" ];
   systemd.services.outline.requires = [ "postgresql.service" ];
+  systemd.services.outline.serviceConfig.EnvironmentFile = [
+    config.sops.secrets."outline/extra-env".path
+  ];
   systemd.services.outline.environment = {
     AWS_S3_R2 = "true";
     AWS_S3_R2_PUBLIC_URL = "https://s3.wiki.dtth.ch";
