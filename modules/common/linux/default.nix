@@ -85,6 +85,9 @@ let
         programs.ydotool.enable = true;
         users.extraGroups.${config.programs.ydotool.group}.members = [ cfg.username ];
 
+        # GPU recorder
+        programs.gpu-screen-recorder.enable = true;
+
       };
 
     logitech =

@@ -324,6 +324,14 @@ in
           min-height = 1;
           max-height = 1;
         }
+        # gsr
+        {
+          matches = [ { title = "gsr ui.*"; } ];
+          open-floating = true;
+          open-maximized = true;
+          open-fullscreen = false;
+          open-focused = true;
+        }
 
         # Kitty dimming
         {
