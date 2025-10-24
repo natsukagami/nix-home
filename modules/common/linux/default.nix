@@ -14,7 +14,6 @@ let
     adb =
       { config, ... }:
       mkIf config.common.linux.enable {
-        services.udev.packages = with pkgs; [ android-udev-rules ];
         programs.adb.enable = true;
         users.users.${config.common.linux.username}.extraGroups = [ "adbusers" ];
       };

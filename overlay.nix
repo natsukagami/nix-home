@@ -146,18 +146,6 @@ let
       }
     );
 
-    kitty = prev.unstable.kitty.overrideAttrs (
-      finalAttrs: prevAttrs: {
-        patches = (prevAttrs.patches or [ ]) ++ [
-          # Fix test failure with fish >= 4.1
-          # See: https://github.com/kovidgoyal/kitty/commit/2f991691f9dca291c52bd619c800d3c2f3eb0d66
-          (final.fetchpatch {
-            url = "https://github.com/kovidgoyal/kitty/commit/2f991691f9dca291c52bd619c800d3c2f3eb0d66.patch";
-            hash = "sha256-LIQz3e2qgiwpsMd5EbEcvd7ePEEPJvIH4NmNpxydQiU=";
-          })
-        ];
-      }
-    );
   };
 in
 [

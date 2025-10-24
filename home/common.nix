@@ -82,6 +82,12 @@
 
     my-broot.enable = true;
 
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options.line-numbers = true;
+    };
+
     direnv.enable = true;
     direnv.nix-direnv.enable = true;
     direnv.config.global.load_dotenv = true;
@@ -103,20 +109,14 @@
 
     git = {
       enable = true;
-      delta = {
-        enable = true;
-        options = {
-          line-numbers = true;
-        };
-      };
-      userEmail = "nki@nkagami.me";
-      userName = "Natsu Kagami";
       signing = {
         format = "ssh";
         key = "~/.ssh/nki@nkagami.me";
         signByDefault = true;
       };
-      extraConfig = {
+      settings = {
+        user.email = "nki@nkagami.me";
+        user.name = "Natsu Kagami";
         init.defaultBranch = "master";
         core.excludesFile = "${pkgs.writeText ".gitignore" ''
           .direnv
