@@ -7,7 +7,7 @@
 gotosocial.overrideAttrs (
   finalAttrs: prevAttrs: {
     pname = "gotosocial-dtth";
-    version = "0.20.0-rc1";
+    version = "0.20.1";
     ldflags = [
       "-s"
       "-w"
@@ -16,11 +16,11 @@ gotosocial.overrideAttrs (
     doCheck = false;
     web-assets = fetchurl {
       url = "https://codeberg.org/superseriousbusiness/gotosocial/releases/download/v${finalAttrs.version}/gotosocial_${finalAttrs.version}_web-assets.tar.gz";
-      hash = "sha256-yl4sGB4o+hdfYcbl1LViBDJ8Sn/BKFe43c41JfhXylg=";
+      hash = "sha256-0WvaPUVTMYd1tz7Rtmlp37vx/co4efhDdSWBc4gUzAU=";
     };
     src = fetchzip {
       url = "https://codeberg.org/superseriousbusiness/gotosocial/releases/download/v${finalAttrs.version}/gotosocial-${finalAttrs.version}-source-code.tar.gz";
-      hash = "sha256-adB+zHXhfUJwMg606GYTkDMPxHExJSk6N6h/uB13KQ0=";
+      hash = "sha256-8z2tBiEVcof0/G41gpc0S8Dye5nynwHSJpTzo/ZseFs=";
       stripRoot = false;
     };
     postInstall = ''
