@@ -1,5 +1,6 @@
 {
   config,
+  osConfig,
   pkgs,
   lib,
   ...
@@ -17,9 +18,6 @@
     ./modules/programs/openconnect-epfl.nix
     ./common-linux.nix
   ];
-
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
 
   # Temporarily disable the manuals
   manual.html.enable = false;
@@ -72,67 +70,105 @@
   ];
 
   # Programs
-  programs = {
-    bat = {
-      enable = true;
-      config = {
-        theme = "GitHub";
+  programs = lib.mkMerge [
+    {
+      # Let Home Manager install and manage itself.
+      home-manager.enable = true;
+
+      bat = {
+        enable = true;
+        config = {
+          theme = "GitHub";
+        };
       };
-    };
 
-    my-broot.enable = true;
+      my-broot.enable = true;
 
-    delta = {
-      enable = true;
-      enableGitIntegration = true;
-      options.line-numbers = true;
-    };
+      direnv.enable = true;
+      direnv.nix-direnv.enable = true;
+      direnv.config.global.load_dotenv = true;
 
-    direnv.enable = true;
-    direnv.nix-direnv.enable = true;
-    direnv.config.global.load_dotenv = true;
-
-    eza = {
-      enable = true;
-      enableFishIntegration = true;
-    };
-
-    fzf = {
-      enable = true;
-      enableFishIntegration = true;
-    };
-
-    gh = {
-      enable = true;
-      settings.git_protocol = "ssh";
-    };
-
-    git = {
-      enable = true;
-      signing = {
-        format = "ssh";
-        key = "~/.ssh/nki@nkagami.me";
-        signByDefault = true;
+      eza = {
+        enable = true;
+        enableFishIntegration = true;
       };
-      settings = {
-        user.email = "nki@nkagami.me";
-        user.name = "Natsu Kagami";
-        init.defaultBranch = "master";
-        core.excludesFile = "${pkgs.writeText ".gitignore" ''
-          .direnv
-          .envrc
-          .kakrc
-        ''}";
-        commit.verbose = true;
-        safe.directory = "*";
-        merge.conflictstyle = "zdiff3";
+
+      fzf = {
+        enable = true;
+        enableFishIntegration = true;
       };
-    };
 
-    gpg.enable = true;
+      gh = {
+        enable = true;
+        settings.git_protocol = "ssh";
+      };
 
-    jq.enable = true;
+      gpg.enable = true;
 
-    nushell.enable = true;
-  };
+      jq.enable = true;
+
+      nushell.enable = true;
+    }
+
+    # Git stuff
+    (
+      if osConfig.system.nixos.release == "25.05" then
+        {
+          git = {
+            enable = true;
+            delta = {
+              enable = true;
+              options.line-numbers = true;
+            };
+            signing = {
+              format = "ssh";
+              key = "~/.ssh/nki@nkagami.me";
+              signByDefault = true;
+            };
+            userEmail = "nki@nkagami.me";
+            userName = "Natsu Kagami";
+            extraConfig = {
+              init.defaultBranch = "master";
+              core.excludesFile = "${pkgs.writeText ".gitignore" ''
+                .direnv
+                .envrc
+                .kakrc
+              ''}";
+              commit.verbose = true;
+              safe.directory = "*";
+              merge.conflictstyle = "zdiff3";
+            };
+          };
+        }
+      else
+        {
+          delta = {
+            enable = true;
+            enableGitIntegration = true;
+            options.line-numbers = true;
+          };
+          git = {
+            enable = true;
+            signing = {
+              format = "ssh";
+              key = "~/.ssh/nki@nkagami.me";
+              signByDefault = true;
+            };
+            settings = {
+              user.email = "nki@nkagami.me";
+              user.name = "Natsu Kagami";
+              init.defaultBranch = "master";
+              core.excludesFile = "${pkgs.writeText ".gitignore" ''
+                .direnv
+                .envrc
+                .kakrc
+              ''}";
+              commit.verbose = true;
+              safe.directory = "*";
+              merge.conflictstyle = "zdiff3";
+            };
+          };
+        }
+    )
+  ];
 }
