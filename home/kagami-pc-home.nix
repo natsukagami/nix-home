@@ -28,6 +28,7 @@
       winetricks
       lutris
       steam
+      mangohud # Gaming HUD
 
       # Manage tlmc
       flacon
