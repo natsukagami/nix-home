@@ -94,6 +94,8 @@ let
     "catppuccin-latte-sky"
     "catppuccin-latte-maroon"
   ];
+
+  jsonFormat = pkgs.formats.json { };
 in
 {
   users.users.${user} = {
@@ -124,6 +126,16 @@ in
       BIND_NETWORK = "tcp";
       OG_PASSTHROUGH = true;
       TARGET = "http://127.0.0.1:${toString port}";
+      POLICY_FNAME = jsonFormat.generate "policy.json" {
+        bots = [
+          { import = "(data)/meta/default-config.yaml"; }
+          {
+            name = "api";
+            path_regex = "^/api/.*$";
+            action = "ALLOW";
+          }
+        ];
+      };
     };
   };
 
