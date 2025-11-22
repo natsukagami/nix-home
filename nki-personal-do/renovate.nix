@@ -4,6 +4,9 @@
   lib,
   ...
 }:
+let
+  tmpDir = "/mnt/data/cache/renovate";
+in
 {
   sops.secrets."renovate/RENOVATE_TOKEN" = {
     reloadUnits = [ ];
@@ -15,7 +18,7 @@
     reloadUnits = [ ];
   };
 
-  systemd.services.renovate.serviceConfig.ReadWritePaths = [ "/mnt/data/cache/renovate" ];
+  systemd.services.renovate.serviceConfig.ReadWritePaths = [ tmpDir ];
   services.renovate = {
     enable = true;
     credentials = {
@@ -26,7 +29,7 @@
     settings = {
       platform = "gitea";
       endpoint = "https://git.dtth.ch";
-      cacheDir = lib.mkForce "/mnt/data/cache/renovate";
+      cacheDir = lib.mkForce tmpDir;
 
       autodiscover = true;
       binarySource = "global";
@@ -48,5 +51,15 @@
     ];
 
     schedule = "*:00..50/10:00";
+  };
+
+  # Clean cache every day
+  systemd.tmpfiles.settings."10-renovate" = {
+    ${tmpDir}."q" = {
+      user = "root";
+      group = "root";
+      mode = "0777";
+      age = "1d";
+    };
   };
 }
