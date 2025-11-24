@@ -331,5 +331,10 @@ in
       };
       environment.systemPackages = [ pkgs.nvtopPackages.amd ];
     }
+    # Vial keyboard
+    {
+      environment.systemPackages = [ pkgs.vial ];
+      services.udev.packages = [ pkgs.vial ];
+    }
   ];
 }
