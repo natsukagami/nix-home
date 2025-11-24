@@ -203,6 +203,8 @@ in
     '';
 
     interactiveShellInit = ''
+      # Fix for https://github.com/nix-community/home-manager/issues/8178
+      set -p fish_complete_path ${config.programs.fish.package}/share/fish/completions
       # Sway!
       if status --is-login; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
         exec ${lib.getExe bootDesktop}
