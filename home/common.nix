@@ -37,7 +37,7 @@
     nix-output-monitor # Nice nix output formatting
     unstable.scala-next
     ## PDF Processors
-    poppler_utils
+    poppler-utils
     # TeX
     texlive.combined.scheme-full
     inkscape # for TeX svg

@@ -382,7 +382,7 @@ in
       fcitx5.waylandFrontend = true;
       fcitx5.addons = with pkgs; [
         fcitx5-mozc
-        fcitx5-unikey
+        qt6Packages.fcitx5-unikey
         fcitx5-gtk
       ];
     }
@@ -491,5 +491,7 @@ in
 
     # Trust my own cert
     security.pki.certificateFiles = [ ../../../nki-home/cert.pem ];
+
+    systemd.user.services.orca.wantedBy = lib.mkForce [ ]; # Temp fix for https://github.com/NixOS/nixpkgs/issues/462935
   };
 }

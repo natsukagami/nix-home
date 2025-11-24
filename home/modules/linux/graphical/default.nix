@@ -127,8 +127,8 @@ in
         anki-bin
 
         # Chat stuff
-        tdesktop
-        whatsapp-for-linux
+        telegram-desktop
+        wasistlos
         slack
         zoom-us
 

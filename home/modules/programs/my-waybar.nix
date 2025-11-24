@@ -280,8 +280,8 @@ in
                   };
                   "tooltip-format" = "MPD (connected)";
                   "tooltip-format-disconnected" = "MPD (disconnected)";
-                  "on-click" = "${pkgs.mpc_cli}/bin/mpc toggle";
-                  "on-click-right" = "${pkgs.mpc_cli}/bin/mpc stop";
+                  "on-click" = "${pkgs.mpc}/bin/mpc toggle";
+                  "on-click-right" = "${pkgs.mpc}/bin/mpc stop";
                   "on-click-middle" = "${cfg.terminal} --class=kitty_ncmpcpp ${pkgs.ncmpcpp}/bin/ncmpcpp";
                 };
                 "custom/media" = {

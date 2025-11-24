@@ -121,7 +121,7 @@
     colors_enabled = "yes";
     enable_window_title = "yes";
     main_window_color = "default";
-    execute_on_song_change = "${pkgs.libnotify}/bin/notify-send 'Now Playing' \"$(${pkgs.mpc_cli}/bin/mpc --format '%title% \\n%artist%' current)\"";
+    execute_on_song_change = "${pkgs.libnotify}/bin/notify-send 'Now Playing' \"$(${pkgs.mpc}/bin/mpc --format '%title% \\n%artist%' current)\"";
     autocenter_mode = "yes";
     centered_cursor = "yes";
     user_interface = "classic";

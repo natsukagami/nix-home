@@ -15,7 +15,7 @@ let
   app-menu = "${pkgs.dmenu}/bin/dmenu_path | ${pkgs.bemenu}/bin/bemenu | ${pkgs.findutils}/bin/xargs niri msg action spawn --";
 
   wallpaper = config.linux.graphical.wallpaper;
-  blurred-wallpaper = pkgs.runCommandNoCC "blurred-${baseNameOf wallpaper}" { } ''
+  blurred-wallpaper = pkgs.runCommand "blurred-${baseNameOf wallpaper}" { } ''
     ${lib.getExe pkgs.imagemagick} convert -blur 0x25 ${wallpaper} $out
   '';
 
@@ -503,9 +503,9 @@ in
           "Mod+Shift+V".action = toggle-window-floating;
           "Mod+Shift+Space".action = toggle-window-floating; # Sway compat
 
-          "Print".action = screenshot;
+          "Print".action.screenshot = [ ];
           "Ctrl+Print".action.screenshot-screen = [ ];
-          "Shift+Print".action = screenshot-window;
+          "Shift+Print".action.screenshot-window = [ ];
 
           "Mod+Shift+E".action = quit;
         }

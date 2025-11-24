@@ -59,7 +59,7 @@ let
     );
 
     luminance = prev.luminance.overrideAttrs (attrs: {
-      nativeBuildInputs = attrs.nativeBuildInputs ++ [ final.wrapGAppsHook ];
+      nativeBuildInputs = attrs.nativeBuildInputs ++ [ final.wrapGAppsHook3 ];
       buildInputs = attrs.buildInputs ++ [ final.glib ];
       postInstall = attrs.postInstall + ''
         glib-compile-schemas $out/share/glib-2.0/schemas
@@ -142,6 +142,17 @@ let
           name = "Blobmoji.ttf";
           url = "https://github.com/DavidBerdik/blobmoji2/releases/download/blobmoji-${finalAttrs.version}/NotoColorEmoji.ttf";
           hash = "sha256-/8dfFW9lAn1h6pdrfvYydkFAORPImBI3Gj0GT9FcZ/I=";
+        };
+      }
+    );
+
+    monkeysAudio = prev.monkeysAudio.overrideAttrs (
+      finalAttrs: prevAttrs: {
+        version = "11.86";
+        src = final.fetchzip {
+          url = "https://monkeysaudio.com/files/MAC_${builtins.concatStringsSep "" (final.lib.strings.splitString "." finalAttrs.version)}_SDK.zip";
+          hash = "sha256-YFw8TC38Nmdy37Bzo6p43+Ykt9fmvtAcJmZubsFqJHE=";
+          stripRoot = false;
         };
       }
     );
