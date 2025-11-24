@@ -286,29 +286,42 @@ in
         loadModels = [
           "deepseek-r1:14b"
           "gemma3:12b"
+          "gpt-oss:20b"
         ];
         acceleration = "rocm";
-        rocmOverrideGfx = "10.3.0";
+        host = "[::]";
       };
       systemd.services.ollama = {
         serviceConfig.LimitMEMLOCK = "${toString (16 * 1024 * 1024 * 1024)}";
       };
-      services.open-webui = {
-        enable = true;
-        port = 5689;
-        openFirewall = true;
-        host = "127.0.0.1";
-        environment = {
-          ANONYMIZED_TELEMETRY = "False";
-          DO_NOT_TRACK = "True";
-          SCARF_NO_ANALYTICS = "True";
-          ENV = "prod";
-          # ENABLE_SIGNUP = "false";
-        };
+      virtualisation.oci-containers.containers.open-webui = {
+        image = "ghcr.io/open-webui/open-webui:main";
+        autoStart = true;
+        ports = [ "5689:8080" ];
+        pull = "newer";
+        volumes = [ "open-webui:/app/backend/data" ];
       };
-      systemd.services.open-webui.path = [
-        pkgs.ffmpeg
-      ];
+      systemd.services.${config.virtualisation.oci-containers.containers.open-webui.serviceName} = {
+        requires = [ "ollama.service" ];
+        after = [ "ollama.service" ];
+      };
+      networking.firewall.allowedTCPPorts = [ 5689 ];
+      # services.open-webui = {
+      #   enable = true;
+      #   port = 5689;
+      #   openFirewall = true;
+      #   host = "127.0.0.1";
+      #   environment = {
+      #     ANONYMIZED_TELEMETRY = "False";
+      #     DO_NOT_TRACK = "True";
+      #     SCARF_NO_ANALYTICS = "True";
+      #     ENV = "prod";
+      #     # ENABLE_SIGNUP = "false";
+      #   };
+      # };
+      # systemd.services.open-webui.path = [
+      #   pkgs.ffmpeg
+      # ];
       services.nginx = {
         enable = true;
         recommendedProxySettings = true;

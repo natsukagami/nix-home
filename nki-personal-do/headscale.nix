@@ -40,7 +40,7 @@ let
         extra_records:
         - name: llm.kagamipc.dtth.ts
           type: A
-          value: 100.64.0.1
+          value: 100.64.0.4
         magic_dns: true
         nameservers:
           global: []

@@ -117,6 +117,10 @@ let
           defaultNetwork.settings.dns_enabled = true;
         };
 
+        # For quadlets
+        environment.etc."systemd/user-generators/podman-user-generator".source =
+          "${pkgs.podman}/lib/systemd/user-generators/podman-user-generator";
+
         virtualisation.oci-containers.backend = "podman";
       };
 
