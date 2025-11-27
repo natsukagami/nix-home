@@ -294,12 +294,16 @@ in
       systemd.services.ollama = {
         serviceConfig.LimitMEMLOCK = "${toString (16 * 1024 * 1024 * 1024)}";
       };
+      sops.secrets."open-webui/env" = { };
       virtualisation.oci-containers.containers.open-webui = {
         image = "ghcr.io/open-webui/open-webui:main";
         autoStart = true;
         ports = [ "5689:8080" ];
         pull = "newer";
         volumes = [ "open-webui:/app/backend/data" ];
+        environmentFiles = [
+          config.sops.secrets."open-webui/env".path
+        ];
       };
       systemd.services.${config.virtualisation.oci-containers.containers.open-webui.serviceName} = {
         requires = [ "ollama.service" ];
