@@ -42,7 +42,9 @@
     conduit.url = "gitlab:famedly/conduit/v0.10.9";
     nix-gaming.url = "github:fufexan/nix-gaming";
     zen-browser.url = "github:youwen5/zen-browser-flake";
+    niri-stable.url = "github:YaLTeR/niri/v25.11";
     niri.url = "github:sodiboo/niri-flake";
+    niri.inputs.niri-stable.follows = "niri-stable";
 
     # --- Sources
     kakoune.url = "github:mawww/kakoune";
