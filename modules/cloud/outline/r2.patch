@@ -1,24 +1,24 @@
 diff --git a/.env.sample b/.env.sample
-index 51046501d..6daf60347 100644
+index 76bb83f56..9c32039a9 100644
 --- a/.env.sample
 +++ b/.env.sample
-@@ -66,6 +66,8 @@ AWS_S3_UPLOAD_BUCKET_URL=http://s3:4569
+@@ -98,6 +98,8 @@ AWS_S3_UPLOAD_BUCKET_URL=http://s3:4569
  AWS_S3_UPLOAD_BUCKET_NAME=bucket_name_here
  AWS_S3_FORCE_PATH_STYLE=true
  AWS_S3_ACL=private
 +AWS_S3_R2=true
 +AWS_S3_R2_PUBLIC_URL=http://s3:4569
  
- # –––––––––––––– AUTHENTICATION ––––––––––––––
  
+ # ––––––––––––––––––––––––––––––––––––––
 diff --git a/app/utils/files.ts b/app/utils/files.ts
-index 16b66a2c4..c56ffd2b2 100644
+index d5cbbb329..5dddcb236 100644
 --- a/app/utils/files.ts
 +++ b/app/utils/files.ts
-@@ -88,8 +88,13 @@ export const uploadFile = async (
-     xhr.addEventListener("loadend", () => {
-       resolve(xhr.readyState === 4 && xhr.status >= 200 && xhr.status < 400);
-     });
+@@ -100,8 +100,13 @@ export const uploadFile = async (
+       xhr.withCredentials = !requiresPreflightRequest;
+     }
+ 
 -    xhr.open("POST", data.uploadUrl, true);
 -    xhr.send(formData);
 +    xhr.open(data.method, data.uploadUrl, true);
@@ -32,10 +32,21 @@ index 16b66a2c4..c56ffd2b2 100644
  
    if (!success) {
 diff --git a/server/env.ts b/server/env.ts
-index 5b420f2e1..4ea1e8d3c 100644
+index ea8e2aa1e..652a88f73 100644
 --- a/server/env.ts
 +++ b/server/env.ts
-@@ -519,6 +519,14 @@ export class Environment {
+@@ -424,7 +424,9 @@ export class Environment {
+    * Setting secure to false therefore does not mean that you would not use an
+    * encrypted connection.
+    */
+-  public SMTP_DISABLE_STARTTLS = this.toBoolean(environment.SMTP_DISABLE_STARTTLS ?? "false");
++  public SMTP_DISABLE_STARTTLS = this.toBoolean(
++    environment.SMTP_DISABLE_STARTTLS ?? "false"
++  );
+ 
+   /**
+    * Dropbox app key for embedding Dropbox files
+@@ -597,6 +599,14 @@ export class Environment {
      environment.AWS_S3_UPLOAD_BUCKET_NAME
    );
  
@@ -51,10 +62,10 @@ index 5b420f2e1..4ea1e8d3c 100644
     * Whether to force path style URLs for S3 objects, this is required for some
     * S3-compatible storage providers.
 diff --git a/server/routes/api/attachments/attachments.ts b/server/routes/api/attachments/attachments.ts
-index d2288c215..72251962c 100644
+index 2175b2ecc..c4bd29e0d 100644
 --- a/server/routes/api/attachments/attachments.ts
 +++ b/server/routes/api/attachments/attachments.ts
-@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
+@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
  import { AttachmentPreset } from "@shared/types";
  import { bytesToHumanReadable, getFileNameFromUrl } from "@shared/utils/files";
  import { AttachmentValidation } from "@shared/validations";
@@ -62,7 +73,15 @@ index d2288c215..72251962c 100644
  import { createContext } from "@server/context";
  import {
    AuthorizationError,
-@@ -83,16 +84,30 @@ router.post(
+@@ -27,6 +28,7 @@ import { APIContext } from "@server/types";
+ import { RateLimiterStrategy } from "@server/utils/RateLimiter";
+ import { assertIn } from "@server/validation";
+ import * as T from "./schema";
++import { PresignedPost } from "@aws-sdk/s3-presigned-post";
+ 
+ const router = new Router();
+ 
+@@ -134,17 +136,31 @@ router.post(
        userId: user.id,
      });
  
@@ -75,7 +94,7 @@ index d2288c215..72251962c 100644
 -    );
 +    let uploadUrl;
 +    let method;
-+    let presignedPost = {
++    let presignedPost: Partial<PresignedPost> = {
 +      fields: {},
 +    };
 +    if (env.AWS_S3_R2) {
@@ -103,10 +122,10 @@ index d2288c215..72251962c 100644
            "Cache-Control": "max-age=31557600",
            "Content-Type": contentType,
 diff --git a/server/storage/files/BaseStorage.ts b/server/storage/files/BaseStorage.ts
-index 339262cc5..03f658271 100644
+index 48959df6d..9b2088f8c 100644
 --- a/server/storage/files/BaseStorage.ts
 +++ b/server/storage/files/BaseStorage.ts
-@@ -26,6 +26,8 @@ export default abstract class BaseStorage {
+@@ -31,6 +31,8 @@ export default abstract class BaseStorage {
      contentType: string
    ): Promise<Partial<PresignedPost>>;
  
@@ -116,10 +135,10 @@ index 339262cc5..03f658271 100644
     * Returns a promise that resolves with a stream for reading a file from the storage provider.
     *
 diff --git a/server/storage/files/LocalStorage.ts b/server/storage/files/LocalStorage.ts
-index 83cf98c50..324e60dd9 100644
+index 503c24764..856532f5f 100644
 --- a/server/storage/files/LocalStorage.ts
 +++ b/server/storage/files/LocalStorage.ts
-@@ -30,6 +30,10 @@ export default class LocalStorage extends BaseStorage {
+@@ -34,6 +34,10 @@ export default class LocalStorage extends BaseStorage {
      });
    }
  
@@ -131,7 +150,7 @@ index 83cf98c50..324e60dd9 100644
      return "/api/files.create";
    }
 diff --git a/server/storage/files/S3Storage.ts b/server/storage/files/S3Storage.ts
-index beba39ab2..4f0fe09a9 100644
+index b44dc45cb..eb1df9b90 100644
 --- a/server/storage/files/S3Storage.ts
 +++ b/server/storage/files/S3Storage.ts
 @@ -4,6 +4,7 @@ import {
@@ -140,9 +159,9 @@ index beba39ab2..4f0fe09a9 100644
    GetObjectCommand,
 +  PutObjectCommand,
    ObjectCannedACL,
- } from "@aws-sdk/client-s3";
- import { Upload } from "@aws-sdk/lib-storage";
-@@ -58,6 +59,16 @@ export default class S3Storage extends BaseStorage {
+   HeadObjectCommand,
+   CopyObjectCommand,
+@@ -62,6 +63,16 @@ export default class S3Storage extends BaseStorage {
      return createPresignedPost(this.client, params);
    }
  
@@ -159,7 +178,7 @@ index beba39ab2..4f0fe09a9 100644
    private getPublicEndpoint(isServerUpload?: boolean) {
      if (env.AWS_S3_ACCELERATE_URL) {
        return env.AWS_S3_ACCELERATE_URL;
-@@ -137,10 +148,17 @@ export default class S3Storage extends BaseStorage {
+@@ -141,10 +152,17 @@ export default class S3Storage extends BaseStorage {
      );
    }
  
