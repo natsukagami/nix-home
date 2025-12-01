@@ -60,10 +60,6 @@ in
       description = "Exposed port";
       default = 9674;
     };
-    dataDir = mkOption {
-      type = types.str;
-      description = "Path to the data directory";
-    };
 
     settings = {
       allowedWebhookDomains = mkOption {
@@ -94,14 +90,12 @@ in
       script = lib.mkBefore ''
         ${lib.getExe pkgs.wait4x} http http://127.0.0.1:${toString cfg.port} -t 0 -q -- systemd-notify --ready &
       '';
-      unitConfig.RequiresMountsFor = [ cfg.dataDir ];
-      unitConfig.ReadWritePaths = [ cfg.dataDir ];
     };
     virtualisation.arion.projects.grist.settings = {
       services.grist-server.service = {
         image = images.grist;
         restart = "unless-stopped";
-        volumes = [ "${cfg.dataDir}:/persist" ];
+        volumes = [ "grist:/persist" ];
         environment = defaultEnv // {
           APP_HOME_URL = "https://${cfg.host}";
           ALLOWED_WEBHOOK_DOMAINS = lib.concatStringsSep "," cfg.settings.allowedWebhookDomains;
@@ -130,13 +124,9 @@ in
         volumes = [ "valkey:/data" ];
       };
       docker-compose.volumes = {
+        grist.driver = "local";
         valkey.driver = "local";
       };
-    };
-    systemd.tmpfiles.settings."10-grist".${cfg.dataDir}.d = {
-      user = "root";
-      group = "root";
-      mode = "0700";
     };
   };
 }

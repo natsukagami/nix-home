@@ -249,7 +249,6 @@
     enable = true;
     envFile = config.sops.secrets."grist/env".path;
     host = "tables.dtth.ch";
-    dataDir = "/mnt/data/grist";
   };
 
   # Trust my own cert
