@@ -19,15 +19,10 @@ let
       finalImageTag = "16-alpine";
       imageDigest = "sha256:b40547ea0c7bcb401d8f11c6a233ebe65e2067e5966e54ccf9b03c5f01c2957c";
     };
-    redis = mkImage {
-      imageName = "redis";
-      finalImageTag = "alpine";
-      imageDigest = "sha256:a5481d685c31d0078b319e39639cb4f5c2c9cf4ebfca1ef888f4327be9bcc5a7";
-    };
     authentik = mkImage {
       imageName = "ghcr.io/goauthentik/server";
-      finalImageTag = "2025.8.3";
-      imageDigest = "sha256:d4747a324d489d0436eb91cf02301d5a47bac455efad0e0ac56b3c193991067d";
+      finalImageTag = "2025.10.2";
+      imageDigest = "sha256:8322e449feefcc2416f0401038d5a1a28552c4403b079a59d3b4d978d8f3f530";
     };
   };
   authentikEnv = pkgs.writeText "authentik.env" ''
@@ -85,22 +80,6 @@ in
           "${postgresEnv}"
         ];
       };
-      services.redis.service = {
-        image = images.redis;
-        command = "--save 60 1 --loglevel warning";
-        restart = "unless-stopped";
-        healthcheck = {
-          test = [
-            "CMD-SHELL"
-            "redis-cli ping | grep PONG"
-          ];
-          start_period = "20s";
-          interval = "30s";
-          retries = 5;
-          timeout = "3s";
-        };
-        volumes = [ "redis:/data" ];
-      };
       services.server.service = {
         image = images.authentik;
         command = "server";
@@ -110,7 +89,6 @@ in
           "/var/lib/authentik/custom-templates:/templates"
         ];
         environment = {
-          AUTHENTIK_REDIS__HOST = "redis";
           AUTHENTIK_POSTGRESQL__HOST = "postgresql";
           AUTHENTIK_POSTGRESQL__USER = "authentik";
           AUTHENTIK_POSTGRESQL__NAME = "authentik";
@@ -122,7 +100,6 @@ in
         ports = [
           "127.0.0.1:${toString cfg.port}:9000"
         ];
-
       };
       services.worker.service = {
         image = images.authentik;
@@ -135,7 +112,6 @@ in
           "/var/lib/authentik/certs:/certs"
         ];
         environment = {
-          AUTHENTIK_REDIS__HOST = "redis";
           AUTHENTIK_POSTGRESQL__HOST = "postgresql";
           AUTHENTIK_POSTGRESQL__USER = "authentik";
           AUTHENTIK_POSTGRESQL__NAME = "authentik";
