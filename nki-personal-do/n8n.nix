@@ -34,7 +34,7 @@ in
 
   services.n8n = {
     enable = true;
-    webhookUrl = "https://${host}";
+    environment.WEBHOOK_URL = "https://${host}";
   };
 
   systemd.services.n8n = {
