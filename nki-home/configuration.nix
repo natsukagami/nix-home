@@ -283,12 +283,13 @@ in
       # LLM poop
       services.ollama = {
         enable = true;
+        package = pkgs.ollama-rocm;
         loadModels = [
           "deepseek-r1:14b"
           "gemma3:12b"
           "gpt-oss:20b"
         ];
-        acceleration = "rocm";
+        # acceleration = "rocm";
         host = "[::]";
       };
       systemd.services.ollama = {
