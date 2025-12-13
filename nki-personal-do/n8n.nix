@@ -50,7 +50,7 @@ in
       N8N_USER_FOLDER = lib.mkForce dataFolder;
       HOME = lib.mkForce dataFolder;
       N8N_HOST = host;
-      N8N_PORT = toString port;
+      N8N_PORT = lib.mkForce (toString port);
       N8N_LISTEN_ADDRESS = "127.0.0.1";
       N8N_HIRING_BANNER_ENABLED = "false";
       N8N_PROXY_HOPS = "1";
