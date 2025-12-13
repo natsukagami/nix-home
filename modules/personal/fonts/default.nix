@@ -17,8 +17,8 @@ with lib;
         ibm-plex
         plemoljp # IBM Plex + Mono JP
         nerd-fonts.symbols-only
-        noto-fonts
-        (pkgs.noto-fonts-cjk-sans or pkgs.noto-fonts-cjk)
+        # noto-fonts
+        # (pkgs.noto-fonts-cjk-sans or pkgs.noto-fonts-cjk)
         merriweather
         corefonts
         font-awesome_5
