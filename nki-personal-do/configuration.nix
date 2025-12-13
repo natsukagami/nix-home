@@ -164,16 +164,6 @@
   };
   cloud.conduit.heisenbridge = {
     enable = true;
-    package = pkgs.heisenbridge.overrideAttrs (old: rec {
-      version = "1.14.2";
-
-      src = pkgs.fetchFromGitHub {
-        owner = "hifi";
-        repo = "heisenbridge";
-        rev = "refs/tags/v${version}";
-        sha256 = "sha256-qp0LVcmWf5lZ52h0V58S6FoIM8RLOd6Y3FRb85j7KRg=";
-      };
-    });
     appserviceFile = config.sops.secrets.heisenbridge.path;
     homeserver = "https://m.nkagami.me";
   };
