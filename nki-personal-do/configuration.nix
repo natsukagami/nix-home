@@ -40,6 +40,8 @@
 
   system.stateVersion = "21.11";
 
+  time.timeZone = "Europe/Berlin";
+
   common.linux.enable = false; # Don't enable the "common linux" module, this is a special machine.
 
   # Personal user

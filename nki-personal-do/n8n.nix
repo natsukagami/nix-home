@@ -60,8 +60,6 @@ in
       N8N_HIDE_USAGE_PAGE = "true";
       # Security
       N8N_BLOCK_ENV_ACCESS_IN_NODE = "true";
-      # Timezone
-      GENERIC_TIMEZONE = "Europe/Berlin";
     };
     serviceConfig = {
       EnvironmentFile = [ secrets."n8n/env".path ];
