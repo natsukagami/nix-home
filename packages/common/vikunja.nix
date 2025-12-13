@@ -24,16 +24,17 @@ let
     '';
 in
 buildGoModule (attrs: {
-  version = "1.0.0-rc2";
+  version = "1.0.0-rc3";
 
   src = fetchFromGitHub {
     owner = "go-vikunja";
     repo = "vikunja";
     rev = "v${attrs.version}";
-    hash = "sha256-bKkw/GwNeJHOeMSz4GUoJv+aU1CYwUnJn1rpAlcD1Js=";
+    hash = "sha256-YetKB3neWvRp0043c9XLulRUpbJqioHSrqanzWrTM8M=";
   };
 
-  vendorHash = "sha256-zm2fgNGkanm5PalaFCrdvJVH1VVMdWchH28IB1ZwM+w=";
+  vendorHash = "sha256-p1IKRznebodPv8YojU/z5n3CtkObX310GAnuEvry8yk=";
+  # vendorHash = lib.fakeHash;
 
   frontend = stdenv.mkDerivation (finalAttrs: {
     pname = "vikunja-frontend";
@@ -53,7 +54,7 @@ buildGoModule (attrs: {
         sourceRoot
         ;
       fetcherVersion = 1;
-      hash = "sha256-IqjdYdQPckD7n7gWy7tw9tfKClCsBBGZtkWCDXZXM4Y=";
+      hash = "sha256-dC35ILN9gxonwAB4xqWcQhpoKkG8s3+sjjhuHF5UhNY=";
       # hash = lib.fakeHash;
     };
 
