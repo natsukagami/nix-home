@@ -215,6 +215,8 @@ let
                 "build.sbt"
                 "build.sc"
                 "build.mill"
+                "project.scala"
+                ".git"
               ];
               settings_section = "metals";
               settings.metals = {
