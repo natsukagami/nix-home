@@ -215,13 +215,13 @@ in
         enable = true;
         user = "nki";
         startWhenNeeded = true;
-        extraConfig = ''
-          audio_output {
-            type "pipewire"
-            name "pipewire local"
-            dsd "yes"
+        settings.audio_output = [
+          {
+            type = "pipewire";
+            name = "pipewire_local";
+            dsd = "yes";
           }
-        '';
+        ];
       };
       systemd.services.mpd.environment = {
         # https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/609
