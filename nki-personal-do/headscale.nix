@@ -58,12 +58,7 @@ in
       };
 
       dns = {
-        nameservers.global = [
-          "1.1.1.1"
-          "1.0.0.1"
-          "2606:4700:4700::1111"
-          "2606:4700:4700::1001"
-        ];
+        override_local_dns = false;
         base_domain = "dtth.ts";
         extra_records = [
           {
