@@ -3,7 +3,8 @@
   kakoune,
   kakoune-unwrapped,
   nki-kak-util ? callPackage ./utils.nix { },
-  nki-kak-lsp ? callPackage ./lsp.nix { },
+  languages ? callPackage ./languages { util = nki-kak-util; },
+  nki-kak-lsp ? callPackage ./lsp.nix { overrideConfig = languages.lspConfigWrapper; },
   nki-kak-rc ? callPackage ./rc.nix { },
   nki-kak-plugins ? callPackage ./plugins.nix { util = nki-kak-util; },
   nki-kak-kaktex ? callPackage ./kaktex { },
@@ -21,7 +22,8 @@
       nki-kak-faces
       nki-kak-rc
       nki-kak-lsp.plugin
-    ];
+    ]
+    ++ languages.plugins;
 }).overrideAttrs
   (attrs: {
     buildCommand = ''
