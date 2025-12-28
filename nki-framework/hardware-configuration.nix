@@ -25,15 +25,15 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.kernelParams = [
     # Hibernation
-    "resume=UUID=fa8aaf51-b99f-4fb4-9230-8c0957d8af3f"
-    "resume_offset=5776640" # btrfs inspect-internal map-swapfile -r /var/swapfile
+    "resume=UUID=cf280463-b8cb-4e5d-bff3-973068a2c8d5"
+    "resume_offset=7349504" # btrfs inspect-internal map-swapfile -r /var/swapfile
   ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/fa8aaf51-b99f-4fb4-9230-8c0957d8af3f";
+    device = "/dev/mapper/cryptroot";
     fsType = "btrfs";
     options = [
-      "subvol=root"
+      "subvol=nixos"
       "compress=zstd"
     ];
   };
@@ -45,16 +45,16 @@
   common.linux.luksDevices."cryptroot" = "/dev/disk/by-uuid/94226aae-6d1c-401a-bfad-3aa5f371a365";
 
   fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/fa8aaf51-b99f-4fb4-9230-8c0957d8af3f";
+    device = "/dev/mapper/cryptroot";
     fsType = "btrfs";
     options = [
-      "subvol=home"
+      "subvol=nixos/home"
       "compress=zstd"
     ];
   };
 
   fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/fa8aaf51-b99f-4fb4-9230-8c0957d8af3f";
+    device = "/dev/mapper/cryptroot";
     fsType = "btrfs";
     options = [
       "subvol=nix"

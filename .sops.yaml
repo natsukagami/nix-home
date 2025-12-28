@@ -34,4 +34,4 @@ creation_rules:
     key_groups:
     - age:
         - *nki_framework
-        - age1vgh6kvee8lvxylm7z86fpl3xzjyjs4u3zdfkyf064rjvxk9fpumsew7n27 # The machine itself
+        - age1f0daf47x6cadnw2r00gv674rtdh2aszuvwcdhzss36x24zdp0f0swerfn3 # The machine itself
