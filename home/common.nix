@@ -15,7 +15,6 @@
     ./modules/programs/my-sway
     ./modules/programs/my-niri.nix
     ./modules/programs/my-kitty
-    ./modules/programs/openconnect-epfl.nix
     ./common-linux.nix
   ];
 
@@ -52,6 +51,8 @@
     pkgs.unstable.scala-cli
 
     distrobox
+
+    openconnect-epfl
   ];
   home.file.".latexmkrc".text = ''
     $pdf_previewer = '${lib.getExe' pkgs.xdg-utils "xdg-open"}';

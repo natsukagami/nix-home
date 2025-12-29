@@ -211,6 +211,11 @@
       packages.x86_64-linux.deploy-rs = deploy-rs.packages.x86_64-linux.default;
       apps.x86_64-linux.deploy-rs = deploy-rs.apps.x86_64-linux.default;
 
+      packages.x86_64-linux.openconnect-epfl =
+        (import nixpkgs-unstable { system = "x86_64-linux"; }).callPackage
+          ./package/common/openconnect-epfl.nix
+          { };
+
       packages.x86_64-linux.nki-kakoune = nki-kakoune-from-pkgs (
         import nixpkgs-unstable { system = "x86_64-linux"; }
       );
