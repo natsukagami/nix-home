@@ -25,7 +25,9 @@ set global grepcmd "rg --line-number --no-column --no-heading --color=never "
 
 # Kitty-specific options
 hook -group windowing global KakBegin .* %{
-  set global kitty_window_type os-window
+  try %{
+    set global kitty_window_type os-window
+  }
 }
 
 # Comment line and block
