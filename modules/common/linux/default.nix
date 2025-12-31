@@ -234,6 +234,11 @@ in
         type = types.str;
         description = "Host name for your machine";
       };
+      country = mkOption {
+        type = types.str;
+        description = "Wireless country code";
+        default = "CH";
+      };
       dnsServers = mkOption {
         type = types.listOf types.str;
         description = "DNS server list";
@@ -351,7 +356,10 @@ in
     systemd.network.wait-online.enable = false;
     networking.hostName = cfg.networking.hostname;
     networking.wireless.iwd.enable = true;
-    networking.wireless.iwd.settings.General.EnableNetworkConfiguration = true;
+    networking.wireless.iwd.settings.General = {
+      EnableNetworkConfiguration = true;
+      Country = cfg.networking.country;
+    };
     systemd.network.networks = builtins.mapAttrs (name: cfg: {
       matchConfig.Name = cfg.match;
       networkConfig.DHCP = "yes";
@@ -375,6 +383,7 @@ in
         ExecStop = "${pkgs.iproute2}/bin/ip netns del %I";
       };
     };
+    hardware.wirelessRegulatoryDatabase = true;
 
     ## Time and Region
     time.timeZone = lib.mkDefault "Europe/Zurich";
