@@ -12,14 +12,14 @@ let
   src = fetchFromSourcehut {
     owner = "~hadronized";
     repo = "kak-tree-sitter";
-    rev = "kak-tree-sitter-v1.1.3";
-    hash = "sha256-vQZ+zQgwIw5ZBdIuMDD37rIdhe+WpNBmq0TciXBNiSU=";
+    rev = "kak-tree-sitter-v3.1.1";
+    hash = "sha256-iDpWzvtM0xQSEqs+TsfW3AGaMYwYkHwWqKrbWPRposc=";
   };
 
   kak-tree-sitter = rustPlatform.buildRustPackage {
     inherit src;
     pname = "kak-tree-sitter";
-    version = "1.1.3";
+    version = "3.1.1";
     cargoLock.lockFile = "${src}/Cargo.lock";
 
     cargoBuildOptions = [

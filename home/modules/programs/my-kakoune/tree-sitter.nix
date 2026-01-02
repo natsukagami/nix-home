@@ -10,6 +10,7 @@ let
 
   languageModule = types.submodule {
     options = {
+      # Grammar
       grammar.src = mkOption {
         type = types.package;
         description = "The repo to be used";
@@ -58,6 +59,7 @@ let
           default = [ "-O3" ];
         };
       };
+      # Queries
       queries.src = mkOption {
         type = types.package;
         description = "The repo to be used";
@@ -65,6 +67,19 @@ let
       queries.path = mkOption {
         type = types.nullOr types.str;
         default = null;
+      };
+      # Other options
+      remove_default_highlighter = mkOption {
+        type = types.bool;
+        default = true;
+      };
+      filetype_hook = mkOption {
+        type = types.bool;
+        default = true;
+      };
+      aliases = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
       };
     };
   };
@@ -265,43 +280,57 @@ in
       toTs = name: "ts_${strings.concatStringsSep "_" (strings.splitString "." name)}";
       toScm = name: strings.concatStringsSep "." (strings.splitString "_" name);
 
-      definedFaces = attrsets.mapAttrs' (name: value: {
-        inherit value;
+      definedFaces = lib.mapAttrsToList (name: value: {
         name = toTs name;
+        face = value;
       }) allGroups;
-      aliasFaces = attrsets.mapAttrs' (name: value: {
+      aliasFaces = lib.mapAttrsToList (name: value: {
         name = toTs name;
-        value = "@${toTs value}";
+        face = "@${toTs value}";
       }) aliases;
-      faces = attrsets.recursiveUpdate definedFaces aliasFaces;
+      faces = definedFaces ++ aliasFaces;
 
       toml = pkgs.formats.toml { };
 
-      toLanguageConf =
+      toGrammarConf =
         name: lang: with lang; {
-          grammar = {
-            source.local.path = mkGrammarPackage {
-              inherit name;
-              src = grammar.src;
-              grammarPath = grammar.path;
-              grammarCompileArgs = grammar.compile.flags ++ grammar.compile.args;
-              grammarLinkArgs = grammar.link.flags ++ grammar.link.args;
-            };
-            compile = grammar.compile.command;
-            compile_args = grammar.compile.args;
-            compile_flags = grammar.compile.flags;
-            link = grammar.link.command;
-            link_args = grammar.link.args ++ [
-              "-o"
-              "${name}.so"
-            ];
-            link_flags = grammar.link.flags;
+          source.local.path = mkGrammarPackage {
+            inherit name;
+            src = grammar.src;
+            grammarPath = grammar.path;
+            grammarCompileArgs = grammar.compile.flags ++ grammar.compile.args;
+            grammarLinkArgs = grammar.link.flags ++ grammar.link.args;
           };
+          compile = grammar.compile.command;
+          compile_args = grammar.compile.args;
+          compile_flags = grammar.compile.flags;
+          link = grammar.link.command;
+          link_args = grammar.link.args ++ [
+            "-o"
+            "${name}.so"
+          ];
+          link_flags = grammar.link.flags;
+        };
+
+      toLanguageConf =
+        name: lang:
+        (builtins.removeAttrs lang [
+          "grammar"
+          "queries"
+        ])
+        // (with lang; {
           queries = rec {
             path = if queries.path == null then "runtime/queries/${name}" else queries.path;
             source.local.path = "${queries.src}/${path}";
           };
-        };
+        });
+
+      configFile = toml.generate "kak-tree-sitter-config.toml" {
+        highlight.groups = builtins.map toScm (builtins.attrNames allGroups ++ builtins.attrNames aliases);
+        features = cfg.features;
+        language = builtins.mapAttrs toLanguageConf cfg.languages;
+        grammar = builtins.mapAttrs toGrammarConf cfg.languages;
+      };
     in
     mkIf cfg.enable {
       assertions =
@@ -315,18 +344,10 @@ in
         );
       home.packages = [ cfg.package ];
 
-      xdg.configFile."kak-tree-sitter/config.toml" = {
-        source = toml.generate "config.toml" {
-          highlight.groups = builtins.map toScm (builtins.attrNames allGroups ++ builtins.attrNames aliases);
-          features = cfg.features;
-          language = builtins.mapAttrs toLanguageConf cfg.languages;
-        };
-      };
-
       programs.my-kakoune.extraFaces = faces;
       programs.my-kakoune.autoloadFile."kak-tree-sitter.kak".text = ''
         # Enable kak-tree-sitter
-        eval %sh{kak-tree-sitter --kakoune -d --server --init $kak_session}
+        eval %sh{kak-tree-sitter --kakoune -d --server --init $kak_session --config ${configFile}}
         map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
       '';
     };

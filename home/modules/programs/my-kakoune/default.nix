@@ -29,7 +29,12 @@ in
       description = "Content of the kakrc file. A line-concatenated string";
     };
     extraFaces = mkOption {
-      type = types.attrsOf types.str;
+      type = types.listOf (
+        types.submodule {
+          options.name = mkOption { type = types.str; };
+          options.face = mkOption { type = types.str; };
+        }
+      );
       default = { };
       description = "Extra faces to include";
     };
@@ -48,9 +53,7 @@ in
         kakouneFaces =
           let
             txt = strings.concatStringsSep "\n" (
-              builtins.attrValues (
-                builtins.mapAttrs (name: face: "face global ${name} \"${face}\"") cfg.extraFaces
-              )
+              builtins.map (h: "face global ${h.name} \"${h.face}\"") cfg.extraFaces
             );
           in
           pkgs.writeText "faces.kak" txt;
