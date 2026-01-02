@@ -172,6 +172,11 @@ hook global BufCreate .*[.]hylo %{
   set-option buffer comment_line "//"
 }
 
+hook global BufCreate .*[.]qml %{
+  set-option buffer filetype qml
+  set-option buffer comment_line "//"
+}
+
 hook global BufOpenFile .* %{
   modeline-parse
 }

@@ -8,7 +8,6 @@
   gopls,
   nil,
   nixfmt-rfc-style,
-  python311Packages,
   ltex-ls,
   nodePackages,
   tailwindcss-language-server,
@@ -19,6 +18,8 @@
   marksman,
   templ,
   rust-analyzer,
+  kdePackages, # qmlls
+
   overrideConfig ? (baseConfig: baseConfig),
   extraSetup ? "",
   ...
@@ -318,6 +319,19 @@ let
               filetypes = [ "rust" ];
               roots = [ "Cargo.toml" ];
               package = rust-analyzer;
+            };
+            qmlls = {
+              command = "qmlls";
+              args = [ "-E" ];
+              filetypes = [
+                "qml"
+                "qmljs"
+              ];
+              roots = [
+                ".qmlls.ini"
+                ".git"
+              ];
+              package = kdePackages.qtdeclarative;
             };
 
           }
