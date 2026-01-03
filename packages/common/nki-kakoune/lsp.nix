@@ -663,6 +663,13 @@ in
       map global object d '<a-semicolon>lsp-diagnostic-object --include-warnings<ret>' -docstring 'LSP errors and warnings'
       map global object D '<a-semicolon>lsp-diagnostic-object<ret>' -docstring 'LSP errors'
 
+      set-option global modelinefmt "%opt{lsp_modeline} %opt{modelinefmt}"
+
+      map global goto d <esc>:lsp-definition<ret> -docstring 'LSP definition'
+      map global goto r <esc>:lsp-references<ret> -docstring 'LSP references'
+      map global goto y <esc>:lsp-type-definition<ret> -docstring 'LSP type definition'
+
+
       define-command -params 0 -docstring "Set up build" scala-build-connect %{
           lsp-execute-command 'build-connect' '[]'
       }
