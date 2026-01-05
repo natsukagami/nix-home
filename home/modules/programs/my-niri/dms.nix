@@ -270,19 +270,19 @@ lib.mkIf config.programs.my-niri.enable {
       soundVolumeChanged = true;
       soundPluggedIn = true;
       acMonitorTimeout = 0;
-      acLockTimeout = 0;
+      acLockTimeout = 900;
       acSuspendTimeout = 0;
       acSuspendBehavior = 0;
       acProfileName = "";
       batteryMonitorTimeout = 0;
-      batteryLockTimeout = 0;
-      batterySuspendTimeout = 0;
-      batterySuspendBehavior = 0;
-      batteryProfileName = "";
-      batteryChargeLimit = 100;
-      lockBeforeSuspend = false;
+      batteryLockTimeout = 900;
+      batterySuspendTimeout = 1800;
+      batterySuspendBehavior = 2;
+      batteryProfileName = "0";
+      batteryChargeLimit = 80;
+      lockBeforeSuspend = true;
       loginctlLockIntegration = true;
-      fadeToLockEnabled = false;
+      fadeToLockEnabled = true;
       fadeToLockGracePeriod = 5;
       fadeToDpmsEnabled = false;
       fadeToDpmsGracePeriod = 5;
@@ -373,7 +373,7 @@ lib.mkIf config.programs.my-niri.enable {
         "suspend"
         "restart"
       ];
-      powerMenuDefaultAction = "logout";
+      powerMenuDefaultAction = "poweroff";
       powerMenuGridLayout = false;
       customPowerActionLock = "";
       customPowerActionLogout = "";
