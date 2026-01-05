@@ -17,8 +17,9 @@ with lib;
         ibm-plex
         plemoljp # IBM Plex + Mono JP
         nerd-fonts.symbols-only
-        # noto-fonts
-        # (pkgs.noto-fonts-cjk-sans or pkgs.noto-fonts-cjk)
+        noto-fonts
+        pkgs.noto-fonts-cjk-sans
+        pkgs.noto-fonts-cjk-serif
         merriweather
         corefonts
         font-awesome_5
@@ -69,6 +70,26 @@ with lib;
                   <family>Blobmoji</family>
                 </prefer>
               </alias>
+              <match target="pattern">
+                <test qual="any" name="family" compare="eq"><string>Noto Sans</string></test>
+                <edit name="family" mode="prepend" binding="strong"><string>IBM Plex Sans JP</string></edit>
+                <edit name="family" mode="prepend" binding="strong"><string>IBM Plex Sans</string></edit>
+              </match>
+              <!-- Default font (no fc-match pattern) -->
+              <match>
+                <edit mode="prepend" name="family">
+                  <string>IBM Plex Sans</string>
+                </edit>
+              </match>
+              <!-- Default font for the ja_JP locale (no fc-match pattern) -->
+              <match>
+                <test compare="contains" name="lang">
+                  <string>ja</string>
+                </test>
+                <edit mode="prepend" name="family">
+                  <string>IBM Plex Sans JP</string>
+                </edit>
+              </match>
             </fontconfig>
           '';
         };
