@@ -164,6 +164,33 @@
           queries.src = src;
           queries.path = "queries";
         };
+      swift =
+        let
+          src = pkgs.fetchFromGitHub {
+            owner = "alex-pinkus";
+            repo = "tree-sitter-swift";
+            rev = "with-generated-files";
+            hash = "sha256-BVOCGYUSEXpu2Mu7VRVCZrBBqZpZdK3oLm3aYmOH+cs=";
+          };
+        in
+        {
+          grammar.src = src;
+          grammar.compile.args = [
+            "-c"
+            "-fpic"
+            "../scanner.c"
+            "../parser.c"
+            "-I"
+            ".."
+          ];
+          grammar.link.args = [
+            "-shared"
+            "-fpic"
+            "scanner.o"
+            "parser.o"
+          ];
+          queries.src = src;
+          queries.path = "queries";
+        };
     };
-
 }
