@@ -86,6 +86,12 @@ lib.mkIf config.programs.my-niri.enable {
   systemd.user.services.dms.Install.WantedBy = lib.mkForce [ "niri.service" ];
   systemd.user.services.dms.Unit.After = [ "niri.service" ];
 
+  # Enable dynamic theming
+  programs.kitty.settings.extraConfig = ''
+    include dank-tabs.conf
+    include dank-theme.conf
+  '';
+
   programs.dank-material-shell = {
     enable = true;
     systemd = {
