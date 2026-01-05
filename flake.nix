@@ -176,8 +176,8 @@
             { ... }:
             {
               imports = [
-                dms.homeModules.dankMaterialShell.default
-                dms.homeModules.dankMaterialShell.niri
+                dms.homeModules.dank-material-shell
+                dms.homeModules.niri
 
                 settings
               ];

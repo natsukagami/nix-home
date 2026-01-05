@@ -81,6 +81,7 @@ let
         programs.niri.package = pkgs.niri-stable;
         # Override gnome-keyring disabling
         services.gnome.gnome-keyring.enable = lib.mkForce false;
+        systemd.user.services.niri-flake-polkit.enable = false;
         # ydotool
         programs.ydotool.enable = true;
         users.extraGroups.${config.programs.ydotool.group}.members = [ cfg.username ];

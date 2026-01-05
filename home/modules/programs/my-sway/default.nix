@@ -109,7 +109,10 @@ in
       "xdg-desktop-portal.service"
       "xdg-desktop-autostart.target"
     ];
-    Unit.Upholds = [ "waybar.service" ];
+    Unit.Upholds = [
+      "waybar.service"
+      "swaync.service"
+    ];
     Unit.Wants = [ "xdg-desktop-autostart.target" ];
   };
 
@@ -119,7 +122,6 @@ in
     fontSize = mkDefault cfg.fontSize;
     enableLaptopBars = mkDefault cfg.enableLaptop;
   };
-  config.systemd.user.services.swaync.Install.WantedBy = mkIf cfg.enable [ "sway-session.target" ];
 
   config.wayland.windowManager.sway = mkIf cfg.enable {
     enable = true;
@@ -180,112 +182,111 @@ in
       #
       # Main modifier
       modifier = mod;
-      keybindings =
+      keybindings = {
+        ### Default Bindings
+        #
+        ## App management
+        "${mod}+Return" = "exec ${swayCfg.config.terminal}";
+        "${mod}+Shift+q" = "kill";
+        "${mod}+d" = "exec ${swayCfg.config.menu}";
+        ## Windowing
+        # Focus
+        "${mod}+${swayCfg.config.left}" = "focus left";
+        "${mod}+${swayCfg.config.down}" = "focus down";
+        "${mod}+${swayCfg.config.up}" = "focus up";
+        "${mod}+${swayCfg.config.right}" = "focus right";
+        "${mod}+Left" = "focus left";
+        "${mod}+Down" = "focus down";
+        "${mod}+Up" = "focus up";
+        "${mod}+Right" = "focus right";
+        # Move
+        "${mod}+Shift+${swayCfg.config.left}" = "move left";
+        "${mod}+Shift+${swayCfg.config.down}" = "move down";
+        "${mod}+Shift+${swayCfg.config.up}" = "move up";
+        "${mod}+Shift+${swayCfg.config.right}" = "move right";
+        "${mod}+Shift+Left" = "move left";
+        "${mod}+Shift+Down" = "move down";
+        "${mod}+Shift+Up" = "move up";
+        "${mod}+Shift+Right" = "move right";
+        # Toggles
+        "${mod}+f" = "fullscreen toggle";
+        "${mod}+a" = "focus parent";
+        # Layouts
+        "${mod}+s" = "layout stacking";
+        "${mod}+w" = "layout tabbed";
+        "${mod}+e" = "layout toggle split";
+        # Floating
+        "${mod}+Shift+space" = "floating toggle";
+        # Scratchpad
+        "${mod}+Shift+minus" = "move scratchpad";
+        # Resize
+        "${mod}+r" = "mode resize";
+        "${mod}+minus" = "scratchpad show";
+        ## Reload and exit
+        "${mod}+Shift+c" = "reload";
+        "${mod}+Shift+e" =
+          "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
+        # Launcher
+        "${mod}+space" = "exec rofi -show drun";
+        "${mod}+tab" = "exec ${./rofi-window.py}";
+        "${mod}+shift+p" = "exec rofi-rbw-script";
+      }
+      // {
+        ## Splits
+        "${mod}+v" = "split v";
+        "${mod}+Shift+v" = "split h";
+        ## Run
+        "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
+        "${mod}+Shift+r" = "mode resize";
+        ## Screenshot
+        "Print" = "exec ${screenshotScript}/bin/screenshot";
+        "Shift+Print" = "exec ${screenshotEditScript}/bin/screenshot";
+        ## Locking
+        "${mod}+semicolon" = "exec ${cfg.lockCmd}";
+        ## Multimedia
+        "XF86AudioPrev" = "exec ${playerctl} previous";
+        "XF86AudioPlay" = "exec ${playerctl} play-pause";
+        "Shift+XF86AudioPlay" = "exec ${playerctl} stop";
+        "XF86AudioNext" = "exec ${playerctl} next";
+        "XF86AudioRecord" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Capture toggle";
+        "XF86AudioMute" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master toggle";
+        "XF86AudioLowerVolume" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master 3%-";
+        "XF86AudioRaiseVolume" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master 3%+";
+        ## Backlight
+        "XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl s 10%-";
+        "XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl s 10%+";
+        "Shift+XF86MonBrightnessDown" =
+          "exec ${pkgs.brightnessctl}/bin/brightnessctl -d kbd_backlight s 25%-";
+        "Shift+XF86MonBrightnessUp" =
+          "exec ${pkgs.brightnessctl}/bin/brightnessctl -d kbd_backlight s 25%+";
+      }
+      //
+        # Map the workspaces
+        (builtins.listToAttrs (
+          lib.flatten (
+            map (key: [
+              {
+                name = "${mod}+${key}";
+                value = "workspace ${builtins.getAttr key wsAttrs}";
+              }
+              {
+                name = "${mod}+Shift+${key}";
+                value = "move to workspace ${builtins.getAttr key wsAttrs}";
+              }
+            ]) (builtins.attrNames wsAttrs)
+          )
+        ))
+      // {
+        # Extra workspaces
+        "${mod}+asciicircum" = "workspace ${extraWorkspaces.mail}";
+        "${mod}+shift+asciicircum" = "move to workspace ${extraWorkspaces.mail}";
+      }
+      //
+        # Move workspaces between outputs
         {
-          ### Default Bindings
-          #
-          ## App management
-          "${mod}+Return" = "exec ${swayCfg.config.terminal}";
-          "${mod}+Shift+q" = "kill";
-          "${mod}+d" = "exec ${swayCfg.config.menu}";
-          ## Windowing
-          # Focus
-          "${mod}+${swayCfg.config.left}" = "focus left";
-          "${mod}+${swayCfg.config.down}" = "focus down";
-          "${mod}+${swayCfg.config.up}" = "focus up";
-          "${mod}+${swayCfg.config.right}" = "focus right";
-          "${mod}+Left" = "focus left";
-          "${mod}+Down" = "focus down";
-          "${mod}+Up" = "focus up";
-          "${mod}+Right" = "focus right";
-          # Move
-          "${mod}+Shift+${swayCfg.config.left}" = "move left";
-          "${mod}+Shift+${swayCfg.config.down}" = "move down";
-          "${mod}+Shift+${swayCfg.config.up}" = "move up";
-          "${mod}+Shift+${swayCfg.config.right}" = "move right";
-          "${mod}+Shift+Left" = "move left";
-          "${mod}+Shift+Down" = "move down";
-          "${mod}+Shift+Up" = "move up";
-          "${mod}+Shift+Right" = "move right";
-          # Toggles
-          "${mod}+f" = "fullscreen toggle";
-          "${mod}+a" = "focus parent";
-          # Layouts
-          "${mod}+s" = "layout stacking";
-          "${mod}+w" = "layout tabbed";
-          "${mod}+e" = "layout toggle split";
-          # Floating
-          "${mod}+Shift+space" = "floating toggle";
-          # Scratchpad
-          "${mod}+Shift+minus" = "move scratchpad";
-          # Resize
-          "${mod}+r" = "mode resize";
-          "${mod}+minus" = "scratchpad show";
-          ## Reload and exit
-          "${mod}+Shift+c" = "reload";
-          "${mod}+Shift+e" =
-            "exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'";
-          # Launcher
-          "${mod}+space" = "exec rofi -show drun";
-          "${mod}+tab" = "exec ${./rofi-window.py}";
-          "${mod}+shift+p" = "exec rofi-rbw-script";
-        }
-        // {
-          ## Splits
-          "${mod}+v" = "split v";
-          "${mod}+Shift+v" = "split h";
-          ## Run
-          "${mod}+r" = "exec ${config.wayland.windowManager.sway.config.menu}";
-          "${mod}+Shift+r" = "mode resize";
-          ## Screenshot
-          "Print" = "exec ${screenshotScript}/bin/screenshot";
-          "Shift+Print" = "exec ${screenshotEditScript}/bin/screenshot";
-          ## Locking
-          "${mod}+semicolon" = "exec ${cfg.lockCmd}";
-          ## Multimedia
-          "XF86AudioPrev" = "exec ${playerctl} previous";
-          "XF86AudioPlay" = "exec ${playerctl} play-pause";
-          "Shift+XF86AudioPlay" = "exec ${playerctl} stop";
-          "XF86AudioNext" = "exec ${playerctl} next";
-          "XF86AudioRecord" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Capture toggle";
-          "XF86AudioMute" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master toggle";
-          "XF86AudioLowerVolume" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master 3%-";
-          "XF86AudioRaiseVolume" = "exec ${pkgs.alsa-utils}/bin/amixer -q set Master 3%+";
-          ## Backlight
-          "XF86MonBrightnessDown" = "exec ${pkgs.brightnessctl}/bin/brightnessctl s 10%-";
-          "XF86MonBrightnessUp" = "exec ${pkgs.brightnessctl}/bin/brightnessctl s 10%+";
-          "Shift+XF86MonBrightnessDown" =
-            "exec ${pkgs.brightnessctl}/bin/brightnessctl -d kbd_backlight s 25%-";
-          "Shift+XF86MonBrightnessUp" =
-            "exec ${pkgs.brightnessctl}/bin/brightnessctl -d kbd_backlight s 25%+";
-        }
-        //
-          # Map the workspaces
-          (builtins.listToAttrs (
-            lib.flatten (
-              map (key: [
-                {
-                  name = "${mod}+${key}";
-                  value = "workspace ${builtins.getAttr key wsAttrs}";
-                }
-                {
-                  name = "${mod}+Shift+${key}";
-                  value = "move to workspace ${builtins.getAttr key wsAttrs}";
-                }
-              ]) (builtins.attrNames wsAttrs)
-            )
-          ))
-        // {
-          # Extra workspaces
-          "${mod}+asciicircum" = "workspace ${extraWorkspaces.mail}";
-          "${mod}+shift+asciicircum" = "move to workspace ${extraWorkspaces.mail}";
-        }
-        //
-          # Move workspaces between outputs
-          {
-            "${mod}+ctrl+h" = "move workspace to output left";
-            "${mod}+ctrl+l" = "move workspace to output right";
-          };
+          "${mod}+ctrl+h" = "move workspace to output left";
+          "${mod}+ctrl+l" = "move workspace to output right";
+        };
 
       ### Fonts
       #
@@ -330,31 +331,30 @@ in
         ];
       };
       # Commands
-      window.commands =
-        [
-          {
-            criteria = {
-              title = ".*";
-            };
-            command = "inhibit_idle fullscreen";
-          }
-        ]
-        ++ (
-          # Floating assignments
-          let
-            criterias = [
-              { app_id = ".*float.*"; }
-              { app_id = "org\\.freedesktop\\.impl\\.portal\\.desktop\\..*"; }
-              { class = ".*float.*"; }
-              { title = "Extension: .*Bitwarden.*"; }
-            ];
-            toCommand = criteria: {
-              inherit criteria;
-              command = "floating enable";
-            };
-          in
-          map toCommand criterias
-        );
+      window.commands = [
+        {
+          criteria = {
+            title = ".*";
+          };
+          command = "inhibit_idle fullscreen";
+        }
+      ]
+      ++ (
+        # Floating assignments
+        let
+          criterias = [
+            { app_id = ".*float.*"; }
+            { app_id = "org\\.freedesktop\\.impl\\.portal\\.desktop\\..*"; }
+            { class = ".*float.*"; }
+            { title = "Extension: .*Bitwarden.*"; }
+          ];
+          toCommand = criteria: {
+            inherit criteria;
+            command = "floating enable";
+          };
+        in
+        map toCommand criterias
+      );
       # Focus
       focus.followMouse = true;
       focus.mouseWarping = true;
@@ -376,30 +376,29 @@ in
     # swaynag
     swaynag.enable = true;
     # Environment Variables
-    extraSessionCommands =
-      ''
-        export QT_QPA_PLATFORM=wayland
-        export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
-        export QT_IM_MODULE=fcitx
-        export GTK_IM_MODULE=fcitx # Til text-input is merged
-        # export NIXOS_OZONE_WL=1 # Until text-input is merged
+    extraSessionCommands = ''
+      export QT_QPA_PLATFORM=wayland
+      export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
+      export QT_IM_MODULE=fcitx
+      export GTK_IM_MODULE=fcitx # Til text-input is merged
+      # export NIXOS_OZONE_WL=1 # Until text-input is merged
 
-      ''
-      + (
-        if config.services.gnome-keyring.enable then
-          ''
-            # gnome-keyring
-            if type gnome-keyring-daemon >/dev/null; then
-              eval `gnome-keyring-daemon`
-              export SSH_AUTH_SOCK
-            fi
-          ''
-        else
-          ""
-      )
-      + lib.optionalString osConfig.services.desktopManager.plasma6.enable ''
-        export XDG_MENU_PREFIX=plasma-
-      '';
+    ''
+    + (
+      if config.services.gnome-keyring.enable then
+        ''
+          # gnome-keyring
+          if type gnome-keyring-daemon >/dev/null; then
+            eval `gnome-keyring-daemon`
+            export SSH_AUTH_SOCK
+          fi
+        ''
+      else
+        ""
+    )
+    + lib.optionalString osConfig.services.desktopManager.plasma6.enable ''
+      export XDG_MENU_PREFIX=plasma-
+    '';
     # Extra
     wrapperFeatures.base = true;
     wrapperFeatures.gtk = true;
