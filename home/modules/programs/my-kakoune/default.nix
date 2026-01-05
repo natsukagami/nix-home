@@ -34,7 +34,7 @@ in
           options.face = mkOption { type = types.str; };
         }
       );
-      default = { };
+      default = [ ];
       description = "Extra faces to include";
     };
     autoloadFile = mkOption {
