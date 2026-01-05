@@ -28,6 +28,7 @@ let
         ];
         style = ./swaync.css;
       };
+      systemd.user.services.swaync.Install.WantedBy = lib.mkForce [ ];
 
       programs.my-waybar = {
         extraSettings = [

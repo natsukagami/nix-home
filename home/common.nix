@@ -13,7 +13,7 @@
     ./modules/programs/my-broot.nix
     ./modules/programs/my-waybar.nix
     ./modules/programs/my-sway
-    ./modules/programs/my-niri.nix
+    ./modules/programs/my-niri
     ./modules/programs/my-kitty
     ./common-linux.nix
   ];

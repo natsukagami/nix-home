@@ -9,15 +9,15 @@ let
   cfg = config.programs.my-niri;
 
   sh = config.lib.niri.actions.spawn "sh" "-c";
-  playerctl = lib.getExe pkgs.playerctl;
-  amixer = lib.getExe' pkgs.alsa-utils "amixer";
-  brightnessctl = lib.getExe pkgs.brightnessctl;
+  # playerctl = lib.getExe pkgs.playerctl;
+  # amixer = lib.getExe' pkgs.alsa-utils "amixer";
+  # brightnessctl = lib.getExe pkgs.brightnessctl;
   app-menu = "${pkgs.dmenu}/bin/dmenu_path | ${pkgs.bemenu}/bin/bemenu | ${pkgs.findutils}/bin/xargs niri msg action spawn --";
 
   wallpaper = config.linux.graphical.wallpaper;
-  blurred-wallpaper = pkgs.runCommand "blurred-${baseNameOf wallpaper}" { } ''
-    ${lib.getExe pkgs.imagemagick} convert -blur 0x25 ${wallpaper} $out
-  '';
+  # blurred-wallpaper = pkgs.runCommand "blurred-${baseNameOf wallpaper}" { } ''
+  #   ${lib.getExe pkgs.imagemagick} convert -blur 0x25 ${wallpaper} $out
+  # '';
 
   # Override for lack of per-keyboard layout
   ydotool-en = pkgs.writeScriptBin "ydotool" ''
@@ -28,6 +28,7 @@ let
   '';
 in
 {
+  imports = [ ./dms.nix ];
   options.programs.my-niri = {
     enable = lib.mkEnableOption "My own niri configuration";
 
@@ -102,17 +103,17 @@ in
         name = "📧 Email";
       };
     };
-    systemd.user.services.swaync.Install.WantedBy = [ "niri.service" ];
-    systemd.user.services.swaync.Unit.After = [ "niri.service" ];
+    # systemd.user.services.swaync.Install.WantedBy = [ "niri.service" ];
+    # systemd.user.services.swaync.Unit.After = [ "niri.service" ];
     systemd.user.targets.tray.Unit.After = [ "niri.service" ];
     systemd.user.targets.xwayland.Unit.After = [ "niri.service" ];
 
     programs.my-waybar = {
-      enable = true;
+      enable = lib.mkForce false;
       enableLaptopBars = lib.mkDefault cfg.enableLaptop;
     };
-    systemd.user.services.waybar.Unit.After = [ "niri.service" ];
-    systemd.user.services.waybar.Install.WantedBy = [ "niri.service" ];
+    # systemd.user.services.waybar.Unit.After = [ "niri.service" ];
+    # systemd.user.services.waybar.Install.WantedBy = [ "niri.service" ];
 
     systemd.user.services.xwayland.Unit.ConsistsOf = [ "niri.service" ];
 
@@ -160,36 +161,36 @@ in
 
       spawn-at-startup = [
         # Wallpaper
-        {
-          command = [
-            "${lib.getExe pkgs.swaybg}"
-            "-i"
-            (toString wallpaper)
-            "-m"
-            "fill"
-          ];
-        }
-        {
-          command = [
-            "${lib.getExe pkgs.swaybg}"
-            "-i"
-            (toString blurred-wallpaper)
-            "-m"
-            "fill"
-            "-n"
-            "wallpaper-blurred"
-          ];
-        }
-        # Waybar
-        {
-          command = [
-            "systemctl"
-            "--user"
-            "start"
-            "xdg-desktop-portal-gtk.service"
-            "xdg-desktop-portal.service"
-          ];
-        }
+        # {
+        #   command = [
+        #     "${lib.getExe pkgs.swaybg}"
+        #     "-i"
+        #     (toString wallpaper)
+        #     "-m"
+        #     "fill"
+        #   ];
+        # }
+        # {
+        #   command = [
+        #     "${lib.getExe pkgs.swaybg}"
+        #     "-i"
+        #     (toString blurred-wallpaper)
+        #     "-m"
+        #     "fill"
+        #     "-n"
+        #     "wallpaper-blurred"
+        #   ];
+        # }
+        # # Waybar
+        # {
+        #   command = [
+        #     "systemctl"
+        #     "--user"
+        #     "start"
+        #     "xdg-desktop-portal-gtk.service"
+        #     "xdg-desktop-portal.service"
+        #   ];
+        # }
       ];
 
       layout = {
@@ -342,10 +343,10 @@ in
       ];
 
       layer-rules = [
-        {
-          matches = [ { namespace = "^swaync-.*"; } ];
-          block-out-from = "screen-capture";
-        }
+        # {
+        #   matches = [ { namespace = "^swaync-.*"; } ];
+        #   block-out-from = "screen-capture";
+        # }
         {
           matches = [ { namespace = "^wallpaper-blurred$"; } ];
           place-within-backdrop = true;
@@ -364,50 +365,50 @@ in
 
           # Some basic spawns
           "Mod+Return".action = spawn (lib.getExe config.linux.graphical.defaults.terminal.package);
-          "Mod+Space".action = spawn "rofi" "-show" "drun";
+          # "Mod+Space".action = spawn "rofi" "-show" "drun";
           "Mod+R".action = sh app-menu;
-          "Mod+Semicolon".action = spawn cfg.lock-command;
+          # "Mod+Semicolon".action = spawn cfg.lock-command;
           "Mod+Shift+P".action = spawn "rofi-rbw-script";
 
           # Audio and Volume
-          "XF86AudioPrev" = {
-            action = spawn playerctl "previous";
-            allow-when-locked = true;
-          };
-          "XF86AudioPlay" = {
-            action = spawn playerctl "play-pause";
-            allow-when-locked = true;
-          };
-          "Shift+XF86AudioPlay" = {
-            action = spawn playerctl "stop";
-            allow-when-locked = true;
-          };
-          "XF86AudioNext" = {
-            action = spawn playerctl "next";
-            allow-when-locked = true;
-          };
-          "XF86AudioRecord" = {
-            action = spawn amixer "-q" "set" "Capture" "toggle";
-            allow-when-locked = true;
-          };
-          "XF86AudioMute" = {
-            action = spawn amixer "-q" "set" "Master" "toggle";
-            allow-when-locked = true;
-          };
-          "XF86AudioLowerVolume" = {
-            action = spawn amixer "-q" "set" "Master" "3%-";
-            allow-when-locked = true;
-          };
-          "XF86AudioRaiseVolume" = {
-            action = spawn amixer "-q" "set" "Master" "3%+";
-            allow-when-locked = true;
-          };
+          # "XF86AudioPrev" = {
+          #   action = spawn playerctl "previous";
+          #   allow-when-locked = true;
+          # };
+          # "XF86AudioPlay" = {
+          #   action = spawn playerctl "play-pause";
+          #   allow-when-locked = true;
+          # };
+          # "Shift+XF86AudioPlay" = {
+          #   action = spawn playerctl "stop";
+          #   allow-when-locked = true;
+          # };
+          # "XF86AudioNext" = {
+          #   action = spawn playerctl "next";
+          #   allow-when-locked = true;
+          # };
+          # "XF86AudioRecord" = {
+          #   action = spawn amixer "-q" "set" "Capture" "toggle";
+          #   allow-when-locked = true;
+          # };
+          # "XF86AudioMute" = {
+          #   action = spawn amixer "-q" "set" "Master" "toggle";
+          #   allow-when-locked = true;
+          # };
+          # "XF86AudioLowerVolume" = {
+          #   action = spawn amixer "-q" "set" "Master" "3%-";
+          #   allow-when-locked = true;
+          # };
+          # "XF86AudioRaiseVolume" = {
+          #   action = spawn amixer "-q" "set" "Master" "3%+";
+          #   allow-when-locked = true;
+          # };
 
           # Backlight
-          "XF86MonBrightnessDown".action = spawn brightnessctl "s" "10%-";
-          "XF86MonBrightnessUp".action = spawn brightnessctl "s" "10%+";
-          "Shift+XF86MonBrightnessDown".action = spawn brightnessctl "-d" "kbd_backlight" "s" "25%-";
-          "Shift+XF86MonBrightnessUp".action = spawn brightnessctl "-d" "kbd_backlight" "s" "25%+";
+          # "XF86MonBrightnessDown".action = spawn brightnessctl "s" "10%-";
+          # "XF86MonBrightnessUp".action = spawn brightnessctl "s" "10%+";
+          # "Shift+XF86MonBrightnessDown".action = spawn brightnessctl "-d" "kbd_backlight" "s" "25%-";
+          # "Shift+XF86MonBrightnessUp".action = spawn brightnessctl "-d" "kbd_backlight" "s" "25%+";
 
           "Mod+Shift+Q".action = close-window;
 
@@ -500,7 +501,6 @@ in
           "Mod+Shift+At".action = set-window-height "+10%";
 
           "Mod+V".action = switch-focus-between-floating-and-tiling;
-          "Mod+Shift+V".action = toggle-window-floating;
           "Mod+Shift+Space".action = toggle-window-floating; # Sway compat
 
           "Print".action.screenshot = [ ];
