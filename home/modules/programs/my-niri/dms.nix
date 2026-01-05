@@ -83,10 +83,14 @@ lib.mkIf config.programs.my-niri.enable {
     };
   };
 
+  systemd.user.services.dms.Install.WantedBy = lib.mkForce [ "niri.service" ];
+  systemd.user.services.dms.Unit.After = [ "niri.service" ];
+
   programs.dank-material-shell = {
     enable = true;
-    niri = {
-      enableSpawn = true; # Auto-start DMS with niri and cliphist, if enabled
+    systemd = {
+      enable = true;
+      restartIfChanged = true;
     };
     niri.includes = {
       enable = true; # Enable config includes hack.
@@ -106,7 +110,7 @@ lib.mkIf config.programs.my-niri.enable {
       currentThemeCategory = "dynamic";
       customThemeFile = "";
       registryThemeVariants = { };
-      matugenScheme = "scheme-tonal-spot";
+      matugenScheme = "scheme-vibrant";
       runUserMatugenTemplates = true;
       matugenTargetMonitor = "";
       popupTransparency = 1;
