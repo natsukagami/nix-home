@@ -45,6 +45,14 @@
     niri-stable.url = "github:YaLTeR/niri/v25.11";
     niri.url = "github:sodiboo/niri-flake";
     niri.inputs.niri-stable.follows = "niri-stable";
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dms-unstable = {
+      url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
 
     # --- Sources
     kakoune.url = "github:mawww/kakoune";
@@ -151,13 +159,29 @@
           includeCommonModules ? true,
         }:
         let
-          home-manager-module =
+          pickBasedOnNixpkgs =
+            stable: unstable:
             if nixpkgs-module == inputs.nixpkgs then
-              inputs.home-manager
+              stable
             else if nixpkgs-module == inputs.nixpkgs-unstable then
-              inputs.home-manager-unstable
+              unstable
             else
               builtins.abort "Unknown nixpkgs module, use `nixpkgs` or `nixpkgs-unstable`";
+
+          home-manager-module = pickBasedOnNixpkgs inputs.home-manager inputs.home-manager-unstable;
+          dms = pickBasedOnNixpkgs inputs.dms inputs.dms-unstable;
+
+          withExtraHomeManagerModules =
+            user: settings:
+            { ... }:
+            {
+              imports = [
+                dms.homeModules.dankMaterialShell.default
+                dms.homeModules.dankMaterialShell.niri
+
+                settings
+              ];
+            };
         in
         nixpkgs-module.lib.nixosSystem {
           inherit system;
@@ -177,7 +201,7 @@
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
-                home-manager.users = homeManagerUsers;
+                home-manager.users = builtins.mapAttrs withExtraHomeManagerModules homeManagerUsers;
               }
             ]
             ++ extraModules;
