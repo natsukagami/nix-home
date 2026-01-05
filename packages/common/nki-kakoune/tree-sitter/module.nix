@@ -351,7 +351,8 @@ in
 
       nki-kakoune.buildPhase = ''
         makeWrapper ${lib.getExe' cfg.package "ktsctl"} $out/bin/ktsctl \
-          --add-flag "--config=${configFile}"
+          --add-flag "--config=${configFile}" \
+          --suffix PATH ":" "${lib.makeBinPath [ pkgs.gcc ]}"
       '';
 
       nki-kakoune.plugins."kak-tree-sitter" =
