@@ -642,7 +642,7 @@ let
   );
 in
 {
-  extraPaths = lib.makeBinPath (serverPackages ++ [ kakoune-lsp ]);
+  extraPackages = serverPackages ++ [ kakoune-lsp ];
   plugin = writeTextDir "share/kak/autoload/kak-lsp.kak" ''
     hook global KakBegin .* %{
       eval %sh{kak-lsp}

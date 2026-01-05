@@ -2,11 +2,12 @@
   config,
   pkgs,
   lib,
+  kakoune-util,
   ...
 }:
 with lib;
 let
-  cfg = config.programs.my-kakoune.tree-sitter;
+  cfg = config.nki-kakoune.tree-sitter;
 
   languageModule = types.submodule {
     options = {
@@ -121,13 +122,16 @@ let
 
 in
 {
-  options.programs.my-kakoune.tree-sitter = {
+  options.nki-kakoune.tree-sitter = {
     enable = mkOption {
       type = types.bool;
       default = true;
       description = "Enable kak-tree-sitter";
     };
-    package = mkPackageOption pkgs "kak-tree-sitter" { };
+    package = mkOption {
+      type = types.package;
+      default = pkgs.callPackage ../../kak-tree-sitter { };
+    };
 
     features = {
       highlighting = mkOption {
@@ -333,23 +337,31 @@ in
       };
     in
     mkIf cfg.enable {
-      assertions =
-        with lib.asserts;
-        (
-          [ ]
-          ++ attrsets.mapAttrsToList (name: _: {
-            assertion = (!(builtins.hasAttr name allGroups));
-            message = "${name} was both defined and aliased";
-          }) aliases
-        );
-      home.packages = [ cfg.package ];
+      # assertions =
+      #   with lib.asserts;
+      #   (
+      #     [ ]
+      #     ++ attrsets.mapAttrsToList (name: _: {
+      #       assertion = (!(builtins.hasAttr name allGroups));
+      #       message = "${name} was both defined and aliased";
+      #     }) aliases
+      #   );
+      #
+      nki-kakoune.extraPackages = [ cfg.package ];
 
-      programs.my-kakoune.extraFaces = faces;
-      programs.my-kakoune.autoloadFile."kak-tree-sitter.kak".text = ''
-        # Enable kak-tree-sitter
-        eval %sh{kak-tree-sitter --kakoune -d --server --init $kak_session --config ${configFile}}
-        map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
+      nki-kakoune.buildPhase = ''
+        makeWrapper ${lib.getExe' cfg.package "ktsctl"} $out/bin/ktsctl \
+          --add-flag "--config=${configFile}"
       '';
+
+      nki-kakoune.plugins."kak-tree-sitter" =
+        pkgs.writeTextDir "share/kak/autoload/kak-tree-sitter.kak" ''
+          # Enable kak-tree-sitter
+          eval %sh{kak-tree-sitter --kakoune -d --server --init $kak_session --config ${configFile}}
+          map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
+
+          ${kakoune-util.mkFacesScript' faces}
+        '';
     };
 
 }

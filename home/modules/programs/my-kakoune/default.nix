@@ -13,7 +13,6 @@ in
 {
   imports = [
     ./fish-session.nix
-    ./tree-sitter.nix
   ];
 
   options.programs.my-kakoune = {

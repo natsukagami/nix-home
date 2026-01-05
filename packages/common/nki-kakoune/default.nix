@@ -1,4 +1,6 @@
 {
+  pkgs,
+  lib,
   callPackage,
   kakoune,
   kakoune-unwrapped,
@@ -12,6 +14,17 @@
   nki-kak-faces ? callPackage ./faces.nix { util = nki-kak-util; },
   ...
 }:
+let
+  modules = lib.evalModules {
+    modules = [
+      ./config.nix
+      ./tree-sitter
+    ];
+    specialArgs.pkgs = pkgs;
+    specialArgs.kakoune-util = nki-kak-util;
+  };
+  cfg = modules.config.nki-kakoune;
+in
 (kakoune.override {
   kakoune = kakoune-unwrapped;
   plugins =
@@ -23,9 +36,11 @@
       nki-kak-rc
       nki-kak-lsp.plugin
     ]
-    ++ languages.plugins;
+    ++ languages.plugins
+    ++ (builtins.attrValues cfg.plugins);
 }).overrideAttrs
   (attrs: {
+    nativeBuildInputs = (attrs.nativeBuildInputs or [ ]);
     buildCommand = ''
       ${attrs.buildCommand or ""}
       # location of kak binary is used to find ../share/kak/autoload,
@@ -33,7 +48,8 @@
       rm "$out/bin/kak"
       makeWrapper "${kakoune-unwrapped}/bin/kak" "$out/bin/kak" \
         --set KAKOUNE_RUNTIME "$out/share/kak" \
-        --suffix PATH ":" "${nki-kak-lsp.extraPaths}"
+        --suffix PATH ":" "${lib.makeBinPath (nki-kak-lsp.extraPackages ++ cfg.extraPackages)}"
+      ${cfg.buildPhase}
     '';
 
     passthru = {

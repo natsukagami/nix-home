@@ -1,36 +1,109 @@
 {
   callPackage,
   utils ? callPackage ./utils.nix { },
+  extraFaces ? [ ],
   ...
 }:
 let
-  faces = {
-    Default = "%opt{text},%opt{base}";
-    BufferPadding = "%opt{base},%opt{base}";
-    MenuForeground = "%opt{blue},white+bF";
-    MenuBackground = "%opt{sky},white+F";
-    Information = "%opt{sky},white";
+  faces = [
+    {
+      name = "Default";
+      face = "%opt{text},%opt{base}";
+    }
+    {
+      name = "BufferPadding";
+      face = "%opt{base},%opt{base}";
+    }
+    {
+      name = "MenuForeground";
+      face = "%opt{blue},white+bF";
+    }
+    {
+      name = "MenuBackground";
+      face = "%opt{sky},white+F";
+    }
+    {
+      name = "Information";
+      face = "%opt{sky},white";
+    }
     # Markdown help color scheme
-    InfoDefault = "Information";
-    InfoBlock = "@block";
-    InfoBlockQuote = "+i@block";
-    InfoBullet = "@bullet";
-    InfoHeader = "@header";
-    InfoLink = "@link";
-    InfoLinkMono = "+b@mono";
-    InfoMono = "@mono";
-    InfoRule = "+b@Information";
-    InfoDiagnosticError = "@DiagnosticError";
-    InfoDiagnosticHint = "@DiagnosticHint";
-    InfoDiagnosticInformation = "@Information";
-    InfoDiagnosticWarning = "@DiagnosticWarning";
+    {
+      name = "InfoDefault";
+      face = "Information";
+    }
+    {
+      name = "InfoBlock";
+      face = "@block";
+    }
+    {
+      name = "InfoBlockQuote";
+      face = "+i@block";
+    }
+    {
+      name = "InfoBullet";
+      face = "@bullet";
+    }
+    {
+      name = "InfoHeader";
+      face = "@header";
+    }
+    {
+      name = "InfoLink";
+      face = "@link";
+    }
+    {
+      name = "InfoLinkMono";
+      face = "+b@mono";
+    }
+    {
+      name = "InfoMono";
+      face = "@mono";
+    }
+    {
+      name = "InfoRule";
+      face = "+b@Information";
+    }
+    {
+      name = "InfoDiagnosticError";
+      face = "@DiagnosticError";
+    }
+    {
+      name = "InfoDiagnosticHint";
+      face = "@DiagnosticHint";
+    }
+    {
+      name = "InfoDiagnosticInformation";
+      face = "@Information";
+    }
+    {
+      name = "InfoDiagnosticWarning";
+      face = "@DiagnosticWarning";
+    }
     # Extra faces
-    macro = "+u@function";
-    method = "@function";
-    format_specifier = "+i@string";
-    mutable_variable = "+i@variable";
-    class = "+b@module";
-    interface = "+ib@module";
-  };
+    {
+      name = "macro";
+      face = "+u@function";
+    }
+    {
+      name = "method";
+      face = "@function";
+    }
+    {
+      name = "format_specifier";
+      face = "+i@string";
+    }
+    {
+      name = "mutable_variable";
+      face = "+i@variable";
+    }
+    {
+      name = "class";
+      face = "+b@module";
+    }
+    {
+      name = "interface";
+      face = "+ib@module";
+    }
+  ];
 in
-utils.mkFacesScript "default-faces" faces
+utils.mkFacesScript "default-faces" (faces ++ extraFaces)
