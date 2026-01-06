@@ -172,8 +172,8 @@ in
           src = pkgs.fetchFromGitHub {
             owner = "alex-pinkus";
             repo = "tree-sitter-swift";
-            rev = "with-generated-files";
-            hash = "sha256-BVOCGYUSEXpu2Mu7VRVCZrBBqZpZdK3oLm3aYmOH+cs=";
+            rev = "0.5.0-with-generated-files";
+            hash = "sha256-FvNn+FHY9YumfE4taqoORzdu8TRn6Cc3DgRpyjzN6aM=";
           };
         in
         {
