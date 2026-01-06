@@ -195,5 +195,35 @@ in
           queries.src = helix-src;
           queries.path = "runtime/queries/swift";
         };
+      gitcommit =
+        let
+          src = pkgs.fetchFromGitHub {
+            owner = "gbprod";
+            repo = "tree-sitter-gitcommit";
+            rev = "a716678c0f00645fed1e6f1d0eb221481dbd6f6d";
+            hash = "sha256-KYfcs99p03b0RiPYnZeKJf677fmVf658FLZcFk2v2Ws=";
+          };
+        in
+        {
+          aliases = [ "git-commit" ];
+          grammar.src = src;
+          grammar.compile.args = [
+            "-c"
+            "-fpic"
+            "../scanner.c"
+            "../parser.c"
+            "-I"
+            ".."
+          ];
+          grammar.link.args = [
+            "-shared"
+            "-fpic"
+            "scanner.o"
+            "parser.o"
+          ];
+          queries.src = src;
+          queries.path = "queries";
+
+        };
     };
 }
