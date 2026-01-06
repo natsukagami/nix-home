@@ -1,4 +1,12 @@
 { pkgs, ... }:
+let
+  helix-src = pkgs.fetchFromGitHub {
+    owner = "helix-editor";
+    repo = "helix";
+    rev = "25.07.1";
+    hash = "sha256-RFSzGAcB0mMg/02ykYfTWXzQjLFu2CJ4BkS5HZ/6pBo=";
+  };
+in
 {
   imports = [ ./module.nix ];
   nki-kakoune.tree-sitter.extraAliases = {
@@ -90,12 +98,7 @@
           "-lstdc++"
         ];
 
-        queries.src = pkgs.fetchFromGitHub {
-          owner = "helix-editor";
-          repo = "helix";
-          rev = "dbd248fdfa680373d94fbc10094a160aafa0f7a7";
-          hash = "sha256-wk8qVUDFXhAOi1Ibc6iBMzDCXb6t+YiWZcTd0IJybqc=";
-        };
+        queries.src = helix-src;
         queries.path = "runtime/queries/yaml";
       };
 
@@ -189,8 +192,8 @@
             "scanner.o"
             "parser.o"
           ];
-          queries.src = src;
-          queries.path = "queries";
+          queries.src = helix-src;
+          queries.path = "runtime/queries/swift";
         };
     };
 }

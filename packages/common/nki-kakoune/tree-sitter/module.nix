@@ -151,6 +151,7 @@ in
       default = {
         attribute = "@attribute";
         comment = "@comment";
+        comment_documentation = "%opt{green}+d";
         conceal = "%opt{mauve}+i";
         constant = "%opt{peach}";
         constant_builtin_boolean = "%opt{sky}";
@@ -236,7 +237,6 @@ in
       default = {
         comment_block = "comment";
         comment_line = "comment";
-        comment_documentation = "info";
         constant_character_escape = "constant_character";
         constant_numeric_float = "constant_numeric";
         constant_numeric_integer = "constant_numeric";
@@ -330,7 +330,9 @@ in
         });
 
       configFile = toml.generate "kak-tree-sitter-config.toml" {
-        highlight.groups = builtins.map toScm (builtins.attrNames allGroups ++ builtins.attrNames aliases);
+        highlight.groups = builtins.sort (a: b: a < b) (
+          builtins.map toScm (builtins.attrNames allGroups ++ builtins.attrNames aliases)
+        );
         features = cfg.features;
         language = builtins.mapAttrs toLanguageConf cfg.languages;
         grammar = builtins.mapAttrs toGrammarConf cfg.languages;
