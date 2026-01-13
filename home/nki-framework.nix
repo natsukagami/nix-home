@@ -46,6 +46,8 @@
   programs.my-niri.workspaces = lib.genAttrs [ "04" "05" "06" "07" "08" "09" ] (_: {
     fixed = false;
   });
+  programs.my-niri.dms.backlight-device = "backlight:amdgpu_bl1";
+  programs.my-niri.dms.keyboard-backlight-device = "leds:framework_laptop::kbd_backlight";
   programs.niri.settings = {
     input.mouse = lib.mkForce {
       # Make M575 fast for now
