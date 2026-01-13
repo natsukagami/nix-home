@@ -12,9 +12,9 @@ let
   # Modules
   modules = {
     adb =
-      { config, ... }:
+      { config, pkgs, ... }:
       mkIf config.common.linux.enable {
-        programs.adb.enable = true;
+        environment.systemPackages = [ pkgs.android-tools ];
         users.users.${config.common.linux.username}.extraGroups = [ "adbusers" ];
       };
     ios =
