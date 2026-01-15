@@ -11,6 +11,7 @@ let
     "alttab" # Please note that niri will throw an error if any of these files are missing.
     "binds"
     "colors"
+    "cursor"
     "layout"
     "outputs"
     "wpblur"
