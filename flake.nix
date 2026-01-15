@@ -45,10 +45,6 @@
     niri-stable.url = "github:YaLTeR/niri/v25.11";
     niri.url = "github:sodiboo/niri-flake";
     niri.inputs.niri-stable.follows = "niri-stable";
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     dms-unstable = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -272,9 +268,9 @@
         extraModules = [ osuStable ];
       };
       # yoga g8 configuration
-      nixosConfigurations."nki-yoga-g8" = mkPersonalSystem nixpkgs "x86_64-linux" {
+      nixosConfigurations."nki-yoga-g8" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
         configuration = ./nki-yoga-g8/configuration.nix;
-        homeManagerUsers.nki = import ./home/nki-x1c1.nix;
+        homeManagerUsers.nki = import ./home/yoga.nix;
         extraModules = [
           inputs.lanzaboote.nixosModules.lanzaboote
           (

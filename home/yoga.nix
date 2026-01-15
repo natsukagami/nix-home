@@ -91,6 +91,8 @@ in
       tablet-mode-off.action = spawn "systemctl" "--user" "kill" "--signal" "SIGUSR1" "wvkbd";
     };
   };
+  programs.my-niri.dms.backlight-device = "backlight:intel_backlight";
+  programs.my-niri.dms.keyboard-backlight-device = "leds:tpacpi::kbd_backlight";
   ## Virtual keyboard
   systemd.user.services.wvkbd = {
     Unit = {

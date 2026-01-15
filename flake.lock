@@ -182,33 +182,12 @@
         "type": "github"
       }
     },
-    "dms": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "quickshell": "quickshell"
-      },
-      "locked": {
-        "lastModified": 1767585500,
-        "narHash": "sha256-k4yDHhqKk7GwHrDz2q7SF2ag+v+uZ+tjvGdQCVVaFss=",
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "rev": "c1d95a30862d0d86cc00a55d47cf0be92f9e9fc5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "AvengeMedia",
-        "repo": "DankMaterialShell",
-        "type": "github"
-      }
-    },
     "dms-unstable": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs-unstable"
         ],
-        "quickshell": "quickshell_2"
+        "quickshell": "quickshell"
       },
       "locked": {
         "lastModified": 1768456521,
@@ -933,11 +912,11 @@
     },
     "nixpkgs_12": {
       "locked": {
-        "lastModified": 1765472234,
-        "narHash": "sha256-9VvC20PJPsleGMewwcWYKGzDIyjckEz8uWmT0vCDYK0=",
+        "lastModified": 1766070988,
+        "narHash": "sha256-G/WVghka6c4bAzMhTwT2vjLccg/awmHkdKSd2JrycLc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2fbfb1d73d239d2402a8fe03963e37aab15abe8b",
+        "rev": "c6245e83d836d0433170a16eb185cefe0572f8b8",
         "type": "github"
       },
       "original": {
@@ -1101,28 +1080,6 @@
     "quickshell": {
       "inputs": {
         "nixpkgs": [
-          "dms",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1766725085,
-        "narHash": "sha256-O2aMFdDUYJazFrlwL7aSIHbUSEm3ADVZjmf41uBJfHs=",
-        "ref": "refs/heads/master",
-        "rev": "41828c4180fb921df7992a5405f5ff05d2ac2fff",
-        "revCount": 715,
-        "type": "git",
-        "url": "https://git.outfoxxed.me/quickshell/quickshell"
-      },
-      "original": {
-        "rev": "41828c4180fb921df7992a5405f5ff05d2ac2fff",
-        "type": "git",
-        "url": "https://git.outfoxxed.me/quickshell/quickshell"
-      }
-    },
-    "quickshell_2": {
-      "inputs": {
-        "nixpkgs": [
           "dms-unstable",
           "nixpkgs"
         ]
@@ -1149,7 +1106,6 @@
         "crane": "crane_3",
         "darwin": "darwin",
         "deploy-rs": "deploy-rs",
-        "dms": "dms",
         "dms-unstable": "dms-unstable",
         "dtth-phanpy": "dtth-phanpy",
         "flake-utils": "flake-utils_3",
@@ -1521,11 +1477,11 @@
         "nixpkgs": "nixpkgs_12"
       },
       "locked": {
-        "lastModified": 1765772419,
-        "narHash": "sha256-1mQ1K4fqebT54nz13rcRNjd6a+IbNLwLvYyR62EcyE8=",
+        "lastModified": 1767618227,
+        "narHash": "sha256-9+XVF47E9NCVs249SSsDtr7YdG/23/lCJmWAjQvOfqI=",
         "owner": "youwen5",
         "repo": "zen-browser-flake",
-        "rev": "227e836e43fe7985b4c4f8b0076446a6d66f3343",
+        "rev": "1586e49b3908b058e221f11d843eb46392dba17b",
         "type": "github"
       },
       "original": {
