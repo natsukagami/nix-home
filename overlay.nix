@@ -37,11 +37,6 @@ let
   };
 
   overlay-versioning = final: prev: {
-
-    tailscale = prev.tailscale.overrideAttrs (oa: {
-      doCheck = false;
-    }); # until new kernel is applied
-
     input-remapper = final.unstable.input-remapper;
 
     kakoune-unwrapped = prev.kakoune-unwrapped.overrideAttrs (attrs: {
@@ -58,26 +53,9 @@ let
       }
     );
 
-    luminance = prev.luminance.overrideAttrs (attrs: {
-      nativeBuildInputs = attrs.nativeBuildInputs ++ [ final.wrapGAppsHook3 ];
-      buildInputs = attrs.buildInputs ++ [ final.glib ];
-      postInstall = attrs.postInstall + ''
-        glib-compile-schemas $out/share/glib-2.0/schemas
-      '';
-    });
-
-    discord-canary = prev.discord-canary.overrideAttrs (attrs:
-    # if final.lib.hasInfix "NIXOS_OZONE_WL" prevAttrs.installPhase then
-    {
-      installPhase =
-        builtins.replaceStrings
-          [ "NIXOS_OZONE_WL" "--enable-wayland-ime=true" ]
-          [ "WAYLAND_DISPLAY" "--enable-wayland-ime=true --wayland-text-input-version=3" ]
-          attrs.installPhase;
-    }
-    # else
-    #   { }
-    );
+    discord-canary = prev.discord-canary.override {
+      commandLineArgs = "--ozone-platform=wayland --enable-features=WaylandWindowDecorations --enable-wayland-ime=true  --wayland-text-input-version=3";
+    };
 
     swaybg = prev.swaybg.overrideAttrs (
       finalAttrs: prevAttrs: {
@@ -109,8 +87,6 @@ let
       meta.mainProgram = "kak-lsp";
     };
 
-    rbw = final.unstable.rbw;
-
     zen-browser-bin = inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
       inherit (inputs.zen-browser.packages.${final.stdenv.system}) zen-browser-unwrapped;
       wrapFirefox =
@@ -121,9 +97,6 @@ let
             nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
           }
         );
-      # zen-browser-unwrapped = final.callPackage inputs.zen-browser.packages.${final.stdenv.system}.zen-browser-unwrapped.override {
-      #   sources = inputs.zen-browser.inputs;
-      # };
     };
 
     noto-fonts-emoji-blob-bin = prev.noto-fonts-emoji-blob-bin.overrideAttrs (
@@ -137,14 +110,11 @@ let
       }
     );
 
-    monkeysAudio = prev.monkeysAudio.overrideAttrs (
+    owncloud-client = prev.owncloud-client.overrideAttrs (
       finalAttrs: prevAttrs: {
-        version = "11.86";
-        src = final.fetchzip {
-          url = "https://monkeysaudio.com/files/MAC_${builtins.concatStringsSep "" (final.lib.strings.splitString "." finalAttrs.version)}_SDK.zip";
-          hash = "sha256-YFw8TC38Nmdy37Bzo6p43+Ykt9fmvtAcJmZubsFqJHE=";
-          stripRoot = false;
-        };
+        buildInputs = prevAttrs.buildInputs ++ [
+          final.kdePackages.kirigami
+        ];
       }
     );
 
