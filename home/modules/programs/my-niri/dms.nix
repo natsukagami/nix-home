@@ -42,6 +42,9 @@ in
       Install.WantedBy = [ "niri.service" ];
       Unit.Before = [ "niri.service" ];
     };
+    systemd.user.services.dms = {
+      Unit.Before = [ "xdg-desktop-autostart.target" ];
+    };
     programs.niri.settings.binds =
       with config.lib.niri.actions;
       {
