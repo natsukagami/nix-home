@@ -29,7 +29,10 @@ let
 in
 {
   options.programs.my-niri.dms = {
-    backlight-device = lib.mkOption { type = lib.types.str; };
+    backlight-device = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+    };
     keyboard-backlight-device = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
       default = null;
@@ -88,6 +91,8 @@ in
           allow-when-locked = true;
           action = spawn "dms" "ipc" "call" "audio" "increment" "3";
         };
+      }
+      // lib.optionalAttrs (cfg.backlight-device != null) {
         "XF86MonBrightnessDown" = {
           allow-when-locked = true;
           action = spawn "dms" "ipc" "call" "brightness" "decrement" "5" cfg.backlight-device;
