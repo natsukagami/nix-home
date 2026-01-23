@@ -18,7 +18,7 @@
   marksman,
   templ,
   rust-analyzer,
-  kdePackages, # qmlls
+  kdePackages, # qmlls, okular
 
   overrideConfig ? (baseConfig: baseConfig),
   extraSetup ? "",
@@ -143,6 +143,8 @@ let
               roots = [
                 "main.tex"
                 "main.typ"
+                "latexmkrc"
+                ".latexmkrc"
                 ".git"
               ];
               package = ltex-ls;
@@ -252,6 +254,8 @@ let
               roots = [
                 "main.tex"
                 "all.tex"
+                "latexmkrc"
+                ".latexmkrc"
                 ".git"
               ];
               settings_section = "texlab";
@@ -268,15 +272,13 @@ let
                 build.forwardSearchAfter = true;
                 build.onSave = true;
 
-                # forwardSearch =
-                #   (if pkgs.stdenv.isDarwin then {
-                #     executable = "/Applications/Skim.app/Contents/SharedSupport/displayline";
-                #     args = [ "-r" "-g" "%l" "%p" "%f" ];
-                #   } else
-                #     {
-                #       executable = "${pkgs.zathura}/bin/zathura";
-                #       args = [ "--synctex-forward" "%l:1:%f" "%p" "-x" "${./kaktex} jump %%{input} %%{line} %%{column}" ];
-                #     });
+                forwardSearch = {
+                  executable = "okular";
+                  args = [
+                    "--unique"
+                    "file:%p#src:%l%f"
+                  ];
+                };
               };
               package = texlab;
             };
@@ -642,7 +644,13 @@ let
   );
 in
 {
-  extraPackages = serverPackages ++ [ kakoune-lsp ];
+  extraPackages =
+    serverPackages
+    ++ [ kakoune-lsp ]
+    ++ [
+      # texlab forward-search enabled viewer
+      kdePackages.okular
+    ];
   plugin = writeTextDir "share/kak/autoload/kak-lsp.kak" ''
     hook global KakBegin .* %{
       eval %sh{kak-lsp}

@@ -40,6 +40,7 @@
     # TeX
     texlive.combined.scheme-full
     inkscape # for TeX svg
+    texlab # for inverse search
     ## htop replacement
     htop-vim
     nmon
