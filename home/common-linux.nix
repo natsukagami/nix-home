@@ -63,11 +63,11 @@ in
       # services.mpris-proxy.enable = true;
 
       # Owncloud
-      services.owncloud-client.enable = true;
-      services.owncloud-client.package = pkgs.owncloud-client.overrideAttrs (attrs: {
-        buildInputs = attrs.buildInputs ++ [ pkgs.qt6.qtwayland ];
-      });
-      systemd.user.services.owncloud-client.Unit.After = [ "graphical-session.target" ];
+      # services.owncloud-client.enable = true;
+      # services.owncloud-client.package = pkgs.owncloud-client.overrideAttrs (attrs: {
+      #   buildInputs = attrs.buildInputs ++ [ pkgs.qt6.qtwayland ];
+      # });
+      # systemd.user.services.owncloud-client.Unit.After = [ "graphical-session.target" ];
 
       # UDisks automounter
       services.udiskie.enable = true;

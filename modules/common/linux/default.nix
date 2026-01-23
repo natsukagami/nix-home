@@ -78,7 +78,7 @@ let
         # Niri stuff
         # https://github.com/sodiboo/niri-flake/blob/main/docs.md
         programs.niri.enable = true;
-        programs.niri.package = pkgs.niri-stable;
+        programs.niri.package = pkgs.niri;
         # Override gnome-keyring disabling
         services.gnome.gnome-keyring.enable = lib.mkForce false;
         systemd.user.services.niri-flake-polkit.enable = false;

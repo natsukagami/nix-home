@@ -35,20 +35,20 @@ in
       };
     in
     {
-      scala =
-        let
-          src = pkgs.fetchFromGitHub {
-            owner = "tree-sitter";
-            repo = "tree-sitter-scala";
-            rev = "70afdd5632d57dd63a960972ab25945e353a52f6";
-            hash = "sha256-bi0Lqo/Zs2Uaz1efuKAARpEDg5Hm59oUe7eSXgL1Wow=";
-          };
-        in
-        {
-          grammar.src = src;
-          queries.src = src;
-          queries.path = "queries/scala";
-        };
+      # scala =
+      #   let
+      #     src = pkgs.fetchFromGitHub {
+      #       owner = "tree-sitter";
+      #       repo = "tree-sitter-scala";
+      #       rev = "70afdd5632d57dd63a960972ab25945e353a52f6";
+      #       hash = "sha256-bi0Lqo/Zs2Uaz1efuKAARpEDg5Hm59oUe7eSXgL1Wow=";
+      #     };
+      #   in
+      #   {
+      #     grammar.src = src;
+      #     queries.src = src;
+      #     queries.path = "queries/scala";
+      #   };
       haskell =
         let
           src = pkgs.fetchFromGitHub {
