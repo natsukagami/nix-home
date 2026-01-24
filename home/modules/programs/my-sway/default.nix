@@ -447,16 +447,10 @@ in
       # Lock after 15 minutes of idle
       # { timeout = 15 * 60; command = cfg.lockCmd; }
     ];
-    events = [
-      {
-        event = "lock";
-        command = cfg.lockCmd;
-      }
-      {
-        event = "before-sleep";
-        command = cfg.lockCmd;
-      }
-    ];
+    events = {
+      lock = cfg.lockCmd;
+      before-sleep = cfg.lockCmd;
+    };
   };
 
   config.home.packages = mkIf cfg.enable (

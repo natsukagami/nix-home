@@ -3,14 +3,14 @@ let
   overlay-unstable = final: prev: {
     stable = import nixpkgs {
       config.allowUnfree = true;
-      system = prev.system;
+      system = prev.stdenv.system;
     };
     unstable = import nixpkgs-unstable {
       config.allowUnfree = true;
-      system = prev.system;
+      system = prev.stdenv.system;
     };
     x86 = import nixpkgs-unstable {
-      system = prev.system;
+      system = prev.stdenv.system;
       config.allowUnsupportedSystem = true;
     };
   };
@@ -28,9 +28,9 @@ let
   overlay-imported = final: prev: {
     # sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
     deploy-rs = inputs.deploy-rs.packages.default;
-    dtth-phanpy = inputs.dtth-phanpy.packages.${final.system}.default;
-    matrix-conduit = inputs.conduit.packages.${final.system}.default;
-    youmubot = inputs.youmubot.packages.${final.system}.youmubot;
+    dtth-phanpy = inputs.dtth-phanpy.packages.${final.stdenv.system}.default;
+    matrix-conduit = inputs.conduit.packages.${final.stdenv.system}.default;
+    youmubot = inputs.youmubot.packages.${final.stdenv.system}.youmubot;
 
     # A list of source-style inputs.
     nki.sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
