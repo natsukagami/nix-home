@@ -33,7 +33,7 @@ let
     youmubot = inputs.youmubot.packages.${final.system}.youmubot;
 
     # A list of source-style inputs.
-    sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
+    nki.sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
   };
 
   overlay-versioning = final: prev: {

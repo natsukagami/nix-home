@@ -52,7 +52,7 @@ in
         DATABASE_URL = databaseUrl;
 
         DATA_FOLDER = "/var/lib/bitwarden-server";
-        WEB_VAULT_FOLDER = "${pkgs.vaultwarden.webvault}/share/vaultwarden/vault";
+        WEB_VAULT_FOLDER = "${package.webvault}/share/vaultwarden/vault";
 
         ROCKET_PORT = toString port;
 
