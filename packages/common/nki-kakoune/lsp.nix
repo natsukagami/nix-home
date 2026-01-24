@@ -7,7 +7,7 @@
   ccls,
   gopls,
   nil,
-  nixfmt-rfc-style,
+  nixfmt,
   ltex-ls,
   nodePackages,
   tailwindcss-language-server,
@@ -117,7 +117,7 @@ let
                 ".git"
               ];
               settings.nil = {
-                formatting.command = [ "${lib.getExe nixfmt-rfc-style}" ];
+                formatting.command = [ "${lib.getExe nixfmt}" ];
               };
             };
             # pylsp = {
