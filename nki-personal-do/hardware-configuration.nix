@@ -16,7 +16,7 @@
   # swap
   swapDevices = [
     {
-      device = "/var/swapfile";
+      device = "/mnt/data/swapfile";
       size = 4 * 1024;
       priority = 1024;
     }
