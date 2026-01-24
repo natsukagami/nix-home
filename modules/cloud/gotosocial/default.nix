@@ -46,21 +46,20 @@ in
     # Postgres
     cloud.postgresql.databases = [ dbUser ];
     # Traefik
-    cloud.traefik.hosts =
-      {
-        gotosocial = { inherit (cfg) host port; };
-      }
-      // (
-        if cfg.accountDomain != cfg.host && cfg.accountDomain != "" then
-          {
-            gotosocial-wellknown = {
-              inherit (cfg) port;
-              filter = "Host(`${cfg.accountDomain}`) && (PathPrefix(`/.well-known/webfinger`) || PathPrefix(`/.well-known/nodeinfo`) || PathPrefix(`/.well-known/host-meta`))";
-            };
-          }
-        else
-          { }
-      );
+    cloud.traefik.hosts = {
+      gotosocial = { inherit (cfg) host port; };
+    }
+    // (
+      if cfg.accountDomain != cfg.host && cfg.accountDomain != "" then
+        {
+          gotosocial-wellknown = {
+            inherit (cfg) port;
+            filter = "Host(`${cfg.accountDomain}`) && (PathPrefix(`/.well-known/webfinger`) || PathPrefix(`/.well-known/nodeinfo`) || PathPrefix(`/.well-known/host-meta`))";
+          };
+        }
+      else
+        { }
+    );
     # The service itself
     services.gotosocial = {
       enable = true;

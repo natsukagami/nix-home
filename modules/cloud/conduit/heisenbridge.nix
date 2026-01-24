@@ -94,7 +94,8 @@ with lib;
 
           CapabilityBoundingSet = [
             "CAP_CHOWN"
-          ] ++ optional (cfg.port != null && cfg.port < 1024) "CAP_NET_BIND_SERVICE";
+          ]
+          ++ optional (cfg.port != null && cfg.port < 1024) "CAP_NET_BIND_SERVICE";
           AmbientCapabilities = CapabilityBoundingSet;
           NoNewPrivileges = true;
           LockPersonality = true;

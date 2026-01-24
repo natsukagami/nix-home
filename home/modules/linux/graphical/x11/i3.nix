@@ -140,19 +140,18 @@ in
 
       # Workspace
       config.defaultWorkspace = "workspace ${builtins.getAttr "1" wsAttrs}";
-      config.startup =
-        [
-          { command = "firefox"; }
-          { command = "discord"; }
-          { command = "dex -ae i3"; }
-          { command = "ibus-daemon -drxR"; }
-        ]
-        ++ (
-          if (config.linux.graphical.wallpaper != "") then
-            [ { command = "${pkgs.feh}/bin/feh --bg-fill ${config.linux.graphical.wallpaper}"; } ]
-          else
-            [ ]
-        );
+      config.startup = [
+        { command = "firefox"; }
+        { command = "discord"; }
+        { command = "dex -ae i3"; }
+        { command = "ibus-daemon -drxR"; }
+      ]
+      ++ (
+        if (config.linux.graphical.wallpaper != "") then
+          [ { command = "${pkgs.feh}/bin/feh --bg-fill ${config.linux.graphical.wallpaper}"; } ]
+        else
+          [ ]
+      );
     };
 
     # i3status

@@ -436,7 +436,7 @@ in
       ''
       + ''
         # Enable portal stuff
-        exec ${pkgs.writeShellScript "start-portals.sh" ''''}
+        exec ${pkgs.writeShellScript "start-portals.sh" ""}
       '';
   };
 

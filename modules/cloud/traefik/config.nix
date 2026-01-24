@@ -114,69 +114,67 @@ let
 
   # Turns a host configuration into dynamic traefik configuration
   hostToConfig = name: host: {
-    "${host.protocol}" =
-      {
-        routers."${name}-router" =
-          (
-            if (host.protocol != "udp") then
-              {
-                rule = filterOfHost host;
-                tls =
-                  {
-                    certResolver = "le";
-                  }
-                  // (
-                    if host.protocol == "tcp" then
-                      { passthrough = if (host ? tlsPassthrough) then host.tlsPassthrough else true; }
-                    else
-                      { }
-                  )
-                  // (if host.noCloudflare then tlsNoCloudflare else { });
+    "${host.protocol}" = {
+      routers."${name}-router" =
+        (
+          if (host.protocol != "udp") then
+            {
+              rule = filterOfHost host;
+              tls = {
+                certResolver = "le";
               }
-            else
-              { }
-          )
-          // {
-            entryPoints = host.entrypoints;
-            service = "${name}-service";
-          }
-          // (
-            if host.protocol == "http" then
-              { middlewares = lists.imap0 (id: m: "${name}-middleware-${toString id}") host.middlewares; }
-            else if host.middlewares == [ ] then
-              { }
-            else
-              abort "Cannot have middlewares on non-http routers"
-          );
-        services."${name}-service".loadBalancer.servers = [
-          (
-            let
-              localhost =
-                if isNull host.localHost then
-                  (if host.protocol == "http" then "localhost" else "127.0.0.1")
+              // (
+                if host.protocol == "tcp" then
+                  { passthrough = if (host ? tlsPassthrough) then host.tlsPassthrough else true; }
                 else
-                  host.localHost;
-            in
-            if host.protocol == "http" then
-              { url = "http://${localhost}:${toString host.port}"; }
-            else
-              { address = "${localhost}:${toString host.port}"; }
-          )
-        ];
-      }
-      // (
-        if (host.middlewares != [ ]) then
-          {
-            middlewares = builtins.listToAttrs (
-              lists.imap0 (id: v: {
-                name = "${name}-middleware-${toString id}";
-                value = v;
-              }) host.middlewares
-            );
-          }
-        else
-          { }
-      );
+                  { }
+              )
+              // (if host.noCloudflare then tlsNoCloudflare else { });
+            }
+          else
+            { }
+        )
+        // {
+          entryPoints = host.entrypoints;
+          service = "${name}-service";
+        }
+        // (
+          if host.protocol == "http" then
+            { middlewares = lists.imap0 (id: m: "${name}-middleware-${toString id}") host.middlewares; }
+          else if host.middlewares == [ ] then
+            { }
+          else
+            abort "Cannot have middlewares on non-http routers"
+        );
+      services."${name}-service".loadBalancer.servers = [
+        (
+          let
+            localhost =
+              if isNull host.localHost then
+                (if host.protocol == "http" then "localhost" else "127.0.0.1")
+              else
+                host.localHost;
+          in
+          if host.protocol == "http" then
+            { url = "http://${localhost}:${toString host.port}"; }
+          else
+            { address = "${localhost}:${toString host.port}"; }
+        )
+      ];
+    }
+    // (
+      if (host.middlewares != [ ]) then
+        {
+          middlewares = builtins.listToAttrs (
+            lists.imap0 (id: v: {
+              name = "${name}-middleware-${toString id}";
+              value = v;
+            }) host.middlewares
+          );
+        }
+      else
+        { }
+    );
   };
 
   tlsConfig = {
