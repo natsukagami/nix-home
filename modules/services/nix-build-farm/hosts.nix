@@ -1,3 +1,6 @@
+# Create a new pubkey by
+# # ssh-keygen -f /root/.ssh/nixremote
+# Then copy the public key here.
 {
   cloud = {
     host = "cloud.tinc";
@@ -32,7 +35,7 @@
 
   framework = {
     host = "framework.tinc";
-    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH/g472MaT7YySUhBjxClfmMjpn98qYnKXDKlzWHYwuO nki@nki-framework";
+    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPx2dgXPrF2KAiCDK9fmBSUdY1wZAPTN2I/spr1Mj8/G root@nki-framework";
 
     builder = {
       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUdOUlBCVFRkNTVVMXY1U1Jac0FjYVdhS3JGZTY0ZjIxOVViODVTQ2NWd28gcm9vdEBua2ktZnJhbWV3b3JrCg==";
