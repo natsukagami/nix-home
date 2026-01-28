@@ -1,6 +1,7 @@
 # Create a new pubkey by
-# # ssh-keygen -f /root/.ssh/nixremote
+#    # ssh-keygen -f /root/.ssh/nixremote
 # Then copy the public key here.
+# Add this to /root/.ssh/config
 {
   cloud = {
     host = "cloud.tinc";
