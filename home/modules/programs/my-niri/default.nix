@@ -153,7 +153,7 @@ in
               mode = monitor.meta.mode;
               position = monitor.meta.fixedPosition or null;
               scale = monitor.scale or 1;
-              variable-refresh-rate = (monitor.adaptive_sync or "off") == "on";
+              variable-refresh-rate = if (monitor.adaptive_sync or "off") == "on" then "on-demand" else false;
             };
           };
         in
@@ -340,6 +340,18 @@ in
           excludes = [ { is-focused = true; } ];
           opacity = 0.95;
         }
+
+        # Games
+        {
+          matches = [
+            { app-id = "osu!"; }
+            { app-id = "steam_app_526870"; } # Satisfactory
+            { app-id = "cities2.exe"; }
+          ];
+
+          open-fullscreen = true;
+          variable-refresh-rate = true;
+        }
       ];
 
       layer-rules = [
@@ -493,6 +505,8 @@ in
           "Mod+Ctrl+W".action = reset-window-height;
           "Mod+F".action = maximize-column;
           "Mod+Shift+F".action = fullscreen-window;
+          "Mod+Ctrl+F".action = maximize-window-to-edges;
+          "Mod+Alt+F".action = toggle-windowed-fullscreen;
           "Mod+E".action = center-column;
 
           "Mod+Minus".action = set-column-width "-10%";
