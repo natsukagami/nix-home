@@ -1,6 +1,14 @@
 { pkgs, lib, ... }:
 
 let
+  osu-script = pkgs.writeShellScript "osu-script" ''
+    export PIPEWIRE_ALSA='{ application.process.id='"$$"'  alsa.buffer-bytes='4096' alsa.period-bytes='64' }'
+    export SDL_VIDEODRIVER=wayland
+    export SDL_VIDEO_DOUBLE_BUFFER=1
+    export OSU_SDL3=1
+
+    exec osu! "$@"
+  '';
   # osu-pkg = pkgs.unstable.osu-lazer-bin;
   osu-pkg =
     with pkgs;
@@ -20,7 +28,8 @@ let
           contents = appimageTools.extract { inherit pname version src; };
         in
         ''
-          mv -v $out/bin/${pname} $out/bin/osu\!
+          sed "s#osu!#$out/bin/${pname}#g" ${osu-script} > $out/bin/osu!
+          chmod +x $out/bin/osu!
           install -m 444 -D ${contents}/osu\!.desktop -t $out/share/applications
           install -m 444 -D ${./mimetypes.xml} $out/share/mime/packages/${pname}.xml
           for i in 16 32 48 64 96 128 256 512 1024; do
