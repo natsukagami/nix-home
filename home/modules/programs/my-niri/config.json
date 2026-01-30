@@ -11,9 +11,9 @@
   "widgetBackgroundColor": "sch",
   "widgetColorMode": "default",
   "cornerRadius": 12,
-  "niriLayoutGapsOverride": 8,
+  "niriLayoutGapsOverride": 10,
   "niriLayoutRadiusOverride": -1,
-  "niriLayoutBorderSize": -1,
+  "niriLayoutBorderSize": 4,
   "hyprlandLayoutGapsOverride": -1,
   "hyprlandLayoutRadiusOverride": -1,
   "hyprlandLayoutBorderSize": -1,
@@ -22,7 +22,9 @@
   "mangoLayoutBorderSize": -1,
   "use24HourClock": true,
   "showSeconds": false,
+  "padHours12Hour": false,
   "useFahrenheit": false,
+  "windSpeedUnit": "kmh",
   "nightModeEnabled": false,
   "animationSpeed": 1,
   "customAnimationDuration": 500,
@@ -111,12 +113,14 @@
   "workspaceScrolling": false,
   "showWorkspaceApps": true,
   "maxWorkspaceIcons": 3,
+  "workspaceAppIconSizeOffset": 0,
   "groupWorkspaceApps": true,
   "workspaceFollowFocus": false,
   "showOccupiedWorkspacesOnly": false,
   "reverseScrolling": false,
   "dwlShowAllTags": false,
   "workspaceColorMode": "default",
+  "workspaceOccupiedColorMode": "none",
   "workspaceUnfocusedColorMode": "default",
   "workspaceUrgentColorMode": "default",
   "workspaceFocusedBorderEnabled": false,
@@ -166,30 +170,40 @@
   "mediaSize": 1,
   "appLauncherViewMode": "list",
   "spotlightModalViewMode": "list",
+  "browserPickerViewMode": "grid",
+  "browserUsageHistory": {},
+  "appPickerViewMode": "grid",
+  "filePickerUsageHistory": {},
   "sortAppsAlphabetically": false,
   "appLauncherGridColumns": 4,
   "spotlightCloseNiriOverview": true,
+  "spotlightSectionViewModes": {},
+  "appDrawerSectionViewModes": {},
   "niriOverviewOverlayEnabled": true,
+  "dankLauncherV2Size": "compact",
+  "dankLauncherV2BorderEnabled": false,
+  "dankLauncherV2BorderThickness": 2,
+  "dankLauncherV2BorderColor": "primary",
+  "dankLauncherV2ShowFooter": true,
   "useAutoLocation": true,
   "weatherEnabled": true,
   "networkPreference": "auto",
-  "vpnLastConnected": "",
   "iconTheme": "System Default",
   "cursorSettings": {
-    "theme": "System Default",
-    "size": 24,
-    "niri": {
-      "hideWhenTyping": false,
-      "hideAfterInactiveMs": 0
+    "dwl": {
+      "cursorHideTimeout": 0
     },
     "hyprland": {
       "hideOnKeyPress": false,
       "hideOnTouch": false,
       "inactiveTimeout": 0
     },
-    "dwl": {
-      "cursorHideTimeout": 0
-    }
+    "niri": {
+      "hideAfterInactiveMs": 0,
+      "hideWhenTyping": false
+    },
+    "size": 24,
+    "theme": "System Default"
   },
   "launcherLogoMode": "apps",
   "launcherLogoCustomPath": "",
@@ -261,8 +275,10 @@
   "matugenTemplateDgop": true,
   "matugenTemplateKcolorscheme": true,
   "matugenTemplateVscode": true,
+  "matugenTemplateEmacs": true,
   "showDock": false,
   "dockAutoHide": false,
+  "dockSmartAutoHide": false,
   "dockGroupByApp": false,
   "dockOpenOnOverview": true,
   "dockPosition": 1,
@@ -276,6 +292,13 @@
   "dockBorderOpacity": 1,
   "dockBorderThickness": 1,
   "dockIsolateDisplays": false,
+  "dockLauncherEnabled": false,
+  "dockLauncherLogoMode": "apps",
+  "dockLauncherLogoCustomPath": "",
+  "dockLauncherLogoColorOverride": "",
+  "dockLauncherLogoSizeOffset": 0,
+  "dockLauncherLogoBrightness": 0.5,
+  "dockLauncherLogoContrast": 1,
   "notificationOverlayEnabled": false,
   "modalDarkenBackground": true,
   "lockScreenShowPowerActions": true,
@@ -284,6 +307,8 @@
   "lockScreenShowDate": true,
   "lockScreenShowProfileImage": true,
   "lockScreenShowPasswordField": true,
+  "lockScreenShowMediaPlayer": true,
+  "lockScreenPowerOffMonitorsOnLock": false,
   "enableFprint": false,
   "maxFprintTries": 15,
   "lockScreenActiveMonitor": "all",
@@ -361,16 +386,16 @@
       "innerPadding": 8,
       "leftWidgets": [
         {
-          "id": "notificationButton",
-          "enabled": true
+          "enabled": true,
+          "id": "notificationButton"
         },
         {
-          "id": "workspaceSwitcher",
-          "enabled": true
+          "enabled": true,
+          "id": "workspaceSwitcher"
         },
         {
-          "id": "focusedWindow",
-          "enabled": true
+          "enabled": true,
+          "id": "focusedWindow"
         }
       ],
       "maximizeDetection": true,
@@ -382,28 +407,28 @@
       "position": 2,
       "rightWidgets": [
         {
-          "id": "systemTray",
-          "enabled": true
+          "enabled": true,
+          "id": "systemTray"
         },
         {
-          "id": "clipboard",
-          "enabled": true
+          "enabled": true,
+          "id": "clipboard"
         },
         {
-          "id": "cpuUsage",
-          "enabled": true
+          "enabled": true,
+          "id": "cpuUsage"
         },
         {
-          "id": "memUsage",
-          "enabled": true
+          "enabled": true,
+          "id": "memUsage"
         },
         {
-          "id": "battery",
-          "enabled": true
+          "enabled": true,
+          "id": "battery"
         },
         {
-          "id": "controlCenterButton",
-          "enabled": true
+          "enabled": true,
+          "id": "controlCenterButton"
         }
       ],
       "screenPreferences": [
@@ -497,5 +522,7 @@
   "desktopWidgetInstances": [],
   "desktopWidgetGroups": [],
   "builtInPluginSettings": {},
+  "launcherPluginVisibility": {},
+  "launcherPluginOrder": [],
   "configVersion": 5
 }
