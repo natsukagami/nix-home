@@ -13,7 +13,7 @@ in
   options.linux.graphical.alacritty = {
     enable = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
     };
     package = mkOption {
       type = types.package;
