@@ -43,16 +43,7 @@ in
     "amdgpu"
   ];
   boot.kernelModules = [ "kvm-amd" ];
-  boot.kernelPatches = [
-    {
-      # https://gitlab.freedesktop.org/agd5f/linux/-/commit/3fd20580b96a6e9da65b94ac3b58ee288239b731
-      name = "fix-amdgpu-crash";
-      patch = pkgs.fetchpatch {
-        url = "https://gitlab.freedesktop.org/agd5f/linux/-/commit/3fd20580b96a6e9da65b94ac3b58ee288239b731.patch";
-        hash = "sha256-HepKQn1Bnrj7MdroPE58i3vBN1GENPEdxdcZ0c84bOY=";
-      };
-    }
-  ];
+  boot.kernelPatches = [ ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
