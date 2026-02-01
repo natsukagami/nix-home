@@ -367,11 +367,23 @@ in
       linkConfig.RequiredForOnline = if cfg.isRequired then "yes" else "no";
     }) cfg.networking.networks;
     # Leave DNS to systemd-resolved
-    services.resolved.enable = true;
-    services.resolved.settings = {
-      Resolve.Domains = cfg.networking.dnsServers;
-      Resolve.FallbackDns = cfg.networking.dnsServers;
-    };
+    services.resolved = {
+      enable = true;
+    }
+    // (
+      if config.system.nixos.release == "25.11" then
+        {
+          domains = cfg.networking.dnsServers;
+          fallbackDns = cfg.networking.dnsServers;
+        }
+      else
+        {
+          settings = {
+            Resolve.Domains = cfg.networking.dnsServers;
+            Resolve.FallbackDns = cfg.networking.dnsServers;
+          };
+        }
+    );
     # Firewall: only open to SSH now
     networking.firewall.allowedTCPPorts = [ 22 ];
     networking.firewall.allowedUDPPorts = [ 22 ];
