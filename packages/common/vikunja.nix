@@ -24,16 +24,16 @@ let
     '';
 in
 buildGoModule (attrs: {
-  version = "1.0.0-rc3";
+  version = "1.0.0";
 
   src = fetchFromGitHub {
     owner = "go-vikunja";
     repo = "vikunja";
     rev = "v${attrs.version}";
-    hash = "sha256-YetKB3neWvRp0043c9XLulRUpbJqioHSrqanzWrTM8M=";
+    hash = "sha256-IJ6985gLuI0O08xZq8NYoet02NPFqQQhDLND+nfmdbA=";
   };
 
-  vendorHash = "sha256-p1IKRznebodPv8YojU/z5n3CtkObX310GAnuEvry8yk=";
+  vendorHash = "sha256-PV6WlJlG839FtWUR6QONMuuBnmo+AA53xmUNbodQdzk=";
   # vendorHash = lib.fakeHash;
 
   frontend = stdenv.mkDerivation (finalAttrs: {
@@ -54,7 +54,7 @@ buildGoModule (attrs: {
         sourceRoot
         ;
       fetcherVersion = 1;
-      hash = "sha256-dC35ILN9gxonwAB4xqWcQhpoKkG8s3+sjjhuHF5UhNY=";
+      hash = "sha256-OmLFn5aKsXPSbW6AehjkuTJMgOMzDSaYo2XbPvU6WXo=";
       # hash = lib.fakeHash;
     };
 
