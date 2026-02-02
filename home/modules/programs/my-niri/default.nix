@@ -99,9 +99,8 @@ in
       "03" = {
         name = "⚙️ code";
       };
-      "99" = {
-        name = "📧 Email";
-      };
+      "90-music".name = "🎝  Music";
+      "99-email".name = "📧 Email";
     };
     # systemd.user.services.swaync.Install.WantedBy = [ "niri.service" ];
     # systemd.user.services.swaync.Unit.After = [ "niri.service" ];
@@ -290,7 +289,22 @@ in
           ];
         }
         {
-          open-on-workspace = cfg.workspaces."99".name;
+          open-on-workspace = cfg.workspaces."90-music".name;
+          open-maximized = true;
+          matches = [
+            { app-id = "Spotify"; }
+          ];
+        }
+        {
+          open-on-workspace = cfg.workspaces."99-email".name;
+          open-maximized = true;
+          matches = [
+            { app-id = "thunderbird"; }
+            { app-id = "evolution"; }
+          ];
+        }
+        {
+          open-on-workspace = cfg.workspaces."99-email".name;
           open-maximized = true;
           matches = [
             { app-id = "thunderbird"; }
@@ -492,8 +506,8 @@ in
           "Mod+Shift+S".action = move-column-to-workspace (cfg.workspaces."02".name);
           "Mod+D".action = focus-workspace (cfg.workspaces."03".name);
           "Mod+Shift+D".action = move-column-to-workspace (cfg.workspaces."03".name);
-          "Mod+asciicircum".action = focus-workspace (cfg.workspaces."99".name);
-          "Mod+Shift+asciicircum".action = move-column-to-workspace (cfg.workspaces."99".name);
+          "Mod+asciicircum".action = focus-workspace (cfg.workspaces."99-email".name);
+          "Mod+Shift+asciicircum".action = move-column-to-workspace (cfg.workspaces."99-email".name);
 
           "Mod+Tab".action = focus-workspace-previous;
 
