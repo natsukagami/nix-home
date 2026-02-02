@@ -119,6 +119,7 @@ in
         qpwgraph # Pipewire graph
         audacity
         vlc
+        spotify
 
         unstable.zotero
         libreoffice

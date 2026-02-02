@@ -10,6 +10,7 @@
   "dockTransparency": 1,
   "widgetBackgroundColor": "sch",
   "widgetColorMode": "default",
+  "controlCenterTileColorMode": "primary",
   "cornerRadius": 12,
   "niriLayoutGapsOverride": 10,
   "niriLayoutRadiusOverride": -1,
@@ -134,13 +135,22 @@
   "clockCompactMode": false,
   "focusedWindowCompactMode": false,
   "runningAppsCompactMode": true,
+  "barMaxVisibleApps": 0,
+  "barMaxVisibleRunningApps": 0,
+  "barShowOverflowBadge": true,
+  "appsDockHideIndicators": false,
+  "appsDockColorizeActive": false,
+  "appsDockActiveColorMode": "primary",
+  "appsDockEnlargeOnHover": false,
+  "appsDockEnlargePercentage": 125,
+  "appsDockIconSizePercentage": 100,
   "keyboardLayoutNameCompactMode": false,
   "runningAppsCurrentWorkspace": false,
   "runningAppsGroupByApp": false,
   "appIdSubstitutions": [
     {
       "pattern": "Spotify",
-      "replacement": "spotify",
+      "replacement": "spotify-client",
       "type": "exact"
     },
     {
@@ -299,6 +309,9 @@
   "dockLauncherLogoSizeOffset": 0,
   "dockLauncherLogoBrightness": 0.5,
   "dockLauncherLogoContrast": 1,
+  "dockMaxVisibleApps": 0,
+  "dockMaxVisibleRunningApps": 0,
+  "dockShowOverflowBadge": true,
   "notificationOverlayEnabled": false,
   "modalDarkenBackground": true,
   "lockScreenShowPowerActions": true,
@@ -363,6 +376,11 @@
   "showOnLastDisplay": {},
   "niriOutputSettings": {},
   "hyprlandOutputSettings": {},
+  "displayProfiles": {},
+  "activeDisplayProfile": {},
+  "displayProfileAutoSelect": false,
+  "displayShowDisconnected": false,
+  "displaySnapToEdge": true,
   "barConfigs": [
     {
       "autoHide": false,
