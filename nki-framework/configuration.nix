@@ -125,6 +125,14 @@
   services.avahi.enable = true;
   networking.firewall.allowedTCPPorts = [ 8010 ];
 
+  systemd.services.framework-rebind-keys = {
+    script = ''
+      ${lib.getExe pkgs.framework-tool} --remap-key 4 4 0x0014
+    '';
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "oneshot";
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
