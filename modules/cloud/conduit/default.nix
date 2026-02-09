@@ -23,6 +23,19 @@ let
       # Must be filled
       # database_path = "";
       database_backend = "rocksdb";
+
+      media.backend = "filesystem";
+      media.retention = [
+        {
+          scope = "remote";
+          accessed = "14d";
+          created = "90d";
+        }
+        {
+          scope = "thumbnail";
+          space = "1GB";
+        }
+      ];
     };
   };
 in
