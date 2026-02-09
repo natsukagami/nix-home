@@ -21,8 +21,8 @@ let
     };
     authentik = mkImage {
       imageName = "ghcr.io/goauthentik/server";
-      finalImageTag = "2025.10.2";
-      imageDigest = "sha256:8322e449feefcc2416f0401038d5a1a28552c4403b079a59d3b4d978d8f3f530";
+      finalImageTag = "2025.12.3";
+      imageDigest = "sha256:0e7e82b29a4c0899d0e2efa4a7a83452b48b6971faa3a87346f595ebf54fd74c";
     };
   };
   authentikEnv = pkgs.writeText "authentik.env" ''
@@ -107,7 +107,7 @@ in
         restart = "unless-stopped";
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock"
-          "/var/lib/authentik/media:/media"
+          "/var/lib/authentik/data:/data"
           "/var/lib/authentik/custom-templates:/templates"
           "/var/lib/authentik/certs:/certs"
         ];
