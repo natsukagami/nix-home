@@ -85,7 +85,7 @@ in
         command = "server";
         restart = "unless-stopped";
         volumes = [
-          "/var/lib/authentik/media:/media"
+          "/var/lib/authentik/data:/data"
           "/var/lib/authentik/custom-templates:/templates"
         ];
         environment = {
