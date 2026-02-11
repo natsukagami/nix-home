@@ -2,8 +2,8 @@
 
 let
   osu-script = pkgs.writeShellScript "osu-script" ''
-    export PIPEWIRE_ALSA='{ application.process.id='"$$"'  alsa.buffer-bytes='1024' alsa.period-bytes='64' }'
-    export PIPEWIRE_LATENCY='32/44100'
+    export PIPEWIRE_ALSA='{ application.process.id='"$$"'  alsa.buffer-bytes='1024' alsa.period-bytes='16' }'
+    export PIPEWIRE_LATENCY='16/44100'
     export SDL_VIDEODRIVER=wayland
     export SDL_VIDEO_DOUBLE_BUFFER=1
     export OSU_SDL3=1
@@ -16,10 +16,10 @@ let
     with lib;
     appimageTools.wrapType2 rec {
       pname = "osu-lazer-bin";
-      version = "2026.130.0-tachyon";
+      version = "2026.209.0-tachyon";
       src = fetchurl {
         url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
-        hash = "sha256-KzUXuw5jP9izH/rlbJTG0d27XcjR+uW2Offeb6SAsuA=";
+        hash = "sha256-Ss+mM8ZgDakUYP7/3zg0ZBBLTwhED7goBsDsflzI0UQ=";
         # hash = lib.fakeHash;
       };
       extraPkgs = pkgs: with pkgs; [ icu ];
