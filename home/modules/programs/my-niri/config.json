@@ -391,8 +391,16 @@
       "borderThickness": 1,
       "bottomGap": 0,
       "centerWidgets": [
-        "music",
-        "clock",
+        {
+          "id": "music",
+          "enabled": true,
+          "mediaSize": 1
+        },
+        {
+          "id": "clock",
+          "enabled": true,
+          "clockCompactMode": false
+        },
         "weather"
       ],
       "enabled": true,
@@ -465,7 +473,8 @@
       "widgetOutlineEnabled": false,
       "widgetOutlineOpacity": 1,
       "widgetOutlineThickness": 1,
-      "widgetTransparency": 1
+      "widgetTransparency": 1,
+      "shadowIntensity": 10
     }
   ],
   "desktopClockEnabled": false,
@@ -539,7 +548,11 @@
   "desktopWidgetGridSettings": {},
   "desktopWidgetInstances": [],
   "desktopWidgetGroups": [],
-  "builtInPluginSettings": {},
+  "builtInPluginSettings": {
+    "dms_settings_search": {
+      "trigger": "?"
+    }
+  },
   "launcherPluginVisibility": {},
   "launcherPluginOrder": [],
   "configVersion": 5

@@ -138,11 +138,12 @@ in
       input.mouse = {
         accel-profile = "flat";
       };
-      input.warp-mouse-to-focus.enable = true;
+      input.warp-mouse-to-focus.enable = false;
       input.focus-follows-mouse = {
         enable = true;
         max-scroll-amount = "0%";
       };
+      input.workspace-auto-back-and-forth = true;
 
       outputs =
         let
