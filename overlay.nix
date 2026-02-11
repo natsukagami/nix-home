@@ -24,6 +24,8 @@ let
     rbw = final.unstable.rbw;
     # Renovate updates frequently
     renovate = final.unstable.renovate;
+    # Until Vikunja 1.1 hits stable
+    vikunja = final.unstable.vikunja;
   };
   overlay-imported = final: prev: {
     # sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };

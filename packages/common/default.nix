@@ -3,6 +3,5 @@ final: prev: {
   suwako-cursors = final.callPackage ./suwako-cursors { };
   nki-kakoune = final.callPackage ./nki-kakoune { };
   gotosocial-dtth = final.callPackage ./gotosocial { };
-  vikunja = final.callPackage ./vikunja.nix { };
   openconnect-epfl = final.callPackage ./openconnect-epfl.nix { };
 }
