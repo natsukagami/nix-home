@@ -16,15 +16,23 @@ let
     }
     {
       name = "MenuForeground";
-      face = "%opt{blue},white+bF";
+      face = "%opt{blue},%opt{mantle}+b";
     }
     {
       name = "MenuBackground";
-      face = "%opt{sky},white+F";
+      face = "%opt{sky},%opt{mantle}";
+    }
+    {
+      name = "MenuInfo";
+      face = "%opt{teal},%opt{mantle}";
     }
     {
       name = "Information";
-      face = "%opt{sky},white";
+      face = "%opt{blue},%opt{mantle}";
+    }
+    {
+      name = "DiagnosticError";
+      face = "%opt{maroon},default";
     }
     # Markdown help color scheme
     {
@@ -106,4 +114,4 @@ let
     }
   ];
 in
-utils.mkFacesScript "default-faces" (faces ++ extraFaces)
+utils.mkFacesScript "default" (faces ++ extraFaces)

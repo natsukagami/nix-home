@@ -359,11 +359,14 @@ in
 
       nki-kakoune.plugins."kak-tree-sitter" =
         pkgs.writeTextDir "share/kak/autoload/kak-tree-sitter.kak" ''
-          # Enable kak-tree-sitter
-          eval %sh{kak-tree-sitter --kakoune -d --server --init $kak_session --config ${configFile}}
-          map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
-
-          ${kakoune-util.mkFacesScript' faces}
+          provide-module tree-sitter-setup %{
+            # Enable kak-tree-sitter
+            eval %sh{kak-tree-sitter --kakoune -d --server --init $kak_session --config ${configFile}}
+            map global normal <c-t> ": enter-user-mode tree-sitter<ret>"
+          }
+          provide-module tree-sitter-faces %{
+            ${kakoune-util.mkFacesScript' faces}
+          }
         '';
     };
 

@@ -652,7 +652,7 @@ in
       kdePackages.okular
     ];
   plugin = writeTextDir "share/kak/autoload/kak-lsp.kak" ''
-    hook global KakBegin .* %{
+    provide-module kak-lsp-setup %{
       eval %sh{kak-lsp}
       remove-hooks global lsp-filetype-.*
 
@@ -693,12 +693,14 @@ in
       ## Language settings
       ${lang-config}
 
-      ## Faces
-      set-face global InlayHint "+bd@type"
-      ${faces-config}
-
       ## Extra setup
       ${extraSetup}
+    }
+
+    ## Faces
+    provide-module kak-lsp-faces %{
+      set-face global InlayHint "+bd@type"
+      ${faces-config}
     }
   '';
 }

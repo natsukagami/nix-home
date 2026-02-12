@@ -10,12 +10,15 @@ with {
 };
 rec {
   mkFacesScript =
-    name: faces: writeTextDir "share/kak/autoload/${name}/faces.kak" (mkFacesScript' faces);
+    name: faces:
+    writeTextDir "share/kak/autoload/faces-${name}/faces.kak" ''
+      provide-module faces-${name} %{
+        ${mkFacesScript' faces}
+      }
+    '';
 
   mkFacesScript' = faces: ''
-    hook global KakBegin .* %{
     ${lib.concatStringsSep "\n" (builtins.map (f: "  face global ${f.name} \"${f.face}\"") faces)}
-    }
   '';
 
   toDir = name: file: writeTextDir name (builtins.readFile file);

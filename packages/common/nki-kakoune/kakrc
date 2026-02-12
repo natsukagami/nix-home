@@ -3,10 +3,17 @@
 # set global kts_teal "rgb:008080"
 # set global kts_mauve "rgb:c264ff"
 # set global kts_sky "rgb:6aa622"
+
+require-module tree-sitter-setup
+require-module kak-lsp-setup
+
 # Color scheme
 colorscheme catppuccin-latte
 set-face global module "%opt{sapphire}"
 set global base "default"
+require-module tree-sitter-faces
+require-module kak-lsp-faces
+require-module faces-default
 
 # Set indentation guides
 add-highlighter global/indent-guides show-whitespaces -tab " " -spc " " -lf " " -nbsp " "
