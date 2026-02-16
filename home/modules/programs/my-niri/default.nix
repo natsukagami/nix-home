@@ -281,6 +281,7 @@ in
           open-maximized = true;
           matches = [
             { title = "^((d|D)iscord|((A|a)rm(c|C)ord))$"; }
+            { app-id = "discord"; }
             { title = "VencordDesktop"; }
             { app-id = "VencordDesktop"; }
             { title = "vesktop"; }
