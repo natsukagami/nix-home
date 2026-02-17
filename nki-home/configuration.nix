@@ -35,6 +35,7 @@ in
     ./peertube-runner.nix
     ./deluge.nix
     ./minecraft.nix
+    ./satisfactory.nix
     ./forgejo-runner.nix
     openrazer
   ];
