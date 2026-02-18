@@ -23,7 +23,7 @@
     with pkgs;
     [
       # Gaming stuff
-      wineWowPackages.full
+      wineWow64Packages.stableFull
       # wine-lol
       winetricks
       lutris

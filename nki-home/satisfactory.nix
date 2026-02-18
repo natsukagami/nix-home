@@ -5,6 +5,7 @@
 }:
 let
   user = "satisfactory";
+  dataDir = "/mnt/steam/Satisfactory";
 in
 {
 
@@ -12,6 +13,8 @@ in
   users.users.${user} = {
     isSystemUser = true;
     group = user;
+    home = dataDir;
+    createHome = true;
   };
 
   systemd.services.satisfactory-server = {
@@ -19,27 +22,28 @@ in
     description = "Satisfactory dedicated server";
     wants = [
       "network-online.target"
-      "tailscale.service"
+      "tailscaled.service"
     ];
     after = [
       "syslog.target"
       "network.target"
       "nss-lookup.target"
       "network-online.target"
-      "tailscale.service"
+      "tailscaled.service"
     ];
+    wantedBy = [ "multi-user.target" ];
 
     preStart = ''
-      ${lib.getExe pkgs.steamcmd} +force_install_dir /mnt/steam/Satisfactory +login anonymous +app_update 1690800 validate +quit
+      ${lib.getExe pkgs.steamcmd} +force_install_dir "${dataDir}" +login anonymous +app_update 1690800 validate +quit
     '';
-    script = "/mnt/steam/Satisfactory/FactoryServer.sh";
     serviceConfig = {
       User = user;
       Group = user;
       Restart = "on-failure";
       RestartSec = 60;
       KillSignal = "SIGINT";
-      WorkingDirectory = "/mnt/steam/Satisfactory/";
+      WorkingDirectory = "${dataDir}/";
+      ExecStart = "${dataDir}/FactoryServer.sh";
     };
   };
 
