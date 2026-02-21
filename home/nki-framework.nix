@@ -97,12 +97,12 @@
         profile.outputs = [
           {
             criteria = "eDP-1";
-            position = "0,${toString (builtins.floor ((2160 / work.scale - 1200) + 1200 / 3))}";
+            position = "0,${toString (builtins.floor ((work.meta.scaled.height - 1200) + 1200 / 3))}";
             status = "enable";
           }
           {
             criteria = work.name;
-            position = "1920,0";
+            position = "${toString (builtins.floor framework.meta.scaled.width)},0";
           }
         ];
       }

@@ -7,7 +7,20 @@
 }:
 with lib;
 let
-  monitors = {
+  monitorOf =
+    props:
+    props
+    // rec {
+      scale = props.scale or 1;
+      meta = props.meta // {
+        scaled = {
+          width = props.meta.mode.width / scale;
+          height = props.meta.mode.height / scale;
+        };
+      };
+    };
+
+  monitors = builtins.mapAttrs (name: monitorOf) {
     # Internal
     "framework" = {
       name = "BOE 0x0BCA Unknown";
