@@ -73,6 +73,19 @@ in
       # captions = [ "en" "vi" "de" "fr" ];
     };
   };
+  systemd.services.invidious = {
+    requires = [ ];
+    after = [ ];
+  };
+  virtualisation.oci-containers.containers.invidious-companion = {
+    image = "quay.io/invidious/invidious-companion:latest";
+    ports = [ "8282:8282" ];
+    pull = "newer";
+    volumes = [ "companioncache:/var/tmp/youtubei.js:rw" ];
+    environmentFiles = [
+      config.sops.secrets."open-webui/env".path
+    ];
+  };
   systemd.timers.smart-ipv6-rotator = {
     description = "Rotate ipv6 routes to Google";
     timerConfig = {
