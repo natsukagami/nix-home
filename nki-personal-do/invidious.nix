@@ -10,8 +10,8 @@ let
       src = pkgs.fetchFromGitHub {
         owner = "iv-org";
         repo = "smart-ipv6-rotator";
-        rev = "61c019c2b14304c2a111a6db4c492d10ab2308cf";
-        hash = "sha256-a4BQH2D7La51vdPqMQSlZB73twX9Zcjq8mxbT5SdCpo=";
+        rev = "b9cf1f56c86dc8c8269d1f881c34ff88e43611ff";
+        hash = "sha256-iUT9tpScggM+N8aafB+V4/vnEr7UHWp+Ub64QRimA8Q=";
       };
     in
     pkgs.writeShellApplication {
@@ -61,6 +61,8 @@ in
       registration_enabled = true;
       login_enabled = true;
       admins = [ "nki" ];
+
+      force_resolve = "ipv6";
       # video_loop = false;
       # autoplay = true;
       # continue = true;
