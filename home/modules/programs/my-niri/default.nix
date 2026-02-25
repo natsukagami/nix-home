@@ -26,6 +26,17 @@ let
     ${lib.getExe pkgs.ydotool} "$@"
     niri msg action switch-layout 0 # ja
   '';
+
+  screenshot-with-edits = pkgs.writeScript "screenshot-edit" ''
+    #!/usr/bin/env fish
+    set IMG (mktemp /tmp/screenshot-XXXXXX.png)
+    # See https://github.com/niri-wm/niri/issues/2664#issuecomment-3436296745
+    ${lib.getExe' pkgs.inotify-tools "inotifywait"} -e modify $IMG &
+    niri msg action screenshot --path $IMG &
+    wait
+    ${lib.getExe pkgs.satty} -f $IMG --floating-hack --early-exit
+    rm $IMG
+  '';
 in
 {
   imports = [ ./dms.nix ];
@@ -534,8 +545,8 @@ in
           "Mod+Shift+Space".action = toggle-window-floating; # Sway compat
 
           "Print".action.screenshot = [ ];
-          "Ctrl+Print".action.screenshot-screen = [ ];
           "Shift+Print".action.screenshot-window = [ ];
+          "Ctrl+Print".action = spawn (builtins.toString screenshot-with-edits);
 
           "Mod+Shift+E".action = quit;
         }
