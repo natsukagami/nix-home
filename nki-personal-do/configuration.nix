@@ -74,6 +74,10 @@
 
   virtualisation.docker.enable = true;
   virtualisation.docker.extraOptions = "--data-root /mnt/data/docker";
+  virtualisation.docker.daemon.settings = {
+    ipv6 = true;
+    fixed-cidr-v6 = "fd00::/80";
+  };
 
   services.do-agent.enable = true;
 

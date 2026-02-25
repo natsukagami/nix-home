@@ -34,7 +34,10 @@ let
     };
 in
 {
-  sops.secrets."invidious" = {
+  sops.secrets."invidious/env" = {
+    mode = "0444";
+  };
+  sops.secrets."invidious/companion-env" = {
     mode = "0444";
   };
   sops.secrets."invidious-rotator-env" = {
@@ -49,7 +52,7 @@ in
     enable = true;
     domain = "invi.dtth.ch";
     port = 61191;
-    extraSettingsFile = config.sops.secrets.invidious.path;
+    extraSettingsFile = config.sops.secrets."invidious/env".path;
     settings = {
       db.user = "invidious";
       db.dbname = "invidious";
@@ -57,12 +60,16 @@ in
       external_port = 443;
       https_only = true;
       hsts = false;
+      domain = "invi.dtth.ch";
+      use_pubsub_feeds = true;
+      use_innertube_for_captions = true;
 
       registration_enabled = true;
       login_enabled = true;
       admins = [ "nki" ];
 
       force_resolve = "ipv6";
+      invidious_companion = [ { private_url = "http://localhost:8282/companion"; } ];
       # video_loop = false;
       # autoplay = true;
       # continue = true;
@@ -74,17 +81,22 @@ in
     };
   };
   systemd.services.invidious = {
-    requires = [ ];
-    after = [ ];
+    requires = [ "docker-invidious-companion.service" ];
+    after = [ "docker-invidious-companion.service" ];
   };
+
+  # Create the network first
+  # > docker network create --ipv4=false --ipv6 ip6net
   virtualisation.oci-containers.containers.invidious-companion = {
+    autoStart = false;
     image = "quay.io/invidious/invidious-companion:latest";
     ports = [ "8282:8282" ];
-    pull = "newer";
+    pull = "always";
     volumes = [ "companioncache:/var/tmp/youtubei.js:rw" ];
     environmentFiles = [
-      config.sops.secrets."open-webui/env".path
+      config.sops.secrets."invidious/companion-env".path
     ];
+    networks = [ "ip6net" ];
   };
   systemd.timers.smart-ipv6-rotator = {
     description = "Rotate ipv6 routes to Google";
