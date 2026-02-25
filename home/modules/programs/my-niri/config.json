@@ -11,6 +11,7 @@
   "widgetBackgroundColor": "sch",
   "widgetColorMode": "default",
   "controlCenterTileColorMode": "primary",
+  "buttonColorMode": "primary",
   "cornerRadius": 12,
   "niriLayoutGapsOverride": 10,
   "niriLayoutRadiusOverride": -1,
@@ -29,6 +30,12 @@
   "nightModeEnabled": false,
   "animationSpeed": 1,
   "customAnimationDuration": 500,
+  "syncComponentAnimationSpeeds": true,
+  "popoutAnimationSpeed": 1,
+  "popoutCustomAnimationDuration": 150,
+  "modalAnimationSpeed": 1,
+  "modalCustomAnimationDuration": 150,
+  "enableRippleEffects": true,
   "wallpaperFillMode": "Fill",
   "blurredWallpaperLayer": true,
   "blurWallpaperOnOverview": true,
@@ -113,6 +120,7 @@
   "showWorkspacePadding": false,
   "workspaceScrolling": false,
   "showWorkspaceApps": true,
+  "workspaceDragReorder": true,
   "maxWorkspaceIcons": 3,
   "workspaceAppIconSizeOffset": 0,
   "groupWorkspaceApps": true,
@@ -132,6 +140,7 @@
   "scrollTitleEnabled": true,
   "audioVisualizerEnabled": true,
   "audioScrollMode": "volume",
+  "audioWheelScrollAmount": 5,
   "clockCompactMode": false,
   "focusedWindowCompactMode": false,
   "runningAppsCompactMode": true,
@@ -147,6 +156,7 @@
   "keyboardLayoutNameCompactMode": false,
   "runningAppsCurrentWorkspace": false,
   "runningAppsGroupByApp": false,
+  "runningAppsCurrentMonitor": false,
   "appIdSubstitutions": [
     {
       "pattern": "Spotify",
@@ -195,6 +205,7 @@
   "dankLauncherV2BorderThickness": 2,
   "dankLauncherV2BorderColor": "primary",
   "dankLauncherV2ShowFooter": true,
+  "dankLauncherV2UnloadOnClose": false,
   "useAutoLocation": true,
   "weatherEnabled": true,
   "networkPreference": "auto",
@@ -313,6 +324,8 @@
   "dockMaxVisibleRunningApps": 0,
   "dockShowOverflowBadge": true,
   "notificationOverlayEnabled": false,
+  "notificationPopupShadowEnabled": true,
+  "notificationPopupPrivacyMode": false,
   "modalDarkenBackground": true,
   "lockScreenShowPowerActions": true,
   "lockScreenShowSystemIcons": true,
@@ -322,6 +335,7 @@
   "lockScreenShowPasswordField": true,
   "lockScreenShowMediaPlayer": true,
   "lockScreenPowerOffMonitorsOnLock": false,
+  "lockAtStartup": false,
   "enableFprint": false,
   "maxFprintTries": 15,
   "lockScreenActiveMonitor": "all",
@@ -333,16 +347,20 @@
   "notificationTimeoutCritical": 0,
   "notificationCompactMode": false,
   "notificationPopupPosition": 0,
+  "notificationAnimationSpeed": 1,
+  "notificationCustomAnimationDuration": 400,
   "notificationHistoryEnabled": true,
   "notificationHistoryMaxCount": 50,
   "notificationHistoryMaxAgeDays": 7,
   "notificationHistorySaveLow": true,
   "notificationHistorySaveNormal": true,
   "notificationHistorySaveCritical": true,
+  "notificationRules": [],
   "osdAlwaysShowValue": false,
   "osdPosition": 5,
   "osdVolumeEnabled": true,
   "osdMediaVolumeEnabled": true,
+  "osdMediaPlaybackEnabled": false,
   "osdBrightnessEnabled": true,
   "osdIdleInhibitorEnabled": true,
   "osdMicMuteEnabled": true,
@@ -392,14 +410,14 @@
       "bottomGap": 0,
       "centerWidgets": [
         {
-          "id": "music",
           "enabled": true,
+          "id": "music",
           "mediaSize": 1
         },
         {
-          "id": "clock",
+          "clockCompactMode": false,
           "enabled": true,
-          "clockCompactMode": false
+          "id": "clock"
         },
         "weather"
       ],
@@ -463,18 +481,18 @@
       "scrollEnabled": true,
       "scrollXBehavior": "column",
       "scrollYBehavior": "workspace",
+      "shadowIntensity": 25,
       "showOnLastDisplay": true,
       "showOnWindowsOpen": false,
       "spacing": 0,
       "squareCorners": true,
-      "transparency": 0.85,
+      "transparency": 0.75,
       "visible": true,
       "widgetOutlineColor": "primary",
       "widgetOutlineEnabled": false,
       "widgetOutlineOpacity": 1,
       "widgetOutlineThickness": 1,
-      "widgetTransparency": 1,
-      "shadowIntensity": 10
+      "widgetTransparency": 1
     }
   ],
   "desktopClockEnabled": false,
@@ -553,6 +571,7 @@
       "trigger": "?"
     }
   },
+  "clipboardEnterToPaste": false,
   "launcherPluginVisibility": {},
   "launcherPluginOrder": [],
   "configVersion": 5
