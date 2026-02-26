@@ -33,6 +33,7 @@ let
   python = pkgs.python3.withPackages (
     p: with p; [
       websockets
+      pygments
     ]
   );
 in
