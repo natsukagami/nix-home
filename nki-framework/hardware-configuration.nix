@@ -90,4 +90,8 @@
   services.fprintd.enable = true;
 
   hardware.sensor.iio.enable = true; # Orientaion and ambient light sensors
+
+  # Fans
+
+  hardware.fw-fanctrl.enable = true;
 }
