@@ -27,16 +27,24 @@ let
     niri msg action switch-layout 0 # ja
   '';
 
-  screenshot-with-edits = pkgs.writeScript "screenshot-edit" ''
-    #!/usr/bin/env fish
-    set IMG (mktemp /tmp/screenshot-XXXXXX.png)
-    # See https://github.com/niri-wm/niri/issues/2664#issuecomment-3436296745
-    ${lib.getExe' pkgs.inotify-tools "inotifywait"} -e modify $IMG &
-    niri msg action screenshot --path $IMG &
-    wait
-    ${lib.getExe pkgs.satty} -f $IMG --floating-hack --early-exit
-    rm $IMG
-  '';
+  screenshot-with-edits =
+    {
+      cmd,
+      fullscreen ? false,
+      ...
+    }:
+    pkgs.writeScript "screenshot-edit" ''
+      #!/usr/bin/env fish
+      set IMG (mktemp /tmp/screenshot-XXXXXX.png)
+      # See https://github.com/niri-wm/niri/issues/2664#issuecomment-3436296745
+      ${lib.getExe' pkgs.inotify-tools "inotifywait"} -e modify $IMG &
+      ${cmd "$IMG"} &
+      wait
+      ${lib.getExe pkgs.satty} -f $IMG --floating-hack --early-exit --copy-command ${lib.getExe' pkgs.wl-clipboard "wl-copy"} ${
+        if fullscreen then "--fullscreen" else ""
+      }
+      rm $IMG
+    '';
 in
 {
   imports = [ ./dms.nix ];
@@ -545,8 +553,19 @@ in
           "Mod+Shift+Space".action = toggle-window-floating; # Sway compat
 
           "Print".action.screenshot = [ ];
-          "Shift+Print".action.screenshot-window = [ ];
-          "Ctrl+Print".action = spawn (builtins.toString screenshot-with-edits);
+          "Ctrl+Print".action = spawn (
+            builtins.toString (screenshot-with-edits {
+              cmd = img: "niri msg action screenshot-screen --path ${img}";
+              fullscreen = true;
+            })
+          );
+          "Shift+Print".action = spawn (
+            builtins.toString (screenshot-with-edits {
+              cmd =
+                img:
+                "niri msg action screenshot-window --path ${img} --id (niri msg --json pick-window | ${lib.getExe pkgs.jq} .id)";
+            })
+          );
 
           "Mod+Shift+E".action = quit;
         }
