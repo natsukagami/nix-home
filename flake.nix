@@ -42,7 +42,7 @@
     conduit.url = "gitlab:famedly/conduit/v0.10.12";
     nix-gaming.url = "github:fufexan/nix-gaming";
     zen-browser.url = "github:youwen5/zen-browser-flake";
-    niri-stable.url = "github:YaLTeR/niri/v25.11";
+    niri-stable.url = "github:YaLTeR/niri/wip/branch";
     niri.url = "github:sodiboo/niri-flake";
     niri.inputs.niri-stable.follows = "niri-stable";
     dms-unstable = {

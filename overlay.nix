@@ -139,6 +139,7 @@ in
   inputs.mpd-mpris.overlays.default
   inputs.rust-overlay.overlays.default
   inputs.niri.overlays.niri
+  inputs.niri-stable.overlays.default
 
   overlay-unstable
   overlay-needs-unstable
