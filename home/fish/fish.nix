@@ -258,7 +258,7 @@ in
       # Set up tty for GPG
       export GPG_TTY=(tty)
 
-      # Set up fzf bindings
+      # Set up fzf
       fzf_configure_bindings --directory=\ct --processes=\cp
 
       # Perl stuff
@@ -269,6 +269,9 @@ in
       set -q PERL_LOCAL_LIB_ROOT; or set -x PERL_LOCAL_LIB_ROOT ${config.home.homeDirectory}/perl5;
       set -x PERL_MB_OPT --install_base\ \"${config.home.homeDirectory}/perl5\";
       set -x PERL_MM_OPT INSTALL_BASE=${config.home.homeDirectory}/perl5;
+
+      # fd theme
+      set -gx LS_COLORS (${lib.getExe pkgs.vivid} generate catppuccin-latte)
     '';
     plugins = [
       {
