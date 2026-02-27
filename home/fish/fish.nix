@@ -258,7 +258,7 @@ in
       # Set up tty for GPG
       export GPG_TTY=(tty)
 
-      # Set up fzf bindings
+      # Set up fzf
       fzf_configure_bindings --directory=\ct --processes=\cp
 
       # Perl stuff
@@ -273,6 +273,9 @@ in
       # Additional bindings in interactive
       source ${./change_cmd.fish}
       source ${./pls_extra.fish}
+
+      # fd theme
+      set -gx LS_COLORS (${lib.getExe pkgs.vivid} generate catppuccin-latte)
     '';
     plugins = [
       {
