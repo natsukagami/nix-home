@@ -120,6 +120,19 @@ let
       }
     );
 
+    # Nixpkgs not building
+    ncmpcpp = prev.ncmpcpp.override {
+      boost = final.boost187;
+    };
+    # 488091
+    navidrome = prev.navidrome.overrideAttrs (
+      finalAttrs: prevAttrs: {
+        env = (prevAttrs.env or { }) // {
+          CGO_CFLAGS_ALLOW = "--define-prefix";
+        };
+      }
+    );
+
   };
 in
 [

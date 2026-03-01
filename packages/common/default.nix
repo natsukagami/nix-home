@@ -4,4 +4,5 @@ final: prev: {
   nki-kakoune = final.callPackage ./nki-kakoune { };
   gotosocial-dtth = final.callPackage ./gotosocial { };
   openconnect-epfl = final.callPackage ./openconnect-epfl.nix { };
+  libopusenc = final.callPackage ./libopusenc.nix { };
 }
