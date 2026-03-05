@@ -249,7 +249,7 @@ in
       virtualisation.spiceUSBRedirection.enable = true;
 
       # Virtualbox
-      virtualisation.virtualbox.host.enable = true;
+      virtualisation.virtualbox.host.enable = false;
       users.extraGroups.vboxusers.members = [ "nki" ];
     }
     {
