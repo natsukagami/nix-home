@@ -50,6 +50,9 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    aagl.url = "github:ezKEa/aagl-gtk-on-nix";
+    aagl.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
     # --- Sources
     kakoune.url = "github:mawww/kakoune";
     kakoune.flake = false;
@@ -145,7 +148,10 @@
             inputs.secrets.nixosModules.common
             inputs.nix-gaming.nixosModules.pipewireLowLatency
             inputs.niri.nixosModules.niri
+            inputs.aagl.nixosModules.default
           ];
+
+          nix.settings = inputs.aagl.nixConfig;
         };
 
       mkPersonalSystem =

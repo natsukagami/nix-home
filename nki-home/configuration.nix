@@ -355,5 +355,10 @@ in
       environment.systemPackages = [ pkgs.vial ];
       services.udev.packages = [ pkgs.vial ];
     }
+
+    # Anime game
+    {
+      programs.anime-game-launcher.enable = true;
+    }
   ];
 }
