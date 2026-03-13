@@ -52,10 +52,10 @@
   # powerManagement.enable = true;
   # powerManagement.powertop.enable = true;
   services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=4h
-    HibernateOnACPower=no
-  '';
+  systemd.sleep.settings.Sleep = {
+    HibernateDelaySec = "4h";
+    HibernateOnACPower = "no";
+  };
 
   # Printing
   services.printing.drivers = with pkgs; [ epfl-cups-drivers ];
@@ -125,13 +125,21 @@
   services.avahi.enable = true;
   networking.firewall.allowedTCPPorts = [ 8010 ];
 
-  systemd.services.framework-rebind-keys = {
-    script = ''
-      ${lib.getExe pkgs.framework-tool} --remap-key 4 4 0x0014
-    '';
-    wantedBy = [ "multi-user.target" ];
-    serviceConfig.Type = "oneshot";
-  };
+  systemd.services.framework-rebind-keys =
+    let
+      script = "${lib.getExe pkgs.framework-tool} --remap-key 4 4 0x0014";
+    in
+    {
+      serviceConfig.Type = "oneshot";
+      serviceConfig.ExecStart = script;
+      serviceConfig.ExecStop = script;
+      unitConfig.StopWhenUnneeded = "yes";
+      wantedBy = [
+        "multi-user.target"
+        "sleep.target"
+      ];
+      before = [ "sleep.target" ];
+    };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
