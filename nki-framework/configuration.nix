@@ -133,6 +133,7 @@
       serviceConfig.Type = "oneshot";
       serviceConfig.ExecStart = script;
       serviceConfig.ExecStop = script;
+      serviceConfig.RemainAfterExit = "yes";
       unitConfig.StopWhenUnneeded = "yes";
       wantedBy = [
         "multi-user.target"
