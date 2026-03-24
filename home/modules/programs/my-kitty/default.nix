@@ -96,6 +96,7 @@ with lib;
             if isNull cfg.background then
               {
                 background_opacity = "0.93";
+                background_blur = "16";
                 dynamic_background_opacity = true;
               }
             else
