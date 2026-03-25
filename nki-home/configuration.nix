@@ -263,7 +263,7 @@ in
       # Nginx HTTPS
       services.nginx = {
         clientMaxBodySize = "256M";
-        sslDhparam = config.security.dhparams.params.nginx.path;
+        sslDhparam = true;
         defaultListen = [
           {
             addr = "0.0.0.0";
