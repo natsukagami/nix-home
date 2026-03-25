@@ -328,8 +328,13 @@ in
     hardware.bluetooth.package = pkgs.bluez5-experimental; # Why do we need experimental...?
     hardware.bluetooth.settings.General.Experimental = true;
     services.blueman.enable = true; # For a GUI
-    # ZRAM
-    zramSwap.enable = true;
+    # Zswap
+    boot.kernelParams = [
+      "zswap.enabled=1" # enables zswap
+      "zswap.compressor=zstd" # compression algorithm
+      "zswap.max_pool_percent=20" # maximum percentage of RAM that zswap is allowed to use
+      "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure    ];
+    ];
 
     ## Users
     users.users.${cfg.username} = {
