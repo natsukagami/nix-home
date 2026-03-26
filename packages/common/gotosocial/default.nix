@@ -1,13 +1,14 @@
 {
   gotosocial,
+  buildGoModule,
   fetchurl,
   fetchzip,
   ...
 }:
-gotosocial.overrideAttrs (
+(gotosocial.override { buildGo124Module = buildGoModule; }).overrideAttrs (
   finalAttrs: prevAttrs: {
     pname = "gotosocial-dtth";
-    version = "0.21.0";
+    version = "0.21.2";
     ldflags = [
       "-s"
       "-w"
@@ -16,11 +17,11 @@ gotosocial.overrideAttrs (
     doCheck = false;
     web-assets = fetchurl {
       url = "https://codeberg.org/superseriousbusiness/gotosocial/releases/download/v${finalAttrs.version}/gotosocial_${finalAttrs.version}_web-assets.tar.gz";
-      hash = "sha256-eExVquNTXkvxg0SAR60kXi5mnROp+tHNO3os1K+rWzU=";
+      hash = "sha256-mCRyhNZ+3ZxdxPCxKxHUaA7/ml/UeUP88FlR+jKSyXM=";
     };
     src = fetchzip {
       url = "https://codeberg.org/superseriousbusiness/gotosocial/releases/download/v${finalAttrs.version}/gotosocial-${finalAttrs.version}-source-code.tar.gz";
-      hash = "sha256-ifSm3tV8P435v7WUS2BYXfVS3FHu9Axz3IQWGdTw3Bg=";
+      hash = "sha256-Z3j5/pXnNTHgBmPEfFgjOJuL03LsPtvAwbuoL9wb5bk=";
       stripRoot = false;
     };
     postInstall = ''
