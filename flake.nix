@@ -126,6 +126,13 @@
           };
         };
 
+      aagl =
+        { pkgs, ... }:
+        {
+          imports = [ inputs.aagl.nixosModules.default ];
+          nix.settings = inputs.aagl.nixConfig;
+        };
+
       # Common Nix modules
       common-nix =
         stable:
@@ -148,10 +155,7 @@
             inputs.secrets.nixosModules.common
             inputs.nix-gaming.nixosModules.pipewireLowLatency
             inputs.niri.nixosModules.niri
-            inputs.aagl.nixosModules.default
           ];
-
-          nix.settings = inputs.aagl.nixConfig;
         };
 
       mkPersonalSystem =
@@ -273,7 +277,10 @@
       nixosConfigurations."kagamiPC" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
         configuration = ./nki-home/configuration.nix;
         homeManagerUsers.nki = import ./home/kagami-pc-home.nix;
-        extraModules = [ osuStable ];
+        extraModules = [
+          osuStable
+          aagl
+        ];
       };
       # yoga g8 configuration
       nixosConfigurations."nki-yoga-g8" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
