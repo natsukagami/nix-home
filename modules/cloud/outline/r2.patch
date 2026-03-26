@@ -1,8 +1,14 @@
+commit c02d878aac3336a332456b3ffe11df094da85377
+Author: Natsu Kagami <nki@nkagami.me>
+Date:   Sun Nov 30 17:28:21 2025 +0100
+
+    Support R2
+
 diff --git a/.env.sample b/.env.sample
-index 76bb83f56..9c32039a9 100644
+index b2f1ca0dc..ac174c620 100644
 --- a/.env.sample
 +++ b/.env.sample
-@@ -98,6 +98,8 @@ AWS_S3_UPLOAD_BUCKET_URL=http://s3:4569
+@@ -103,6 +103,8 @@ AWS_S3_UPLOAD_BUCKET_URL=http://s3:4569
  AWS_S3_UPLOAD_BUCKET_NAME=bucket_name_here
  AWS_S3_FORCE_PATH_STYLE=true
  AWS_S3_ACL=private
@@ -12,10 +18,10 @@ index 76bb83f56..9c32039a9 100644
  
  # ––––––––––––––––––––––––––––––––––––––
 diff --git a/app/utils/files.ts b/app/utils/files.ts
-index d5cbbb329..5dddcb236 100644
+index 3299613ca..eef3d747d 100644
 --- a/app/utils/files.ts
 +++ b/app/utils/files.ts
-@@ -100,8 +100,13 @@ export const uploadFile = async (
+@@ -105,8 +105,13 @@ export const uploadFile = async (
        xhr.withCredentials = !requiresPreflightRequest;
      }
  
@@ -32,21 +38,10 @@ index d5cbbb329..5dddcb236 100644
  
    if (!success) {
 diff --git a/server/env.ts b/server/env.ts
-index ea8e2aa1e..652a88f73 100644
+index 6302b3aac..e403edce3 100644
 --- a/server/env.ts
 +++ b/server/env.ts
-@@ -424,7 +424,9 @@ export class Environment {
-    * Setting secure to false therefore does not mean that you would not use an
-    * encrypted connection.
-    */
--  public SMTP_DISABLE_STARTTLS = this.toBoolean(environment.SMTP_DISABLE_STARTTLS ?? "false");
-+  public SMTP_DISABLE_STARTTLS = this.toBoolean(
-+    environment.SMTP_DISABLE_STARTTLS ?? "false"
-+  );
- 
-   /**
-    * Dropbox app key for embedding Dropbox files
-@@ -597,6 +599,14 @@ export class Environment {
+@@ -611,6 +611,14 @@ export class Environment {
      environment.AWS_S3_UPLOAD_BUCKET_NAME
    );
  
@@ -62,10 +57,10 @@ index ea8e2aa1e..652a88f73 100644
     * Whether to force path style URLs for S3 objects, this is required for some
     * S3-compatible storage providers.
 diff --git a/server/routes/api/attachments/attachments.ts b/server/routes/api/attachments/attachments.ts
-index 2175b2ecc..c4bd29e0d 100644
+index e1b1477f0..5960dd827 100644
 --- a/server/routes/api/attachments/attachments.ts
 +++ b/server/routes/api/attachments/attachments.ts
-@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
+@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
  import { AttachmentPreset } from "@shared/types";
  import { bytesToHumanReadable, getFileNameFromUrl } from "@shared/utils/files";
  import { AttachmentValidation } from "@shared/validations";
@@ -73,7 +68,7 @@ index 2175b2ecc..c4bd29e0d 100644
  import { createContext } from "@server/context";
  import {
    AuthorizationError,
-@@ -27,6 +28,7 @@ import { APIContext } from "@server/types";
+@@ -27,6 +28,7 @@ import type { APIContext } from "@server/types";
  import { RateLimiterStrategy } from "@server/utils/RateLimiter";
  import { assertIn } from "@server/validation";
  import * as T from "./schema";
@@ -81,7 +76,7 @@ index 2175b2ecc..c4bd29e0d 100644
  
  const router = new Router();
  
-@@ -134,17 +136,31 @@ router.post(
+@@ -138,17 +140,31 @@ router.post(
        userId: user.id,
      });
  
@@ -122,10 +117,10 @@ index 2175b2ecc..c4bd29e0d 100644
            "Cache-Control": "max-age=31557600",
            "Content-Type": contentType,
 diff --git a/server/storage/files/BaseStorage.ts b/server/storage/files/BaseStorage.ts
-index 48959df6d..9b2088f8c 100644
+index ae4fc02c1..d2444d576 100644
 --- a/server/storage/files/BaseStorage.ts
 +++ b/server/storage/files/BaseStorage.ts
-@@ -31,6 +31,8 @@ export default abstract class BaseStorage {
+@@ -39,6 +39,8 @@ export default abstract class BaseStorage {
      contentType: string
    ): Promise<Partial<PresignedPost>>;
  
@@ -135,7 +130,7 @@ index 48959df6d..9b2088f8c 100644
     * Returns a promise that resolves with a stream for reading a file from the storage provider.
     *
 diff --git a/server/storage/files/LocalStorage.ts b/server/storage/files/LocalStorage.ts
-index 503c24764..856532f5f 100644
+index 2ddeb2339..ca7c610d7 100644
 --- a/server/storage/files/LocalStorage.ts
 +++ b/server/storage/files/LocalStorage.ts
 @@ -34,6 +34,10 @@ export default class LocalStorage extends BaseStorage {
@@ -150,18 +145,18 @@ index 503c24764..856532f5f 100644
      return "/api/files.create";
    }
 diff --git a/server/storage/files/S3Storage.ts b/server/storage/files/S3Storage.ts
-index b44dc45cb..eb1df9b90 100644
+index 7b5996248..70b6e0474 100644
 --- a/server/storage/files/S3Storage.ts
 +++ b/server/storage/files/S3Storage.ts
-@@ -4,6 +4,7 @@ import {
+@@ -5,6 +5,7 @@ import {
    S3Client,
    DeleteObjectCommand,
    GetObjectCommand,
 +  PutObjectCommand,
-   ObjectCannedACL,
    HeadObjectCommand,
    CopyObjectCommand,
-@@ -62,6 +63,16 @@ export default class S3Storage extends BaseStorage {
+ } from "@aws-sdk/client-s3";
+@@ -60,6 +61,16 @@ export default class S3Storage extends BaseStorage {
      return createPresignedPost(this.client, params);
    }
  
@@ -178,7 +173,19 @@ index b44dc45cb..eb1df9b90 100644
    private getPublicEndpoint(isServerUpload?: boolean) {
      if (env.AWS_S3_ACCELERATE_URL) {
        return env.AWS_S3_ACCELERATE_URL;
-@@ -141,10 +152,17 @@ export default class S3Storage extends BaseStorage {
+@@ -86,9 +97,8 @@ export default class S3Storage extends BaseStorage {
+       return host;
+     }
+ 
+-    return `${host}/${isServerUpload && isDocker ? "s3/" : ""}${
+-      env.AWS_S3_UPLOAD_BUCKET_NAME
+-    }`;
++    return `${host}/${isServerUpload && isDocker ? "s3/" : ""}${env.AWS_S3_UPLOAD_BUCKET_NAME
++      }`;
+   }
+ 
+   public getUploadUrl(isServerUpload?: boolean) {
+@@ -138,10 +148,17 @@ export default class S3Storage extends BaseStorage {
      );
    }
  
@@ -196,4 +203,3 @@ index b44dc45cb..eb1df9b90 100644
      const isDocker = env.AWS_S3_UPLOAD_BUCKET_URL.match(/http:\/\/s3:/);
      const params = {
        Bucket: this.getBucket(),
-

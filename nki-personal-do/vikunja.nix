@@ -50,7 +50,6 @@ in
 
     settings = {
       service = {
-        publicurl = "https://${host}";
         enableregistration = false;
         enablepublicteams = true;
       };
