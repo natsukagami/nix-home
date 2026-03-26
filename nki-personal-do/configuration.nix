@@ -201,6 +201,8 @@
     package = pkgs.youmubot.override { enableCodeforces = false; };
     envFile = config.sops.secrets.youmubot-env.path;
   };
+  systemd.services.youmubot.requires = [ "network-online.target" ];
+  systemd.services.youmubot.after = [ "network-online.target" ];
 
   # Authentik
   sops.secrets.authentik-env = { };
