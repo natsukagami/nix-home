@@ -66,7 +66,10 @@
   # powerManagement.enable = true;
   # powerManagement.powertop.enable = true;
   services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
-  systemd.sleep.extraConfig = "HibernateDelaySec=4h";
+  systemd.sleep.settings.Sleep = {
+    HibernateDelaySec = "4h";
+    HibernateOnACPower = "no";
+  };
 
   # Printing
   services.printing.drivers = with pkgs; [ epfl-cups-drivers ];
@@ -116,7 +119,7 @@
   virtualisation.spiceUSBRedirection.enable = true;
 
   # Virtualbox
-  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enable = false; # Disable until 6.19 support
   users.extraGroups.vboxusers.members = [ "nki" ];
 
   # Secrets
