@@ -37,6 +37,7 @@ in
     ./minecraft.nix
     ./satisfactory.nix
     ./forgejo-runner.nix
+    ./immich.nix
     openrazer
   ];
 
