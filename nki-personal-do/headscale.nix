@@ -63,8 +63,13 @@ in
         extra_records = [
           {
             name = "llm.kagamipc.dtth.ts";
-            type = "A";
-            value = "100.64.0.4";
+            type = "AAAA";
+            value = "fd7a:115c:a1e0::4";
+          }
+          {
+            name = "immich.kagamipc.dtth.ts";
+            type = "AAAA";
+            value = "fd7a:115c:a1e0::4";
           }
         ];
       };

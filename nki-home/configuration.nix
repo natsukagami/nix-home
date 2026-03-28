@@ -30,6 +30,8 @@ in
     ../modules/personal/fonts
     # Encrypted DNS
     ../modules/services/edns
+    # Nginx base
+    ./nginx.nix
     # Other services
     ../modules/personal/u2f.nix
     ./peertube-runner.nix
@@ -254,29 +256,6 @@ in
       users.extraGroups.vboxusers.members = [ "nki" ];
     }
     {
-      sops.secrets."nginx/key.pem" = {
-        owner = "nginx";
-        reloadUnits = [ "nginx.service" ];
-      };
-      security.dhparams.enable = true;
-      security.dhparams.params.nginx.bits = 4096;
-      systemd.services.nginx.requires = [ "dhparams-gen-nginx.service" ];
-      # Nginx HTTPS
-      services.nginx = {
-        clientMaxBodySize = "256M";
-        sslDhparam = true;
-        defaultListen = [
-          {
-            addr = "0.0.0.0";
-            ssl = true;
-            extraParameters = [
-            ];
-          }
-        ];
-      };
-      common.linux.tailscale.firewall.allowPorts = [ 443 ];
-    }
-    {
       services.jellyfin = {
         enable = true;
       };
@@ -329,24 +308,10 @@ in
       # systemd.services.open-webui.path = [
       #   pkgs.ffmpeg
       # ];
-      services.nginx = {
-        enable = true;
-        recommendedProxySettings = true;
-        virtualHosts = {
-          # ... existing hosts config etc. ...
-          "llm" = {
-            serverAliases = [
-              "llm.home.tinc"
-              "llm.kagamipc.dtth.ts"
-            ];
-            forceSSL = true;
-            sslCertificate = ./cert.pem;
-            sslCertificateKey = config.sops.secrets."nginx/key.pem".path;
-            locations."/" = {
-              proxyPass = "http://127.0.0.1:5689";
-              proxyWebsockets = true;
-            };
-          };
+      nki.nginx.hosts."llm" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:5689";
+          proxyWebsockets = true;
         };
       };
       environment.systemPackages = [ pkgs.nvtopPackages.amd ];
