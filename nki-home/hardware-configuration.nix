@@ -63,6 +63,17 @@ in
 
   fileSystems."/mnt/steam" = from-encdata "steam";
   fileSystems."/nix" = from-encdata "nix";
+  fileSystems."/mnt/immich" = {
+    device = "/dev/disk/by-uuid/f7b57fe0-45c8-44a4-9b01-165dd8fb95b1";
+    fsType = "btrfs";
+    options = [ "compress=zstd" ];
+    encrypted = {
+      enable = true;
+      label = "immich";
+      blkDev = "/dev/disk/by-uuid/9f4fec04-1b02-4b6a-9eb1-5b4e18082de0";
+      keyFile = "/sysroot/var/crypto/immich_key";
+    };
+  };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/561f6441-1915-4059-a5e1-76a449b0c9bf"; } ];
 
