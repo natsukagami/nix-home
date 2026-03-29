@@ -6,10 +6,10 @@ in
   services.immich = {
     inherit port;
     enable = true;
-    package = pkgs.pkgsRocm.immich;
+    package = pkgs.immich;
     mediaLocation = "/mnt/immich";
     accelerationDevices = null;
-    settings.server.externalDomain = "https://immich.kagamipc.dtth.ts/";
+    settings = null;
     machine-learning.environment = {
     };
   };

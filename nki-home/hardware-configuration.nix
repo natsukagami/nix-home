@@ -79,4 +79,6 @@ in
 
   # bluetooth usb
   hardware.firmware = [ pkgs.rtl8761b-firmware ];
+
+  nixpkgs.config.rocmSupport = true;
 }
