@@ -23,6 +23,24 @@ let
       keyFile = "/sysroot/var/crypto/key_data";
     };
   };
+
+  immich-volume =
+    {
+      label,
+      device,
+      blkDev,
+    }:
+    {
+      inherit device;
+      fsType = "btrfs";
+      options = [ "compress=zstd" ];
+      encrypted = {
+        inherit label blkDev;
+        enable = true;
+        keyFile = "/sysroot/var/crypto/immich_key";
+      };
+    };
+
 in
 {
   imports = [
@@ -63,16 +81,15 @@ in
 
   fileSystems."/mnt/steam" = from-encdata "steam";
   fileSystems."/nix" = from-encdata "nix";
-  fileSystems."/mnt/immich" = {
+  fileSystems."/mnt/immich" = immich-volume {
     device = "/dev/disk/by-uuid/f7b57fe0-45c8-44a4-9b01-165dd8fb95b1";
-    fsType = "btrfs";
-    options = [ "compress=zstd" ];
-    encrypted = {
-      enable = true;
-      label = "immich";
-      blkDev = "/dev/disk/by-uuid/9f4fec04-1b02-4b6a-9eb1-5b4e18082de0";
-      keyFile = "/sysroot/var/crypto/immich_key";
-    };
+    blkDev = "/dev/disk/by-uuid/9f4fec04-1b02-4b6a-9eb1-5b4e18082de0";
+    label = "immich";
+  };
+  fileSystems."/mnt/immich-backup" = immich-volume {
+    device = "/dev/disk/by-uuid/3f7ee402-fc66-43d5-9bda-a0a1a93ec496";
+    blkDev = "/dev/disk/by-uuid/d6f584db-3cb5-49f4-a55f-28e5a2075d6a";
+    label = "immich-backup";
   };
 
   swapDevices = [ { device = "/dev/disk/by-uuid/561f6441-1915-4059-a5e1-76a449b0c9bf"; } ];
