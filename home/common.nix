@@ -29,7 +29,7 @@
     sd
     ripgrep
     openssh
-    tea # gitea CLI (gh-like)
+    forgejo-cli
     glab # gitlab CLI
     fx # JSON viewer
     glow # Markdown viewer
