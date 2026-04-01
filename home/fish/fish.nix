@@ -269,6 +269,10 @@ in
       set -q PERL_LOCAL_LIB_ROOT; or set -x PERL_LOCAL_LIB_ROOT ${config.home.homeDirectory}/perl5;
       set -x PERL_MB_OPT --install_base\ \"${config.home.homeDirectory}/perl5\";
       set -x PERL_MM_OPT INSTALL_BASE=${config.home.homeDirectory}/perl5;
+
+      # Additional bindings in interactive
+      source ${./change_cmd.fish}
+      source ${./pls_extra.fish}
     '';
     plugins = [
       {
@@ -290,17 +294,5 @@ in
         };
       }
     ];
-  };
-
-  # Source files
-  config.home.file = {
-    "fish/change_cmd.fish" = {
-      source = ./. + "/change_cmd.fish";
-      target = ".config/fish/conf.d/change_cmd.fish";
-    };
-    "fish/pls.fish" = {
-      source = ./pls_extra.fish;
-      target = ".config/fish/conf.d/pls_extra.fish";
-    };
   };
 }
