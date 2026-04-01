@@ -93,6 +93,10 @@ in
   };
   programs.my-niri.dms.backlight-device = "backlight:intel_backlight";
   programs.my-niri.dms.keyboard-backlight-device = "leds:tpacpi::kbd_backlight";
+  programs.dank-material-shell.settings = {
+    # override
+    batteryChargeLimit = lib.mkForce 100;
+  };
   ## Virtual keyboard
   systemd.user.services.wvkbd = {
     Unit = {

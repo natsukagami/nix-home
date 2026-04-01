@@ -62,6 +62,7 @@
 
     USB_AUTOSUSPEND = 0;
   };
+  services.tlp.pd.enable = true;
   services.power-profiles-daemon.enable = false;
   # powerManagement.enable = true;
   # powerManagement.powertop.enable = true;
