@@ -9,7 +9,8 @@
   nil,
   nixfmt,
   ltex-ls,
-  nodePackages,
+  vscode-langservers-extracted,
+  typescript-language-server,
   tailwindcss-language-server,
   fsautocomplete,
   metals,
@@ -54,7 +55,7 @@ let
                     "package.json"
                     ".git"
                   ];
-                  package = nodePackages.vscode-langservers-extracted;
+                  package = vscode-langservers-extracted;
                 };
               };
           in
@@ -183,7 +184,7 @@ let
                 "javascript"
               ];
               roots = [ "tsconfig.json" ];
-              package = nodePackages.typescript-language-server;
+              package = typescript-language-server;
               settings_section = "_";
               workspace_did_change_configuration_subsection = "did_change_configuration";
               settings._ = { };
