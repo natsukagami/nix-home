@@ -313,7 +313,6 @@ in
       assigns = {
         "${builtins.elemAt workspaces 0}" = [
           { app_id = "^firefox$"; }
-          { app_id = "^librewolf$"; }
           { app_id = "^zen$"; }
         ];
         "${builtins.elemAt workspaces 1}" = [

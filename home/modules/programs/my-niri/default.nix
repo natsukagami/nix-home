@@ -287,10 +287,7 @@ in
             }
             {
               at-startup = true;
-              app-id = "^librewolf$";
-            }
-            {
-              at-startup = true;
+
               app-id = "^zen$";
             }
           ];

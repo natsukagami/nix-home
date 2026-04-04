@@ -49,11 +49,6 @@ let
       ];
     });
 
-    librewolf = (
-      prev.librewolf.override {
-        nativeMessagingHosts = with final; [ kdePackages.plasma-browser-integration ];
-      }
-    );
 
     discord-canary = prev.discord-canary.override {
       commandLineArgs = "--ozone-platform=wayland --enable-features=WaylandWindowDecorations --enable-wayland-ime=true  --wayland-text-input-version=3";
