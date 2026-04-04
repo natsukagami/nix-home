@@ -120,6 +120,18 @@ let
       }
     );
 
+    ollama-rocm = prev.ollama-rocm.overrideAttrs (
+      finalAttrs: prevAttrs: {
+        version = "0.20.2";
+        src = final.fetchFromGitHub {
+          owner = "ollama";
+          repo = "ollama";
+          tag = "v${finalAttrs.version}";
+          hash = "sha256-Ic3eLOohLR7MQGkLvDJBNOCiBBKxh6l8X9MgK0b4w+Y=";
+        };
+      }
+    );
+
     # immich-machine-learning = prev.immich-machine-learning.override {
     #   python3 = final.python3.override {
     #     packageOverrides = pyFinal: pyPrev: {
