@@ -49,11 +49,6 @@ let
       ];
     });
 
-
-    discord-canary = prev.discord-canary.override {
-      commandLineArgs = "--ozone-platform=wayland --enable-features=WaylandWindowDecorations --enable-wayland-ime=true  --wayland-text-input-version=3";
-    };
-
     swaybg = prev.swaybg.overrideAttrs (
       finalAttrs: prevAttrs: {
         src = final.fetchFromGitHub {

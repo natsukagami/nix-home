@@ -80,7 +80,7 @@ in
       description = "List of packages to include in ~/.config/autostart";
       default = [
         cfg.defaults.webBrowser.package
-        pkgs.thunderbird-latest
+        pkgs.thunderbird-bin
         cfg.defaults.discord.package
       ];
     };
@@ -92,7 +92,7 @@ in
       };
       discord = mkPackageWithDesktopOption {
         description = "Discord client";
-        default.package = pkgs.discord-canary;
+        default.package = pkgs.vesktop;
       };
     };
   };
