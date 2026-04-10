@@ -259,6 +259,23 @@ in
       services.jellyfin = {
         enable = true;
       };
+      # Shoko anime server
+      virtualisation.oci-containers.containers.shoko-server = {
+        image = "ghcr.io/shokoanime/server:latest";
+        autoStart = true;
+        ports = [ "127.0.0.1:8111:8111" ];
+        pull = "newer";
+        volumes = [
+          "/home/nki/.local/share/shoko:/home/shoko/.shoko"
+          "/mnt/Data/Anime/Shoko:/mnt/anime"
+          "/mnt/Data/Anime:/mnt/import"
+        ];
+        environment.TZ = "Europe/Zurich";
+      };
+      systemd.services.jellyfin = {
+        requires = [ "podman-shoko-server.service" ];
+        after = [ "podman-shoko-server.service" ];
+      };
     }
     {
       # LLM poop
