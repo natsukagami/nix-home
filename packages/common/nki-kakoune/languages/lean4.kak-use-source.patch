@@ -1,0 +1,16 @@
+diff --git a/lean4.kak b/lean4.kak
+index 24d97b2..67fab5d 100644
+--- a/lean4.kak
++++ b/lean4.kak
+@@ -56,9 +56,7 @@ define-command -hidden lean4_update_infoview %{
+ 
+ # Abbreviations
+ define-command -hidden lean4_replace_abbreviations %{
+-    execute-keys -draft %{
+-        %|python $kak_config/lean4-replace-abbreviations.py<ret>
+-    }
++    execute-keys -draft '%|python $kak_config/lean4-replace-abbreviations.py<ret>'
+ }
+ 
+ # Indentation
+

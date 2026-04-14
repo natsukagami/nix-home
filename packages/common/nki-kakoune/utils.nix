@@ -50,19 +50,28 @@ rec {
     let
       module = if wrapAsModule then writeModuleWrapper name (builtins.readFile src) else src;
     in
-    buildKakounePluginFrom2Nix {
-      pname = name;
-      version = attrs.version or "latest";
-      src =
-        if activationScript == null then
-          module
-        else
-          symlinkJoin {
-            name = "${name}-src";
-            paths = [
-              module
-              (writeActivationScript activationScript)
-            ];
-          };
-    };
+    buildKakounePluginFrom2Nix (
+      {
+        pname = name;
+        version = attrs.version or "latest";
+        src =
+          if activationScript == null then
+            module
+          else
+            symlinkJoin {
+              name = "${name}-src";
+              paths = [
+                module
+                (writeActivationScript activationScript)
+              ];
+            };
+      }
+      // (builtins.removeAttrs attrs [
+        "name"
+        "src"
+        "wrapAsModule"
+        "activationScript"
+        "pname"
+      ])
+    );
 }
