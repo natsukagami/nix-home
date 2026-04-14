@@ -2,7 +2,7 @@ final: prev: {
   epfl-cups-drivers = final.callPackage ./epfl-cups-drivers { };
   suwako-cursors = final.callPackage ./suwako-cursors { };
   nki-kakoune = final.callPackage ./nki-kakoune { };
-  gotosocial-dtth = final.callPackage ./gotosocial { };
+  # gotosocial-dtth = final.callPackage ./gotosocial { };
   openconnect-epfl = final.callPackage ./openconnect-epfl.nix { };
   libopusenc = final.callPackage ./libopusenc.nix { };
 }

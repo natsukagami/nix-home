@@ -14,7 +14,7 @@ in
 {
   options.cloud.gotosocial = {
     enable = mkEnableOption "Enable our local GtS server";
-    package = mkPackageOption pkgs "gotosocial-dtth" { };
+    package = mkPackageOption pkgs "gotosocial" { };
     host = mkOption {
       type = types.str;
       description = "The GtS host";
