@@ -66,7 +66,7 @@
     device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [
-      "subvol=swap"
+      "subvol=nixos/swap"
       "compress=zstd"
     ];
   };
