@@ -25,12 +25,12 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.kernelParams = [
     # Hibernation
-    "resume=UUID=cf280463-b8cb-4e5d-bff3-973068a2c8d5"
-    "resume_offset=7349504" # btrfs inspect-internal map-swapfile -r /var/swapfile
+    # "resume=UUID=cf280463-b8cb-4e5d-bff3-973068a2c8d5"
+    # "resume_offset=7349504" # btrfs inspect-internal map-swapfile -r /var/swapfile
   ];
 
   fileSystems."/" = {
-    device = "/dev/mapper/cryptroot";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [
       "subvol=nixos"
@@ -42,10 +42,10 @@
     interval = "monthly";
   };
 
-  common.linux.luksDevices."cryptroot" = "/dev/disk/by-uuid/94226aae-6d1c-401a-bfad-3aa5f371a365";
+  common.linux.luksDevices."root" = "/dev/disk/by-uuid/091ea01b-2074-48bc-911a-12362fd6f1c7";
 
   fileSystems."/home" = {
-    device = "/dev/mapper/cryptroot";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [
       "subvol=nixos/home"
@@ -54,10 +54,19 @@
   };
 
   fileSystems."/nix" = {
-    device = "/dev/mapper/cryptroot";
+    device = "/dev/mapper/root";
     fsType = "btrfs";
     options = [
       "subvol=nix"
+      "compress=zstd"
+    ];
+  };
+
+  fileSystems."/swap" = {
+    device = "/dev/mapper/root";
+    fsType = "btrfs";
+    options = [
+      "subvol=swap"
       "compress=zstd"
     ];
   };
@@ -69,7 +78,7 @@
 
   swapDevices = [
     {
-      device = "/var/swapfile";
+      device = "/swap/swapfile";
       size = 32 * 1024;
       priority = 10;
     }
