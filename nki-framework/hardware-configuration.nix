@@ -8,7 +8,16 @@
   modulesPath,
   ...
 }:
-
+let
+  btrfs-subvol = name: {
+    device = "/dev/mapper/root";
+    fsType = "btrfs";
+    options = [
+      "subvol=${name}"
+      "compress=zstd"
+    ];
+  };
+in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -29,14 +38,7 @@
     # "resume_offset=7349504" # btrfs inspect-internal map-swapfile -r /var/swapfile
   ];
 
-  fileSystems."/" = {
-    device = "/dev/mapper/root";
-    fsType = "btrfs";
-    options = [
-      "subvol=nixos"
-      "compress=zstd"
-    ];
-  };
+  fileSystems."/" = btrfs-subvol "nixos";
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
@@ -44,32 +46,11 @@
 
   common.linux.luksDevices."root" = "/dev/disk/by-uuid/091ea01b-2074-48bc-911a-12362fd6f1c7";
 
-  fileSystems."/home" = {
-    device = "/dev/mapper/root";
-    fsType = "btrfs";
-    options = [
-      "subvol=nixos/home"
-      "compress=zstd"
-    ];
-  };
-
-  fileSystems."/nix" = {
-    device = "/dev/mapper/root";
-    fsType = "btrfs";
-    options = [
-      "subvol=nix"
-      "compress=zstd"
-    ];
-  };
-
-  fileSystems."/swap" = {
-    device = "/dev/mapper/root";
-    fsType = "btrfs";
-    options = [
-      "subvol=nixos/swap"
-      "compress=zstd"
-    ];
-  };
+  fileSystems."/home" = btrfs-subvol "nixos/home";
+  fileSystems."/nix" = btrfs-subvol "nix";
+  fileSystems."/swap" = btrfs-subvol "nixos/swap";
+  fileSystems."/home/nki/Projects" = btrfs-subvol "projects";
+  fileSystems."/var/steam" = btrfs-subvol "steam";
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/6A0E-4D23";
