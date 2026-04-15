@@ -36,10 +36,10 @@
 
   framework = {
     host = "framework.tinc";
-    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPx2dgXPrF2KAiCDK9fmBSUdY1wZAPTN2I/spr1Mj8/G root@nki-framework";
+    pubKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEgW7kIwHFwY0GNAxnepkppLFiQi9gkRW/iWVCz9ipGr nix-builder@nki-framework";
 
     builder = {
-      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUdOUlBCVFRkNTVVMXY1U1Jac0FjYVdhS3JGZTY0ZjIxOVViODVTQ2NWd28gcm9vdEBua2ktZnJhbWV3b3JrCg==";
+      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUhTY3FIRU1GSG9mamRFL2hVMXR0SXJYZWdoNUtoNXdFUXpkVkNXZzlBSmwgcm9vdEBua2ktZnJhbWV3b3JrCg==";
       systems = [
         "x86_64-linux"
         "aarch64-linux"

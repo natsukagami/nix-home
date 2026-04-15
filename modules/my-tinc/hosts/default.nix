@@ -30,6 +30,6 @@
 
   framework = {
     subnetAddr = "11.0.0.6";
-    ed25519PublicKey = "YL7NA6Ydv/3FBfSzOPvyHlGweAViPvsG3b0Zh8L0NzF";
+    ed25519PublicKey = "14sM4PG4vXbFr5gLWxnkjUnO7SjL1GvoJ+VolCoaQsM";
   };
 }
