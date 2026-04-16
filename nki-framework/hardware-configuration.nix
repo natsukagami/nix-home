@@ -34,8 +34,7 @@ in
   boot.kernelModules = [ "kvm-amd" ];
   boot.kernelParams = [
     # Hibernation
-    # "resume=UUID=cf280463-b8cb-4e5d-bff3-973068a2c8d5"
-    # "resume_offset=7349504" # btrfs inspect-internal map-swapfile -r /var/swapfile
+    "nohibernate"
   ];
 
   fileSystems."/" = btrfs-subvol "nixos";
