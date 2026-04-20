@@ -384,9 +384,6 @@ in
           };
         }
     );
-    # Firewall: only open to SSH now
-    networking.firewall.allowedTCPPorts = [ 22 ];
-    networking.firewall.allowedUDPPorts = [ 22 ];
     # Network namespaces management
     systemd.services."netns@" = {
       description = "Network namespace %I";
@@ -475,6 +472,7 @@ in
     services.openssh.package =
       assert lib.versionOlder pkgs.openssh.version "10.3";
       pkgs.staging.openssh;
+    services.openssh.openFirewall = false;
     # PAM
     security.pam.services.login.enableKwallet = true;
     security.pam.services.lightdm.enableKwallet = true;
