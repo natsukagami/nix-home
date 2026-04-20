@@ -1,4 +1,9 @@
-{ nixpkgs, nixpkgs-unstable, ... }@inputs:
+{
+  nixpkgs,
+  nixpkgs-unstable,
+  nixpkgs-staging,
+  ...
+}@inputs:
 let
   overlay-unstable = final: prev: {
     stable = import nixpkgs {
@@ -9,9 +14,9 @@ let
       config.allowUnfree = true;
       system = prev.stdenv.system;
     };
-    x86 = import nixpkgs-unstable {
+    staging = import nixpkgs-staging {
+      config.allowUnfree = true;
       system = prev.stdenv.system;
-      config.allowUnsupportedSystem = true;
     };
   };
   overlay-needs-unstable = final: prev: {

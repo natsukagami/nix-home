@@ -472,6 +472,9 @@ in
     ## Services
     # OpenSSH so you can SSH to me
     services.openssh.enable = true;
+    services.openssh.package =
+      assert lib.versionOlder pkgs.openssh.version "10.3";
+      pkgs.staging.openssh;
     # PAM
     security.pam.services.login.enableKwallet = true;
     security.pam.services.lightdm.enableKwallet = true;

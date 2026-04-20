@@ -6,6 +6,11 @@
   ...
 }:
 
+let
+  openssh =
+    assert lib.versionOlder pkgs.openssh.version "10.3";
+    pkgs.staging.openssh;
+in
 {
   imports = [
     ./kakoune.nix
