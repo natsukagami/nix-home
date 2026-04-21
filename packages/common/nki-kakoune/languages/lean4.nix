@@ -1,28 +1,38 @@
 {
   lib,
   elan,
-  python3,
+  perl,
   fetchFromGitHub,
-  applyPatches,
   sd,
   util,
   ...
 }:
+let
+  perlJSON = perl.withPackages (p: [ p.JSON ]);
+in
 {
   plugin = util.kakounePlugin {
     name = "lean4.kak";
-    src = applyPatches {
-      src = fetchFromGitHub {
-        owner = "Lqnk4";
-        repo = "lean4.kak";
-        rev = "5c2696fd7716c15ccf3fa84322fd291f427e16f2";
-        hash = "sha256-Gy6PDuei8d5R8uzV493dn/oo14LFiAJd+oih0POIFXo=";
-      };
-      patches = [ ./lean4.kak-use-source.patch ];
-    };
+    src =
+      lib.sourceByRegex
+        (
+          fetchFromGitHub {
+            owner = "Chris-F5";
+            repo = "kakoune";
+            rev = "3a86757c65d3241411c47a06bd854265d71e10b2"; # branch=lean-squashed
+            hash = "sha256-ubAaHgmpA0OnjSlB7dvEm2y91vEuJreVmn+ED02P8Sw=";
+          }
+          + "/rc/filetype"
+        )
+        [
+          "^lean\\.kak$"
+          "^lean-abbreviations\\.pl$"
+          "^lean_abbreviations\\.json$"
+        ];
     nativeBuildInputs = [ sd ];
     postInstall = ''
-      sd -F 'python $kak_config/lean4-replace-abbreviations.py' "${lib.getExe python3} $target/lean4-replace-abbreviations.py" "$target/lean4.kak"
+      sd -F 'perl "$kak_runtime/rc/filetype/lean-abbreviations.pl" "$kak_runtime/rc/filetype/lean_abbreviations.json"' \
+        "${lib.getExe perlJSON} '$target/lean-abbreviations.pl' '$target/lean_abbreviations.json'" "$target/lean.kak"
     '';
   };
 
