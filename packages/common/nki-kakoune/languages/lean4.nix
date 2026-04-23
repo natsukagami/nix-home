@@ -31,6 +31,7 @@ in
         ];
     nativeBuildInputs = [ sd ];
     postInstall = ''
+      cp ${./lean4.kak} $target/lean4-extra.kak
       sd -F 'perl "$kak_runtime/rc/filetype/lean-abbreviations.pl" "$kak_runtime/rc/filetype/lean_abbreviations.json"' \
         "${lib.getExe perlJSON} '$target/lean-abbreviations.pl' '$target/lean_abbreviations.json'" "$target/lean.kak"
     '';
