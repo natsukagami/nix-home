@@ -179,6 +179,11 @@ in
     )
   ];
 
+  services.gpg-agent = {
+    enable = true;
+    pinentry.package = pkgs.pinentry-qt;
+  };
+
   xdg.configFile."forgejo-cli/client_ids".text = ''
     git.dtth.ch 63b49907-9901-40df-bf63-819978ccb82c
   '';
