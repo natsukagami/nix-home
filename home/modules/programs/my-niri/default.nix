@@ -141,6 +141,7 @@ in
         QT_QPA_PLATFORM = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
         QT_IM_MODULE = "fcitx";
+        NIXOS_OZONE_WL = "1"; # Wayland electron enable all
       }
       // lib.optionalAttrs osConfig.services.desktopManager.plasma6.enable {
         XDG_MENU_PREFIX = "plasma-";

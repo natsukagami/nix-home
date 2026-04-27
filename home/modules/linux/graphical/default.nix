@@ -92,7 +92,7 @@ in
       };
       discord = mkPackageWithDesktopOption {
         description = "Discord client";
-        default.package = pkgs.vesktop;
+        default.package = pkgs.discord-canary;
       };
     };
   };
