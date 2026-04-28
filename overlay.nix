@@ -13,6 +13,10 @@ let
       config.allowUnfree = true;
       system = prev.stdenv.system;
     };
+    nixpkgs-ibm-plex-patch = import inputs.nixpkgs-ibm-plex-patch {
+      config.allowUnfree = true;
+      system = prev.stdenv.system;
+    };
   };
   overlay-needs-unstable = final: prev: {
     # Typst updates really quickly.
@@ -26,6 +30,10 @@ let
     renovate = final.unstable.renovate;
     # Until Vikunja 1.1 hits stable
     vikunja = final.unstable.vikunja;
+
+    ibm-plex =
+      assert final.stable.ibm-plex.version == "1.1.0";
+      final.nixpkgs-ibm-plex-patch.ibm-plex;
   };
   overlay-imported = final: prev: {
     # sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };

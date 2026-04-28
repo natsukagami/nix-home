@@ -872,6 +872,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-ibm-plex-patch": {
+      "locked": {
+        "lastModified": 1776393785,
+        "narHash": "sha256-AErZyZg/qDEhFZMae+alkmhrUHzWb11mkdNCG3IfALs=",
+        "owner": "magicquark",
+        "repo": "nixpkgs",
+        "rev": "e68888bd0ca046f0acc6196140a5ab82cc3c4364",
+        "type": "github"
+      },
+      "original": {
+        "owner": "magicquark",
+        "ref": "update-ibm-plex",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1765674936,
@@ -1195,6 +1211,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-m1": "nixos-m1",
         "nixpkgs": "nixpkgs_11",
+        "nixpkgs-ibm-plex-patch": "nixpkgs-ibm-plex-patch",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "rust-overlay": "rust-overlay_5",
         "secrets": "secrets",
