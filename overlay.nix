@@ -118,6 +118,10 @@ let
       }
     );
 
+    discord-canary = prev.discord-canary.override {
+      withVencord = true;
+    };
+
     # immich-machine-learning = prev.immich-machine-learning.override {
     #   python3 = final.python3.override {
     #     packageOverrides = pyFinal: pyPrev: {
