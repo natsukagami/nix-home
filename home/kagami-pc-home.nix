@@ -26,7 +26,7 @@
       wineWow64Packages.stableFull
       # wine-lol
       winetricks
-      lutris
+      # lutris
       mangohud # Gaming HUD
 
       # Manage tlmc

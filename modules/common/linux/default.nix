@@ -199,6 +199,13 @@ let
           };
         };
     };
+
+  # I fucking hate discord
+  discord =
+    { ... }:
+    {
+      nixpkgs.config.permittedInsecurePackages = [ "openssl-1.1.1w" ];
+    };
 in
 {
   imports = with modules; [
@@ -206,6 +213,7 @@ in
 
     adb
     ios
+    discord
     graphics
     wlr
     logitech
@@ -469,9 +477,6 @@ in
     ## Services
     # OpenSSH so you can SSH to me
     services.openssh.enable = true;
-    services.openssh.package =
-      assert lib.versionOlder pkgs.openssh.version "10.3";
-      pkgs.staging.openssh;
     services.openssh.openFirewall = false;
     # PAM
     security.pam.services.login.enableKwallet = true;

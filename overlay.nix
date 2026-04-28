@@ -1,7 +1,6 @@
 {
   nixpkgs,
   nixpkgs-unstable,
-  nixpkgs-staging,
   ...
 }@inputs:
 let
@@ -11,10 +10,6 @@ let
       system = prev.stdenv.system;
     };
     unstable = import nixpkgs-unstable {
-      config.allowUnfree = true;
-      system = prev.stdenv.system;
-    };
-    staging = import nixpkgs-staging {
       config.allowUnfree = true;
       system = prev.stdenv.system;
     };

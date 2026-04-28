@@ -124,7 +124,7 @@ in
         unstable.zotero
         libreoffice
 
-        mpv # for anki
+        (mpv.override { youtubeSupport = false; }) # for anki
         anki-bin
 
         # Chat stuff
