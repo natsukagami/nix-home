@@ -1,25 +1,27 @@
 { pkgs, lib, ... }:
 
 let
-  osu-script = pkgs.writeShellScript "osu-script" ''
-    export PIPEWIRE_ALSA='{ application.process.id='"$$"'  alsa.buffer-bytes='1024' alsa.period-bytes='16' }'
-    export PIPEWIRE_LATENCY='16/44100'
+  osu-script-inner = pkgs.writeShellScript "osu-script-inner" ''
+    test -n "$PIPEWIRE_ALSA" || export PIPEWIRE_ALSA='{ application.process.id='"$$"' alsa.channels=2 alsa.rate=96000 alsa.buffer-bytes=2048 alsa.period-bytes=128 }'
+    test -n "$PIPEWIRE_LATENCY" || export PIPEWIRE_LATENCY='1/96000'
     export SDL_VIDEODRIVER=wayland
     export SDL_VIDEO_DOUBLE_BUFFER=1
     export OSU_SDL3=1
 
-    exec osu! "$@"
+    exec "$@"
   '';
-  # osu-pkg = pkgs.unstable.osu-lazer-bin;
+  osu-script = pkgs.writeShellScript "osu-script" ''
+    exec gamemoderun chrt -r 70 ${osu-script-inner} osu!
+  '';
   osu-pkg =
     with pkgs;
     with lib;
     appimageTools.wrapType2 rec {
       pname = "osu-lazer-bin";
-      version = "2026.401.0-lazer";
+      version = "2026.428.0-tachyon";
       src = fetchurl {
         url = "https://github.com/ppy/osu/releases/download/${version}/osu.AppImage";
-        hash = "sha256-FEnsFtNAI6nlaw901UVbs2H+bayefcMtu7/n4Vz7bOc=";
+        hash = "sha256-egZkBQYu0eOZwRbMsQ6oBgpC20nzQ4t0SChKK9B7U7A=";
       };
       extraPkgs = pkgs: with pkgs; [ icu ];
 

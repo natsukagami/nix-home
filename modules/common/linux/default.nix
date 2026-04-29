@@ -209,6 +209,7 @@ let
 in
 {
   imports = with modules; [
+    ./audio.nix
     ./sops.nix
 
     adb
