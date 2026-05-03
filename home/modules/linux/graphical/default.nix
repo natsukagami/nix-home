@@ -129,7 +129,7 @@ in
 
         # Chat stuff
         telegram-desktop
-        wasistlos
+        karere
         slack
         zoom-us
 

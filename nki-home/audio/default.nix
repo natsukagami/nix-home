@@ -2,6 +2,13 @@
   ...
 }:
 {
+  services.pipewire.lowLatency = {
+    # enable this module
+    enable = true;
+    # defaults (no need to be set unless modified)
+    quantum = 32;
+    rate = 96000;
+  };
   services.pipewire.wireplumber.extraConfig = {
     # "log-level-debug" = {
     #   "context.properties" = {
