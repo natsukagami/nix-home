@@ -136,7 +136,7 @@ with lib;
           pkgs.rofi-wayland;
       cycle = true;
       font = "monospace";
-      terminal = "${lib.getExe config.programs.kitty.package}";
+      terminal = "${lib.getExe config.linux.graphical.defaults.terminal.package}";
       theme = "Paper";
       plugins = with pkgs; [
         rofi-bluetooth

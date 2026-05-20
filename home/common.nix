@@ -15,6 +15,7 @@
     ./modules/programs/my-sway
     ./modules/programs/my-niri
     ./modules/programs/my-kitty
+    ./modules/programs/ghostty.nix
     ./common-linux.nix
   ];
 

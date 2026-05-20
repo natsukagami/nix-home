@@ -42,7 +42,7 @@ with lib;
     setDefault = mkOption {
       type = types.bool;
       description = "Set kitty as default terminal";
-      default = true;
+      default = false;
     };
 
     package = mkOption {

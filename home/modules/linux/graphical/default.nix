@@ -88,7 +88,7 @@ in
       webBrowser = mkPackageWithDesktopOption { description = "default web browser"; };
       terminal = mkPackageWithDesktopOption {
         description = "default terminal";
-        default.package = pkgs.kitty;
+        default.package = config.programs.ghostty.package;
       };
       discord = mkPackageWithDesktopOption {
         description = "Discord client";

@@ -30,8 +30,18 @@ hook global WinCreate .* %{
 
 set global grepcmd "rg --line-number --no-column --no-heading --color=never "
 
+
 # Kitty-specific options
 hook -group windowing global KakBegin .* %{
+  # Enable niri
+  try %{ require-module niri }
+  # Override termcmd here to ghostty if it exists, or else
+  evaluate-commands %sh{
+    if [ -n "$GHOSTTY_BIN_DIR" ]; then
+      echo "set global termcmd 'ghostty -e sh -c'"
+    fi
+  }
+  # Kitty-specific options
   try %{
     set global kitty_window_type os-window
   }

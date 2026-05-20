@@ -13,7 +13,6 @@
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
     deploy-rs.url = "github:Serokell/deploy-rs";
 
     # --- Secure boot
