@@ -57,7 +57,7 @@ in
       trusted-public-keys = [ cfg.publicKey ];
     };
 
-    services.harmonia = mkIf cfg.enableServer {
+    services.harmonia.cache = mkIf cfg.enableServer {
       enable = true;
       signKeyPaths = [ cfg.privateKeyFile ];
       settings = {
