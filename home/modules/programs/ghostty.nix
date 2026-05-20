@@ -17,7 +17,7 @@
       "Noto Color Emoji"
       "monospace"
     ];
-    font-size = 18;
+    font-size = 16;
 
     background-opacity = "0.93";
     background-blur = true;
