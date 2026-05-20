@@ -1530,11 +1530,11 @@
         "rust-overlay": "rust-overlay_5"
       },
       "locked": {
-        "lastModified": 1778097261,
-        "narHash": "sha256-QoZuj58l+8G4xmOJ4Yyf3HFCSwIKFf0hoLz8AXxjZOQ=",
+        "lastModified": 1779294212,
+        "narHash": "sha256-rdoR5bRrffMDlzkxOobyzKre3EtWI7XRW2wW0/zDrhE=",
         "owner": "natsukagami",
         "repo": "youmubot",
-        "rev": "3c1d178ea8ed78ec628c20afeceff5da2775c975",
+        "rev": "21552a46c87efe4bafbd606bb8503f060de52e9b",
         "type": "github"
       },
       "original": {
