@@ -57,14 +57,18 @@ in
       trusted-public-keys = [ cfg.publicKey ];
     };
 
-    services.harmonia.cache = mkIf cfg.enableServer {
-      enable = true;
-      signKeyPaths = [ cfg.privateKeyFile ];
-      settings = {
-        bind = bindAddr;
-        priority = 45;
-      };
-    };
+    services.harmonia =
+      let
+        module = mkIf cfg.enableServer {
+          enable = true;
+          signKeyPaths = [ cfg.privateKeyFile ];
+          settings = {
+            bind = bindAddr;
+            priority = 45;
+          };
+        };
+      in
+      if lib.hasPrefix "25.11" lib.version then module else { cache = module; };
 
     services.nginx = mkIf cfg.enableServer {
       enable = true;
