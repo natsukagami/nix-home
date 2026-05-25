@@ -4,7 +4,7 @@
   formats,
   kakoune-lsp,
   # LSP packages
-  ccls,
+  clang-tools,
   gopls,
   nil,
   nixfmt,
@@ -60,21 +60,19 @@ let
               };
           in
           {
-            ccls = {
-              args = [
-                "-v=2"
-                "-log-file=/tmp/ccls.log"
-              ];
-              package = ccls;
-              command = "ccls";
+            clangd = {
+              args = [ "--log=error" ];
+              package = clang-tools;
+              command = "clangd";
               filetypes = [
                 "c"
                 "cpp"
               ];
               roots = [
                 "compile_commands.json"
-                ".cquery"
+                ".clangd"
                 ".git"
+                ".hg"
               ];
             };
             gopls = {
