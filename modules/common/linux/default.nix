@@ -364,9 +364,17 @@ in
     systemd.network.wait-online.enable = false;
     networking.hostName = cfg.networking.hostname;
     networking.wireless.iwd.enable = true;
-    networking.wireless.iwd.settings.General = {
-      EnableNetworkConfiguration = true;
-      Country = cfg.networking.country;
+    networking.wireless.iwd.settings = {
+      General = {
+        EnableNetworkConfiguration = false;
+        Country = cfg.networking.country;
+        AddressRandomization = "network";
+      };
+      Rank = {
+        BandModifier2_4GHz = "0.5";
+        BandModifier5GHz = "0.8";
+        BandModifier6GHz = "1";
+      };
     };
     systemd.network.networks = builtins.mapAttrs (name: cfg: {
       matchConfig.Name = cfg.match;
