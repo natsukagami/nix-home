@@ -94,9 +94,15 @@ in
   systemd.services.peertube = {
     requires = [ "arion-authentik.service" ];
     after = [ "arion-authentik.service" ];
-    serviceConfig.RequiresMountsFor = [ dataFolder ];
+    unitConfig.RequiresMountsFor = [ dataFolder ];
     serviceConfig.StateDirectory = lib.mkForce ""; # disable automatic creation
     serviceConfig.SystemCallFilter = [ "@chown" ];
+
+    # Add pnpm, see https://github.com/NixOS/nixpkgs/issues/522392
+    script = lib.mkBefore ''
+      export PATH=$PATH:${lib.makeBinPath [ pkgs.pnpm_10 ]}
+    '';
+    environment.PNPM_HOME = "${dataFolder}/.pnpm";
   };
   systemd.tmpfiles.settings."10-peertube" = {
     # The service hard-codes a lot of paths here, so it's nicer if we just symlink

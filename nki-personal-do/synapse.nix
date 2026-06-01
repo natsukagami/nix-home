@@ -106,14 +106,14 @@ in
     ];
   };
 
-  services.matrix-appservice-discord = {
-    enable = true;
-    environmentFile = config.sops.secrets.matrix-discord-bridge.path;
-    settings.bridge = {
-      domain = "dtth.ch";
-      homeserverUrl = "https://m.dtth.ch";
-    };
-  };
+  # services.matrix-appservice-discord = {
+  #   enable = true;
+  #   environmentFile = config.sops.secrets.matrix-discord-bridge.path;
+  #   settings.bridge = {
+  #     domain = "dtth.ch";
+  #     homeserverUrl = "https://m.dtth.ch";
+  #   };
+  # };
 
   services.nginx.virtualHosts.synapse-dtth-wellknown = {
     listen = [
