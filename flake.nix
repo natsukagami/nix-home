@@ -2,13 +2,11 @@
   description = "nki's systems";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     darwin.url = "github:lnl7/nix-darwin/master";
     darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-25.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
@@ -41,9 +39,7 @@
     conduit.url = "gitlab:famedly/conduit/v0.10.12";
     nix-gaming.url = "github:fufexan/nix-gaming";
     zen-browser.url = "github:youwen5/zen-browser-flake";
-    niri-stable.url = "github:YaLTeR/niri/v25.11";
     niri.url = "github:sodiboo/niri-flake";
-    niri.inputs.niri-stable.follows = "niri-stable";
     dms-unstable = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -168,17 +164,8 @@
           includeCommonModules ? true,
         }:
         let
-          pickBasedOnNixpkgs =
-            stable: unstable:
-            if nixpkgs-module == inputs.nixpkgs then
-              stable
-            else if nixpkgs-module == inputs.nixpkgs-unstable then
-              unstable
-            else
-              builtins.abort "Unknown nixpkgs module, use `nixpkgs` or `nixpkgs-unstable`";
-
-          home-manager-module = pickBasedOnNixpkgs inputs.home-manager inputs.home-manager-unstable;
-          dms = pickBasedOnNixpkgs inputs.dms inputs.dms-unstable;
+          home-manager-module = inputs.home-manager-unstable;
+          dms = inputs.dms-unstable;
 
           withExtraHomeManagerModules =
             user: settings:
@@ -259,21 +246,6 @@
         import nixpkgs-unstable { system = "aarch64-darwin"; }
       );
 
-      # MacBook configuration: nix-darwin + home-manager
-      darwinConfigurations."nki-macbook" = darwin.lib.darwinSystem rec {
-        system = "aarch64-darwin";
-        modules = [
-          (common-nix nixpkgs-unstable)
-          ./darwin/configuration.nix
-          inputs.home-manager.darwinModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.nki = import ./home/macbook-home.nix;
-          }
-        ];
-      };
-
       # Home configuration
       nixosConfigurations."kagamiPC" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
         configuration = ./nki-home/configuration.nix;
@@ -321,12 +293,6 @@
             }
           )
         ];
-      };
-      # macbook nixos
-      nixosConfigurations."kagami-air-m1" = mkPersonalSystem nixpkgs "aarch64-linux" {
-        configuration = ./kagami-air-m1/configuration.nix;
-        homeManagerUsers.nki = import ./home/macbook-nixos.nix;
-        extraModules = [ inputs.nixos-m1.nixosModules.apple-silicon-support ];
       };
 
       # DigitalOcean node
