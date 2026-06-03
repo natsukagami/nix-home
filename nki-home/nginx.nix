@@ -13,14 +13,10 @@ in
       owner = "nginx";
       reloadUnits = [ "nginx.service" ];
     };
-    security.dhparams.enable = true;
-    security.dhparams.params.nginx.bits = 4096;
-    systemd.services.nginx.requires = [ "dhparams-gen-nginx.service" ];
     # Nginx HTTPS
     services.nginx = {
       enable = true;
       clientMaxBodySize = "1024M";
-      sslDhparam = true;
       recommendedProxySettings = true;
       defaultListenAddresses = [
         "0.0.0.0"
