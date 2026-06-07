@@ -122,19 +122,23 @@ let
       withVencord = true;
     };
 
-    # immich-machine-learning = prev.immich-machine-learning.override {
-    #   python3 = final.python3.override {
-    #     packageOverrides = pyFinal: pyPrev: {
-    #       onnxruntime = pyPrev.onnxruntime.overrideAttrs (
-    #         finalAttrs: prevAttrs: {
-    #           preFixup = (prevAttrs.preFixup or "") + ''
-    #             install -m644 ${final.onnxruntime}/lib/libonnxruntime_providers_migraphx.so $out/lib/python3.13/site-packages/onnxruntime/capi/libonnxruntime_providers_migraphx.so
-    #           '';
-    #         }
-    #       );
-    #     };
-    #   };
-    # };
+    vencord =
+      let
+        listenbrainz-ipc = final.fetchFromGitHub {
+          owner = "qouesm";
+          repo = "vencord-listenbrainz-rpc";
+          rev = "2924588";
+          hash = "sha256-wewGElVJot+aOwzgEy2vMOI53TpnO11KM4O3b/BJ3ew=";
+        };
+      in
+      prev.vencord.overrideAttrs (
+        finalAttrs: prevAttrs: {
+          postPatch = (prevAttrs.postPatch or "") + ''
+            mkdir -p src/userplugins
+            cp -r ${listenbrainz-ipc} src/userplugins/listenbrainz-ipc
+          '';
+        }
+      );
   };
 in
 [
