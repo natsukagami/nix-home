@@ -45,8 +45,6 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    nixpkgs-ibm-plex-patch.url = "github:magicquark/nixpkgs/update-ibm-plex";
-
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     aagl.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
