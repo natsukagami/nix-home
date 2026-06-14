@@ -15,8 +15,10 @@ let
   dataFolder = "/mnt/data/n8n";
 
   plugins = pkgs.callPackage ./n8n/plugins/package.nix { };
+
+  enabled = false;
 in
-{
+lib.mkIf enabled {
   sops.secrets."n8n/env" = {
     reloadUnits = [ "n8n.service" ];
   };
