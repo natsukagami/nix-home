@@ -204,8 +204,6 @@ in
     '';
 
     interactiveShellInit = ''
-      # Fix for https://github.com/nix-community/home-manager/issues/8178
-      set -p fish_complete_path ${config.programs.fish.package}/share/fish/completions
       # Sway!
       if status --is-login; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
         exec ${lib.getExe bootDesktop}
@@ -277,6 +275,14 @@ in
 
       # fd theme
       set -gx LS_COLORS (${lib.getExe pkgs.vivid} generate catppuccin-latte)
+
+      # rbw for SSH
+      if which rbw &> /dev/null
+        export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/rbw/ssh-agent-socket"
+        if not test -e $SSH_AUTH_SOCK
+          rbw unlock
+        end
+      end
     '';
     plugins = [
       {
