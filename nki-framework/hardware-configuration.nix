@@ -55,6 +55,8 @@ in
     device = "/dev/disk/by-uuid/6A0E-4D23";
     fsType = "vfat";
   };
+  common.linux.secureBoot.enable = true;
+  common.linux.secureBoot.enableMeasuredBoot = true;
 
   swapDevices = [
     {
@@ -81,6 +83,5 @@ in
   hardware.sensor.iio.enable = true; # Orientaion and ambient light sensors
 
   # Fans
-
   hardware.fw-fanctrl.enable = true;
 }

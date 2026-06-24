@@ -204,6 +204,7 @@ in
   imports = with modules; [
     ./audio.nix
     ./sops.nix
+    ./lanzaboote.nix
 
     adb
     ios

@@ -279,17 +279,7 @@
         extraModules = [
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-          (
-            { ... }:
-            {
-              # Sets up secure boot
-              boot.loader.systemd-boot.enable = lib.mkForce false;
-              boot.lanzaboote = {
-                enable = true;
-                pkiBundle = "/var/lib/sbctl";
-              };
-            }
-          )
+
         ];
       };
 
