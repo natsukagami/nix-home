@@ -150,6 +150,7 @@
             inputs.secrets.nixosModules.common
             inputs.nix-gaming.nixosModules.pipewireLowLatency
             inputs.niri.nixosModules.niri
+            inputs.lanzaboote.nixosModules.lanzaboote
           ];
         };
 
@@ -258,16 +259,12 @@
         configuration = ./nki-yoga-g8/configuration.nix;
         homeManagerUsers.nki = import ./home/yoga.nix;
         extraModules = [
-          inputs.lanzaboote.nixosModules.lanzaboote
           (
             { ... }:
             {
               # Sets up secure boot
               boot.loader.systemd-boot.enable = lib.mkForce false;
-              boot.lanzaboote = {
-                enable = true;
-                pkiBundle = "/var/lib/sbctl";
-              };
+              common.linux.secureBoot.enable = true;
             }
           )
         ];
@@ -277,9 +274,7 @@
         configuration = ./nki-framework/configuration.nix;
         homeManagerUsers.nki = import ./home/nki-framework.nix;
         extraModules = [
-          inputs.lanzaboote.nixosModules.lanzaboote
           inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-
         ];
       };
 
