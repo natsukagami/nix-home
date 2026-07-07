@@ -186,12 +186,11 @@ in
       catp = "bat --theme=GitHub -p ";
       l = "exa -l --color=always ";
       e = "$EDITOR";
+      lsports = if pkgs.stdenv.isDarwin then "lsof -i -P | grep LISTEN" else "ss -tulp";
       "cp+" = "rsync -avzP";
     };
 
-    everywhereAbbrs = {
-      lsports = if pkgs.stdenv.isDarwin then "lsof -i -P | grep LISTEN" else "ss -tulp";
-    };
+    everywhereAbbrs = { };
 
     shellInit = ''
       # Source brew integration
