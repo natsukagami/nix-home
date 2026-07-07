@@ -23,13 +23,14 @@ let
   monitors = builtins.mapAttrs (name: monitorOf) {
     # Internal
     "framework" = {
-      name = "BOE 0x0BCA Unknown";
+      name = "China Star Optoelectronics Technology Co., Ltd MND508ZB1-1 Unknown";
       meta.mode = {
-        width = 2256;
-        height = 1504;
-        refresh = 60.0;
+        width = 2880;
+        height = 1920;
+        refresh = 120.0;
       };
-      scale = 1.25;
+      scale = 1.5;
+      adaptive_sync = "on";
     };
     "yoga" = {
       name = "AU Optronics 0xD291 Unknown";
