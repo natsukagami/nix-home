@@ -39,7 +39,7 @@
     ## PDF Processors
     poppler-utils
     # TeX
-    texlive.combined.scheme-full
+    texlive.schemes.texliveFull
     inkscape # for TeX svg
     texlab # for inverse search
     ## htop replacement

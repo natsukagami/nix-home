@@ -441,7 +441,7 @@ in
 
   config.services.swayidle = mkIf cfg.enable {
     enable = true;
-    systemdTarget = "sway-session.target";
+    systemdTargets = [ "sway-session.target" ];
     timeouts = [
       # Lock after 15 minutes of idle
       # { timeout = 15 * 60; command = cfg.lockCmd; }

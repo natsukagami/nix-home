@@ -155,6 +155,7 @@ in
 
     # Cursor
     home.pointerCursor = {
+      enable = true;
       package = pkgs.suwako-cursors;
       gtk.enable = true;
       name = "Suwako";

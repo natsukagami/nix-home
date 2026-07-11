@@ -37,8 +37,6 @@ let
   };
 
   overlay-versioning = final: prev: {
-    input-remapper = final.unstable.input-remapper;
-
     kakoune-unwrapped = prev.kakoune-unwrapped.overrideAttrs (attrs: {
       version = "r${builtins.substring 0 6 inputs.kakoune.rev}";
       src = inputs.kakoune;
@@ -142,6 +140,18 @@ let
           '';
         }
       );
+
+    # Until nixOS/nixpkgs#540072
+    vulkan-validation-layers = prev.vulkan-validation-layers.overrideAttrs (old: {
+      cmakeFlags = [
+        "-DUPDATE_DEPS=OFF"
+      ]
+      ++ old.cmakeFlags;
+    });
+
+    input-remapper =
+      assert final.unstable.input-remapper.version == "2.2.0";
+      final.callPackage ./packages/common/input-remapper.nix { };
   };
 in
 [
