@@ -677,16 +677,16 @@
     "kak-lsp": {
       "flake": false,
       "locked": {
-        "lastModified": 1782687309,
-        "narHash": "sha256-ZBeUxH/CBpg/Af1rYjOPWAyDkRNvgeifltpP5GGr+wA=",
+        "lastModified": 1784662208,
+        "narHash": "sha256-nY/DOXE7youb/xpUU7T0t23vSMrGqlEa6qs5tclDE88=",
         "owner": "kakoune-lsp",
         "repo": "kakoune-lsp",
-        "rev": "2c0d865dcfcb90e15f9cf358c402fde0c3be0152",
+        "rev": "801b4c0048b40387f918eb28ed26be24279eb62c",
         "type": "github"
       },
       "original": {
         "owner": "kakoune-lsp",
-        "ref": "v21.0.1",
+        "ref": "v21.0.2",
         "repo": "kakoune-lsp",
         "type": "github"
       }
