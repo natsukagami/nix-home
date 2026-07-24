@@ -38,6 +38,10 @@ let
           sh = "shellscript";
         };
 
+        languageExtras = {
+          # rust.semanticTokens = false;
+        };
+
         languageServers =
           let
             vscodeServerWith =
@@ -558,6 +562,8 @@ let
           ''
         else
           "# No lang-id remap needed";
+
+      langExtras = config.languageExtras."${lang}" or { };
     in
     ''
       # LSP Configuration for ${lang}
@@ -567,7 +573,7 @@ let
         }
         ${lang-id}
         ${
-          if lang.formatOnSave or true then
+          if langExtras.formatOnSave or true then
             ''
               # Format the document if possible
               hook window -group lsp-formatting BufWritePre .* %{ lsp-formatting-sync }
@@ -576,7 +582,7 @@ let
             ""
         }
         ${
-          if lang.semanticTokens or true then
+          if langExtras.semanticTokens or true then
             ''
               # Semantic tokens
               hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
@@ -590,7 +596,7 @@ let
             ""
         }
         ${
-          if lang.inlayHints or true then
+          if langExtras.inlayHints or true then
             ''
               # Enable inlay hints
               lsp-inlay-hints-enable window
