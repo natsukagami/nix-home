@@ -148,10 +148,6 @@ let
       ]
       ++ old.cmakeFlags;
     });
-
-    input-remapper =
-      assert final.unstable.input-remapper.version == "2.2.0";
-      final.callPackage ./packages/common/input-remapper.nix { };
   };
 in
 [
