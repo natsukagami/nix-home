@@ -18,7 +18,6 @@
     package = pkgs.outline.overrideAttrs (attrs: {
       patches = attrs.patches or [ ] ++ [
         ../modules/cloud/outline/dtth-wiki.patch
-        ../modules/cloud/outline/r2.patch
       ];
     });
     databaseUrl = "postgres://outline:outline@localhost/outline?sslmode=disable";
@@ -62,8 +61,7 @@
     config.sops.secrets."outline/extra-env".path
   ];
   systemd.services.outline.environment = {
-    AWS_S3_R2 = "true";
-    AWS_S3_R2_PUBLIC_URL = "https://s3.wiki.dtth.ch";
+    AWS_S3_UPLOAD_METHOD = "put";
   };
   cloud.traefik.hosts.outline = {
     host = "wiki.dtth.ch";
