@@ -134,6 +134,10 @@ in
         slack
         zoom-us
 
+        # Gaming stuff
+        lutris
+        glycin-loaders
+
         ## CLI stuff
         dex # .desktop file management, startup
         # sct # Display color temperature
