@@ -98,4 +98,7 @@ in
   hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
   nixpkgs.config.rocmSupport = true;
+  hardware.graphics.extraPackages = [
+    pkgs.rocmPackages.clr
+  ];
 }

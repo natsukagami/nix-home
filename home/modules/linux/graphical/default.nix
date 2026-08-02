@@ -137,6 +137,7 @@ in
         # Gaming stuff
         lutris
         glycin-loaders
+        umu-launcher
 
         ## CLI stuff
         dex # .desktop file management, startup
