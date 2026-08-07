@@ -66,11 +66,19 @@ let
       rustPlatform = final.unstable.rustPlatform;
     };
 
-    kak-lsp = final.unstable.rustPlatform.buildRustPackage {
-      name = "kak-lsp";
+    kakoune-lsp = final.unstable.rustPlatform.buildRustPackage {
+      name = "kakoune-lsp";
       src = inputs.kak-lsp;
       cargoLock.lockFile = "${inputs.kak-lsp}/Cargo.lock";
       buildInputs = [ final.libiconv ];
+
+      # Upstream 2c44d28 (in v21.0.1+) reverted #704: `save: {}` is read as
+      # "server doesn't want didSave" instead of "notify me, without the text",
+      # so rust-analyzer never gets textDocument/didSave and never runs
+      # cargo check. Drop once upstream fixes it.
+      patches = [
+        ./packages/common/nki-kakoune/didsave.patch
+      ];
 
       meta.mainProgram = "kak-lsp";
     };
