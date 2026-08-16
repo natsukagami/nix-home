@@ -114,22 +114,12 @@ let
       }
     );
 
-    discord-canary =
-      (prev.discord-canary.override {
+    discord-canary = (
+      prev.discord-canary.override {
         withVencord = true;
-      }).overrideAttrs
-        (
-          finalAttrs: prevAttrs:
-          let
-            binaryName = "DiscordCanary";
-          in
-          {
-            postInstall = (prevAttrs.postInstall or "") + ''
-              wrapProgramShell $out/opt/${binaryName}/${binaryName} \
-                --suffix VK_ADD_DRIVER_FILES : "${final.addDriverRunpath.driverLink}/share/vulkan/icd.d"
-            '';
-          }
-        );
+        useFHSEnv = false;
+      }
+    );
 
     vencord =
       let
