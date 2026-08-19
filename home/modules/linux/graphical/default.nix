@@ -98,7 +98,6 @@ in
   };
   config = mkIf (cfg.type != null) {
     # Packages
-
     home.packages = (
       with pkgs;
       [
@@ -156,6 +155,11 @@ in
         input-overlay
         obs-pipewire-audio-capture
       ];
+    };
+
+    home.sessionVariables = {
+      # Increase AMD's shader cache size to 50GB
+      MESA_SHADER_CACHE_MAX_SIZE = "50GB";
     };
 
     # Cursor
