@@ -15,6 +15,8 @@ let
     "layout"
     "outputs"
     "wpblur"
+    "windowrules"
+    "input"
   ];
 
   createFilesToInclude =

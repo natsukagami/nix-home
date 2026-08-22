@@ -108,7 +108,7 @@ in
         evince # PDF reader
         gparted
         vscode
-        feh # For images?
+        kdePackages.gwenview # For images?
         deluge # Torrent client
         pavucontrol # PulseAudio control panel
         # cinny-desktop
@@ -201,6 +201,14 @@ in
       "application/xhtml+xml" = [ (desktopFileOf cfg.defaults.webBrowser) ];
       "application/x-extension-xhtml" = [ (desktopFileOf cfg.defaults.webBrowser) ];
       "application/x-extension-xht" = [ (desktopFileOf cfg.defaults.webBrowser) ];
+
+      "image/avif" = "org.kde.gwenview.desktop";
+      "image/bmp" = "org.kde.gwenview.desktop";
+      "image/gif" = "org.kde.gwenview.desktop";
+      "image/jpeg" = "org.kde.gwenview.desktop";
+      "image/png" = "org.kde.gwenview.desktop";
+      "image/svg+xml" = "org.kde.gwenview.desktop";
+      "image/webp" = "org.kde.gwenview.desktop";
     };
     xdg.mimeApps.defaultApplications = {
       # Email
@@ -254,6 +262,15 @@ in
 
       # Discord
       "x-scheme-handler/discord" = [ (desktopFileOf cfg.defaults.discord) ];
+
+      # Images
+      "image/avif" = "org.kde.gwenview.desktop";
+      "image/bmp" = "org.kde.gwenview.desktop";
+      "image/gif" = "org.kde.gwenview.desktop";
+      "image/jpeg" = "org.kde.gwenview.desktop";
+      "image/png" = "org.kde.gwenview.desktop";
+      "image/svg+xml" = "org.kde.gwenview.desktop";
+      "image/webp" = "org.kde.gwenview.desktop";
     };
 
     # Add one for kakoune
