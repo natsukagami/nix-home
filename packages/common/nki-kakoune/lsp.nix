@@ -1,6 +1,7 @@
 {
   lib,
   writeTextDir,
+  writeShellScript,
   formats,
   kakoune-lsp,
   # LSP packages
@@ -214,38 +215,45 @@ let
               };
               package = fsautocomplete;
             };
-            metals = {
-              command = "metals";
-              filetypes = [ "scala" ];
-              roots = [
-                "build.sbt"
-                "build.sc"
-                "build.mill"
-                "project.scala"
-                ".git"
-              ];
-              settings_section = "metals";
-              settings.metals = {
-                # User options
-                defaultBspToBuildTool = true; # Disable bloop by default
-                superMethodLensesEnabled = true;
-                inlayHints = {
-                  inferredTypes.enable = true;
-                  typeParameters.enable = true;
-                  hintsInPatternMatch.enable = true;
-                  # namedParameters.enable = true; # noisy
-                  byNameParameters.enable = true;
+            metals =
+              let
+                metals-launch = writeShellScript "metals-launch" ''
+                  export JDK_JAVA_OPTIONS="$JDK_JAVA_OPTIONS --add-opens=java.base/java.nio=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.jvm=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.resources=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED --add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED --add-opens=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED --add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED"
+                  exec metals
+                '';
+              in
+              {
+                command = metals-launch;
+                filetypes = [ "scala" ];
+                roots = [
+                  "build.sbt"
+                  "build.sc"
+                  "build.mill"
+                  "project.scala"
+                  ".git"
+                ];
+                settings_section = "metals";
+                settings.metals = {
+                  # User options
+                  defaultBspToBuildTool = true; # Disable bloop by default
+                  superMethodLensesEnabled = true;
+                  inlayHints = {
+                    inferredTypes.enable = true;
+                    typeParameters.enable = true;
+                    hintsInPatternMatch.enable = true;
+                    # namedParameters.enable = true; # noisy
+                    byNameParameters.enable = true;
+                  };
+                  # From kakoune-lsp's own options
+                  icons = "none";
+                  isHttpEnabled = true;
+                  statusBarProvider = "show-message";
+                  compilerOptions = {
+                    overrideDefFormat = "ascii";
+                  };
                 };
-                # From kakoune-lsp's own options
-                icons = "none";
-                isHttpEnabled = true;
-                statusBarProvider = "show-message";
-                compilerOptions = {
-                  overrideDefFormat = "ascii";
-                };
+                package = metals;
               };
-              package = metals;
-            };
             sourcekit-lsp = {
               command = "sourcekit-lsp";
               filetypes = [ "swift" ];
