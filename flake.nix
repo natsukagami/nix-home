@@ -44,6 +44,8 @@
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    tranquil.url = "git+https://tangled.org/tranquil.farm/tranquil-pds"; # atproto PDS
+    tranquil.inputs.nixpkgs.follows = "nixpkgs";
 
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     aagl.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -285,6 +287,7 @@
           inputs.arion.nixosModules.arion
           inputs.youmubot.nixosModules.default
           inputs.secrets.nixosModules.nki-personal-do
+          inputs.tranquil.nixosModules.default
         ];
       };
       deploy.nodes."nki-personal-do" = {

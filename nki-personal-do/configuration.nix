@@ -36,6 +36,7 @@
     ./ntfy.nix
     ./grist.nix
     ./renovate.nix
+    ./tranquil.nix
   ];
 
   system.stateVersion = "21.11";
@@ -252,4 +253,6 @@
 
   # Trust my own cert
   security.pki.certificateFiles = [ ../nki-home/cert.pem ];
+
+  environment.enableAllTerminfo = true; # Allow all terminfos
 }

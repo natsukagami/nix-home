@@ -1067,6 +1067,7 @@
         "rust-overlay": "rust-overlay_3",
         "secrets": "secrets",
         "sops-nix": "sops-nix",
+        "tranquil": "tranquil",
         "youmubot": "youmubot",
         "zen-browser": "zen-browser"
       }
@@ -1297,6 +1298,26 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "tranquil": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787920607,
+        "narHash": "sha256-Vyx7nfIYJozk51QSS7Fszq64aFM9JcOC0YadC4NEGm8=",
+        "ref": "refs/heads/main",
+        "rev": "228c1bbbf528280ec68362732d3dd68ec9b1b6ee",
+        "revCount": 536,
+        "type": "git",
+        "url": "https://tangled.org/tranquil.farm/tranquil-pds"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://tangled.org/tranquil.farm/tranquil-pds"
       }
     },
     "utils": {
