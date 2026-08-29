@@ -359,7 +359,9 @@ in
           # ... Unless it is a configuration problem.
           RestartPreventExitStatus = 2;
 
-          ExecStart = "${cfg.package}/bin/maddy ${if cfg.debug then "-debug " else ""}-config ${configFile}";
+          ExecStart = "${cfg.package}/bin/maddy ${
+            if cfg.debug then "--debug " else ""
+          }--config ${configFile} run";
         };
         reload = ''
           /bin/kill -USR1 $MAINPID
