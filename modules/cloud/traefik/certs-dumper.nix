@@ -39,7 +39,7 @@ in
       {
         User = user;
         Group = group;
-        ExecStart = "${cfg.package}/bin/traefik-certs-dumper file --watch --domain-subdir=true --version v2 --source ${certsPath} --dest ${cfg.destination} --post-hook 'chmod -R +r ${cfg.destination}'";
+        ExecStart = "${cfg.package}/bin/traefik-certs-dumper file --watch --domain-subdir=true --version v3 --source ${certsPath} --dest ${cfg.destination} --post-hook 'chmod -R +r ${cfg.destination}'";
         LimitNOFILE = "1048576";
         PrivateTmp = "true";
         PrivateDevices = "true";

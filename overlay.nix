@@ -24,6 +24,8 @@ let
     rbw = final.unstable.rbw;
     # Renovate updates frequently
     renovate = final.unstable.renovate;
+    # certs dumper needs 2.11.4
+    traefik-certs-dumper = final.unstable.traefik-certs-dumper;
   };
   overlay-imported = final: prev: {
     # sway = prev.sway.override { sway-unwrapped = final.swayfx-unwrapped; };
