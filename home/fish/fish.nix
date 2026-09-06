@@ -173,6 +173,14 @@ in
           command sudo $argv
         '';
       };
+
+      atc = {
+        wraps = "atc";
+        body = ''
+          fish_add_path -P -a ${lib.makeBinPath [ pkgs.jdk ]}
+          command atc $argv
+        '';
+      };
     };
 
     tide = {
