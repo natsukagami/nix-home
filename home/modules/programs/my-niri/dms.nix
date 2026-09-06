@@ -28,8 +28,39 @@ let
       mkdir -p ${configDir}
       touch ${lib.concatStringsSep " " paths}
     '';
+
+  plugins =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      cfg = config.programs.dank-material-shell.plugins;
+    in
+    {
+      programs.dank-material-shell.plugins = {
+        discordVoice.enable = true;
+        amdGpuMonitor.enable = true;
+      };
+
+      systemd.user.services.dms.Service.Environment = [
+        "PATH=/run/current-system/sw/bin/:/etc/profiles/per-user/${config.home.username}/bin/:${
+          lib.makeBinPath (
+            lib.optional cfg.discordVoice.enable pkgs.python3
+            ++ lib.optional cfg.amdGpuMonitor.enable pkgs.amdgpu_top
+          )
+        }"
+      ];
+
+      # plugin config
+      xdg.configFile."DankMaterialShell/plugin_settings.json".source = ./plugin_settings.json;
+    };
 in
 {
+  imports = [ plugins ];
+
   options.programs.my-niri.dms = {
     backlight-device = lib.mkOption {
       type = lib.types.nullOr lib.types.str;

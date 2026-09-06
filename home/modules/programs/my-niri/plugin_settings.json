@@ -1,0 +1,19 @@
+{
+  "amdGpuMonitor": {
+    "enabled": true,
+    "variants": [
+      {
+        "gpuPci": "0000:c1:00.0",
+        "gpuType": "APU",
+        "originalName": "AMD Radeon 780M Graphics",
+        "description": "Monitor your integrated AMD Radeon 780M Graphics",
+        "icon": "memory",
+        "id": "variant_1788709266857",
+        "name": "AMD Radeon 780M Graphics"
+      }
+    ]
+  },
+  "discordVoice": {
+    "enabled": true
+  }
+}

@@ -44,6 +44,10 @@
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    dms-plugin-registry = {
+      url = "github:AvengeMedia/dms-plugin-registry";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     tranquil.url = "git+https://tangled.org/tranquil.farm/tranquil-pds"; # atproto PDS
     tranquil.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -175,6 +179,7 @@
               imports = [
                 dms.homeModules.dank-material-shell
                 dms.homeModules.niri
+                inputs.dms-plugin-registry.homeModules.default
 
                 settings
               ];

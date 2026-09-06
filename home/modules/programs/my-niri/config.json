@@ -138,10 +138,6 @@
         },
         {
           "enabled": true,
-          "id": "memUsage"
-        },
-        {
-          "enabled": true,
           "id": "battery"
         },
         {
@@ -150,7 +146,10 @@
         }
       ],
       "screenPreferences": [
-        "all"
+        {
+          "name": "eDP-1",
+          "model": "MND508ZB1-1"
+        }
       ],
       "scrollEnabled": true,
       "scrollXBehavior": "column",
@@ -161,13 +160,136 @@
       "spacing": 0,
       "squareCorners": true,
       "transparency": 0.6,
+      "useOverlayLayer": false,
       "visible": true,
       "widgetOutlineColor": "primary",
       "widgetOutlineEnabled": false,
       "widgetOutlineOpacity": 1,
       "widgetOutlineThickness": 1,
+      "widgetTransparency": 0.8
+    },
+    {
+      "id": "bar1788709374314",
+      "name": "Bar 2",
+      "enabled": true,
+      "position": 2,
+      "screenPreferences": [
+        {
+          "name": "DP-2",
+          "model": "LG ULTRAFINE"
+        }
+      ],
+      "showOnLastDisplay": false,
+      "leftWidgets": [
+        {
+          "enabled": true,
+          "id": "notificationButton"
+        },
+        {
+          "enabled": true,
+          "id": "workspaceSwitcher"
+        },
+        {
+          "enabled": true,
+          "id": "focusedWindow"
+        }
+      ],
+      "centerWidgets": [
+        {
+          "enabled": true,
+          "id": "music",
+          "mediaSize": 1
+        },
+        {
+          "clockCompactMode": false,
+          "enabled": true,
+          "id": "clock"
+        },
+        "weather",
+        {
+          "id": "discordVoice",
+          "enabled": true
+        }
+      ],
+      "rightWidgets": [
+        {
+          "enabled": true,
+          "id": "systemTray"
+        },
+        {
+          "enabled": true,
+          "id": "clipboard"
+        },
+        {
+          "enabled": true,
+          "id": "cpuUsage"
+        },
+        {
+          "id": "memUsage",
+          "enabled": true,
+          "minimumWidth": true,
+          "showInGb": false
+        },
+        {
+          "id": "amdGpuMonitor:variant_1788709266857",
+          "enabled": true
+        },
+        {
+          "enabled": true,
+          "id": "battery"
+        },
+        {
+          "enabled": true,
+          "id": "controlCenterButton"
+        }
+      ],
+      "spacing": 0,
+      "innerPadding": 8,
+      "barLengthPadding": 0,
+      "bottomGap": 0,
+      "attachToScreenEdge": false,
+      "transparency": 0.6,
       "widgetTransparency": 0.8,
-      "useOverlayLayer": false
+      "squareCorners": true,
+      "noBackground": false,
+      "gothCornersEnabled": true,
+      "gothCornerRadiusOverride": false,
+      "gothCornerRadiusValue": 12,
+      "borderEnabled": false,
+      "borderColor": "surfaceText",
+      "borderOpacity": 1,
+      "borderThickness": 1,
+      "widgetOutlineEnabled": false,
+      "widgetOutlineColor": "primary",
+      "widgetOutlineOpacity": 1,
+      "widgetOutlineThickness": 1,
+      "widgetPadding": 8,
+      "maximizeWidgetIcons": false,
+      "maximizeWidgetText": false,
+      "removeWidgetPadding": false,
+      "fontScale": 1,
+      "iconScale": 1,
+      "autoHide": false,
+      "autoHideStrict": false,
+      "autoHideDelay": 250,
+      "showOnWindowsOpen": false,
+      "openOnOverview": false,
+      "visible": true,
+      "popupGapsAuto": true,
+      "popupGapsManual": 4,
+      "maximizeDetection": true,
+      "useOverlayLayer": false,
+      "scrollEnabled": true,
+      "scrollXBehavior": "column",
+      "scrollYBehavior": "workspace",
+      "hoverPopouts": false,
+      "hoverPopoutDelay": 150,
+      "shadowIntensity": 25,
+      "shadowOpacity": 60,
+      "shadowDirectionMode": "inherit",
+      "shadowDirection": "top",
+      "shadowColorMode": "default",
+      "shadowCustomColor": "#000000"
     }
   ],
   "desktopClockCustomColor": {
@@ -197,15 +319,18 @@
     "valid": true
   },
   "builtInPluginSettings": {
-    "dms_settings_search": {
-      "trigger": "?"
-    },
     "dms_clipboard_search": {
       "trigger": "cb"
     },
     "dms_qr_generator": {
       "trigger": "qrg"
+    },
+    "dms_settings_search": {
+      "trigger": "?"
+    },
+    "dms_power": {
+      "trigger": "pw"
     }
   },
-  "configVersion": 15
+  "configVersion": 18
 }
