@@ -10,8 +10,19 @@
         "icon": "memory",
         "id": "variant_1788709266857",
         "name": "AMD Radeon 780M Graphics"
+      },
+      {
+        "gpuPci": "0000:2f:00.0",
+        "gpuType": "dGPU",
+        "originalName": "AMD Radeon RX 9070",
+        "description": "Monitor your discrete AMD Radeon RX 9070",
+        "icon": "memory",
+        "id": "variant_1788728288286",
+        "name": "AMD Radeon RX 9070"
       }
-    ]
+    ],
+    "minimumWidth": true,
+    "processSort": "vram"
   },
   "discordVoice": {
     "enabled": true

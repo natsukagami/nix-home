@@ -140,25 +140,34 @@ let
         }
       );
 
-    # https://github.com/NixOS/nixpkgs/pull/559495/changes
-    python314 = prev.python314.override {
-      packageOverrides = finalPP: prevPP: {
-        sip = prevPP.sip.overrideAttrs (
-          finalAttrs: prevAttrs: {
-            patches = (prevAttrs.patches or [ ]) ++ [
-              # Backports pyqt5 compile failure fix from upstream
-              # https://github.com/Python-SIP/sip/issues/114
-              (final.fetchpatch {
-                name = "legacy-api-binding-fix.patch";
-                url = "https://github.com/Python-SIP/sip/commit/09598895c607f3e41f0249ade217ace0a4da6437.patch";
-                hash = "sha256-v0YeHyg0ymB0v32gpVRbMBIUk9U2etjs93VuOGPGg2M=";
-              })
-            ];
-          }
-        );
-      };
-    };
   };
+
+  overlay-python =
+    final: prev:
+    let
+      # https://github.com/NixOS/nixpkgs/pull/559495/changes
+      sip = {
+        packageOverrides = finalPP: prevPP: {
+          sip = prevPP.sip.overrideAttrs (
+            finalAttrs: prevAttrs: {
+              patches = (prevAttrs.patches or [ ]) ++ [
+                # Backports pyqt5 compile failure fix from upstream
+                # https://github.com/Python-SIP/sip/issues/114
+                (final.fetchpatch {
+                  name = "legacy-api-binding-fix.patch";
+                  url = "https://github.com/Python-SIP/sip/commit/09598895c607f3e41f0249ade217ace0a4da6437.patch";
+                  hash = "sha256-v0YeHyg0ymB0v32gpVRbMBIUk9U2etjs93VuOGPGg2M=";
+                })
+              ];
+            }
+          );
+        };
+      };
+    in
+    {
+      python314 = prev.python314.override sip;
+      python313 = prev.python313.override sip;
+    };
 in
 [
   inputs.mpd-mpris.overlays.default
@@ -170,6 +179,7 @@ in
   overlay-packages
   overlay-imported
   overlay-versioning
+  overlay-python
   overlay-libs
 
   (import ./packages/common)

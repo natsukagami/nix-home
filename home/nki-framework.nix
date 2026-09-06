@@ -48,6 +48,7 @@
   });
   programs.my-niri.dms.backlight-device = "backlight:amdgpu_bl1";
   programs.my-niri.dms.keyboard-backlight-device = "leds:framework_laptop::kbd_backlight";
+  programs.my-niri.dms.gpu-variant = "variant_1788709266857";
   programs.niri.settings = {
     input.mouse = lib.mkForce {
       # Make M575 fast for now

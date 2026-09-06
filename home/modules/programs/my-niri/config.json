@@ -177,6 +177,10 @@
         {
           "name": "DP-2",
           "model": "LG ULTRAFINE"
+        },
+        {
+          "name": "DP-3",
+          "model": "U28G2G6B"
         }
       ],
       "showOnLastDisplay": false,
@@ -231,7 +235,7 @@
           "showInGb": false
         },
         {
-          "id": "amdGpuMonitor:variant_1788709266857",
+          "id": "amdGpuMonitor:variant_XXXXXXXXXX",
           "enabled": true
         },
         {

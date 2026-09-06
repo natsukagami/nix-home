@@ -43,6 +43,7 @@
   linux.graphical.defaults.webBrowser.desktopFile = "zen.desktop";
   programs.my-niri.enable = true;
   programs.my-niri.enableLaptop = false;
+  programs.my-niri.dms.gpu-variant = "variant_1788728288286";
   programs.my-sway.enable = true;
   programs.my-sway.fontSize = 15.0;
   programs.my-sway.enableLaptop = false;

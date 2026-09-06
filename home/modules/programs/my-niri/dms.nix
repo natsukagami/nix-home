@@ -70,6 +70,10 @@ in
       type = lib.types.nullOr lib.types.str;
       default = null;
     };
+    gpu-variant = lib.mkOption {
+      type = lib.types.nullOr lib.types.str;
+      default = null;
+    };
   };
   config = lib.mkIf config.programs.my-niri.enable {
     systemd.user.services.niri-dms-setup = {
@@ -174,7 +178,39 @@ in
       enableAudioWavelength = true; # Audio visualizer (cava)
       enableCalendarEvents = false; # Calendar integration (khal)
 
-      settings = builtins.fromJSON (builtins.readFile ./config.json);
+      settings =
+        let
+          inFile = builtins.fromJSON (builtins.readFile ./config.json);
+          updateBarItems =
+            item:
+            if item.id == "amdGpuMonitor:variant_XXXXXXXXXX" then
+              if cfg.gpu-variant == null then
+                [ ]
+              else
+                [
+                  {
+                    id = "amdGpuMonitor:${cfg.gpu-variant}";
+                    enabled = true;
+                  }
+                ]
+            else
+              [ item ];
+          updateBar =
+            bar:
+            if bar.id == "bar1788709374314" then
+
+              bar
+              // {
+                rightWidgets = lib.flatten (builtins.map updateBarItems bar.rightWidgets);
+              }
+
+            else
+              bar;
+          updated = inFile // {
+            barConfigs = builtins.map updateBar inFile.barConfigs;
+          };
+        in
+        updated;
     };
   };
 }
