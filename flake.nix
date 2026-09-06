@@ -5,8 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    darwin.url = "github:lnl7/nix-darwin/master";
-    darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
     sops-nix.url = "github:Mic92/sops-nix";
@@ -59,8 +57,6 @@
     kakoune.flake = false;
     kak-lsp.url = "github:kakoune-lsp/kakoune-lsp/v21.0.2";
     kak-lsp.flake = false;
-    nixos-m1.url = "github:tpwrules/nixos-apple-silicon";
-    nixos-m1.inputs.nixpkgs.follows = "nixpkgs";
 
     # ---
     # DEPLOYMENT ONLY! secrets
@@ -70,7 +66,6 @@
   outputs =
     {
       self,
-      darwin,
       nixpkgs,
       nixpkgs-unstable,
       home-manager,
@@ -244,12 +239,6 @@
 
       packages.x86_64-linux.nki-kakoune = nki-kakoune-from-pkgs (
         import nixpkgs-unstable { system = "x86_64-linux"; }
-      );
-      packages.aarch64-linux.nki-kakoune = nki-kakoune-from-pkgs (
-        import nixpkgs-unstable { system = "aarch64-linux"; }
-      );
-      packages.aarch64-darwin.nki-kakoune = nki-kakoune-from-pkgs (
-        import nixpkgs-unstable { system = "aarch64-darwin"; }
       );
 
       # Home configuration

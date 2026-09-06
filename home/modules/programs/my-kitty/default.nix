@@ -32,7 +32,6 @@ with lib;
 {
   imports = [
     theme
-    ./darwin.nix
     ./linux.nix
     ./tabs.nix
   ];
@@ -66,13 +65,13 @@ with lib;
     cmd = mkOption {
       type = types.str;
       description = "The main control key";
-      default = if pkgs.stdenv.hostPlatform.isDarwin then "cmd" else "ctrl";
+      default = "ctrl";
     };
 
     enableTabs = mkOption {
       type = types.bool;
       description = "Enable tabs";
-      default = pkgs.stdenv.hostPlatform.isDarwin;
+      default = false;
     };
   };
 

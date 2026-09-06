@@ -88,13 +88,5 @@ with lib;
       }
     else
       { }
-  )
-  // (
-    if pkgs.stdenv.hostPlatform.isDarwin then
-      {
-        fontDir.enable = true;
-      }
-    else
-      { }
   );
 }

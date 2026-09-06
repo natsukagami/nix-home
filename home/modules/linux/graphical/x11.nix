@@ -26,7 +26,7 @@ with lib;
     home.packages = with pkgs; [
       xsel # Clipboard management
 
-      # Mimic the clipboard stuff in MacOS
+      # pbcopy/pbpaste clipboard commands
       (pkgs.writeShellScriptBin "pbcopy" ''
         exec ${pkgs.xsel}/bin/xsel -ib
       '')

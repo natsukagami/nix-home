@@ -8,7 +8,7 @@ with lib;
 let
   cfg = config.linux.graphical;
 
-  vscode = with pkgs; if stdenv.hostPlatform.isAarch64 then unstable.vscode else unstable.vscode-fhs;
+  vscode = with pkgs; unstable.vscode-fhs;
 
   wifi-indicator = pkgs.writeScriptBin "wifi-indicator" ''
     #!/usr/bin/env fish

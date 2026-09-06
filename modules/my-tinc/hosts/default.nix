@@ -13,16 +13,6 @@
     ed25519PublicKey = "Ts5OdPtBNLIRfosoYRcb6Z2iwWyOz/VKTKB9J0p5LlH";
   };
 
-  macbook = {
-    subnetAddr = "11.0.0.3";
-    rsaPublicKey = builtins.readFile ./nki-macbook.pub;
-    ed25519PublicKey = "lkNkBTl5GmcQFrtA7F1nN2gq5gFK7KuGqHUN8fiJU7H";
-  };
-  macbooknix = {
-    subnetAddr = "11.0.0.4";
-    ed25519PublicKey = "6MN5LVE4juavv8qJW2dTN4t/haKCADWquAQj/ADF7iN";
-  };
-
   yoga = {
     subnetAddr = "11.0.0.5";
     ed25519PublicKey = "n+gIZjuuTPxi0OBqw2oOcmXd3loOHG+GQHBMXNlgyqI";

@@ -16,7 +16,6 @@
       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUhiVTh2NlNBa0kyOTBCc1QzVG1IRVVJQWdXcVFyNm9jRmpjakRRczRoT2ggcm9vdEBrYWdhbWlQQwo=";
       systems = [
         "x86_64-linux"
-        "aarch64-linux"
       ];
       maxJobs = 16;
       speedFactor = 2;
@@ -42,7 +41,6 @@
       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUhTY3FIRU1GSG9mamRFL2hVMXR0SXJYZWdoNUtoNXdFUXpkVkNXZzlBSmwgcm9vdEBua2ktZnJhbWV3b3JrCg==";
       systems = [
         "x86_64-linux"
-        "aarch64-linux"
       ];
       maxJobs = 16;
       speedFactor = 3;

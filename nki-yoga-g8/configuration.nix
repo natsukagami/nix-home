@@ -127,15 +127,6 @@
   # sops.defaultSopsFile = ./secrets.yaml;
   # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-  ## tinc
-  # sops.secrets."tinc/ed25519-private-key" = { };
-  # services.my-tinc = {
-  #   enable = true;
-  #   hostName = "macbooknix";
-  #   ed25519PrivateKey = config.sops.secrets."tinc/ed25519-private-key".path;
-  #   bindPort = 6565;
-  # };
-
   services.dbus.packages = with pkgs; [ gcr ];
 
   # Open ports in the firewall.

@@ -115,7 +115,7 @@ with lib;
       wl-clipboard # Clipboard management
       rofi-rbw-script
 
-      # Mimic the clipboard stuff in MacOS
+      # pbcopy/pbpaste clipboard commands
       (pkgs.writeShellScriptBin "pbcopy" ''
         exec ${pkgs.wl-clipboard}/bin/wl-copy "$@"
       '')

@@ -50,7 +50,7 @@ let
 
     accounts =
       { pkgs, ... }:
-      mkIf (config.common.linux.enable && !pkgs.stdenv.hostPlatform.isAarch64) {
+      mkIf config.common.linux.enable {
         environment.systemPackages = [
           pkgs.glib
           (pkgs.gnome-control-center or pkgs.gnome.gnome-control-center)

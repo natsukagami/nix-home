@@ -194,19 +194,13 @@ in
       catp = "bat --theme=GitHub -p ";
       l = "exa -l --color=always ";
       e = "$EDITOR";
-      lsports = if pkgs.stdenv.hostPlatform.isDarwin then "lsof -i -P | grep LISTEN" else "ss -tulp";
+      lsports = "ss -tulp";
       "cp+" = "rsync -avzP";
     };
 
     everywhereAbbrs = { };
 
     shellInit = ''
-      # Source brew integration
-      if test -e /opt/homebrew/bin/brew
-        /opt/homebrew/bin/brew shellenv | source
-      end
-
-      # Override PATH
       set --export --prepend PATH ~/.bin/overrides ~/.local/bin
     '';
 
@@ -227,19 +221,11 @@ in
         echo (__original_fish_title) - fish
       end
 
-      # Source iTerm2 integration
-      if test -e ~/.iterm2_shell_integration.fish; and test $__CFBundleIdentifier = "com.googlecode.iterm2"
-        source ~/.iterm2_shell_integration.fish
-      end
-
       # Source Kitty integration
       if set -q KITTY_INSTALLATION_DIR
         set --global KITTY_SHELL_INTEGRATION enabled
         source "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_conf.d/kitty-shell-integration.fish"
         set --prepend fish_complete_path "$KITTY_INSTALLATION_DIR/shell-integration/fish/vendor_completions.d"
-
-        # Add fish to PATH if installed as a MacOS App
-        test -e $KITTY_INSTALLATION_DIR/../../MacOS && set -x PATH $PATH "$KITTY_INSTALLATION_DIR/../../MacOS"
       end
 
       # Enable vi keybindings
