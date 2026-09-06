@@ -45,7 +45,7 @@ in
     kwallet
   ];
   config = (
-    mkIf pkgs.stdenv.isLinux {
+    mkIf pkgs.stdenv.hostPlatform.isLinux {
       home.packages = with pkgs; [
         psmisc # killall and friends
         file # Query file type

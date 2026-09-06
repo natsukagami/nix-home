@@ -9,7 +9,7 @@ let
 in
 with lib;
 {
-  programs.kitty = mkIf (cfg.enable && pkgs.stdenv.isLinux) {
+  programs.kitty = mkIf (cfg.enable && pkgs.stdenv.hostPlatform.isLinux) {
     # set the shell
     settings.shell = "${config.programs.fish.package}/bin/fish";
 

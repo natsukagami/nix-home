@@ -50,7 +50,7 @@ let
 
     accounts =
       { pkgs, ... }:
-      mkIf (config.common.linux.enable && !pkgs.stdenv.isAarch64) {
+      mkIf (config.common.linux.enable && !pkgs.stdenv.hostPlatform.isAarch64) {
         environment.systemPackages = [
           pkgs.glib
           (pkgs.gnome-control-center or pkgs.gnome.gnome-control-center)
@@ -224,7 +224,7 @@ in
     enable = mkOption {
       type = types.bool;
       description = "Enable the common settings for Linux personal machines";
-      default = pkgs.stdenv.isLinux;
+      default = pkgs.stdenv.hostPlatform.isLinux;
     };
 
     luksDevices = mkOption {

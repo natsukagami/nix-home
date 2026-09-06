@@ -4,7 +4,7 @@
   lib,
   ...
 }:
-lib.mkIf pkgs.stdenv.isLinux {
+lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
   system.fsPackages = [ pkgs.bindfs ];
   fileSystems =
     let

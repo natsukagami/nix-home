@@ -18,7 +18,7 @@ in
     environment.systemPackages = with pkgs; [
       pam_u2f # for pamu2fcfg
     ];
-    security.pam = mkIf pkgs.stdenv.isLinux {
+    security.pam = mkIf pkgs.stdenv.hostPlatform.isLinux {
       u2f = {
         enable = true;
         settings.cue = true;

@@ -28,7 +28,7 @@ with lib;
       ];
   }
   // (
-    if pkgs.stdenv.isLinux then
+    if pkgs.stdenv.hostPlatform.isLinux then
       {
         enableDefaultPackages = false;
         fontconfig = {
@@ -90,7 +90,7 @@ with lib;
       { }
   )
   // (
-    if pkgs.stdenv.isDarwin then
+    if pkgs.stdenv.hostPlatform.isDarwin then
       {
         fontDir.enable = true;
       }

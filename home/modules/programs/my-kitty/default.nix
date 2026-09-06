@@ -66,13 +66,13 @@ with lib;
     cmd = mkOption {
       type = types.str;
       description = "The main control key";
-      default = if pkgs.stdenv.isDarwin then "cmd" else "ctrl";
+      default = if pkgs.stdenv.hostPlatform.isDarwin then "cmd" else "ctrl";
     };
 
     enableTabs = mkOption {
       type = types.bool;
       description = "Enable tabs";
-      default = pkgs.stdenv.isDarwin;
+      default = pkgs.stdenv.hostPlatform.isDarwin;
     };
   };
 

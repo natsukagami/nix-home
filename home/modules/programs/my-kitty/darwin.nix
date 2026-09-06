@@ -10,7 +10,7 @@ let
 in
 with lib;
 {
-  programs.kitty = mkIf (cfg.enable && pkgs.stdenv.isDarwin) {
+  programs.kitty = mkIf (cfg.enable && pkgs.stdenv.hostPlatform.isDarwin) {
 
     # Darwin-specific setup
     darwinLaunchOptions = [
