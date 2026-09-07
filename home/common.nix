@@ -114,65 +114,35 @@
     }
 
     # Git stuff
-    (
-      if osConfig.system.nixos.release == "25.05" then
-        {
-          git = {
-            enable = true;
-            delta = {
-              enable = true;
-              options.line-numbers = true;
-            };
-            signing = {
-              format = "ssh";
-              key = "~/.ssh/nki@nkagami.me";
-              signByDefault = true;
-            };
-            userEmail = "nki@nkagami.me";
-            userName = "Natsu Kagami";
-            extraConfig = {
-              init.defaultBranch = "master";
-              core.excludesFile = "${pkgs.writeText ".gitignore" ''
-                .direnv
-                .envrc
-                .kakrc
-              ''}";
-              commit.verbose = true;
-              safe.directory = "*";
-              merge.conflictstyle = "zdiff3";
-            };
-          };
-        }
-      else
-        {
-          delta = {
-            enable = true;
-            enableGitIntegration = true;
-            options.line-numbers = true;
-          };
-          git = {
-            enable = true;
-            signing = {
-              format = "ssh";
-              key = "~/.ssh/nki@nkagami.me";
-              signByDefault = true;
-            };
-            settings = {
-              user.email = "nki@nkagami.me";
-              user.name = "Natsu Kagami";
-              init.defaultBranch = "master";
-              core.excludesFile = "${pkgs.writeText ".gitignore" ''
-                .direnv
-                .envrc
-                .kakrc
-              ''}";
-              commit.verbose = true;
-              safe.directory = "*";
-              merge.conflictstyle = "zdiff3";
-            };
-          };
-        }
-    )
+    {
+      delta = {
+        enable = true;
+        enableGitIntegration = true;
+        options.line-numbers = true;
+      };
+      git = {
+        enable = true;
+        signing = {
+          format = "ssh";
+          key = "~/.ssh/nki@nkagami.me";
+          signByDefault = true;
+        };
+        settings = {
+          user.email = "nki@nkagami.me";
+          user.name = "Natsu Kagami";
+          init.defaultBranch = "master";
+          core.excludesFile = "${pkgs.writeText ".gitignore" ''
+            .direnv
+            .envrc
+            .kakrc
+            .atc
+          ''}";
+          commit.verbose = true;
+          safe.directory = "*";
+          merge.conflictstyle = "zdiff3";
+        };
+      };
+    }
   ];
 
   services.gpg-agent = {
