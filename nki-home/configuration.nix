@@ -186,11 +186,9 @@ in
 
       # tinc network
       sops.secrets."tinc/ed25519-private-key" = { };
-      sops.secrets."tinc/rsa-private-key" = { };
       services.my-tinc = {
         enable = true;
         hostName = "home";
-        rsaPrivateKey = config.sops.secrets."tinc/rsa-private-key".path;
         ed25519PrivateKey = config.sops.secrets."tinc/ed25519-private-key".path;
         bindPort = 6565;
       };
