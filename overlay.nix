@@ -86,7 +86,16 @@ let
     };
 
     zen-browser-bin = inputs.zen-browser.packages.${final.stdenv.system}.zen-browser.override {
-      inherit (inputs.zen-browser.packages.${final.stdenv.system}) zen-browser-unwrapped;
+      zen-browser-unwrapped =
+        (inputs.zen-browser.packages.${final.stdenv.system}).zen-browser-unwrapped.overrideAttrs
+          (
+            finalAttrs: prevAttrs: {
+              passthru = (prevAttrs.passthru or { }) // {
+                withFFmpeg = true;
+                withGSSAPI = true;
+              };
+            }
+          );
       wrapFirefox =
         opts:
         final.wrapFirefox (
