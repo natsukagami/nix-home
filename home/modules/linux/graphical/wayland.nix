@@ -134,10 +134,12 @@ with lib;
           pkgs.rofi
         else
           pkgs.rofi-wayland;
-      cycle = true;
-      font = "monospace";
-      terminal = "${lib.getExe config.linux.graphical.defaults.terminal.package}";
-      theme = "Paper";
+      settings = {
+        cycle = true;
+        font = "monospace";
+        terminal = "${lib.getExe config.linux.graphical.defaults.terminal.package}";
+        theme = "Paper";
+      };
       plugins = with pkgs; [
         rofi-bluetooth
         rofi-calc

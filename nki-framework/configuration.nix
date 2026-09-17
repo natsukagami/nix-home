@@ -107,8 +107,6 @@
   # sops.defaultSopsFile = ./secrets.yaml;
   # sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-  services.dbus.packages = with pkgs; [ gcr ];
-
   services.avahi.enable = true;
   networking.firewall.allowedTCPPorts = [ 8010 ];
 

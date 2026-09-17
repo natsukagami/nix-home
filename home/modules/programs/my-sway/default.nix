@@ -463,6 +463,6 @@ in
   );
 
   config.programs.rofi = mkIf cfg.enable {
-    font = lib.mkForce "monospace ${toString cfg.fontSize}";
+    settings.font = lib.mkForce "monospace ${toString cfg.fontSize}";
   };
 }
