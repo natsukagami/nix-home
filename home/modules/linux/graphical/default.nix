@@ -254,7 +254,7 @@ in
       "application/pdf" = [ "okularApplication_pdf.desktop" ];
 
       # Files
-      "inode/directory" = [ "dolphin.desktop" ];
+      "inode/directory" = [ "org.kde.dolphin.desktop" ];
 
       # Telegram
       "x-scheme-handler/tg2" = "org.telegram.desktop.desktop";
