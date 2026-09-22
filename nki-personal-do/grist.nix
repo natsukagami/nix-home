@@ -17,8 +17,8 @@ let
     # https://hub.docker.com/r/gristlabs/grist/tags
     grist = mkImage {
       imageName = "docker.io/gristlabs/grist";
-      finalImageTag = "1.7.10";
-      imageDigest = "sha256:0b6762f1fd1151a9cf03d95d086be776499f2691c299c14078b950a266e1bd4b";
+      finalImageTag = "1.7.19";
+      imageDigest = "sha256:9e59ffc6bd76c851af0144740a0b49a69961e432be828629ef1cd19881befc64";
     };
     # https://hub.docker.com/r/valkey/valkey/tags
     valkey = mkImage {
