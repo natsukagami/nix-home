@@ -120,7 +120,7 @@ in
         vlc
         spotify
 
-        unstable.zotero
+        # unstable.zotero
         libreoffice
 
         mpv
