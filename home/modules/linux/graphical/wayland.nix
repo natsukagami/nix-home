@@ -138,8 +138,8 @@ with lib;
         cycle = true;
         font = "monospace";
         terminal = "${lib.getExe config.linux.graphical.defaults.terminal.package}";
-        theme = "Paper";
       };
+      theme = "Paper";
       plugins = with pkgs; [
         rofi-bluetooth
         rofi-calc
