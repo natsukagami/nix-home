@@ -225,5 +225,31 @@ in
           queries.path = "queries";
 
         };
+      ss =
+        let
+          src = pkgs.nki.sources.ss;
+        in
+        {
+          aliases = [ "git-commit" ];
+          grammar.src = src;
+          grammar.path = "editor/tree-sitter-ss/src";
+          grammar.compile.args = [
+            "-c"
+            "-fpic"
+            "../scanner.c"
+            "../parser.c"
+            "-I"
+            ".."
+          ];
+          grammar.link.args = [
+            "-shared"
+            "-fpic"
+            "scanner.o"
+            "parser.o"
+          ];
+          queries.src = src;
+          queries.path = "editor/tree-sitter-ss/queries";
+
+        };
     };
 }

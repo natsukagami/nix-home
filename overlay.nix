@@ -33,9 +33,18 @@ let
     dtth-phanpy = inputs.dtth-phanpy.packages.${final.stdenv.system}.default;
     matrix-conduit = inputs.conduit.packages.${final.stdenv.system}.default;
     youmubot = inputs.youmubot.packages.${final.stdenv.system}.youmubot;
+    ss = inputs.ss.packages.${final.stdenv.system}.default;
 
     # A list of source-style inputs.
-    nki.sources = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
+    nki.sources =
+      let
+        auto = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
+        manual = {
+          ss = inputs.ss;
+        };
+      in
+      auto // manual;
+
   };
 
   overlay-versioning = final: prev: {
