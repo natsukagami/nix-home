@@ -34,7 +34,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     dtth-phanpy.url = "git+ssh://gitea@git.dtth.ch/nki-dtth/phanpy?ref=dtth-fork";
-    conduit.url = "gitlab:famedly/conduit/v0.10.13";
+    conduit.url = "gitlab:famedly/conduit/v0.10.14";
     nix-gaming.url = "github:fufexan/nix-gaming";
     zen-browser.url = "github:youwen5/zen-browser-flake";
     niri.url = "github:sodiboo/niri-flake";
