@@ -21,7 +21,7 @@
     ./wireless.nix
   ];
 
-  time.timeZone = "America/Los_Angeles";
+  # time.timeZone = "Asia/Seoul";
   # common.linux.networking.country = "KR";
 
   # Sops

@@ -165,9 +165,9 @@ in
     # Cursor
     home.pointerCursor = {
       enable = true;
-      package = pkgs.kdePackages.breeze;
+      package = pkgs.suwako-cursors;
       gtk.enable = true;
-      name = "Breeze";
+      name = "Suwako";
       size = 32;
     };
 
