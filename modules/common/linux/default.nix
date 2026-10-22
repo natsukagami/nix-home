@@ -94,8 +94,10 @@ let
     logitech =
       { pkgs, ... }:
       mkIf cfg.enable {
-        services.ratbagd.enable = true;
-        environment.systemPackages = with pkgs; [ piper ];
+        hardware.logitech.wireless.enable = true;
+        programs.solaar.enable = true;
+        programs.solaar.userService.enable = true;
+        systemd.user.services.solaar.after = [ "tray.target" ];
       };
 
     kwallet =
