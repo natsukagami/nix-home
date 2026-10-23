@@ -408,7 +408,13 @@ in
           "Mod+Shift+Slash".action = show-hotkey-overlay;
 
           # Some basic spawns
-          "Mod+Return".action = spawn (lib.getExe config.linux.graphical.defaults.terminal.package);
+          "Mod+Return".action =
+            let
+              pkg = config.linux.graphical.defaults.terminal.package;
+              isGhostty = pkg.pname == "ghostty";
+              cmd = if isGhostty then spawn (lib.getExe pkg) "+new-window" else spawn (lib.getExe pkg);
+            in
+            cmd;
           # "Mod+Space".action = spawn "rofi" "-show" "drun";
           "Mod+R".action = sh app-menu;
           # "Mod+Semicolon".action = spawn cfg.lock-command;

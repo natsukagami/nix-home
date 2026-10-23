@@ -52,7 +52,7 @@ in
         zip
         python
 
-        pinentry-gnome3 # until pinentry-qt introduces caching
+        pinentry-qt
       ];
 
       systemd.user.startServices = "sd-switch";
