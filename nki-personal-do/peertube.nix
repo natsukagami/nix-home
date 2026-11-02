@@ -100,7 +100,7 @@ in
 
     # Add pnpm, see https://github.com/NixOS/nixpkgs/issues/522392
     script = lib.mkBefore ''
-      export PATH=$PATH:${lib.makeBinPath [ pkgs.pnpm_10 ]}
+      export PATH=$PATH:${lib.makeBinPath [ pkgs.pnpm ]}
     '';
     environment.PNPM_HOME = "${dataFolder}/.pnpm";
   };

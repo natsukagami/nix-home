@@ -92,13 +92,18 @@ let
       };
 
     logitech =
-      { pkgs, ... }:
-      mkIf cfg.enable {
-        hardware.logitech.wireless.enable = true;
-        programs.solaar.enable = true;
-        programs.solaar.userService.enable = true;
-        systemd.user.services.solaar.after = [ "tray.target" ];
-      };
+      { lib, pkgs, ... }:
+      mkIf cfg.hardware.logitech.enable (
+        if lib.hasPrefix "26.05" lib.version then
+          { }
+        else
+          {
+            hardware.logitech.wireless.enable = true;
+            programs.solaar.enable = true;
+            programs.solaar.userService.enable = true;
+            systemd.user.services.solaar.after = [ "tray.target" ];
+          }
+      );
 
     kwallet =
       { pkgs, lib, ... }:
@@ -233,6 +238,14 @@ in
       type = types.attrsOf types.str;
       description = "A mapping from device mount name to its path (/dev/disk/...) to be mounted on boot";
       default = { };
+    };
+
+    hardware = {
+      logitech.enable = mkOption {
+        type = types.bool;
+        description = "Enable the logitech modules";
+        default = true;
+      };
     };
 
     networking = {
