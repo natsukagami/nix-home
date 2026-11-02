@@ -134,7 +134,7 @@ in
         zoom-us
 
         # Gaming stuff
-        lutris
+        # lutris
         glycin-loaders
         umu-launcher
 

@@ -10,7 +10,7 @@
   gopls,
   nil,
   nixfmt,
-  ltex-ls,
+  ltex-ls-plus,
   vscode-langservers-extracted,
   typescript-language-server,
   tailwindcss-language-server,
@@ -152,7 +152,7 @@ let
                 ".latexmkrc"
                 ".git"
               ];
-              package = ltex-ls;
+              package = ltex-ls-plus;
             };
             tailwind = {
               command = "tailwindcss-language-server";
