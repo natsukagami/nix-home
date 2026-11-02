@@ -1,25 +1,19 @@
 {
   config,
-  pkgs,
-  lib,
   ...
 }:
 {
   sops.secrets."forgejo-runner/dtthgit/token" = { };
   sops.secrets."forgejo-runner/codeberg/token" = { };
-  services.gitea-actions-runner = {
-    package = pkgs.forgejo-runner;
-    instances.dtthgit = {
+  services.forgejo-runner = {
+    instances.default = {
       enable = true;
-      name = "kagamipc-runner";
-      tokenFile = config.sops.secrets."forgejo-runner/dtthgit/token".path;
-      url = "https://git.dtth.ch";
-      labels = [
-        "nixos-latest:docker://nixos/nix"
-        "docker:docker://data.forgejo.org/oci/node:24-bookworm"
-      ];
       settings = {
         log.level = "info";
+        runner.labels = [
+          "nixos-latest:docker://nixos/nix"
+          "docker:docker://data.forgejo.org/oci/node:24-bookworm"
+        ];
         runner = {
           file = ".runner-dtthgit";
           capacity = 4;
@@ -27,26 +21,16 @@
           shutdown_timeout = "3h";
         };
         cache.enabled = true;
-      };
-    };
-    instances.codeberg = {
-      enable = true;
-      name = "nki-kagamipc-runner";
-      tokenFile = config.sops.secrets."forgejo-runner/codeberg/token".path;
-      url = "https://codeberg.org";
-      labels = [
-        "nixos-latest:docker://nixos/nix"
-        "docker:docker://data.forgejo.org/oci/node:24-bookworm"
-      ];
-      settings = {
-        log.level = "info";
-        runner = {
-          file = ".runner-codeberg";
-          capacity = 4;
-          timeout = "3h";
-          shutdown_timeout = "3h";
+        server.connections.dtthgit = {
+          url = "https://git.dtth.ch";
+          uuid = "af3acb59-cc30-4cd0-8055-ae04318f1372";
+          token_url = config.sops.secrets."forgejo-runner/dtthgit/token".path;
         };
-        cache.enabled = true;
+        server.connections.codeberg = {
+          url = "https://codeberg.org";
+          uuid = "9690ce25-cbc5-4bec-877b-576cace5193f";
+          token_url = config.sops.secrets."forgejo-runner/codeberg/token".path;
+        };
       };
     };
   };
