@@ -136,7 +136,7 @@ let
 
     discord-canary = (
       prev.discord-canary.override {
-        withVencord = true;
+        # withVencord = true;
       }
     );
   };
