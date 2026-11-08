@@ -48,7 +48,7 @@
     };
     tranquil.url = "git+https://tangled.org/tranquil.farm/tranquil-pds"; # atproto PDS
     tranquil.inputs.nixpkgs.follows = "nixpkgs-unstable";
-    ss.url = "github:abap34/ss";
+    # ss.url = "github:abap34/ss";
 
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     aagl.inputs.nixpkgs.follows = "nixpkgs-unstable";

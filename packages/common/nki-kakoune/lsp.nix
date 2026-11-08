@@ -5,7 +5,7 @@
   formats,
   kakoune-lsp,
   # LSP packages
-  ss,
+  # ss,
   clang-tools,
   gopls,
   nil,
@@ -327,16 +327,16 @@ let
               ];
               package = templ;
             };
-            ss = {
-              command = "ss";
-              args = [ "lsp" ];
-              filetypes = [ "ss" ];
-              roots = [
-                ".git"
-                "slide.ss"
-              ];
-              package = ss;
-            };
+            # ss = {
+            #   command = "ss";
+            #   args = [ "lsp" ];
+            #   filetypes = [ "ss" ];
+            #   roots = [
+            #     ".git"
+            #     "slide.ss"
+            #   ];
+            #   package = ss;
+            # };
             rust-analyzer = {
               args = [ ];
               command = "rust-analyzer";
