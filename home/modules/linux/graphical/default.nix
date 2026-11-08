@@ -113,7 +113,6 @@ in
         pavucontrol # PulseAudio control panel
         # cinny-desktop
         gajim
-        brave
         # Audio
         qpwgraph # Pipewire graph
         audacity
