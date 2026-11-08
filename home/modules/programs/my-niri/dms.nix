@@ -163,6 +163,7 @@ in
       enable = true;
       systemd = {
         enable = true;
+        target = "tray.target";
         restartIfChanged = true;
       };
       niri.includes = {

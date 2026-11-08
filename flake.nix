@@ -39,11 +39,11 @@
     zen-browser.url = "github:youwen5/zen-browser-flake";
     niri.url = "github:sodiboo/niri-flake";
     dms-unstable = {
-      url = "github:AvengeMedia/DankMaterialShell";
+      url = "github:duxlabs-dev/dux-shell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     dms-plugin-registry = {
-      url = "github:AvengeMedia/dms-plugin-registry";
+      url = "github:duxlabs-dev/dux-plugin-registry";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     tranquil.url = "git+https://tangled.org/tranquil.farm/tranquil-pds"; # atproto PDS
