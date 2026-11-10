@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   ...
 }:
 let
@@ -8,6 +9,27 @@ let
   host = "hs.dtth.ch";
   port = 19876;
   webuiPort = 19877;
+
+  policyFile = pkgs.writeText "policy.json" (
+    builtins.toJSON {
+      # allow everything
+      grants = [
+        {
+          src = [ "*" ];
+          dst = [ "*" ];
+          ip = [ "*" ];
+        }
+      ];
+
+      nodeAttrs = [
+        # Allow subdomain DNS lookup for all nodes.
+        {
+          target = [ "*" ];
+          attr = [ "dns-subdomain-resolve" ];
+        }
+      ];
+    }
+  );
 in
 {
   sops.secrets."headscale/client_secret" = {
@@ -60,18 +82,6 @@ in
       dns = {
         override_local_dns = false;
         base_domain = "dtth.ts";
-        extra_records = [
-          {
-            name = "llm.kagamipc.dtth.ts";
-            type = "AAAA";
-            value = "fd7a:115c:a1e0::4";
-          }
-          {
-            name = "immich.kagamipc.dtth.ts";
-            type = "AAAA";
-            value = "fd7a:115c:a1e0::4";
-          }
-        ];
       };
 
       noise = {
@@ -93,6 +103,9 @@ in
         client_secret_path = secrets."headscale/client_secret".path;
         issuer = "https://auth.dtth.ch/application/o/headscale/";
       };
+
+      policy.mode = "file";
+      policy.path = policyFile;
     };
   };
 

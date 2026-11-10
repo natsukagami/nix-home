@@ -1,0 +1,57 @@
+diff --git a/hscontrol/policy/v2/tailnet_state_caps.go b/hscontrol/policy/v2/tailnet_state_caps.go
+index 9df53c94..ab40907c 100644
+--- a/hscontrol/policy/v2/tailnet_state_caps.go
++++ b/hscontrol/policy/v2/tailnet_state_caps.go
+@@ -18,6 +18,7 @@ import (
+ 
+ 	"github.com/juanfont/headscale/hscontrol/types"
+ 	"tailscale.com/tailcfg"
++	"tailscale.com/tailcfg/nodecap"
+ )
+ 
+ // PeerCapMap returns the subset of peerSelfCaps the Tailscale client
+@@ -35,19 +36,32 @@ import (
+ // [mapper.MapResponseBuilder.buildTailPeers] and the compat test calls
+ // it to compute the expected per-peer wire shape.
+ func PeerCapMap(peer types.NodeView, peerSelfCaps tailcfg.NodeCapMap) tailcfg.NodeCapMap {
+-	// suggest-exit-node — surfaced on Peer.CapMap when the peer
+-	// advertises exit routes AND those routes are approved, with or
+-	// without a nodeAttrs grant: SaaS stamps it by default, and Apple
+-	// clients hide the exit-node list without a suggestion. A policy
+-	// value, if any, wins. Approval gating prevents the suggestion from
+-	// following an advertised-but-not-yet-trusted node.
+-	if !peer.IsExitNode() {
+-		return nil
++  toCopy := map[nodecap.Cap]bool {
++  	// suggest-exit-node — surfaced on Peer.CapMap when the peer
++  	// advertises exit routes AND those routes are approved, with or
++  	// without a nodeAttrs grant: SaaS stamps it by default, and Apple
++  	// clients hide the exit-node list without a suggestion. A policy
++  	// value, if any, wins. Approval gating prevents the suggestion from
++  	// following an advertised-but-not-yet-trusted node.
++    tailcfg.NodeAttrSuggestExitNode: peer.IsExitNode(),
++    // Allows DNS queries to resolve subdomains.
++    tailcfg.NodeAttrDNSSubdomainResolve: true,
++  }
++
++	var out tailcfg.NodeCapMap
++
++	for cap, ok := range toCopy {
++  	if ok {
++    	if v, ok := peerSelfCaps[cap]; ok {
++      	if out == nil {
++        	out = tailcfg.NodeCapMap{}
++      	}
++      	out[cap] = v
++    	}
++  	}
+ 	}
+ 
+-	return tailcfg.NodeCapMap{
+-		tailcfg.NodeAttrSuggestExitNode: peerSelfCaps[tailcfg.NodeAttrSuggestExitNode],
+-	}
++	return out
+ }
+ 
+ // unmodelledTailnetStateCaps lists [tailcfg.NodeCapability] values
+

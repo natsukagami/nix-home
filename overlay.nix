@@ -139,6 +139,14 @@ let
         # withVencord = true;
       }
     );
+
+    headscale = prev.headscale.overrideAttrs (
+      finalAttrs: prevAttrs: {
+        patches = (prevAttrs.patches or [ ]) ++ [
+          ./overlays/headscale_dns_subdomain_resolve.patch
+        ];
+      }
+    );
   };
 in
 [
