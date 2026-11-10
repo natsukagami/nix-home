@@ -81,7 +81,7 @@ in
 
       dns = {
         override_local_dns = false;
-        base_domain = "dtth.ts";
+        base_domain = "dtth.space";
       };
 
       noise = {
