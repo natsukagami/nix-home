@@ -54,7 +54,7 @@ in
     {
 
       # Kernel
-      boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
+      boot.kernelPackages = pkgs.linuxKernel.packages.linux_zen;
 
       ## Encryption
       # Kernel modules needed for mounting USB VFAT devices in initrd stage
@@ -252,6 +252,12 @@ in
     {
       services.jellyfin = {
         enable = true;
+      };
+      nki.nginx.hosts."jellyfin" = {
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8096";
+          proxyWebsockets = true;
+        };
       };
       # Shoko anime server
       virtualisation.oci-containers.containers.shoko-server = {
