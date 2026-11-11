@@ -53,16 +53,16 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1790452225,
-        "narHash": "sha256-A7Gryk1ZWDu751n3rBfv9HUTiokoGhBol/ve9mWwRjA=",
+        "lastModified": 1793659065,
+        "narHash": "sha256-9kTxYP6dtFcn2oZ2uxQqwwamZ9hEYwR0UGah9zw3v7s=",
         "owner": "famedly",
         "repo": "conduit",
-        "rev": "ff5a243b8e93fa2d0b82dd13fa714618d50091fa",
+        "rev": "0748f27245ae39ca8aad272b417983f190538251",
         "type": "gitlab"
       },
       "original": {
         "owner": "famedly",
-        "ref": "v0.10.14",
+        "ref": "v0.10.16",
         "repo": "conduit",
         "type": "gitlab"
       }
