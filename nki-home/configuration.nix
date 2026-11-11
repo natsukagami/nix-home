@@ -339,5 +339,51 @@ in
     {
       programs.anime-game-launcher.enable = true;
     }
+
+    # Invidious
+    (
+      let
+        port = 39876;
+        companionPort = port + 1;
+      in
+      {
+        sops.secrets."invidious/env" = { };
+        sops.secrets."invidious/extra-settings" = {
+          mode = "0444";
+        };
+        services.postgresql.ensureDatabases = [ ];
+        services.invidious = {
+          enable = true;
+          address = "127.0.0.1";
+          port = port;
+          sig-helper.enable = false;
+          http3-ytproxy.enable = true;
+
+          database.createLocally = true;
+          settings.db.user = "invidious";
+          settings.invidious_companion = [
+            { private_url = "http://localhost:${builtins.toString companionPort}/companion"; }
+          ];
+          extraSettingsFile = config.sops.secrets."invidious/extra-settings".path;
+        };
+        systemd.services.invidious.serviceConfig.ReadOnlyPaths = [
+          config.sops.secrets."invidious/extra-settings".path
+        ];
+        virtualisation.oci-containers.containers.invidious-companion = {
+          image = "quay.io/invidious/invidious-companion:latest";
+          ports = [ "127.0.0.1:${builtins.toString companionPort}:8282" ];
+          volumes = [
+            "companioncache:/var/tmp/youtubei.js:rw"
+          ];
+          environmentFiles = [ config.sops.secrets."invidious/env".path ];
+        };
+        nki.nginx.hosts."invidious" = {
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:${builtins.toString port}";
+            proxyWebsockets = true;
+          };
+        };
+      }
+    )
   ];
 }
