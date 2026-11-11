@@ -385,5 +385,23 @@ in
         };
       }
     )
+
+    # headscale-tool
+    {
+      sops.secrets."headscale/hs-key" = { };
+      sops.secrets."acme/kagamipc-dtth-space" = { };
+      services.dtth-headscale-api-server = {
+        enable = true;
+        config = {
+          hsHost = "https://hs.dtth.ch";
+          baseDomain = "dtth.space";
+          hsKeyFile = config.sops.secrets."headscale/hs-key".path;
+          cloudflareTokenFile = config.sops.secrets."acme/kagamipc-dtth-space".path;
+          caCode = "letsencrypt";
+          accountEmail = "nki@nkagami.me";
+          tosAgree = true;
+        };
+      };
+    }
   ];
 }

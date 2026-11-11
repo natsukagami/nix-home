@@ -153,6 +153,7 @@ in
   inputs.mpd-mpris.overlays.default
   inputs.rust-overlay.overlays.default
   inputs.niri.overlays.niri
+  inputs.dtth-headscale-api.overlays.default
 
   overlay-unstable
   overlay-needs-unstable

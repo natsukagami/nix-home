@@ -48,6 +48,7 @@
     };
     tranquil.url = "git+https://tangled.org/tranquil.farm/tranquil-pds"; # atproto PDS
     tranquil.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    dtth-headscale-api.url = "git+ssh://gitea@git.dtth.ch/nki/dtth-headscale-api";
     # ss.url = "github:abap34/ss";
 
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
@@ -249,6 +250,7 @@
         extraModules = [
           osuStable
           aagl
+          inputs.dtth-headscale-api.nixosModules.default
         ];
       };
       # yoga g8 configuration
