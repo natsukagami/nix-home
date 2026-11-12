@@ -139,7 +139,7 @@ let
             # };
             # Spellchecking server
             ltex-ls = {
-              command = "ltex-ls";
+              command = "ltex-ls-plus";
               args = [ "--log-file=/tmp" ];
               filetypes = [
                 "latex"
