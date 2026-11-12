@@ -76,7 +76,7 @@ let
         };
 
         # Niri stuff
-        # https://github.com/sodiboo/niri-flake/blob/main/docs.md
+        # https://github.com/epireyn/niri-flake/blob/main/docs.md
         programs.niri.enable = true;
         programs.niri.package = pkgs.niri;
         # Override gnome-keyring disabling
