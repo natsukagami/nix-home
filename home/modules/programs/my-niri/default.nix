@@ -275,6 +275,10 @@ in
               top-right = v;
             };
           clip-to-geometry = true;
+          background-effect = {
+            blur = true;
+            xray = false;
+          };
         }
         # Workspace assignments
         {

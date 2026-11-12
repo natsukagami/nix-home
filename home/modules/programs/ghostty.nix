@@ -19,7 +19,7 @@
     ];
     font-size = 16;
 
-    background-opacity = "0.93";
+    background-opacity = "0.85";
     background-blur = true;
 
     app-notifications = "no-clipboard-copy,no-config-reload";
