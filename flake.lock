@@ -197,11 +197,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1794439072,
-        "narHash": "sha256-OLGD6iEO203RiVpiAbK29WSb/vRHgqVpcevHTCeErCM=",
+        "lastModified": 1794586264,
+        "narHash": "sha256-+Xd9tn875mfTdQDRPgDLO8v8XohWL57rHvWn4812EjE=",
         "ref": "refs/heads/master",
-        "rev": "be2552c4598eda0c893ce1bffbbec1bbee785411",
-        "revCount": 42,
+        "rev": "038e3ed94e63881412a43f2460feebaae25ad08c",
+        "revCount": 50,
         "type": "git",
         "url": "ssh://gitea@git.dtth.ch/nki/dtth-headscale-api"
       },
