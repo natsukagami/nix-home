@@ -199,6 +199,10 @@ hook global BufCreate .*[.]qml %{
   set-option buffer comment_line "//"
 }
 
+hook global BufCreate .*[.]swiftinterface %{
+  set-option buffer filetype swift
+}
+
 hook global BufOpenFile .* %{
   modeline-parse
 }

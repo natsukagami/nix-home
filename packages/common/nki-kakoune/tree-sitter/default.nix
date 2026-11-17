@@ -172,8 +172,8 @@ in
           src = pkgs.fetchFromGitHub {
             owner = "alex-pinkus";
             repo = "tree-sitter-swift";
-            rev = "0.5.0-with-generated-files";
-            hash = "sha256-FvNn+FHY9YumfE4taqoORzdu8TRn6Cc3DgRpyjzN6aM=";
+            rev = "0.7.4-with-generated-files";
+            hash = "sha256-cnC1qVvtkgHSsYsMi9sbH8VGwGckRMTZpMQsdisU3AI=";
           };
         in
         {
@@ -192,8 +192,8 @@ in
             "scanner.o"
             "parser.o"
           ];
-          queries.src = helix-src;
-          queries.path = "runtime/queries/swift";
+          queries.src = src;
+          queries.path = "queries";
         };
       gitcommit =
         let
