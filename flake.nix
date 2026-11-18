@@ -50,6 +50,7 @@
     tranquil.inputs.nixpkgs.follows = "nixpkgs-unstable";
     dtth-headscale-api.url = "git+ssh://gitea@git.dtth.ch/nki/dtth-headscale-api";
     ss.url = "github:abap34/ss";
+    ss.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     aagl.url = "github:ezKEa/aagl-gtk-on-nix";
     aagl.inputs.nixpkgs.follows = "nixpkgs-unstable";
