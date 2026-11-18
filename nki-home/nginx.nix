@@ -56,6 +56,7 @@ in
               value = {
                 forceSSL = true;
                 useACMEHost = "${tailscaleHost}";
+                http2 = false;
               }
               // opts;
             }
