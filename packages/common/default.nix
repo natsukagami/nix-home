@@ -5,4 +5,5 @@ final: prev: {
   # gotosocial-dtth = final.callPackage ./gotosocial { };
   openconnect-epfl = final.callPackage ./openconnect-epfl.nix { };
   libopusenc = final.callPackage ./libopusenc.nix { };
+  tnotify = final.callPackage ./tnotify.nix { };
 }
