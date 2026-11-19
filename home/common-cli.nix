@@ -29,6 +29,7 @@
     fx # JSON viewer
     glow # Markdown viewer
     nix-output-monitor # Nice nix output formatting
+    tnotify # Desktop notifications from the terminal
     unstable.scala-next
     ## PDF Processors
     poppler-utils
