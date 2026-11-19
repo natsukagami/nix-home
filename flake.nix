@@ -243,6 +243,9 @@
       packages.x86_64-linux.nki-kakoune = nki-kakoune-from-pkgs (
         import nixpkgs-unstable { system = "x86_64-linux"; }
       );
+      packages.aarch64-darwin.nki-kakoune = nki-kakoune-from-pkgs (
+        import nixpkgs-unstable { system = "aarch64-darwin"; }
+      );
 
       # Home configuration
       nixosConfigurations."kagamiPC" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
