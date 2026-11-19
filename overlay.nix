@@ -36,14 +36,11 @@ let
     ss = inputs.ss.packages.${final.stdenv.system}.default;
 
     # A list of source-style inputs.
-    nki.sources =
-      let
-        auto = final.lib.attrsets.filterAttrs (name: f: !(builtins.hasAttr "outputs" f)) inputs;
-        manual = {
-          ss = inputs.ss;
-        };
-      in
-      auto // manual;
+    # Listed explicitly: filtering `inputs` for non-flakes would force every
+    # input to be fetched and evaluated, even on hosts that use none of them.
+    nki.sources = {
+      inherit (inputs) kakoune kak-lsp ss;
+    };
 
   };
 
