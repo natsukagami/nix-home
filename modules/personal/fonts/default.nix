@@ -10,22 +10,7 @@ with lib;
   imports = [ ./mounting.nix ];
   # Fonts
   config.fonts = {
-    packages =
-      with pkgs;
-      mkForce [
-        noto-fonts-emoji-blob-bin
-        ibm-plex
-        plemoljp # IBM Plex + Mono JP
-        nerd-fonts.symbols-only
-        noto-fonts
-        pkgs.noto-fonts-cjk-sans
-        pkgs.noto-fonts-cjk-serif
-        merriweather
-        corefonts
-        font-awesome_5
-        font-awesome
-        hack-font # for Plasma
-      ];
+    packages = mkForce (import ./packages.nix pkgs);
   }
   // (
     if pkgs.stdenv.hostPlatform.isLinux then
