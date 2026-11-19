@@ -20,6 +20,8 @@
     # Same set as the NixOS hosts, minus their fontconfig settings.
     (import ../modules/personal/fonts/packages.nix pkgs) ++ [
       pkgs.tailscale
+      # For rbw, which is the SSH agent when logged in over SSH
+      pkgs.pinentry-curses
     ];
 
   home.file.".latexmkrc".text = ''

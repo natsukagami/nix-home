@@ -23,8 +23,6 @@
     openssh
     inkscape # for TeX svg
     nmon
-    ## Bitwarden
-    rbw
 
     distrobox
 

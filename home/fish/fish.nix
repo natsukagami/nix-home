@@ -294,14 +294,26 @@ in
       # fd theme
       set -gx LS_COLORS (${lib.getExe pkgs.vivid} generate catppuccin-latte)
 
-      # Bitwarden desktop (macOS) as the SSH agent
-      if test -d "$HOME/Library/Containers/com.bitwarden.desktop"
+      # SSH agent: the Bitwarden desktop app (macOS) for local sessions, rbw otherwise.
+      # The desktop app approves requests through its GUI, so it is useless over SSH.
+      if set -q SSH_CONNECTION; and test -S "$SSH_AUTH_SOCK"
+        # Logged in over SSH with a live (forwarded) agent: keep it
+      else if test -d "$HOME/Library/Containers/com.bitwarden.desktop"; and not set -q SSH_CONNECTION
         set -gx SSH_AUTH_SOCK "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
-      end
-
-      # rbw for SSH
-      if which rbw &> /dev/null
-        export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/rbw/ssh-agent-socket"
+      else if which rbw &> /dev/null
+        ${
+          if isDarwin then
+            ''
+              # No XDG runtime dir on macOS: rbw falls back to <tmpdir>/rbw-<uid>
+              set -l rbw_tmp $TMPDIR
+              test -n "$rbw_tmp"; or set rbw_tmp (getconf DARWIN_USER_TEMP_DIR)
+              set -gx SSH_AUTH_SOCK (string trim -r -c / -- $rbw_tmp)/rbw-(id -u)/ssh-agent-socket
+            ''
+          else
+            ''
+              set -gx SSH_AUTH_SOCK "$XDG_RUNTIME_DIR/rbw/ssh-agent-socket"
+            ''
+        }
         if not test -e $SSH_AUTH_SOCK
           rbw unlock
         end

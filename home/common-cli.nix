@@ -38,6 +38,8 @@
     texlab # for inverse search
     ## htop replacement
     htop-vim
+    ## Bitwarden
+    rbw
     ## File compression stuff
     ouch
 
