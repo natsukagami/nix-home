@@ -243,7 +243,8 @@
       # The `home-manager` command: always home-manager master, built against
       # nixpkgs-unstable (the input follows it).
       #   nix run '.#home-manager' -- switch --flake '.#nki@mac-mini'
-      packages.x86_64-linux.home-manager = inputs.home-manager-unstable.packages.x86_64-linux.home-manager;
+      packages.x86_64-linux.home-manager =
+        inputs.home-manager-unstable.packages.x86_64-linux.home-manager;
       packages.aarch64-darwin.home-manager =
         inputs.home-manager-unstable.packages.aarch64-darwin.home-manager;
 
@@ -296,7 +297,10 @@
           config = import ./home/config.nix;
           inherit overlays;
         };
-        modules = [ ./home/mac-mini.nix ];
+        modules = [
+          ./home/mac-mini.nix
+          inputs.secrets.homeManagerModules.mac-mini
+        ];
       };
 
       # DigitalOcean node

@@ -7,9 +7,6 @@
     ./common-cli.nix
   ];
 
-  home.username = "nki";
-  home.homeDirectory = "/Users/nki";
-
   home.file.".latexmkrc".text = ''
     $pdf_previewer = 'open';
   '';

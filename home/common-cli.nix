@@ -105,7 +105,7 @@
         enable = true;
         signing = {
           format = "ssh";
-          key = "~/.ssh/nki@nkagami.me";
+          key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPu7NnDh5A51UCj2teRxm3TUdVk3Ed2IAh4HQyJtMgC nki@nkagami.me";
           signByDefault = true;
         };
         settings = {
