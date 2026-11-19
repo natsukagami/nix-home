@@ -4,8 +4,10 @@
   writeShellScript,
   formats,
   kakoune-lsp,
+  stdenv,
   # LSP packages
-  ss,
+  hello,
+  ss ? null,
   clang-tools,
   gopls,
   nil,
@@ -284,13 +286,13 @@ let
                 build.forwardSearchAfter = true;
                 build.onSave = true;
 
-                forwardSearch = {
+                forwardSearch = if lib.hasSuffix "linux" stdenv.hostPlatform.system then {
                   executable = "okular";
                   args = [
                     "--unique"
                     "file:%p#src:%l%f"
                   ];
-                };
+                } else {};
               };
               package = texlab;
             };
@@ -335,7 +337,7 @@ let
                 ".git"
                 "slide.ss"
               ];
-              package = ss;
+              package = if ss == null then hello else ss;
             };
             rust-analyzer = {
               args = [ ];
@@ -671,7 +673,7 @@ in
   extraPackages =
     serverPackages
     ++ [ kakoune-lsp ]
-    ++ [
+    ++ lib.optionals (lib.hasSuffix "linux" stdenv.hostPlatform.system) [
       # texlab forward-search enabled viewer
       kdePackages.okular
     ];

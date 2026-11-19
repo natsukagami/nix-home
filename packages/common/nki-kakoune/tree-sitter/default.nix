@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 let
   helix-src = pkgs.fetchFromGitHub {
     owner = "helix-editor";
@@ -225,8 +225,8 @@ in
           queries.path = "queries";
 
         };
-      ss =
-        let
+      ss = lib.mkIf (pkgs ? "nki")
+        (let
           src = pkgs.nki.sources.ss;
         in
         {
@@ -250,6 +250,6 @@ in
           queries.src = src;
           queries.path = "editor/tree-sitter-ss/queries";
 
-        };
+        });
     };
 }
