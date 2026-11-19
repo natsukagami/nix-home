@@ -14,10 +14,13 @@
     HOME_MANAGER_FLAKE = "${config.home.homeDirectory}/Projects/nix-home#nki@mac-mini";
   };
 
-  # Fonts: on macOS, home-manager puts the fonts of `home.packages` into
-  # ~/Library/Fonts/HomeManager (the per-user font folder).
-  # Same set as the NixOS hosts, minus their fontconfig settings.
-  home.packages = import ../modules/personal/fonts/packages.nix pkgs;
+  home.packages =
+    # Fonts: on macOS, home-manager puts the fonts of `home.packages` into
+    # ~/Library/Fonts/HomeManager (the per-user font folder).
+    # Same set as the NixOS hosts, minus their fontconfig settings.
+    (import ../modules/personal/fonts/packages.nix pkgs) ++ [
+      pkgs.tailscale
+    ];
 
   home.file.".latexmkrc".text = ''
     $pdf_previewer = 'open';
