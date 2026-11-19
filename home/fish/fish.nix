@@ -293,6 +293,11 @@ in
       # fd theme
       set -gx LS_COLORS (${lib.getExe pkgs.vivid} generate catppuccin-latte)
 
+      # Bitwarden desktop (macOS) as the SSH agent
+      if test -d "$HOME/Library/Containers/com.bitwarden.desktop"
+        set -gx SSH_AUTH_SOCK "$HOME/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock"
+      end
+
       # rbw for SSH
       if which rbw &> /dev/null
         export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/rbw/ssh-agent-socket"
