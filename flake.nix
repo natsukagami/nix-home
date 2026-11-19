@@ -240,6 +240,13 @@
           ./packages/common/openconnect-epfl.nix
           { };
 
+      # The `home-manager` command: always home-manager master, built against
+      # nixpkgs-unstable (the input follows it).
+      #   nix run '.#home-manager' -- switch --flake '.#nki@mac-mini'
+      packages.x86_64-linux.home-manager = inputs.home-manager-unstable.packages.x86_64-linux.home-manager;
+      packages.aarch64-darwin.home-manager =
+        inputs.home-manager-unstable.packages.aarch64-darwin.home-manager;
+
       packages.x86_64-linux.nki-kakoune = nki-kakoune-from-pkgs (
         import nixpkgs-unstable { system = "x86_64-linux"; }
       );
@@ -282,7 +289,7 @@
       };
 
       # Mac mini: standalone home-manager, command-line tools only.
-      #   home-manager switch --flake '.#nki@mac-mini'
+      #   nix run '.#home-manager' -- switch --flake '.#nki@mac-mini'
       homeConfigurations."nki@mac-mini" = inputs.home-manager-unstable.lib.homeManagerConfiguration {
         pkgs = import nixpkgs-unstable {
           system = "aarch64-darwin";
