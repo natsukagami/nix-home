@@ -13,4 +13,5 @@ pkgs: with pkgs; [
   font-awesome_5
   font-awesome
   hack-font # for Plasma
+  fantasque-sans-mono # for Ghostty
 ]
