@@ -84,6 +84,20 @@ in
         '';
         wraps = "nixos-rebuild";
       };
+      # home-manager, pointed at this flake and the host's configuration.
+      # Hosts opt in by setting $HOME_MANAGER_FLAKE in home.sessionVariables,
+      # as a full flake reference (`path/to/flake#configuration`).
+      hm-rebuild = {
+        body = ''
+          if not set -q HOME_MANAGER_FLAKE
+            echo "hm-rebuild: \$HOME_MANAGER_FLAKE is not set" >&2
+            return 1
+          end
+          home-manager --flake $HOME_MANAGER_FLAKE $argv
+        '';
+        wraps = "home-manager";
+        description = "Runs home-manager against this machine's flake configuration";
+      };
       # Simplify nix usage!
       nx = {
         body = ''

@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 # Standalone Home Manager configuration for the Mac mini (aarch64-darwin).
 # Command-line tools only: no GUI applications and nothing Linux-specific.
@@ -6,6 +6,11 @@
   imports = [
     ./common-cli.nix
   ];
+
+  # Used by the `hm-rebuild` fish function, e.g. `hm-rebuild switch`
+  home.sessionVariables = {
+    HOME_MANAGER_FLAKE = "${config.home.homeDirectory}/Projects/nix-home#nki@mac-mini";
+  };
 
   home.file.".latexmkrc".text = ''
     $pdf_previewer = 'open';
