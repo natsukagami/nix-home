@@ -287,18 +287,7 @@
         pkgs = import nixpkgs-unstable {
           system = "aarch64-darwin";
           config = import ./home/config.nix;
-          # A slim overlay set: the full ./overlay.nix pulls in Linux-only
-          # (and private, ssh-fetched) inputs that are not needed here.
-          overlays = [
-            (final: prev: {
-              unstable = prev;
-              stable = import nixpkgs {
-                config.allowUnfree = true;
-                system = prev.stdenv.system;
-              };
-            })
-            self.overlays.kakoune
-          ];
+          inherit overlays;
         };
         modules = [ ./home/mac-mini.nix ];
       };
