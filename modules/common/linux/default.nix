@@ -105,6 +105,16 @@ let
           }
       );
 
+    hhkb =
+      { pkgs, ... }:
+      mkIf cfg.hardware.hhkb.enable {
+        services.udev.packages = [
+          (pkgs.writeTextDir "/etc/udev/rules.d/50-hhkb.rules" ''
+            KERNEL=="hidraw*", ATTRS{idVendor}=="04fe", MODE="0666"
+          '')
+        ];
+      };
+
     kwallet =
       { pkgs, lib, ... }:
       mkIf cfg.enable {
@@ -219,6 +229,7 @@ in
     graphics
     wlr
     logitech
+    hhkb
     kwallet
     virtualisation
     accounts
@@ -244,6 +255,11 @@ in
       logitech.enable = mkOption {
         type = types.bool;
         description = "Enable the logitech modules";
+        default = true;
+      };
+      hhkb.enable = mkOption {
+        type = types.bool;
+        description = "Enable the hhkb modules";
         default = true;
       };
     };
