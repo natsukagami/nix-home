@@ -65,6 +65,7 @@ in
 
   config.home.packages = with pkgs; [
     timg
+    tnotify
     # For fzf.fish
     fzf
     fd
@@ -178,14 +179,14 @@ in
               # nothing to do, user already authenticated
           else
               # throw a notification
-              set notif_id (kitten notify -P \
-                -p ${./haruka.png} \
-                -a "pls" \
+              set -l notif_id pls-(random)
+              tnotify -i $notif_id \
                 -u critical \
-                "A-a command requires your p-password" \
-                (printf "I-I need your p-password to r-run the following c-command:\n\n%s" $cmd))
+                -t "A-a command requires your p-password" \
+                (printf "I-I need your p-password to r-run the following c-command:\n\n%s" $cmd)
               command sudo -v -p "P-password please: "
-              kitten notify -i $notif_id ""
+              # Closing only works on terminals with notification IDs (kitty)
+              tnotify --close $notif_id &>/dev/null
           end
           command sudo $argv
         '';

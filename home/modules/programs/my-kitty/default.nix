@@ -174,7 +174,7 @@ with lib;
       "clip" = "kitten clipboard";
       "eg" = "kitten hyperlinked-grep";
       "icat" = "kitten icat";
-      "notify" = "kitten notify";
+      "notify" = "tnotify";
     };
   };
 }
