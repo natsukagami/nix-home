@@ -5,6 +5,8 @@
 {
   imports = [
     ./common-cli.nix
+    # Configuration only, Ghostty is not installed from here
+    ./modules/programs/ghostty.nix
   ];
 
   # Used by the `hm-rebuild` fish function, e.g. `hm-rebuild switch`
