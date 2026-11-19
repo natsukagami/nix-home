@@ -183,7 +183,7 @@ in
               tnotify -i $notif_id \
                 -u critical \
                 -t "A-a command requires your p-password" \
-                (printf "I-I need your p-password to r-run the following c-command:\n\n%s" $cmd)
+                "$(printf "I-I need your p-password to r-run the following c-command:\n\n%s" $cmd)"
               command sudo -v -p "P-password please: "
               # Closing only works on terminals with notification IDs (kitty)
               tnotify --close $notif_id &>/dev/null
