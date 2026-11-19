@@ -8,7 +8,7 @@
 
 with lib;
 let
-  inherit (pkgs.stdenv.hostPlatform) isLinux;
+  inherit (pkgs.stdenv.hostPlatform) isLinux isDarwin;
 
   bootDesktop = pkgs.writeScriptBin "boot-desktop" ''
     #!/usr/bin/env fish
@@ -181,6 +181,11 @@ in
         wraps = "atc";
         body = ''
           fish_add_path -P -a ${lib.makeBinPath [ pkgs.jdk ]}
+          ${optionalString isDarwin ''
+            # /usr/bin/java is a stub that fails without a system JDK:
+            # move /usr/bin behind the JDK above.
+            fish_add_path -P -a -m /usr/bin
+          ''}
           command atc $argv
         '';
       };
