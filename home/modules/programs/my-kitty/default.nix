@@ -170,7 +170,7 @@ with lib;
     '';
 
     programs.fish.shellAliases = {
-      "ssh+" = "kitten ssh";
+      "ssh+" = "ghostty +ssh";
       "clip" = "kitten clipboard";
       "eg" = "kitten hyperlinked-grep";
       "icat" = "kitten icat";
