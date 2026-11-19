@@ -8,6 +8,8 @@
 
 with lib;
 let
+  inherit (pkgs.stdenv.hostPlatform) isLinux;
+
   bootDesktop = pkgs.writeScriptBin "boot-desktop" ''
     #!/usr/bin/env fish
 
@@ -67,14 +69,15 @@ in
     fzf
     fd
     bat
-
+  ]
+  ++ optionals isLinux [
     bootDesktop
   ];
 
   config.programs.fish = {
     enable = true;
     functions = {
-      rebuild = {
+      rebuild = mkIf isLinux {
         body = ''
           pls nixos-rebuild --flake ~/.config/nixpkgs -L --log-format internal-json -v $argv \
             &| ${pkgs.nix-output-monitor}/bin/nom --json
@@ -194,7 +197,7 @@ in
       catp = "bat --theme=GitHub -p ";
       l = "exa -l --color=always ";
       e = "$EDITOR";
-      lsports = "ss -tulp";
+      lsports = mkIf isLinux "ss -tulp";
       "cp+" = "rsync -avzP";
     };
 
@@ -205,10 +208,12 @@ in
     '';
 
     interactiveShellInit = ''
-      # Sway!
-      if status --is-login; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
-        exec ${lib.getExe bootDesktop}
-      end
+      ${optionalString isLinux ''
+        # Sway!
+        if status --is-login; and test -z $DISPLAY; and test (tty) = "/dev/tty1"
+          exec ${lib.getExe bootDesktop}
+        end
+      ''}
 
       function fish_greeting
         ${pkgs.timg}/bin/timg ${./arona.jpg}
