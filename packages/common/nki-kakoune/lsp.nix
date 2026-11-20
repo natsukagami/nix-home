@@ -286,13 +286,17 @@ let
                 build.forwardSearchAfter = true;
                 build.onSave = true;
 
-                forwardSearch = if lib.hasSuffix "linux" stdenv.hostPlatform.system then {
-                  executable = "okular";
-                  args = [
-                    "--unique"
-                    "file:%p#src:%l%f"
-                  ];
-                } else {};
+                forwardSearch =
+                  if lib.hasSuffix "linux" stdenv.hostPlatform.system then
+                    {
+                      executable = "okular";
+                      args = [
+                        "--unique"
+                        "file:%p#src:%l%f"
+                      ];
+                    }
+                  else
+                    { };
               };
               package = texlab;
             };

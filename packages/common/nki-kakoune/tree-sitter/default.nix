@@ -225,8 +225,8 @@ in
           queries.path = "queries";
 
         };
-      ss = lib.mkIf (pkgs ? "nki")
-        (let
+      ss = lib.mkIf (pkgs ? "nki") (
+        let
           src = pkgs.nki.sources.ss;
         in
         {
@@ -250,6 +250,7 @@ in
           queries.src = src;
           queries.path = "editor/tree-sitter-ss/queries";
 
-        });
+        }
+      );
     };
 }

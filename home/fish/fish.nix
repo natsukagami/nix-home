@@ -63,17 +63,19 @@ in
     default = { };
   };
 
-  config.home.packages = with pkgs; [
-    timg
-    tnotify
-    # For fzf.fish
-    fzf
-    fd
-    bat
-  ]
-  ++ optionals isLinux [
-    bootDesktop
-  ];
+  config.home.packages =
+    with pkgs;
+    [
+      timg
+      tnotify
+      # For fzf.fish
+      fzf
+      fd
+      bat
+    ]
+    ++ optionals isLinux [
+      bootDesktop
+    ];
 
   config.programs.fish = {
     enable = true;
