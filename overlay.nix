@@ -145,6 +145,30 @@ let
         ];
       }
     );
+
+    # https://github.com/NixOS/nixpkgs/pull/589629
+    rocmPackages = prev.rocmPackages.overrideScope (
+      finalRocm: prevRocm: {
+        aotriton = (prevRocm.aotriton.override { gpuTargets = [ "gfx1201" ]; }).overrideAttrs (
+          finalAttrs: prevAttrs: {
+            TRITON_DEFAULT_FP_FUSION = "1";
+            patches =
+              (prevAttrs.patches or [ ])
+              ++ final.lib.optional (prevAttrs.version == "0.12b") (
+                final.fetchpatch2 {
+                  name = "triton-3.9-composed-tensors.patch";
+                  url = "https://github.com/ROCm/aotriton/commit/ab24ced82e999dfaf05dfee46f6da50ca2c0561f.patch?full_index=1";
+                  hash = "sha256-t4wwbEuuM0RPpyIvY3QaQAXHkCbSXA41tx0SxVgjn9o=";
+                  postFetch = ''
+                    substituteInPlace $out \
+                      --replace-fail 'modules/flash/kernel/composed_tensors.py' 'tritonsrc/composed_tensors.py'
+                  '';
+                }
+              );
+          }
+        );
+      }
+    );
   };
 in
 [
