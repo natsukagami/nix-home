@@ -52,7 +52,6 @@ in
       ];
     }
     {
-
       # Kernel
       boot.kernelPackages = pkgs.linuxKernel.packages.linux_zen;
 
@@ -248,6 +247,11 @@ in
       # Virtualbox
       virtualisation.virtualbox.host.enable = false;
       users.extraGroups.vboxusers.members = [ "nki" ];
+    }
+    {
+      # PostgreSQL
+      services.postgresql.enable = true;
+      services.postgresql.package = pkgs.postgresql_18;
     }
     {
       services.jellyfin = {
