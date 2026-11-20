@@ -43,6 +43,8 @@
     ## File compression stuff
     ouch
 
+    zellij # tmux but much better?
+
     pkgs.unstable.scala-cli
   ];
 
