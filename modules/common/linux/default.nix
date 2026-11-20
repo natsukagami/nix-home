@@ -515,6 +515,11 @@ in
     # OpenSSH so you can SSH to me
     services.openssh.enable = true;
     services.openssh.openFirewall = false;
+    services.openssh.settings.AcceptEnv = [
+      "COLORTERM"
+      "TERM_PROGRAM"
+      "TERM_PROGRAM_VERSION"
+    ];
     # PAM
     security.pam.services.login.enableKwallet = true;
     security.pam.services.lightdm.enableKwallet = true;
