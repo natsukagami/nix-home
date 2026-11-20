@@ -18,7 +18,10 @@
     };
 
     # --- Build tools
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     crane.url = "github:ipetkov/crane";
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -69,9 +72,9 @@
   outputs =
     {
       self,
+      flake-parts,
       nixpkgs,
       nixpkgs-unstable,
-      home-manager,
       deploy-rs,
       sops-nix,
       ...
@@ -79,6 +82,20 @@
     let
       overlays = import ./overlay.nix inputs;
       lib = nixpkgs.lib;
+
+      # Every overlay from ./overlay.nix, composed into a single one. It is
+      # exported as `overlays.default` and loaded into the nixpkgs that the
+      # flake's own packages are built from, so `pkgs.nki-kakoune` and friends
+      # mean the same thing here as they do in the systems.
+      bunched-overlay = lib.composeManyExtensions overlays;
+
+      pkgsFor =
+        system:
+        import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+          overlays = [ bunched-overlay ];
+        };
 
       applyOverlays =
         { ... }:
@@ -216,116 +233,129 @@
             # patches in the original package was already applied
           ];
         });
-      nki-kakoune-from-pkgs =
-        pkgs:
-        pkgs.callPackage ./packages/common/nki-kakoune {
-          kakoune-unwrapped = kakoune-unwrapped-from-pkgs pkgs;
-        };
-
-    in
-    {
-      overlays = {
-        default = lib.composeManyExtensions overlays;
-        kakoune = final: prev: {
-          kakoune-unwrapped = kakoune-unwrapped-from-pkgs prev;
-          nki-kakoune = final.callPackage ./packages/common/nki-kakoune { };
-        };
-      };
-
-      packages.x86_64-linux.deploy-rs = deploy-rs.packages.x86_64-linux.default;
-      apps.x86_64-linux.deploy-rs = deploy-rs.apps.x86_64-linux.default;
-
-      packages.x86_64-linux.openconnect-epfl =
-        (import nixpkgs-unstable { system = "x86_64-linux"; }).callPackage
-          ./packages/common/openconnect-epfl.nix
-          { };
-
-      # The `home-manager` command: always home-manager master, built against
-      # nixpkgs-unstable (the input follows it).
-      #   nix run '.#home-manager' -- switch --flake '.#nki@mac-mini'
-      packages.x86_64-linux.home-manager =
-        inputs.home-manager-unstable.packages.x86_64-linux.home-manager;
-      packages.aarch64-darwin.home-manager =
-        inputs.home-manager-unstable.packages.aarch64-darwin.home-manager;
-
-      packages.x86_64-linux.nki-kakoune = nki-kakoune-from-pkgs (
-        import nixpkgs-unstable { system = "x86_64-linux"; }
-      );
-      packages.aarch64-darwin.nki-kakoune = nki-kakoune-from-pkgs (
-        import nixpkgs-unstable { system = "aarch64-darwin"; }
-      );
-
-      # Home configuration
-      nixosConfigurations."kagamiPC" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
-        configuration = ./nki-home/configuration.nix;
-        homeManagerUsers.nki = import ./home/kagami-pc-home.nix;
-        extraModules = [
-          osuStable
-          aagl
-          inputs.dtth-headscale-api.nixosModules.default
-        ];
-      };
-      # yoga g8 configuration
-      nixosConfigurations."nki-yoga-g8" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
-        configuration = ./nki-yoga-g8/configuration.nix;
-        homeManagerUsers.nki = import ./home/yoga.nix;
-        extraModules = [
-          (
-            { ... }:
-            {
-              # Sets up secure boot
-              boot.loader.systemd-boot.enable = lib.mkForce false;
-              common.linux.secureBoot.enable = true;
-            }
-          )
-        ];
-      };
-      # framework configuration
-      nixosConfigurations."nki-framework" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
-        configuration = ./nki-framework/configuration.nix;
-        homeManagerUsers.nki = import ./home/nki-framework.nix;
-        extraModules = [
-          inputs.nixos-hardware.nixosModules.framework-13-7040-amd
-        ];
-      };
-
-      # Mac mini: standalone home-manager, command-line tools only.
-      #   nix run '.#home-manager' -- switch --flake '.#nki@mac-mini'
-      homeConfigurations."nki@mac-mini" = inputs.home-manager-unstable.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs-unstable {
-          system = "aarch64-darwin";
-          config = import ./home/config.nix;
-          inherit overlays;
-        };
-        modules = [
-          ./home/mac-mini.nix
-          inputs.secrets.homeManagerModules.mac-mini
-        ];
-      };
-
-      # DigitalOcean node
-      nixosConfigurations."nki-personal-do" = mkPersonalSystem nixpkgs "x86_64-linux" {
-        configuration = ./nki-personal-do/configuration.nix;
-        extraModules = [
-          inputs.arion.nixosModules.arion
-          inputs.youmubot.nixosModules.default
-          inputs.secrets.nixosModules.nki-personal-do
-          inputs.tranquil.nixosModules.default
-        ];
-      };
-      deploy.nodes."nki-personal-do" = {
-        hostname = "nki.personal";
-        sshUser = "root";
-        profiles.system = {
-          user = "root";
-          path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."nki-personal-do";
-        };
-      };
 
       # This is highly advised, and will prevent many possible mistakes
-      checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
-    }
-    // (inputs.flake-utils.lib.eachDefaultSystem (system: {
-      formatter = nixpkgs.legacyPackages.${system}.nixfmt-tree;
-    }));
+      deploy-config = {
+        nodes."nki-personal-do" = {
+          hostname = "nki.personal";
+          sshUser = "root";
+          profiles.system = {
+            user = "root";
+            path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations."nki-personal-do";
+          };
+        };
+      };
+
+    in
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      # The systems `perSystem` runs for; the packages below are defined for each
+      # of them, using that system's overlay-loaded nixpkgs.
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+
+      flake = {
+        overlays = {
+          default = bunched-overlay;
+          kakoune = final: prev: {
+            kakoune-unwrapped = kakoune-unwrapped-from-pkgs prev;
+            nki-kakoune = final.callPackage ./packages/common/nki-kakoune { };
+          };
+        };
+
+        # Home configuration
+        nixosConfigurations."kagamiPC" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
+          configuration = ./nki-home/configuration.nix;
+          homeManagerUsers.nki = import ./home/kagami-pc-home.nix;
+          extraModules = [
+            osuStable
+            aagl
+            inputs.dtth-headscale-api.nixosModules.default
+          ];
+        };
+        # yoga g8 configuration
+        nixosConfigurations."nki-yoga-g8" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
+          configuration = ./nki-yoga-g8/configuration.nix;
+          homeManagerUsers.nki = import ./home/yoga.nix;
+          extraModules = [
+            (
+              { ... }:
+              {
+                # Sets up secure boot
+                boot.loader.systemd-boot.enable = lib.mkForce false;
+                common.linux.secureBoot.enable = true;
+              }
+            )
+          ];
+        };
+        # framework configuration
+        nixosConfigurations."nki-framework" = mkPersonalSystem nixpkgs-unstable "x86_64-linux" {
+          configuration = ./nki-framework/configuration.nix;
+          homeManagerUsers.nki = import ./home/nki-framework.nix;
+          extraModules = [
+            inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+          ];
+        };
+
+        # Mac mini: standalone home-manager, command-line tools only.
+        #   nix run '.#home-manager' -- switch --flake '.#nki@mac-mini'
+        homeConfigurations."nki@mac-mini" = inputs.home-manager-unstable.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs-unstable {
+            system = "aarch64-darwin";
+            config = import ./home/config.nix;
+            inherit overlays;
+          };
+          modules = [
+            ./home/mac-mini.nix
+            inputs.secrets.homeManagerModules.mac-mini
+          ];
+        };
+
+        # DigitalOcean node
+        nixosConfigurations."nki-personal-do" = mkPersonalSystem nixpkgs "x86_64-linux" {
+          configuration = ./nki-personal-do/configuration.nix;
+          extraModules = [
+            inputs.arion.nixosModules.arion
+            inputs.youmubot.nixosModules.default
+            inputs.secrets.nixosModules.nki-personal-do
+            inputs.tranquil.nixosModules.default
+          ];
+        };
+
+        deploy = deploy-config;
+      };
+
+      perSystem =
+        { system, ... }:
+        let
+          pkgs = pkgsFor system;
+        in
+        {
+          # The flake's packages are built from the same package set as the
+          # systems: nixpkgs-unstable with `overlays.default` loaded.
+          _module.args.pkgs = pkgs;
+
+          packages = {
+            # The `home-manager` command: always home-manager master, built against
+            # nixpkgs-unstable (the input follows it).
+            #   nix run '.#home-manager' -- switch --flake '.#nki@mac-mini'
+            home-manager = inputs.home-manager-unstable.packages.${system}.home-manager;
+
+            inherit (pkgs) nki-kakoune;
+          }
+          // lib.optionalAttrs (system == "x86_64-linux") {
+            inherit (pkgs) openconnect-epfl;
+            deploy-rs = deploy-rs.packages.${system}.default;
+          };
+
+          apps = {
+            deploy-rs = deploy-rs.apps.${system}.default;
+          };
+
+          formatter = pkgs.nixfmt-tree;
+
+          checks = deploy-rs.lib.${system}.deployChecks deploy-config;
+        };
+    };
 }
