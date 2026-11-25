@@ -101,6 +101,7 @@ let
             hardware.logitech.wireless.enable = true;
             programs.solaar.enable = true;
             programs.solaar.userService.enable = true;
+            systemd.user.services.solaar.requires = [ "tray.target" ];
             systemd.user.services.solaar.after = [ "tray.target" ];
           }
       );

@@ -351,23 +351,20 @@ in
 
     # Some graphical targets
     systemd.user.targets = {
-      # For system trays, usually after graphical-session and graphical-session-pre
+      # For system trays, usually after graphical-session
       tray = {
         Unit.Description = lib.mkDefault "System tray";
-        Unit.After = [ "graphical-session-pre.target" ];
-        Unit.Before = [ "graphical-session.target" ];
-        Unit.BindsTo = [ "graphical-session.target" ];
+        Unit.Requires = [ "graphical-session-pre.target" ];
+        Unit.Before = [ "xdg-desktop-autostart.target" ];
+        Unit.PartOf = [ "graphical-session.target" ];
         Install.WantedBy = [ "graphical-session.target" ];
       };
       # XWayland target
       xwayland = {
         Unit.Description = "XWayland support";
-        Unit.After = [ "graphical-session-pre.target" ];
-        Unit.Before = [
-          "graphical-session.target"
-          "xdg-desktop-autostart.target"
-        ];
-        Unit.BindsTo = [ "graphical-session.target" ];
+        Unit.Requires = [ "graphical-session-pre.target" ];
+        Unit.PartOf = [ "graphical-session.target" ];
+        Unit.Before = [ "xdg-desktop-autostart.target" ];
         Install.WantedBy = [ "graphical-session.target" ];
       };
     };

@@ -84,6 +84,7 @@ in
     };
     systemd.user.services.dms = {
       Unit.Before = [ "xdg-desktop-autostart.target" ];
+      Unit.After = lib.mkForce [ "niri.service" ];
     };
     programs.niri.settings.binds =
       with config.lib.niri.actions;
@@ -151,7 +152,6 @@ in
       };
 
     systemd.user.services.dms.Install.WantedBy = lib.mkForce [ "niri.service" ];
-    systemd.user.services.dms.Unit.After = [ "niri.service" ];
 
     # Enable dynamic theming
     programs.kitty.settings.extraConfig = ''
@@ -163,8 +163,8 @@ in
       enable = true;
       systemd = {
         enable = true;
-        target = "tray.target";
         restartIfChanged = true;
+        target = "tray.target";
       };
       niri.includes = {
         enable = true; # Enable config includes hack.
