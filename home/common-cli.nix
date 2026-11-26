@@ -42,6 +42,8 @@
     rbw
     ## File compression stuff
     ouch
+    ## Clouch
+    claude-code
 
     zellij # tmux but much better?
 
